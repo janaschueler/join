@@ -1,0 +1,22 @@
+#topBtn {
+  display: none;
+  position: fixed;
+  bottom: 120px;
+  right: 20px; /* Place the button 30px from the right */
+  cursor: pointer;
+  background-image: url("./assets/icons/arrow-up-solid.svg");
+  background-color: rgba(7, 36, 46, 0.1);
+  background-size: 60%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  padding: 16px 16px;
+}
+
+#topBtn:hover {
+  background-color: rgba(7, 36, 46, 0.6);
+}
