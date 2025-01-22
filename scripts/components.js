@@ -1,5 +1,5 @@
 // Get the scroll button:
-let mybutton = document.getElementById("topBtn");
+let mybutton = document.getElementById("myBtn");
 
 window.onscroll = function () {
   scrollFunction();
