@@ -1,8 +1,5 @@
 body {
   margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background: rgb(246, 247, 248) !important;
 }
 
@@ -27,6 +24,7 @@ body {
 
 .atfNav button {
   font-size: 12px;
+  padding: 8px 16px !important;
 }
 
 .atfNav a {
@@ -43,7 +41,7 @@ body {
   color: rgba(255, 255, 255, 1) !important;
   border: none;
   outline: none;
-  padding: 15px 16px;
+  padding: 8px 20px !important;
   border-radius: 8px;
   gap: 10px;
 }
@@ -69,7 +67,7 @@ body {
 .footerNav a {
   text-decoration: none;
   color: rgba(168, 168, 168, 1);
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 400;
   text-align: left;
   padding-right: 16px;
@@ -90,6 +88,7 @@ body {
   background: white;
   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.1);
   width: 100%;
+  max-width: 500px;
   margin-top: 120px;
   margin-bottom: 80px;
   border-color: white !important;
@@ -99,7 +98,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 350px);
+
   padding: 0 16px;
 }
 
@@ -121,9 +120,15 @@ body {
   background-position-x: 90%;
 }
 
+.card-body {
+  text-align: center;
+}
+
 .card-body h1 {
   position: relative;
   display: inline-block;
+  margin: 0 auto;
+  margin-bottom: 8px;
 }
 
 .card-body h1::after {
@@ -134,4 +139,112 @@ body {
   width: 80%;
   height: 2px;
   background-color: rgba(41, 171, 226, 1);
+}
+
+.atfNavMobile {
+  display: none;
+}
+
+@media (max-width: 1000px) {
+  .atfLogo img {
+    width: 80px;
+    height: 121.97px;
+    top: 40px;
+    left: 77px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  .card {
+    padding: 32px 56px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+}
+
+@media (max-width: 480px) {
+  .atfLogin {
+    display: block;
+  }
+
+  .atfNav {
+    display: none !important;
+  }
+
+  .card {
+    padding: 16px 24px;
+    margin-top: 64px;
+  }
+
+  .atfLogo img {
+    width: 64px;
+    height: 78.03px;
+    top: 37px;
+    left: 38px;
+    margin-top: 40px;
+    margin-bottom: 0px;
+  }
+
+  .LoginButtonContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 32px;
+    gap: 16px;
+  }
+
+  .atfNavMobile {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    text-decoration: none;
+    align-items: center;
+    gap: 16px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+    clear: both;
+  }
+  .atfNavMobile a {
+    text-decoration: none;
+    color: rgba(42, 54, 71, 1);
+  }
+
+  .atfNavMobile button {
+    width: 104px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .LoginContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .primaryButton {
+    width: 180px;
+  }
+
+  .secondaryButton {
+    width: 180px;
+  }
+
+  .card-body {
+    padding: 0px !important;
+  }
+
+  footer {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .positionMobileSignup {
+    margin-top: 20px; /* Fügt Abstand nach oben hinzu, damit die Navigation unter der Card bleibt */
+  }
 }
