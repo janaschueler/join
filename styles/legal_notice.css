@@ -1,0 +1,22 @@
+.privacy {
+  margin-top: 600px;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.privacy_a{
+  text-decoration: none;
+}
+
+.privacy_info {
+  color: #A8A8A8;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.privacy_info:hover{
+  color: lightblue;
+}
