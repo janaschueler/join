@@ -1,15 +1,9 @@
 body {
   margin: 0;
-<<<<<<< HEAD
-  display: flex;
-  justify-content: center;
-  align-items: center;
-=======
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
   background: rgb(246, 247, 248) !important;
 }
 
-.atfLogin {
+.atfSignup {
   display: flex;
   justify-content: space-between;
 }
@@ -17,13 +11,7 @@ body {
 .atfLogo img {
   width: 100.03px;
   height: 121.97px;
-<<<<<<< HEAD
-  top: 80px;
-  left: 77px;
-  margin-top: 80px;
-=======
   margin-top: 40px;
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
 }
 
 .atfNav {
@@ -34,10 +22,7 @@ body {
 
 .atfNav button {
   font-size: 12px;
-<<<<<<< HEAD
-=======
   padding: 8px 16px !important;
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
 }
 
 .atfNav a {
@@ -49,30 +34,6 @@ body {
   padding-right: 16px;
 }
 
-<<<<<<< HEAD
-.primaryButton {
-  background-color: rgba(42, 54, 71, 1) !important;
-  color: rgba(255, 255, 255, 1) !important;
-  border: none;
-  outline: none;
-  padding: 15px 16px;
-  border-radius: 8px;
-  gap: 10px;
-}
-
-.secondaryButton {
-  background-color: transparent;
-  color: rgba(42, 54, 71, 1) !important;
-  border: solid rgba(42, 54, 71, 1) !important;
-  border-width: 1px !important;
-  outline: none;
-  padding: 15px 16px;
-  border-radius: 8px;
-  gap: 10px;
-}
-
-=======
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
 .footerNav {
   display: flex;
   justify-content: center;
@@ -83,17 +44,13 @@ body {
 .footerNav a {
   text-decoration: none;
   color: rgba(168, 168, 168, 1);
-<<<<<<< HEAD
-  font-size: 16px;
-=======
   font-size: 12px;
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
   font-weight: 400;
   text-align: left;
   padding-right: 16px;
 }
 
-.LoginButtonContainer {
+.signupButtonContainer {
   display: flex;
   justify-content: center;
   margin-top: 32px;
@@ -103,30 +60,30 @@ body {
 .card {
   background-color: white;
   padding: 48px 115px;
-  gap: 32px;
   border-radius: 30px !important;
   background: white;
   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.1);
   width: 100%;
-<<<<<<< HEAD
-=======
   max-width: 500px;
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
   margin-top: 120px;
   margin-bottom: 80px;
   border-color: white !important;
 }
 
-.LoginContainer {
+.signupContainer {
   display: flex;
   justify-content: center;
   align-items: center;
-<<<<<<< HEAD
-  height: calc(100vh - 350px);
-=======
-
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
   padding: 0 16px;
+}
+
+.iconName {
+  background-image: url(../assets/icons/person.svg);
+  background-size: 20px;
+  background-repeat: no-repeat;
+  margin-right: 1px;
+  background-position-y: center;
+  background-position-x: 90.5%;
 }
 
 .iconEmail {
@@ -147,13 +104,16 @@ body {
   background-position-x: 90%;
 }
 
-<<<<<<< HEAD
-.card-body h1 {
-  position: relative;
-  display: inline-block;
-=======
+.cardHeader {
+  display: flex;
+}
+
 .card-body {
   text-align: center;
+}
+
+.card-body img {
+  width: 20px;
 }
 
 .card-body h1 {
@@ -161,7 +121,6 @@ body {
   display: inline-block;
   margin: 0 auto;
   margin-bottom: 8px;
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
 }
 
 .card-body h1::after {
@@ -173,11 +132,36 @@ body {
   height: 2px;
   background-color: rgba(41, 171, 226, 1);
 }
-<<<<<<< HEAD
-=======
 
 .atfNavMobile {
   display: none;
+}
+
+.form-check {
+  margin-top: 24px;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-check-label {
+  padding-left: 16px;
+}
+
+.form-check-label a {
+  color: rgba(41, 171, 226, 1);
+}
+
+a {
+  text-decoration: none !important;
+}
+
+footer {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin-top: 32px;
 }
 
 @media (max-width: 1000px) {
@@ -196,7 +180,7 @@ body {
 }
 
 @media (max-width: 480px) {
-  .atfLogin {
+  .atfsignup {
     display: block;
   }
 
@@ -216,7 +200,7 @@ body {
     margin-bottom: 0px;
   }
 
-  .LoginButtonContainer {
+  .signupButtonContainer {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -249,7 +233,7 @@ body {
     align-items: center;
   }
 
-  .LoginContainer {
+  .signupContainer {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -268,15 +252,7 @@ body {
     padding: 0px !important;
   }
 
-  footer {
-    position: relative;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-  }
-
   .positionMobileSignup {
     margin-top: 20px;
   }
 }
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5

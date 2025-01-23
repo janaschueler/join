@@ -1,7 +1,41 @@
 .startScreenLogo {
   position: absolute;
+<<<<<<< HEAD
+=======
+  height: 334.07px;
+>>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
   width: 274px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+<<<<<<< HEAD
+=======
+  background-image: url(../assets/icons/join_logo_desktop.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(246, 247, 248) !important;
+}
+
+@media (max-width: 480px) {
+  .startScreenLogo {
+    position: absolute;
+    width: 100.03px;
+    top: 402px;
+    transform: translate(-50%, -50%);
+    background-image: url(../assets/icons/join_logo_mobile.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  body {
+    background-color: rgba(42, 54, 71, 1) !important;
+  }
+>>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
 }
