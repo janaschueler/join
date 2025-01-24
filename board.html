@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./styles/standard.css" />
     <link rel="stylesheet" href="./styles/components.css" />
     <link rel="stylesheet" href="./styles/fonts.css" />
+    <link rel="stylesheet" href="./styles/board.css" />
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
 
     <link rel="icon" type="image/x-icon" href="../assets/icons/Logo for Favicon construction.svg" />
@@ -70,8 +71,53 @@
             <h1>Board</h1>
             <form class="form-inline my-2 my-lg-0 d-flex height">
               <input class="form-control mr-sm-2 iconSearch" type="search" placeholder="Find task" aria-label="Add task" />
-              <button class="btn btn-outline-success my-2 my-sm-0 primaryButton" type="submit">Add task<img src="./assets/icons/add.svg" alt="add button" /></button>
+              <button class="btn btn-outline-success my-2 my-sm-0 primaryButton" type="submit">Add task<img class="iconAdd" src="./assets/icons/add.svg" alt="add button" /></button>
             </form>
+          </div>
+        </section>
+
+        <section class="canvasContainer">
+            <ol id="board" class="canvas" data-auto-scrollable="true" data-drag-scroll-enabled="true">
+              <li class="listContainer" data-list-id="" data-drop-target-for-element="true">
+                <div class="list">
+                  <div class="list-header">
+                    <div class="listHeader">
+                      <h2 class="list-title">To do</h2>
+                      <button class="closeButton"></button>
+                    </div>
+                    <div class="listContainerEmpty">
+                      <span>No task To do</span>
+                    </div>
+                  </div>
+                </div>
+              </li>      
+              <li class="listContainer" data-list-id="" data-drop-target-for-element="true">
+                <div class="list">
+                  <div class="list-header">
+                    <div class="listHeader">
+                      <h2 class="list-title">In progress</h2>
+                      <button class="closeButton"></button>
+                    </div>
+                    <div class="listContainerContent">
+                      <div class="category">
+                        <span>User Story</span>
+                      </div>
+                      <div class="listDiscription">
+                        <span class="titleCopy">Kochwelt Page & Recipe Recommender</span> <br>
+                        <span class="descriptionCopy">Bild start page with recipe recommendation ... </span>
+                      </div>
+                      <div>
+                        <div class="progressContainer">
+                        <div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
+                        </div>
+                        <span class="sr-only">1/2 Subtasks</span>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>  
+            </ol>
           </div>
         </section>
       </main>
