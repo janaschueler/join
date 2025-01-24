@@ -1,40 +1,9 @@
-.containerAll {
-  display: flex;
-  width: min(100%, 1440px);
-  margin-inline: auto;
-  gap: 2px;
-}
-
-.containerLeft {
-  width: 232px;
-  flex-grow: 1;
-  height: 100vh;
-  background-color: white;
-  position: relative;
-}
-
-.containerSideNav {
-  top: 0px;
-  width: 100%;
-  position: sticky;
-}
-
-.containerRight {
-  width: calc(100% - 232px);
-}
-
-.atf {
-  display: flex;
-  justify-content: flex-end;
-  background-color: white;
-}
-
-.atf img {
-  width: 56px;
-}
-
 body {
   background: rgb(246, 247, 248) !important;
+}
+
+.headerContaine {
+display: flex;
 }
 
 .headerBoard {
@@ -54,10 +23,6 @@ body {
 
 main {
   flex: 1;
-}
-
-header {
-  padding-inline: 0px;
 }
 
 .iconSearch {

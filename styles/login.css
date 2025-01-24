@@ -1,11 +1,8 @@
 body {
   margin: 0;
-<<<<<<< HEAD
   display: flex;
   justify-content: center;
   align-items: center;
-=======
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
   background: rgb(246, 247, 248) !important;
 }
 
@@ -17,13 +14,9 @@ body {
 .atfLogo img {
   width: 100.03px;
   height: 121.97px;
-<<<<<<< HEAD
   top: 80px;
   left: 77px;
   margin-top: 80px;
-=======
-  margin-top: 40px;
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
 }
 
 .atfNav {
@@ -34,10 +27,7 @@ body {
 
 .atfNav button {
   font-size: 12px;
-<<<<<<< HEAD
-=======
   padding: 8px 16px !important;
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
 }
 
 .atfNav a {
@@ -49,7 +39,6 @@ body {
   padding-right: 16px;
 }
 
-<<<<<<< HEAD
 .primaryButton {
   background-color: rgba(42, 54, 71, 1) !important;
   color: rgba(255, 255, 255, 1) !important;
@@ -71,8 +60,6 @@ body {
   gap: 10px;
 }
 
-=======
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
 .footerNav {
   display: flex;
   justify-content: center;
@@ -83,11 +70,7 @@ body {
 .footerNav a {
   text-decoration: none;
   color: rgba(168, 168, 168, 1);
-<<<<<<< HEAD
   font-size: 16px;
-=======
-  font-size: 12px;
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
   font-weight: 400;
   text-align: left;
   padding-right: 16px;
@@ -108,10 +91,6 @@ body {
   background: white;
   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.1);
   width: 100%;
-<<<<<<< HEAD
-=======
-  max-width: 500px;
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
   margin-top: 120px;
   margin-bottom: 80px;
   border-color: white !important;
@@ -121,11 +100,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-<<<<<<< HEAD
   height: calc(100vh - 350px);
-=======
-
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
   padding: 0 16px;
 }
 
@@ -147,21 +122,9 @@ body {
   background-position-x: 90%;
 }
 
-<<<<<<< HEAD
 .card-body h1 {
   position: relative;
   display: inline-block;
-=======
-.card-body {
-  text-align: center;
-}
-
-.card-body h1 {
-  position: relative;
-  display: inline-block;
-  margin: 0 auto;
-  margin-bottom: 8px;
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
 }
 
 .card-body h1::after {
@@ -173,110 +136,3 @@ body {
   height: 2px;
   background-color: rgba(41, 171, 226, 1);
 }
-<<<<<<< HEAD
-=======
-
-.atfNavMobile {
-  display: none;
-}
-
-@media (max-width: 1000px) {
-  .atfLogo img {
-    width: 80px;
-    height: 121.97px;
-    margin-top: 32px;
-    margin-bottom: 40px;
-  }
-
-  .card {
-    padding: 32px 56px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
-}
-
-@media (max-width: 480px) {
-  .atfLogin {
-    display: block;
-  }
-
-  .atfNav {
-    display: none !important;
-  }
-
-  .card {
-    padding: 16px 24px;
-    margin-top: 64px;
-  }
-
-  .atfLogo img {
-    width: 64px;
-    height: 78.03px;
-    margin-top: 32px;
-    margin-bottom: 0px;
-  }
-
-  .LoginButtonContainer {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 32px;
-    gap: 16px;
-  }
-
-  .atfNavMobile {
-    display: flex;
-    position: relative;
-    justify-content: center;
-    text-decoration: none;
-    align-items: center;
-    gap: 16px;
-    margin-top: 32px;
-    margin-bottom: 32px;
-    clear: both;
-  }
-  .atfNavMobile a {
-    text-decoration: none;
-    color: rgba(42, 54, 71, 1);
-  }
-
-  .atfNavMobile button {
-    width: 104px;
-    height: 48px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .LoginContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-
-  .primaryButton {
-    width: 180px;
-  }
-
-  .secondaryButton {
-    width: 180px;
-  }
-
-  .card-body {
-    padding: 0px !important;
-  }
-
-  footer {
-    position: relative;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-  }
-
-  .positionMobileSignup {
-    margin-top: 20px;
-  }
-}
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
