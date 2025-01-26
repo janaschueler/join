@@ -43,17 +43,8 @@ main {
   width: 16px;
 }
 
-.height {
+form {
   height: 48px !important;
-}
-
-.secondaryAddButton {
-  border: none;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 13px;
-  background-color: rgb(246, 247, 248);
 }
 
 #board {
@@ -95,6 +86,11 @@ h2 {
 
 .secondaryAddButton {
   border: solid 2px rgb(7, 36, 46);
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 13px;
+  background-color: rgb(246, 247, 248);
   outline: none;
   padding: 8px 12px;
   border-radius: 8px;
