@@ -47,7 +47,7 @@ main {
   height: 48px !important;
 }
 
-.closeButton {
+.secondaryAddButton {
   border: none;
   text-align: center;
   text-decoration: none;
@@ -73,12 +73,26 @@ h2 {
   display: flex;
   flex-direction: column;
   width: 252px;
-  height: 100vh;
   margin-left: 32px;
   margin-right: 8px;
 }
 
-.closeButton {
+.primaryAddButton {
+  border: solid 2px rgb(7, 36, 46);
+  background-color: rgb(7, 36, 46);
+  outline: none;
+  padding: 8px 12px !important;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  gap: 10px;
+  background-image: url(../assets/icons/add.svg);
+  background-size: 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.secondaryAddButton {
   border: solid 2px rgb(7, 36, 46);
   outline: none;
   padding: 8px 12px;
@@ -166,4 +180,78 @@ h2 {
   margin-top: 16px;
   font-size: 10px;
   align-items: center;
+}
+
+.priorityContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  font-size: 10px;
+  align-items: center;
+}
+
+.assigneeContainer {
+  position: relative;
+  width: 32px;
+  height: 32px;
+}
+
+.circle {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.circle:nth-child(1) {
+  z-index: 1;
+}
+
+.circle:nth-child(2) {
+  left: 24px; /* 1/3 der Höhe des Kreises (32px / 3 = 10.66px) */
+  bottom: 0;
+  z-index: 2;
+}
+
+.circle:nth-child(3) {
+  left: 48px; /* 1/3 der Höhe des Kreises (32px / 3 = 10.66px) */
+  bottom: 0;
+  z-index: 3;
+}
+
+.circle:nth-child(4) {
+  left: 62px; /* 1/3 der Höhe des Kreises (32px / 3 = 10.66px) */
+  bottom: 0;
+  z-index: 4;
+}
+
+.circle:nth-child(5) {
+  left: 86px; /* 1/3 der Höhe des Kreises (32px / 3 = 10.66px) */
+  bottom: 0;
+  z-index: 5;
+}
+
+input {
+  border-radius: 8px !important;
+}
+
+.primaryMobileButton {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .primaryButton {
+    display: none !important;
+  }
+
+  .primaryMobileButton {
+    display: block !important;
+  }
+
+  .headerBoardTitle {
+    display: flex;
+    justify-content: space-between;
+  }
+  .headerContainer {
+    flex-direction: column;
+  }
 }
