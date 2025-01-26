@@ -78,12 +78,13 @@ h2 {
 }
 
 .primaryAddButton {
+  display: none !important;
   border: solid 2px rgb(7, 36, 46);
   background-color: rgb(7, 36, 46);
   outline: none;
   padding: 8px 12px !important;
-  width: 32px;
-  height: 32px;
+  width: 32px !important;
+  height: 32px !important;
   border-radius: 8px;
   gap: 10px;
   background-image: url(../assets/icons/add.svg);
@@ -234,24 +235,28 @@ input {
   border-radius: 8px !important;
 }
 
-.primaryMobileButton {
-  display: none;
-}
-
 @media (max-width: 768px) {
   .primaryButton {
     display: none !important;
   }
 
-  .primaryMobileButton {
+  .primaryAddButton {
     display: block !important;
+    margin-right: 20px;
   }
 
   .headerBoardTitle {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between !important;
+    align-items: center;
   }
-  .headerContainer {
+  .headerBoard {
     flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+  }
+
+  form {
+    margin-left: 32px;
   }
 }
