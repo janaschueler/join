@@ -12,7 +12,6 @@ a {
 main {
   flex: 1;
 }
-<<<<<<< HEAD
 
 .main_bar {
   display: flex;
@@ -20,6 +19,9 @@ main {
 }
 
 .left_bar_main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: #2A3647;
   width: 232px;
 }
@@ -51,6 +53,39 @@ main {
   justify-content: space-between;
 }
 
+.user_main {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.help_info:hover {
+  transform: scale(1.4);
+  transition: transform 0.3s ease;
+}
+
+.user_profil {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 55px;
+  height: 55px;
+  border: 3px solid black;
+  border-radius: 50%;
+  background-color: transparent;
+  font-size: 22px;
+  text-decoration: none;
+  color: #29ABE2;
+}
+
+.user_profil:hover {
+  background-color: rgba(128, 128, 128, 0.219);
+}
+
+.user_name {
+  color: #29ABE2;
+}
+
 .task_bar {
   margin-top: 90px;
   display: flex;
@@ -66,7 +101,7 @@ main {
 }
 
 .nav_bar:hover {
-  background: #0919314f;
+  background-color: #0919314f;
 }
 
 .nav_link {
@@ -84,5 +119,30 @@ main {
   height: 40px;
 }
 
-=======
->>>>>>> 8f5c849374c29dbe8ef5a302ef744ff94fc380c5
+.top_bar_logo {
+  width: 50px;
+  display: none;
+}
+
+@media (max-width: 1500px) {
+  .left_bar_main {
+    display: none;
+  }
+}
+
+@media (max-width: 645px) {
+  .top_bar_span {
+      display: none;
+  }
+  
+  .top_bar_logo {    
+    display: block;
+  }
+}
+
+@media (max-width: 460px) {
+  .left_bar_main {
+    display: none;
+  }  
+}
+

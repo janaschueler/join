@@ -1,14 +1,15 @@
 .privacy {
-  margin-top: 600px;  
+  margin-top: 340px;  
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   gap: 8px;
+  margin-bottom: 30px;
 }
 
 .privacy_a{
-  text-decoration: none;
+  text-decoration: none;  
 }
 
 .privacy_info {
