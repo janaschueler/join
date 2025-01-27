@@ -1,0 +1,175 @@
+body {
+  background: rgb(246, 247, 248) !important;
+}
+
+.headerBoard {
+  margin-top: 64px;
+  margin-bottom: 32px;
+}
+
+main {
+  flex: 1;
+}
+
+.primaryButton {
+  padding: 8px 12px !important;
+  gap: 10px;
+  background-image: url(../assets/icons/person_add.svg);
+  background-size: 24px;
+  background-repeat: no-repeat;
+  margin-right: 20px;
+  background-position-y: center !important;
+  background-position-x: 90% !important;
+  width: 100%;
+}
+
+.primaryAddButton {
+  display: none !important;
+  border: solid 2px rgb(7, 36, 46);
+  background-color: rgb(7, 36, 46);
+  outline: none;
+  padding: 8px 12px !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 8px;
+  gap: 10px;
+  background-image: url(../assets/icons/add.svg);
+  background-size: 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.secondaryAddButton {
+  border: solid 2px rgb(7, 36, 46);
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 13px;
+  background-color: rgb(246, 247, 248);
+  outline: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+form {
+  height: 48px !important;
+}
+
+.contactCanvas {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.contactContainer {
+  background-color: rgb(255, 255, 255);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100vh;
+  width: 300px;
+}
+
+.listHeader {
+  margin-top: 12px !important;
+}
+.horizontalLine {
+  background-color: rgba(209, 209, 209, 1);
+  height: 1px;
+  margin-top: 18px;
+  margin-left: -16px;
+}
+
+.listBody {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  padding: 10px 0px 10px 28px;
+  border-radius: 8px;
+  margin-left: -32px;
+}
+
+.listBody:hover {
+  background-color: rgba(42, 54, 71, 1) !important;
+  color: white;
+}
+
+.listName_Email {
+  display: flex;
+  flex-direction: column;
+}
+
+.circle {
+  margin-left: -8px;
+}
+
+.contactSummary svg {
+  margin-left: 32px;
+  margin-top: 16px;
+  display: flex !important;
+  flex-direction: row;
+}
+
+.listEmail {
+  font-size: 12px;
+  color: rgba(0, 124, 238, 1);
+  text-decoration: none !important;
+}
+
+.contactName {
+  font-size: 32px;
+}
+
+h2 {
+  color: rgb(7, 36, 46);
+  font-size: 16px !important;
+  font-weight: bold !important;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .primaryAddButton {
+    display: block !important;
+    margin-right: 20px;
+  }
+
+  .headerBoard {
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+  }
+
+  form {
+    margin-left: 32px;
+  }
+}
+
+.headerBoardTitle {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.headerBoardTitle h1 {
+  position: relative;
+  display: inline-block;
+  padding-right: 16px;
+  text-align: center;
+  margin-right: 16px !important;
+}
+
+.headerBoardTitle h1::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background-color: rgba(41, 171, 226, 1);
+}
+
+.headerContainer {
+  display: flex;
+}

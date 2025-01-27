@@ -1,33 +1,142 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./styles/legal_notice.css" />
+    <link rel="stylesheet" href="./styles/summary.css" />
     <link rel="stylesheet" href="./styles/standard.css" />
     <link rel="stylesheet" href="./styles/components.css" />
+    <link rel="stylesheet" href="./styles/contacts.css" />
     <link rel="stylesheet" href="./styles/fonts.css" />
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
-    
-    <link rel="icon" type="image/x-icon" href="./assets/icons/Logo for Favicon construction.svg" />
+
+    <link rel="icon" type="image/x-icon" href="../assets/icons/Logo for Favicon construction.svg" />
 
     <title>join</title>
   </head>
-
   <body>
-    <header class="atf"></header>
-    <button onclick="topFunction()" id="myBtn" title="Go to top"></button>
-
-    <main>
-      <section class="container">
-        <h1>HL</h1>
+    <div class="main_bar">
+      <section class="left_bar_main">
+        <div class="left_bar_area">
+          <img src="./assets/icons/Join_Logo_Bar.svg" alt="" />
+        </div>
+        <div class="task_bar">
+          <a class="nav_bar" href="">
+            <div class="nav_stripe">
+              <img src="./assets/icons/Summary_Icon.svg" alt="" />
+              <span class="nav_link">Summary</span>
+            </div>
+          </a>
+          <a class="nav_bar" href="">
+            <div class="nav_stripe">
+              <img src="./assets/icons/AddTask_Icon.svg" alt="" />
+              <span class="nav_link">Add Task</span>
+            </div>
+          </a>
+          <a class="nav_bar" href="">
+            <div class="nav_stripe">
+              <img src="./assets/icons/Board_Icon.svg" alt="" />
+              <span class="nav_link">Board</span>
+            </div>
+          </a>
+          <a class="nav_bar" href="">
+            <div class="nav_stripe">
+              <img src="./assets/icons/Contacts_Icon.svg" alt="" />
+              <span class="nav_link">Contacts</span>
+            </div>
+          </a>
+        </div>
+        <div class="privacy">
+          <a class="privacy_a" href="">
+            <span class="privacy_info">Privacy Policy</span>
+          </a>
+          <a class="privacy_a" href="">
+            <span class="privacy_info">Legal notice</span>
+          </a>
+        </div>
       </section>
-    </main>
+      <main>
+        <section class="top_bar_main">
+          <div class="top_bar_area">
+            <span>Kanban Project Management Tool</span>
+            <img src="./assets/icons/User_Circle_Icon.svg" alt="" />
+          </div>
+        </section>
 
-    <footer></footer>
+        <section class="contactCanvas">
+        <Section class="contactContainer">
+          <div class="contacthead">
+              <button class="primaryButton">Add new contact</button>
+            </div>
+            <ol>
+                <div class="list">
+                  <div class="list-header">
+                    <div class="listHeader">
+                      <span>A</span>
+                      <div class="horizontalLine"></div>
+                    </div>
+                    <div class="listBody">
+                      <svg class="circle" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="16" cy="16" r="15.5" fill="#FF7A00" stroke="white"/>
+                        <text x="50%" y="50%" font-family="Arial" font-size="12" fill="white" text-anchor="middle" alignment-baseline="central">AM</text>
+                    </svg>
+                    <div class="listName_Email">
+                      <span class="listName">Anton Mayer</span>
+                      <a  class="listEmail" href="mailto:anton@mail.com">anton@mail.com</a>
+                    </div>
+                    </div>
+                    <div class="listBody">
+                      <svg class="circle" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="16" cy="16" r="15.5" fill="rgb(147, 39, 255)" stroke="white"/>
+                        <text x="50%" y="50%" font-family="Arial" font-size="12" fill="white" text-anchor="middle" alignment-baseline="central">AS</text>
+                    </svg>
+                    <div class="listName_Email">
+                      <span class="listName">Anja Mayer</span>
+                      <a  class="listEmail" href="mailto:anja@mail.com">anja@mail.com</a>
+                    </div>
+                    </div>
+                    <div class="listHeader">
+                      <span>B</span>
+                      <div class="horizontalLine"></div>
+                    </div>
+                    <div class="listBody">
+                      <svg class="circle" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="16" cy="16" r="15.5" fill="rgb(110, 82, 255)" stroke="white"/>
+                        <text x="50%" y="50%" font-family="Arial" font-size="12" fill="white" text-anchor="middle" alignment-baseline="central">AM</text>
+                    </svg>
+                    <div class="listName_Email">
+                      <span class="listName">Benedikt Ziegler</span>
+                      <a  class="listEmail" href="mailto:bendedikt@mail.com">benedikt@gamil.com</a>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              </li>      
+            </ol>
+        </Section>
+
+        <section class="headerContainer">
+          <div class="headerBoard">
+            <div class="headerBoardTitle">
+              <h1>Contacts</h1>
+              <span>Better with a team</span>
+            </div>
+            <div class="contactSummary">
+              <svg class="circle" width="120" height="120" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="16" cy="16" r="15.5" fill="#FF7A00" stroke="white"/>
+                <text x="50%" y="50%" font-family="Arial" font-size="12" fill="white" text-anchor="middle" alignment-baseline="central">AM</text>
+            </svg>
+            <div class="contactName">
+              <span>Anton Mayer</span>
+            </div>
+            </div>
+        </section>
+      </section>
+      </main>
+    </div>
   </body>
-
-  <script src="./script.js"></script>
 </html>
