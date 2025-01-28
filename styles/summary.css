@@ -16,20 +16,20 @@
     margin-bottom: 25px;
 }
 
-.summary_title {
-    font-weight: 700;
-    font-size: 42px;
-}
-
 .line {
     width: 2px;
     height: 60px;
     background-color: #29ABE2;
 }
 
+.summary_title {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
 .summary_header_span {
     font-weight: 400;
-    font-size: 22px;
+    font-size: 27px;
 }
 
 .summary_main {
@@ -86,28 +86,26 @@
     background-color: #ffff;
 }
 
-.check_pencil_area:hover .side_img_p {    
-    filter: invert();
-}
-
-.check_pencil_area:hover .side_img_c {    
-    filter: invert();
-}
-
 .side_img {
     width: 69px;
 }
 
-.side_img_p {
-    width: 26px;
+.check_pencil_area:hover .side_img_p {
+    fill: #2A3647;
 }
 
-.side_img_p:hover {
-fill: #2A3647;
+.side_img_p {
+    width: 26px;
+    fill: #ffff;
+}
+
+.check_pencil_area:hover .side_img_c {
+    stroke: #2A3647;
 }
 
 .side_img_c {
     width: 35px;
+    stroke: #ffff;
 }
 
 .circle_pencil_check {
@@ -115,8 +113,8 @@ fill: #2A3647;
     justify-content: center;
     align-items: center;
     width: 69px;
-    height: 69px;    
-    border-radius: 50%;      
+    height: 69px;
+    border-radius: 50%;
     background-color: #2A3647;
 }
 
@@ -240,7 +238,7 @@ fill: #2A3647;
 .user_name {
     color: #29ABE2;
     font-weight: 700;
-    font-size: 80px;
+    font-size: 77px;
 }
 
 @media (max-width: 1520px) {
@@ -253,11 +251,7 @@ fill: #2A3647;
     }
 }
 
-@media (max-width: 690px) {
-    .side_img {
-        width: 55px;
-    }
-
+@media (max-width: 958px) {
     .summary_header {
         gap: 0px;
         flex-direction: column;
@@ -274,6 +268,12 @@ fill: #2A3647;
         width: 120px;
         height: 3px;
         background-color: #29ABE2;
+    }
+}
+
+@media (max-width: 690px) {
+    .side_img {
+        width: 55px;
     }
 }
 
@@ -295,15 +295,15 @@ fill: #2A3647;
     .side_img_p {
         width: 18px;
     }
-    
+
     .side_img_c {
         width: 18px;
     }
 
-    .circle_pencil_check {        
+    .circle_pencil_check {
         width: 40px;
-        height: 40px;    
-        
+        height: 40px;
+
     }
 
     .side_number {

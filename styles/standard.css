@@ -49,8 +49,8 @@ main {
 }
 
 .top_bar_area {
-  margin-left: 5%;
-  margin-right: 5%;
+  margin-left: 4%;
+  margin-right: 2%;
   width: 100%;
   display: flex;
   align-items: center;
@@ -169,14 +169,11 @@ main {
   color: #B9BABD;  
 }
 
-.dialog_links:hover {
-  
-}
-
 .dialog_main {
   position: relative;
   overflow-x: hidden;
   width: 160px;  
+  display: none;
 }
 
 .dialog_area {
