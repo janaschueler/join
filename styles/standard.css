@@ -44,6 +44,10 @@ main {
   box-shadow: 0px -1px 4px 5px rgba(128, 128, 128, 0.178);
 }
 
+.top_bar_span {
+  font-weight: 500;
+}
+
 .top_bar_area {
   margin-left: 5%;
   margin-right: 5%;
@@ -124,25 +128,115 @@ main {
   display: none;
 }
 
-@media (max-width: 1500px) {
+.mobile_main {
+  background-color: #2A3647;
+  height: 80px;
+  width: 100%;
+  display: none;
+}
+
+.task_bar_mobile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  gap: 15%;
+}
+
+.nav_stripe_mobile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.nav_bar_mobile {
+  text-decoration: none;
+}
+
+.mobile_img {
+  width: 25px;
+}
+
+.nav_link_mobile {
+  width: 63px;
+  font-size: 15px;
+  color: white;
+}
+
+.dialog_links {
+  text-decoration: none;
+  color: #B9BABD;  
+}
+
+.dialog_links:hover {
+  
+}
+
+.dialog_main {
+  position: relative;
+  overflow-x: hidden;
+  width: 160px;  
+}
+
+.dialog_area {
+  background-color: #2A3647;
+  width: 100%;
+  padding: 10%;
+  height: 158px;
+  display: flex;  
+  flex-direction: column; 
+  position: absolute;
+  font-size: 16px; 
+  font-weight: 400;
+  gap: 2px;
+  border-radius: 15px 0px 15px 15px;
+}
+
+.dialog_nav{
+  width: 110px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.dialog_nav:hover {
+  background-color: #0919314f;
+}
+
+@media (max-width: 768px) {
   .left_bar_main {
     display: none;
+  }
+
+  .main_bar {
+    flex-direction: column;
+  }
+
+  .mobile_main {
+    display: block;
   }
 }
 
 @media (max-width: 645px) {
   .top_bar_span {
-      display: none;
+    display: none;
   }
-  
-  .top_bar_logo {    
+
+  .top_bar_logo {
     display: block;
+  }
+}
+
+@media (max-width: 530px) {
+  .task_bar_mobile {
+    gap: 5%;
   }
 }
 
 @media (max-width: 460px) {
   .left_bar_main {
     display: none;
-  }  
+  }
 }
-

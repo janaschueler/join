@@ -2,23 +2,23 @@
     max-width: 1440px;
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
 .summary_header {
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     font-family: sans-serif;
     color: rgba(7, 36, 46);
-    gap: 40px;
+    gap: 31px;
     margin-bottom: 25px;
 }
 
 .summary_title {
     font-weight: 700;
-    font-size: 70px;
+    font-size: 42px;
 }
 
 .line {
@@ -29,7 +29,7 @@
 
 .summary_header_span {
     font-weight: 400;
-    font-size: 27px;
+    font-size: 22px;
 }
 
 .summary_main {
@@ -43,7 +43,7 @@
 
 .info_main {
     width: 95%;
-    gap: 40px;
+    gap: 35px;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -60,6 +60,7 @@
     height: 170px;
     display: flex;
     justify-content: center;
+    align-items: center;
     border: 2px solid rgba(0, 0, 0, 0.1);
     border-radius: 24px;
     background-color: #ffff;
@@ -81,8 +82,42 @@
     color: white;
 }
 
+.check_pencil_area:hover .circle_pencil_check {
+    background-color: #ffff;
+}
+
+.check_pencil_area:hover .side_img_p {    
+    filter: invert();
+}
+
+.check_pencil_area:hover .side_img_c {    
+    filter: invert();
+}
+
 .side_img {
     width: 69px;
+}
+
+.side_img_p {
+    width: 26px;
+}
+
+.side_img_p:hover {
+fill: #2A3647;
+}
+
+.side_img_c {
+    width: 35px;
+}
+
+.circle_pencil_check {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 69px;
+    height: 69px;    
+    border-radius: 50%;      
+    background-color: #2A3647;
 }
 
 .side_info {
@@ -194,6 +229,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-left: 45px;
 }
 
 .morning {
@@ -247,5 +283,54 @@
     }
 }
 
+@media (max-width: 420px) {
+    .check_pencil_area {
+        height: 100px;
+    }
 
+    .side_img {
+        width: 40px;
+    }
 
+    .side_img_p {
+        width: 18px;
+    }
+    
+    .side_img_c {
+        width: 18px;
+    }
+
+    .circle_pencil_check {        
+        width: 40px;
+        height: 40px;    
+        
+    }
+
+    .side_number {
+        font-size: 30px;
+    }
+
+    .date {
+        gap: 1%;
+    }
+
+    .date {
+        height: 100px;
+    }
+
+    .date_line_color {
+        height: 75px;
+    }
+
+    .date_number {
+        font-size: 14px;
+    }
+
+    .under_task_word {
+        font-size: 15px;
+    }
+
+    .under_task_area {
+        height: 100px;
+    }
+}
