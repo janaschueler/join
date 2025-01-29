@@ -40,7 +40,7 @@
 
 @font-face {
   font-family: "Inter 18pt";
-  src: url("../Inter18pt-Light.woff2") format("woff2"), url("../Inter18pt-Light.woff") format("woff");
+  src: url("../fonts/Inter18pt-Light.woff2") format("woff2"), url("../fonts/Inter18pt-Light.woff") format("woff");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
