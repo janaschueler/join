@@ -159,12 +159,13 @@ h2 {
 
 .titleCopy,
 .descriptionCopy {
-  display: -webkit-box; /* Flexbox-Modus für Text */
-  -webkit-box-orient: vertical; /* Legt die Orientierung der Box auf vertikal fest */
-  overflow: hidden; /* Versteckt den überflüssigen Text */
-  text-overflow: ellipsis; /* Fügt "..." hinzu */
-  white-space: normal; /* Erlaubt Zeilenumbrüche */
-  -webkit-line-clamp: 2; /* Begrenzt die Zeilenanzahl auf 2 */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  white-space: normal;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  line-clamp: 2;
 }
 
 .category {

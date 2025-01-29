@@ -64,6 +64,7 @@
       <main>
         <section class="top_bar_main">
           <div class="top_bar_area">
+            <img class="top_bar_logo" src="./assets/icons/join_logo_desktop.svg" alt="">
             <span class="top_bar_span">Kanban Project Management Tool</span>
             <div class="user_main">
               <a class="help_info" href="">
@@ -74,7 +75,7 @@
               </a>
             </div>
           </div>
-        </section>   
+        </section>
 
         <section class="contactCanvas">
         <Section class="contactContainer">
@@ -163,46 +164,79 @@
 
 
       <section>
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <div class="modalHeader">
-                  <img src="./assets/icons/join_logo_desktop.svg" alt="">
-                  <h2>Add Contact</h2>
-                  <span>task are better with a team</span>
-                </div>
-                <div>
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modalBody">
 
+                <div class="modalHeader">
+                  <img src="./assets/icons/join_logo_mobile.svg" alt="">
+                  <h2>Add Contact</h2>
+                  <span>Task are better with a team</span>
                 </div>
-                <form>
-                  <div class="mb-3">
-                    <label for="recipient-name" class="col-form-label" ></label>
-                    <input type="text" class="form-control" placeholder="Name" id="recipient-name">
-                  </div>
-                  <div class="mb-3">
-                    <label for="recipient-name" class="col-form-label" ></label>
-                    <input type="text" class="form-control" placeholder="Email" id="recipient-email">
-                  </div>
-                  <div class="mb-3">
-                    <label for="recipient-name" class="col-form-label" ></label>
-                    <input type="text" class="form-control" placeholder="Phone" id="recipient-phone">
-                  </div>
-                </form>
+
+              <div class="contactCircle">
+                <svg width="134" height="134" viewBox="0 0 134 134" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="67" cy="67" r="60" fill="#D1D1D1" />
+                  <path d="M67 67C64 67 61 65 59 63C57 61 56 59 56 56C56 53 57 50 59 48C61 46 64 45 67 45C70 45 73 46 75 48C77 50 78 53 78 56C78 59 77 61 75 63C73 65 70 67 67 67ZM83 88H51C49 88 47 87 46 86C45 85 45 84 45 83V81C45 79 46 77 47 76C48 75 49 74 51 73C53 72 55 71 58 70C61 69 64 69 67 69C70 69 73 69 75 70C78 71 81 72 83 73C85 74 86 75 87 76C88 77 88 79 88 81V83C88 84 87 85 86 86C85 87 84 88 83 88Z" fill="white" />
+                </svg>
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+
+              <div class="formContainer">
+                <button type="button" class="closeButton" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="d-flex-colum">
+                  <form>
+                    <div>
+                      <label for="recipient-name" class="col-form-label"></label>
+                      <input type="text" class="form-control iconName" placeholder="Name" id="recipient-name">
+                    </div>
+                    <div>
+                      <label for="recipient-email" class="col-form-label"></label>
+                      <input type="email" class="form-control iconEmail" placeholder="Email" id="recipient-email">
+                    </div>
+                    <div>
+                      <label for="recipient-phone" class="col-form-label"></label>
+                      <input type="tel" class="form-control iconPhone" placeholder="Phone" id="recipient-phone">
+                    </div>
+                  </form>
+
+                  <div class="buttonContainer">
+                    <button type="button" class="secondaryButton" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="primaryButtonCheck">Create Contact</button>
+                  </div>
               </div>
             </div>
           </div>
-        </div>
       </section>
 
       </main>
+      <section class="mobile_main">
+        <div class="task_bar_mobile">
+          <a class="nav_bar_mobile" href="">
+            <div class="nav_stripe_mobile">
+              <img class="mobile_img" src="./assets/icons/Summary_Icon.svg" alt="">
+              <span class="nav_link_mobile">Summary</span>
+            </div>
+          </a>
+          <a class="nav_bar_mobile" href="">
+            <div class="nav_stripe_mobile">
+              <img class="mobile_img" src="./assets/icons/Board_Icon.svg" alt="">
+              <span class="nav_link_mobile">Board</span>
+            </div>
+          </a>
+          <a class="nav_bar_mobile" href="">
+            <div class="nav_stripe_mobile">
+              <img class="mobile_img" src="./assets/icons/AddTask_Icon.svg" alt="">
+              <span class="nav_link_mobile">Add Task</span>
+            </div>
+          </a>        
+          <a class="nav_bar_mobile" href="">
+            <div class="nav_stripe_mobile">
+              <img class="mobile_img" src="./assets/icons/Contacts_Icon.svg" alt="">
+              <span class="nav_link_mobile">Contacts</span>
+            </div>
+          </a>
+        </div>
+      </section>
     </div>
   </body>
 
