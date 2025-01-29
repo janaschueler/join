@@ -47,3 +47,7 @@ header {
   text-decoration: none;
   color: rgb(15, 91, 116);
 }
+
+.d_none {
+  display: none;
+}

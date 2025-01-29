@@ -7,3 +7,9 @@
 function greet(name) {
   console("hallo" + name);
 }
+
+function showDesktopMenu() {
+  let deskMenuRef = document.getElementById('deskMenu_content');
+  deskMenuRef.classList.toggle('d_none');
+  event.preventDefault();
+}
