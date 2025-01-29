@@ -22,7 +22,7 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #2A3647;
+  background-color: #2a3647;
   width: 232px;
 }
 
@@ -37,7 +37,7 @@ main {
   margin-inline: auto;
   display: flex;
   align-items: center;
-  font-family: sans-serif;
+  font-family: "Inter 18pt";
   font-weight: bold;
   font-size: 20px;
   color: rgba(7, 36, 46);
@@ -79,7 +79,7 @@ main {
   background-color: transparent;
   font-size: 22px;
   text-decoration: none;
-  color: #29ABE2;
+  color: #29abe2;
 }
 
 .user_profil:hover {
@@ -87,7 +87,7 @@ main {
 }
 
 .user_name {
-  color: #29ABE2;
+  color: #29abe2;
 }
 
 .task_bar {
@@ -129,7 +129,7 @@ main {
 }
 
 .mobile_main {
-  background-color: #2A3647;
+  background-color: #2a3647;
   height: 80px;
   width: 100%;
   display: none;
@@ -169,6 +169,7 @@ main {
 
 .dialog_links {
   text-decoration: none;
+<<<<<<< HEAD
   color: #B9BABD;
 }
 
@@ -178,10 +179,20 @@ main {
   top: 0;
   right: 8px;
   width: 160px;
+=======
+  color: #b9babd;
+}
+
+.dialog_main {
+  position: relative;
+  overflow-x: hidden;
+  width: 160px;
+  display: none;
+>>>>>>> c925f1045de3d964f665bf8ed067979387e154f5
 }
 
 .dialog_area {
-  background-color: #2A3647;
+  background-color: #2a3647;
   width: 100%;
   padding: 10%;
   height: 158px;
@@ -241,9 +252,12 @@ main {
     display: none;
   }
 }
+<<<<<<< HEAD
 
 @media (max-width: 412px) {
   .help_info {
     display: none;
   }
 }
+=======
+>>>>>>> c925f1045de3d964f665bf8ed067979387e154f5

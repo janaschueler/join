@@ -8,11 +8,11 @@ h1 {
   font-weight: bold !important;
   text-align: center;
   text-underline-position: from-font;
-  font-size: 61px !important;
+  font-size: 61px !;
 }
 
 body {
-  font-family: "Open Sans";
+  font-family: "Inter 18pt";
   font-weight: normal;
   margin: 0;
   color: black;
@@ -31,7 +31,7 @@ header {
   padding-inline: clamp(16px, 12vw, 160px);
   display: flex;
   align-items: center;
-  font-family: sans-serif;
+  font-family: "Inter 18pt";
   font-weight: bold;
   font-size: 20px;
   color: rgba(7, 36, 46);
