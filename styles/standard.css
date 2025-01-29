@@ -41,6 +41,7 @@ main {
   font-weight: bold;
   font-size: 20px;
   color: rgba(7, 36, 46);
+  background-color: white;
   box-shadow: 0px -1px 4px 5px rgba(128, 128, 128, 0.178);
 }
 
@@ -169,17 +170,6 @@ main {
 
 .dialog_links {
   text-decoration: none;
-<<<<<<< HEAD
-  color: #B9BABD;
-}
-
-.dialog_main {
-  margin-top: 75px;
-  position: fixed;
-  top: 0;
-  right: 8px;
-  width: 160px;
-=======
   color: #b9babd;
 }
 
@@ -188,7 +178,6 @@ main {
   overflow-x: hidden;
   width: 160px;
   display: none;
->>>>>>> c925f1045de3d964f665bf8ed067979387e154f5
 }
 
 .dialog_area {
@@ -252,12 +241,3 @@ main {
     display: none;
   }
 }
-<<<<<<< HEAD
-
-@media (max-width: 412px) {
-  .help_info {
-    display: none;
-  }
-}
-=======
->>>>>>> c925f1045de3d964f665bf8ed067979387e154f5

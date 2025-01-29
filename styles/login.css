@@ -16,7 +16,7 @@ body {
   height: 121.97px;
   top: 80px;
   left: 77px;
-  margin-top: 80px;
+  margin-top: 40px;
 }
 
 .atfNav {
@@ -80,7 +80,7 @@ body {
   display: flex;
   justify-content: center;
   margin-top: 32px;
-  gap: 16px;
+  gap: 32px;
 }
 
 .card {
@@ -90,10 +90,12 @@ body {
   border-radius: 30px !important;
   background: white;
   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  margin-top: 120px;
   margin-bottom: 80px;
   border-color: white !important;
+}
+
+.formInputContainer {
+  width: 422px;
 }
 
 .LoginContainer {
@@ -120,6 +122,10 @@ body {
   margin-right: 20px;
   background-position-y: center;
   background-position-x: 90%;
+}
+
+.card-body {
+  text-align: center;
 }
 
 .card-body h1 {

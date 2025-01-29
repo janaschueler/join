@@ -10,7 +10,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 32px;
+  margin-top: 40px;
   margin-bottom: 32px;
   margin-left: 5%;
 }
@@ -29,6 +29,11 @@ body {
   margin-right: 5%;
 }
 
+.headerBoard button:hover {
+  background-color: rgba(41, 171, 226, 1) !important;
+  border-color: rgba(41, 171, 226, 1) !important;
+}
+
 main {
   flex: 1;
 }
@@ -44,6 +49,10 @@ main {
 
 .primaryButton img {
   width: 16px;
+}
+
+.primaryButton:hover {
+  border-color: rgba(41, 171, 226, 1);
 }
 
 form {
@@ -95,8 +104,8 @@ h2 {
   background-color: rgb(7, 36, 46);
   outline: none;
   padding: 8px 12px !important;
-  width: 32px !important;
-  height: 32px !important;
+  width: 24px !important;
+  height: 24px !important;
   border-radius: 8px;
   gap: 10px;
   background-image: url(../assets/icons/add.svg);
@@ -107,19 +116,22 @@ h2 {
 
 .secondaryAddButton {
   border: solid 2px rgb(7, 36, 46);
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 13px;
+  font-size: 0px;
   background-color: rgb(246, 247, 248);
-  outline: none;
-  padding: 8px 12px;
   border-radius: 8px;
-  gap: 10px;
-  background-image: url(../assets/icons/add_dark.svg);
-  background-size: 12px;
-  background-repeat: no-repeat;
-  background-position: center;
+}
+
+.secondaryAddButton .icon {
+  width: px;
+  height: 12px;
+}
+
+.secondaryAddButton:hover .icon path {
+  stroke: rgba(41, 171, 226, 1);
+}
+
+.secondaryAddButton:hover {
+  border-color: rgba(41, 171, 226, 1);
 }
 
 .listHeader {
@@ -189,6 +201,10 @@ ol {
   font-weight: 300;
 }
 
+.category span {
+  color: white;
+}
+
 .listDiscription {
   display: flex;
   justify-content: flex-start;
@@ -199,6 +215,7 @@ ol {
   font-weight: bold;
   text-align: left;
   padding-top: 8px;
+  color: rgba(42, 54, 71, 1);
 }
 
 .descriptionCopy {
