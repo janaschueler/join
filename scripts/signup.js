@@ -44,24 +44,24 @@ function constDefinitionAddContact() {
 }
 
 function saveToStorage() {
-  allContacts.contactName.forEach((name, index) => {
-    putToDatabase("contactName", index, name);
+  allContacts.contactName.forEach((name) => {
+    putToDatabase("contactName", name);
   });
 
-  allContacts.contactEmail.forEach((email, index) => {
-    putToDatabase("contactEmail", index, email);
+  allContacts.contactEmail.forEach((email) => {
+    putToDatabase("contactEmail", email);
   });
 
-  allContacts.contactPassword.forEach((password, index) => {
-    putToDatabase("contactpassword", index, password);
+  allContacts.contactPassword.forEach((password) => {
+    putToDatabase("contactpassword", password);
   });
 }
 
-async function putToDatabase(path = "", id = "", data = {}) {
-  const url = BASE_URL + path + "/" + id + ".json";
+async function putToDatabase(path = "", data = {}) {
+  const url = BASE_URL + "signup/" + path + "/" + id + ".json";
 
   let response = await fetch(url, {
-    method: "PUT",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
