@@ -19,5 +19,6 @@
 }
 
 .privacy_info:hover{
-  color: lightblue;
+  color: #29abe2;
+  font-weight: 700;
 }

@@ -22,7 +22,7 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #2a3647;
+  background-color: #2A3647;
   width: 232px;
 }
 
@@ -37,7 +37,7 @@ main {
   margin-inline: auto;
   display: flex;
   align-items: center;
-  font-family: "Inter 18pt";
+  font-family: sans-serif;
   font-weight: bold;
   font-size: 20px;
   color: rgba(7, 36, 46);
@@ -69,7 +69,6 @@ main {
 }
 
 .user_profil {
-  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -80,7 +79,7 @@ main {
   background-color: transparent;
   font-size: 22px;
   text-decoration: none;
-  color: #29abe2;
+  color: #29ABE2;
 }
 
 .user_profil:hover {
@@ -88,7 +87,7 @@ main {
 }
 
 .user_name {
-  color: #29abe2;
+  color: #29ABE2;
 }
 
 .task_bar {
@@ -103,10 +102,6 @@ main {
   text-decoration: none;
   justify-content: center;
   display: flex;
-}
-
-.nav_bar:focus {
-  background-color: #091931;
 }
 
 .nav_bar:hover {
@@ -134,7 +129,7 @@ main {
 }
 
 .mobile_main {
-  background-color: #2a3647;
+  background-color: #2A3647;
   height: 80px;
   width: 100%;
   display: none;
@@ -160,17 +155,6 @@ main {
 
 .nav_bar_mobile {
   text-decoration: none;
-  border-radius: 10px;
-  width: 75px;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.nav_bar_mobile:focus {
-  background-color: #091931;
-
 }
 
 .mobile_img {
@@ -189,18 +173,18 @@ main {
 }
 
 .dialog_main {
-  margin-top: 67px;
+  margin-top: 75px;
   position: fixed;
-  top: 14px;
-  right: 22px;
+  top: 0;
+  right: 8px;
   width: 160px;
 }
 
 .dialog_area {
-  background-color: #2a3647;
+  background-color: #2A3647;
   width: 100%;
   padding: 10%;
-  height: 198px;
+  height: 158px;
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -211,29 +195,14 @@ main {
 }
 
 .dialog_nav {
-  width: 125px;
+  width: 110px;
   height: 60px;
   display: flex;
   align-items: center;
   padding: 5px;
-  cursor: pointer;
 }
 
 .dialog_nav:hover {
-  background-color: #0919314f;
-}
-
-.dialog_nav_help {
-  width: 125px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  padding: 5px;
-  cursor: pointer;
-  display: none;
-}
-
-.dialog_nav_help:hover {
   background-color: #0919314f;
 }
 
@@ -263,7 +232,7 @@ main {
 
 @media (max-width: 530px) {
   .task_bar_mobile {
-    gap: 2%;
+    gap: 5%;
   }
 }
 
@@ -276,14 +245,5 @@ main {
 @media (max-width: 412px) {
   .help_info {
     display: none;
-  }
-
-  .dialog_nav_help {
-    display: block;
-  }
-
-  .dialog_main {
-
-    transition: all 250ms ease-in-out;
   }
 }
