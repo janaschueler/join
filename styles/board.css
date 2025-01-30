@@ -10,8 +10,9 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 32px;
+  margin-top: 40px;
   margin-bottom: 32px;
+  margin-left: 5%;
 }
 
 .headerBoard input {
@@ -26,6 +27,11 @@ body {
   justify-content: center;
   border-color: rgb(7, 36, 46);
   margin-right: 5%;
+}
+
+.headerBoard button:hover {
+  background-color: rgba(41, 171, 226, 1) !important;
+  border-color: rgba(41, 171, 226, 1) !important;
 }
 
 main {
@@ -43,6 +49,10 @@ main {
 
 .primaryButton img {
   width: 16px;
+}
+
+.primaryButton:hover {
+  border-color: rgba(41, 171, 226, 1);
 }
 
 form {
@@ -85,6 +95,7 @@ h2 {
 .canvasContainer {
   overflow-x: auto;
   white-space: nowrap;
+  margin-left: 2%;
 }
 
 .primaryAddButton {
@@ -93,8 +104,8 @@ h2 {
   background-color: rgb(7, 36, 46);
   outline: none;
   padding: 8px 12px !important;
-  width: 32px !important;
-  height: 32px !important;
+  width: 24px !important;
+  height: 24px !important;
   border-radius: 8px;
   gap: 10px;
   background-image: url(../assets/icons/add.svg);
@@ -105,19 +116,22 @@ h2 {
 
 .secondaryAddButton {
   border: solid 2px rgb(7, 36, 46);
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 13px;
+  font-size: 0px;
   background-color: rgb(246, 247, 248);
-  outline: none;
-  padding: 8px 12px;
   border-radius: 8px;
-  gap: 10px;
-  background-image: url(../assets/icons/add_dark.svg);
-  background-size: 12px;
-  background-repeat: no-repeat;
-  background-position: center;
+}
+
+.secondaryAddButton .icon {
+  width: px;
+  height: 12px;
+}
+
+.secondaryAddButton:hover .icon path {
+  stroke: rgba(41, 171, 226, 1);
+}
+
+.secondaryAddButton:hover {
+  border-color: rgba(41, 171, 226, 1);
 }
 
 .listHeader {
@@ -144,6 +158,10 @@ h2 {
   margin-top: 16px;
 }
 
+ol {
+  padding-inline-start: 0px !important;
+}
+
 .listContainerContent {
   background-color: white;
   border-radius: 20px;
@@ -155,6 +173,12 @@ h2 {
   box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.08);
   white-space: normal;
   word-wrap: break-word;
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
 }
 
 .titleCopy,
@@ -177,6 +201,10 @@ h2 {
   font-weight: 300;
 }
 
+.category span {
+  color: white;
+}
+
 .listDiscription {
   display: flex;
   justify-content: flex-start;
@@ -187,6 +215,7 @@ h2 {
   font-weight: bold;
   text-align: left;
   padding-top: 8px;
+  color: rgba(42, 54, 71, 1);
 }
 
 .descriptionCopy {
@@ -268,7 +297,6 @@ input {
 
   .primaryAddButton {
     display: block !important;
-    margin-right: 20px !important;
   }
 
   .headerBoardTitle {
@@ -282,24 +310,63 @@ input {
     justify-content: center;
     align-items: stretch;
   }
-
   form {
-    margin-left: 32px;
-  }
-}
-
-@media (max-width: 412px) {
-  #board {
-    display: flex !important;
-    flex-wrap: wrap !important; /* Damit die Liste umbricht */
-    justify-content: center; /* Optional: Zentrieren der Liste */
-    gap: 16px; /* Optional: Abstand zwischen den Elementen */
+    height: auto !important;
+    min-height: 40px;
+    width: 100%;
   }
 
-  .listContainer {
-    flex: 0 0 100% !important; /* Nimmt die volle Breite ein */
-    max-width: 100% !important; /* Verhindert, dass die Liste zu breit wird */
-    margin-left: 0 !important; /* Optional: Passe die Abstände an */
-    margin-right: 0 !important;
+  @media (max-width: 412px) {
+    #board {
+      display: flex !important;
+      flex-wrap: wrap !important; /* Damit die Liste umbricht */
+      justify-content: center; /* Optional: Zentrieren der Liste */
+      gap: 16px; /* Optional: Abstand zwischen den Elementen */
+    }
+
+    .listContainer {
+      flex: 0 0 100% !important; /* Nimmt die volle Breite ein */
+      max-width: 100% !important; /* Verhindert, dass die Liste zu breit wird */
+      margin-left: 0 !important; /* Optional: Passe die Abstände an */
+      margin-right: 0 !important;
+    }
+
+    .headerBoard button {
+      margin-right: 5%;
+    }
+
+    .secondaryAddButton {
+      margin-right: 2px;
+    }
+
+    .canvasContainer {
+      margin-right: 5%;
+      margin-left: 5%;
+    }
+
+    .my-2 {
+      margin-top: 0px !important;
+      margin-bottom: 0px !important;
+    }
+
+    .d-flex {
+      display: block;
+    }
+    form {
+      margin-left: 0px !important;
+    }
+
+    form {
+      height: auto !important;
+      min-height: 40px;
+      width: 100%;
+    }
+
+    .searchContainer {
+      width: 100%;
+    }
+    .headerBoard input {
+      flex: 1;
+    }
   }
 }
