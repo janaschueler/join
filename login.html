@@ -19,7 +19,7 @@
   </head>
 
   <body onload="onloadFunc()">
-    <header class="atfLogin">
+    <header id="header" class="atfLogin">
       <div class="atfNav">
         <div><a href="./index.html">Not a Join user? </a></div>
         <button class="primaryButton">Sign up</button>
@@ -27,11 +27,12 @@
     </header>
 
     <main>
-        <div id="loadingMessage" class="loading-message">
-          <img class="startScreenLogo" src="./assets/icons/join_logo_desktop.svg" alt="" />   
-        </div>
+      <div id="loadingMessage">
+        <img class="startScreenLogo" src="./assets/icons/join_logo_desktop.svg" alt="Logo" />
+      </div>
+      
   
-      <section class="LoginContainer">
+      <section id="loginContainer" class="LoginContainer">
         <div class="card">
             <div class="card-body">
                 <h1>Log in</h1>
@@ -55,7 +56,7 @@
       </section>
     </main>
 
-    <footer>
+    <footer id="footer">
       <div class="footerNav">
       <div><a href="./privacy-policy.html">Privacy Policy </a></div>
       <div><a href="./legal-notice.html">Legal notice </a></div>
