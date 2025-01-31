@@ -168,6 +168,10 @@ footer {
   margin-top: 32px;
 }
 
+.primaryButton {
+  margin-top: 16px;
+}
+
 @media (max-width: 1000px) {
   .atfLogo img {
     width: 80px;

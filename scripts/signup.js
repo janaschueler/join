@@ -1,4 +1,4 @@
-const BASE_URL = "https://jointest-af2cf-default-rtdb.europe-west1.firebasedatabase.app/";
+const BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
 
 const allContacts = {
   contacKey: [],
@@ -44,41 +44,29 @@ function constDefinitionAddContact() {
 }
 
 function saveToStorage() {
-  allContacts.contactName.forEach((name) => {
-    postToDatabase("contactName", name);
-  });
-
-  allContacts.contactEmail.forEach((email) => {
-    postToDatabase("contactEmail", email);
-  });
-
-  allContacts.contactPassword.forEach((password) => {
-    postToDatabase("contactpassword", password);
-  });
+  const contactData = {
+    contactName: allContacts.contactName,
+    contactEmail: allContacts.contactEmail,
+    contactPassword: allContacts.contactPassword,
+  };
+  postToDatabase("user", contactData);
 }
 
 async function postToDatabase(path = "", data = {}) {
-  const url = BASE_URL + "signup/" + path + ".json"; 
-  console.log("URL für POST-Anfrage:", url); 
-
-  try {
-    console.log("Funktion wurde aufgerufen mit:", path, data); 
-    let response = await fetch(url, {
-      method: "POST", 
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data), 
-    });
-
-    if (!response.ok) {
-      throw new Error(`Fehler: ${response.status} - ${response.statusText}`);
-    }
-
-    let result = await response.json(); 
-    console.log("Gespeicherte Daten:", result);
-    return result;
-  } catch (error) {
-    console.error("Fehler beim Posten:", error); 
-  }
+  const url = BASE_URL + "signup/" + path + ".json";
+  let response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
 }
+
+document.querySelector(".formInputContainer").addEventListener("submit", function (event) {
+  event.preventDefault();
+  console.log("🚀 Formular abgeschickt!");
+
+  comparePassword(event);
+  addContact();
+});
