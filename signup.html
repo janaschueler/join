@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./styles/standard.css" />
+    <link rel="stylesheet" href="./styles/components.css" />
+    <link rel="stylesheet" href="./styles/fonts.css" />
+    <link rel="stylesheet" href="./styles/signup.css" />
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+
+    <link rel="icon" type="image/x-icon" href="./assets/icons/join_logo_desktop.svg" />
+
+    <title>join</title>
+  </head>
+
+  <body>
+    <header class="atfSignup">
+      <div class="atfLogo">
+        <img src="./assets/icons/join_logo_desktop.svg" alt="Logo" />
+      </div>
+    </header>
+
+    <main>
+      <section class="signupContainer">
+        <div class="card">
+            <div class="card-body">
+                <div class="cardHeader">
+                    <img src="./assets/icons/arrow-left-solid.svg" alt="">
+                    <h1>Sign up</h1>
+                </div>
+                <form class="formInputContainer">
+                    <div class="form-group">
+                    <label for="inputNameSignin"></label>
+                    <input type="name" class="form-control iconName" id="inputNameSignin" aria-describedby="emailHelp" placeholder="Name" required>
+                    <small id="emailHelp" class="form-text text-muted"></small>
+                    </div>
+                    <div class="form-group">
+                    <label for="inputEmailSignin"></label>
+                    <input type="email" class="form-control iconEmail" id="inputEmailSignin" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword1Signin"></label>
+                        <input type="password" class="form-control iconPassword" id="inputPassword1Signin" placeholder="Password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword2Signin"></label>
+                            <input type="password" class="form-control iconPassword" id="inputPassword2Signin" placeholder="Confirm Password" required>
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required>
+                        <label class="form-check-label" for="flexCheckDefault">
+                          I accept the <a href="./privacy-policy.html">Privacy Policy </a>
+                        </label>
+                      </div>
+                      <button type="submit" id="submitSignup" class="btn primaryButton">
+                        Sign up
+                    </button>
+                </form>
+        </div>
+    </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footerNav">
+      <div><a href="./privacy-policy.html">Privacy Policy </a></div>
+      <div><a href="./legal-notice.html">Legal notice </a></div>
+    </footer>
+  </body>
+
+  <script src="./script.js"></script>
+  <script src="./scripts/signup.js"></script>
+</html>

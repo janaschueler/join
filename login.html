@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./styles/standard.css" />
+    <link rel="stylesheet" href="./styles/components.css" />
+    <link rel="stylesheet" href="./styles/fonts.css" />
+    <link rel="stylesheet" href="./styles/login.css" />
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/join_logo_desktop.svg" />
+
+    <title>join</title>
+  </head>
+
+  <body onload="onloadFunc()">
+    <header id="header" class="atfLogin">
+      <div class="atfNav">
+        <div><a href="./index.html">Not a Join user? </a></div>
+        <button class="primaryButton">Sign up</button>
+      </div>
+    </header>
+
+    <main>
+      <div id="loadingMessage">
+        <img class="startScreenLogo" src="./assets/icons/join_logo_desktop.svg" alt="Logo" />
+      </div>
+      
+  
+      <section id="loginContainer" class="LoginContainer">
+        <div class="card">
+            <div class="card-body">
+                <h1>Log in</h1>
+                <form class="formInputContainer">
+                    <div class="form-group">
+                    <label for="InputEmail1"></label>
+                    <input type="email" class="form-control iconEmail" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email">
+                    <small id="emailHelp" class="form-text text-muted"></small>
+                    </div>
+                    <div class="form-group">
+                    <label for="InputPassword1"></label>
+                    <input type="password" class="form-control iconPassword" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                   <div class="LoginButtonContainer">
+                    <button type="submit" class="btn primaryButton">Log in</button>
+                    <button type="submit" class="btn secondaryButton">Guest Log in</button>
+                </div>
+                </form>
+        </div>
+    </div>
+      </section>
+    </main>
+
+    <footer id="footer">
+      <div class="footerNav">
+      <div><a href="./privacy-policy.html">Privacy Policy </a></div>
+      <div><a href="./legal-notice.html">Legal notice </a></div>
+    </footer>
+  </body>
+
+  <script src="./script.js"></script>
+  <script src="./scripts/login.js"></script>
+</html>

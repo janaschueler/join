@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./styles/legal_notice.css" />
+    <link rel="stylesheet" href="./styles/summary.css" />
+    <link rel="stylesheet" href="./styles/standard.css" />
+    <link rel="stylesheet" href="./styles/components.css" />
+    <link rel="stylesheet" href="./styles/fonts.css" />
+    <link rel="stylesheet" href="./styles/board.css" />
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/join_logo_desktop.svg" />
+
+    <title>join</title>
+  </head>
+  <body>
+    <div class="main_bar">
+      <section class="left_bar_main">
+        <div class="left_bar_area">
+          <img src="./assets/icons/Join_Logo_Bar.svg" alt="">
+        </div>
+        <div class="task_bar">
+          <a class="nav_bar" href="">
+            <div class="nav_stripe">
+              <img src="./assets/icons/Summary_Icon.svg" alt="">
+              <span class="nav_link">Summary</span>
+            </div>
+          </a>
+          <a class="nav_bar" href="">
+            <div class="nav_stripe">
+              <img src="./assets/icons/AddTask_Icon.svg" alt="">
+              <span class="nav_link">Add Task</span>
+            </div>
+          </a>
+          <a class="nav_bar" href="">
+            <div class="nav_stripe">
+              <img src="./assets/icons/Board_Icon.svg" alt="">
+              <span class="nav_link">Board</span>
+            </div>
+          </a>
+          <a class="nav_bar" href="">
+            <div class="nav_stripe">
+              <img src="./assets/icons/Contacts_Icon.svg" alt="">
+              <span class="nav_link">Contacts</span>
+            </div>
+          </a>
+        </div>
+        <div class="privacy">
+          <a class="privacy_a" href="">
+            <span class="privacy_info">Privacy Policy</span>
+          </a>
+          <a class="privacy_a" href="">
+            <span class="privacy_info">Legal notice</span>
+          </a>
+        </div>
+      </section>
+      <main>
+        <section class="top_bar_main">
+          <div class="top_bar_area">
+            <img class="top_bar_logo" src="./assets/icons/join_logo_desktop.svg" alt="">
+            <span class="top_bar_span">Kanban Project Management Tool</span>
+            <div class="user_main">
+              <a class="help_info" href="">
+                <img src="./assets/icons/help.svg" alt="">
+              </a>
+              <a class="user_profil" href="">
+                <span>SM</span>
+              </a>
+            </div>
+          </div>
+        </section>
+        <section class="headerContainer">
+          <div class="headerBoard">
+            <div class="headerBoardTitle">
+              <h1>Board</h1>
+              <button class="primaryAddButton"></button>
+            </div>
+            <div class="searchContainer">
+              <form class="form-inline my-2 my-lg-0 d-flex">
+                <input class="form-control mr-sm-2 iconSearch" type="search" placeholder="Find task" aria-label="Add task" />
+                <button onclick="addTaskSectionForm()" class="btn btn-outline-success my-2 my-sm-0 primaryButton" type="submit">Add task<img class="iconAdd" src="./assets/icons/add.svg" alt="add button" /></button>
+              </form>
+          </div>
+          </div>
+        </section>
+
+        <section class="canvasContainer">
+            <ol id="board" class="canvas" data-auto-scrollable="true" data-drag-scroll-enabled="true">
+              <li class="listContainer" data-list-id="" data-drop-target-for-element="true">
+                <div class="list">
+                  <div class="list-header">
+                    <div class="listHeader">
+                      <h2 class="list-title">To do</h2>
+                      <button class="secondaryAddButton">
+                        <svg class="icon" width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 1.5V9.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
+                          <path d="M9 5.57544L1 5.57544" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="listContainerEmpty">
+                      <span>No task To do</span>
+                    </div>
+                  </div>
+                </div>
+              </li>      
+              <li class="listContainer" data-list-id="" data-drop-target-for-element="true">
+                <div class="list">
+                  <div class="list-header">
+                    <div class="listHeader">
+                      <h2 class="list-title">In progress</h2>
+                      <button class="secondaryAddButton">
+                        <svg class="icon" width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 1.5V9.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
+                          <path d="M9 5.57544L1 5.57544" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="listContainerContent">
+                      <div class="category">
+                        <span>User Story</span>
+                      </div>
+                      <div class="listDiscription">
+                        <span class="titleCopy">Kochwelt Page & Recipe Recommender</span> <br>
+                        <span class="descriptionCopy">Bild start page with recipe recommendation ... </span>
+                      </div>
+                      <div>
+                        <div class="progressContainer">
+                        <div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                        <span class="sr-only">1/2 Subtasks</span>
+                      </div>
+                      <div class="priorityContainer">
+                        <div class="assigneeContainer">
+                          <svg class="circle" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <circle cx="16" cy="16" r="15.5" fill="#FF7A00" stroke="white"/>
+                              <text x="50%" y="50%" font-family="Arial" font-size="12" fill="white" text-anchor="middle" alignment-baseline="central">AM</text>
+                          </svg>
+                          <svg class="circle" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <circle cx="16" cy="16" r="15.5" fill="rgb(32, 215, 193)" stroke="white"/>
+                              <text x="50%" y="50%" font-family="Arial" font-size="12" fill="white" text-anchor="middle" alignment-baseline="central">EM</text>
+                          </svg>
+                        </div>
+                        <img src="./assets/icons/priority_medium.svg" alt="priority Medium Icon">
+
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>  
+            </ol>
+          </div>
+        </section>
+      </main>
+      <section class="mobile_main">
+        <div class="task_bar_mobile">
+          <a class="nav_bar_mobile" href="">
+            <div class="nav_stripe_mobile">
+              <img class="mobile_img" src="./assets/icons/Summary_Icon.svg" alt="">
+              <span class="nav_link_mobile">Summary</span>
+            </div>
+          </a>
+          <a class="nav_bar_mobile" href="">
+            <div class="nav_stripe_mobile">
+              <img class="mobile_img" src="./assets/icons/Board_Icon.svg" alt="">
+              <span class="nav_link_mobile">Board</span>
+            </div>
+          </a>
+          <a class="nav_bar_mobile" href="">
+            <div class="nav_stripe_mobile">
+              <img class="mobile_img" src="./assets/icons/AddTask_Icon.svg" alt="">
+              <span class="nav_link_mobile">Add Task</span>
+            </div>
+          </a>        
+          <a class="nav_bar_mobile" href="">
+            <div class="nav_stripe_mobile">
+              <img class="mobile_img" src="./assets/icons/Contacts_Icon.svg" alt="">
+              <span class="nav_link_mobile">Contacts</span>
+            </div>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <script src="scripts/board.js"></script>
+  </body>
+</html>

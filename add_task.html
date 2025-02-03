@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./styles/legal_notice.css" />
+    <link rel="stylesheet" href="./styles/summary.css" />
+    <link rel="stylesheet" href="./styles/standard.css" />
+    <link rel="stylesheet" href="./styles/components.css" />
+    <link rel="stylesheet" href="styles/addtask.css">
+    <link rel="stylesheet" href="./styles/contacts.css" />
+    <link rel="stylesheet" href="./styles/fonts.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="../assets/icons/Logo for Favicon construction.svg" />
+    <title>join</title>
+</head>
+<body onload="init()">
+    <div class="main_bar">
+        <section class="left_bar_main">
+          <div class="left_bar_area">
+            <img src="./assets/icons/Join_Logo_Bar.svg" alt="">
+          </div>
+          <div class="task_bar">
+            <a class="nav_bar" href="">
+              <div class="nav_stripe">
+                <img src="./assets/icons/Summary_Icon.svg" alt="">
+                <span class="nav_link">Summary</span>
+              </div>
+            </a>
+            <a class="nav_bar" href="">
+              <div class="nav_stripe">
+                <img src="./assets/icons/AddTask_Icon.svg" alt="">
+                <span class="nav_link">Add Task</span>
+              </div>
+            </a>
+            <a class="nav_bar" href="">
+              <div class="nav_stripe">
+                <img src="./assets/icons/Board_Icon.svg" alt="">
+                <span class="nav_link">Board</span>
+              </div>
+            </a>
+            <a class="nav_bar" href="">
+              <div class="nav_stripe">
+                <img src="./assets/icons/Contacts_Icon.svg" alt="">
+                <span class="nav_link">Contacts</span>
+              </div>
+            </a>
+          </div>
+          <div class="privacy">
+            <a class="privacy_a" href="">
+              <span class="privacy_info">Privacy Policy</span>
+            </a>
+            <a class="privacy_a" href="">
+              <span class="privacy_info">Legal notice</span>
+            </a>
+          </div>
+        </section>
+        <main>
+            <section class="top_bar_main">
+                <div class="top_bar_area">
+                  <img class="top_bar_logo" src="./assets/icons/join_logo_desktop.svg" alt="">
+                  <span class="top_bar_span">Kanban Project Management Tool</span>
+                  <div onclick="showDesktopMenu()" class="user_main">
+                    <div class="help_info">
+                      <img src="./assets/icons/help.svg" alt="">
+                    </div>           
+                    <a class="user_profil" href="">
+                      <span>SM</span>
+                    </a>
+                  </div>
+                </div>
+             </section>
+             
+
+             <section class="addTaskSection">
+                <h1>Add Task</h1>
+                <form class="task-form">
+                    <div class="side1">
+                      <label for="inputField">Title*</label>
+                      <input id="inputField" type="text" placeholder="Enter a title" required>
+                        
+                        <label for="description">Description</label>
+                        <textarea id="description" placeholder="Enter a Description"></textarea>
+                        
+                        <label for="assigned">Assigned to</label>
+                        <select id="assigned">
+                            <option>Select contacts to assign</option>
+                        </select>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="side2">
+                        <label for="due-date">Due date*</label>
+                        <input type="date" id="due-date" required>
+                        
+                        <label>Priority</label>
+                        <div class="priority">
+                            <button type="button" class="urgent">Urgent
+                              <img src="assets/icons/urgent.svg" alt="">
+                            </button>
+                            <button type="button" class="medium">Medium
+                              <img src="assets/icons/medium.svg" alt="">
+                            </button>
+                            <button type="button" class="low">Low
+                              <img src="assets/icons/low.svg" alt="">
+                            </button>
+                        </div>
+                        
+                        <label for="category">Category*</label>
+                        <select id="category" required>
+                            <option>Select task category</option>
+                        </select>
+                        
+                        <label>Subtasks</label>
+                        <div class="add-subtask">
+                            <input type="text" placeholder="Add new subtask">
+                            <button type="button">+</button>
+                        </div>
+                    </div>
+                </form>
+            
+                <div class="addTaskButton">
+                    <button onclick="clearForm()" class="taskButton">Clear
+                      <img src="assets/icons/close.svg" alt="">
+                    </button> 
+
+                    <button onclick="addTask()" class="taskButton">
+                             Create Task
+                     <img src="assets/icons/check.svg" alt="">
+                          </button>
+                </div>
+            </section>
+
+
+
+            <section class="mobile_main">
+              <div class="task_bar_mobile">
+                <a class="nav_bar_mobile" href="">
+                  <div class="nav_stripe_mobile">
+                    <img class="mobile_img" src="./assets/icons/Summary_Icon.svg" alt="">
+                    <span class="nav_link_mobile">Summary</span>
+                  </div>
+                </a>
+                <a class="nav_bar_mobile" href="">
+                  <div class="nav_stripe_mobile">
+                    <img class="mobile_img" src="./assets/icons/Board_Icon.svg" alt="">
+                    <span class="nav_link_mobile">Board</span>
+                  </div>
+                </a>
+                <a class="nav_bar_mobile" href="">
+                  <div class="nav_stripe_mobile">
+                    <img class="mobile_img" src="./assets/icons/AddTask_Icon.svg" alt="">
+                    <span class="nav_link_mobile">Add Task</span>
+                  </div>
+                </a>        
+                <a class="nav_bar_mobile" href="">
+                  <div class="nav_stripe_mobile">
+                    <img class="mobile_img" src="./assets/icons/Contacts_Icon.svg" alt="">
+                    <span class="nav_link_mobile">Contacts</span>
+                  </div>
+                </a>
+              </div>
+            </section>
+          </div>
+  <script src="scripts/add-task.js"></script>
+</body>
+</html>
+

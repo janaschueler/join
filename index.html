@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="./style.css"/>
+  <link rel="stylesheet" href="./styles/legal_notice.css">
+  <link rel="stylesheet" href="./styles/summary.css">
+  <link rel="stylesheet" href="./styles/standard.css" />
+  <link rel="stylesheet" href="./styles/components.css" />
+  <link rel="stylesheet" href="./styles/fonts.css" />
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+
+  <link rel="icon" type="image/x-icon" href="./assets/icons/Logo for Favicon construction.svg" />
+
+  <title>join</title>
+</head>
+
+<body>
+  <div class="main_bar">
+    <section class="left_bar_main">
+      <div class="left_bar_area">
+        <img src="./assets/icons/Join_Logo_Bar.svg" alt="">
+      </div>
+      <div class="task_bar">
+        <a class="nav_bar" href="">
+          <div class="nav_stripe">
+            <img src="./assets/icons/Summary_Icon.svg" alt="">
+            <span class="nav_link">Summary</span>
+          </div>
+        </a>
+        <a class="nav_bar" href="">
+          <div class="nav_stripe">
+            <img src="./assets/icons/AddTask_Icon.svg" alt="">
+            <span class="nav_link">Add Task</span>
+          </div>
+        </a>
+        <a class="nav_bar" href="">
+          <div class="nav_stripe">
+            <img src="./assets/icons/Board_Icon.svg" alt="">
+            <span class="nav_link">Board</span>
+          </div>
+        </a>
+        <a class="nav_bar" href="">
+          <div class="nav_stripe">
+            <img src="./assets/icons/Contacts_Icon.svg" alt="">
+            <span class="nav_link">Contacts</span>
+          </div>
+        </a>
+      </div>
+      <div class="privacy">
+        <a class="privacy_a" href="">
+          <span class="privacy_info">Privacy Policy</span>
+        </a>
+        <a class="privacy_a" href="">
+          <span class="privacy_info">Legal notice</span>
+        </a>
+      </div>
+    </section>
+    <main>
+      <section class="top_bar_main">
+        <div class="top_bar_area">
+          <img class="top_bar_logo" src="./assets/icons/join_logo_desktop.svg" alt="">
+          <span class="top_bar_span">Kanban Project Management Tool</span>
+          <div class="user_main">
+            <a class="help_info">
+              <img src="./assets/icons/help.svg" alt="">
+            </a>           
+            <div onclick="showDesktopMenu()" class="user_profil" href="">
+              <span>SM</span>
+            </div>
+          </div>
+        </div>
+        <div id="deskMenu_content" class="dialog_main d_none">
+          <div class="dialog_area">
+            <div class="dialog_nav_help">
+              <a class="dialog_links" href="">Help</a>
+            </div>
+            <div class="dialog_nav">
+              <a class="dialog_links" href="">Legal Notice</a>
+            </div>
+            <div class="dialog_nav">
+              <a class="dialog_links" href="">Privacy Policy</a>
+            </div>
+            <div class="dialog_nav">
+              <a class="dialog_links" href="">Log out</a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="container_summary">
+        <div class="summary_main">
+          <div class="summary_header">
+            <h1 class="summary_title">Join 360</h1>            
+            <div class="line"></div>
+            <span class="summary_header_span">Key Metrics at a Glance</span>
+            <div class="line_mobile"></div>
+          </div>
+          <div class="info_main">
+            <div class="check_pencil">
+              <a class="check_pencil_area" href="">
+                <div class="circle_pencil_check">
+                  <svg class="side_img_p" width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M3.16667 22.3332H5.03333L16.5333 10.8332L14.6667 8.9665L3.16667 20.4665V22.3332ZM22.2333 8.89984L16.5667 3.29984L18.4333 1.43317C18.9444 0.922059 19.5722 0.666504 20.3167 0.666504C21.0611 0.666504 21.6889 0.922059 22.2 1.43317L24.0667 3.29984C24.5778 3.81095 24.8444 4.42761 24.8667 5.14984C24.8889 5.87206 24.6444 6.48873 24.1333 6.99984L22.2333 8.89984ZM20.3 10.8665L6.16667 24.9998H0.5V19.3332L14.6333 5.19984L20.3 10.8665Z" />
+                  </svg>
+                </div>
+                <div class="side_info">
+                  <span class="side_number">1</span>
+                  <span class="under_task_word">To-do</span>
+                </div>
+              </a>
+              <a class="check_pencil_area" href="">
+                <div class="circle_pencil_check">
+                  <svg class="side_img_c" width="38" height="30" viewBox="0 0 38 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4.02832 15.0001L15.2571 26.0662L33.9717 3.93408" stroke-width="7"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+                <div class="side_info">
+                  <span class="side_number">1</span>
+                  <span class="under_task_word">done</span>
+                </div>
+              </a>
+            </div>
+            <a class="date" href="">
+              <div class="date_area">
+                <img class="side_img" src="./assets/icons/orange_arrow.svg" alt="">
+                <div class="side_info">
+                  <span class="side_number">1</span>
+                  <span class="under_task_word">Urgent</span>
+                </div>
+              </div>
+              <div class="date_line">
+                <div class="date_line_color"></div>
+              </div>
+              <div class="date_area">
+                <div class="side_info">
+                  <span class="date_number">October 16, 2022</span>
+                  <span class="under_task_word">Upcoming Deadline</span>
+                </div>
+              </div>
+            </a>
+            <div class="under_task">
+              <a class="under_task_area" href="">
+                <div class="side_info">
+                  <span class="side_number">5</span>
+                  <span class="under_task_word">Tasks in <br> board</span>
+                </div>
+              </a>
+              <a class="under_task_area" href="">
+                <div class="side_info">
+                  <span class="side_number">2</span>
+                  <span class="under_task_word">Tasks in <br> Progress</span>
+                </div>
+              </a>
+              <a class="under_task_area" href="">
+                <div class="side_info">
+                  <span class="side_number">2</span>
+                  <span class="under_task_word">Tasks in <br> Feedback</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="greetings">
+          <span class="morning">Good morning,</span>
+          <span class="user_name">Sofia Müller</span>
+        </div>
+      </section>
+    </main>
+    <section class="mobile_main">
+      <div class="task_bar_mobile">
+        <a class="nav_bar_mobile" href="">
+          <div class="nav_stripe_mobile">
+            <img class="mobile_img" src="./assets/icons/Summary_Icon.svg" alt="">
+            <span class="nav_link_mobile">Summary</span>
+          </div>
+        </a>
+        <a class="nav_bar_mobile" href="">
+          <div class="nav_stripe_mobile">
+            <img class="mobile_img" src="./assets/icons/Board_Icon.svg" alt="">
+            <span class="nav_link_mobile">Board</span>
+          </div>
+        </a>
+        <a class="nav_bar_mobile" href="">
+          <div class="nav_stripe_mobile">
+            <img class="mobile_img" src="./assets/icons/AddTask_Icon.svg" alt="">
+            <span class="nav_link_mobile">Add Task</span>
+          </div>
+        </a>
+        <a class="nav_bar_mobile" href="">
+          <div class="nav_stripe_mobile">
+            <img class="mobile_img" src="./assets/icons/Contacts_Icon.svg" alt="">
+            <span class="nav_link_mobile">Contacts</span>
+          </div>
+        </a>
+      </div>
+    </section>
+  </div>
+  </div>
+</body>
+
+<script src="./script.js"></script>
+
+</html>

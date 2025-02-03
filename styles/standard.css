@@ -1,0 +1,304 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+main {
+  flex: 1;
+}
+
+.main_bar {
+  display: flex;
+  min-height: 100vh;
+}
+
+.left_bar_main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #2a3647;
+  width: 232px;
+}
+
+.left_bar_area {
+  display: flex;
+  justify-content: center;
+  margin-top: 64px;
+}
+
+.top_bar_main {
+  min-height: 80px;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  font-family: "Inter 18pt";
+  font-weight: bold;
+  font-size: 20px;
+  color: rgba(7, 36, 46);
+  background-color: white;
+  box-shadow: 0px -1px 4px 5px rgba(128, 128, 128, 0.178);
+}
+
+.top_bar_span {
+  font-weight: 500;
+}
+
+.top_bar_area {
+  margin-left: 4%;
+  margin-right: 2%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user_main {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.help_info:hover {
+  transform: scale(1.4);
+  transition: transform 0.3s ease;
+}
+
+.user_profil {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 55px;
+  height: 55px;
+  border: 3px solid black;
+  border-radius: 50%;
+  background-color: transparent;
+  font-size: 22px;
+  text-decoration: none;
+  color: #29abe2;
+}
+
+.user_profil:hover {
+  background-color: rgba(128, 128, 128, 0.219);
+}
+
+.user_name {
+  color: #29abe2;
+}
+
+.task_bar {
+  margin-top: 90px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.nav_bar {
+  text-decoration: none;
+  justify-content: center;
+  display: flex;
+}
+
+.nav_bar:focus {
+  background-color: #091931;
+}
+
+.nav_bar:hover {
+  background-color: #0919314f;
+}
+
+.nav_link {
+  color: white;
+  margin-left: 8px;
+  width: 80px;
+}
+
+.nav_stripe {
+  width: 100%;
+  gap: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+}
+
+.top_bar_logo {
+  width: 50px;
+  display: none;
+}
+
+.mobile_main {
+  background-color: #2a3647;
+  height: 80px;
+  width: 100%;
+  display: none;
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+}
+
+.task_bar_mobile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  gap: 15%;
+}
+
+.nav_stripe_mobile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.nav_bar_mobile {
+  text-decoration: none;
+  border-radius: 10px;
+  width: 75px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav_bar_mobile:focus {
+  background-color: #091931;
+
+}
+
+.mobile_img {
+  width: 25px;
+}
+
+.nav_link_mobile {
+  width: 63px;
+  font-size: 15px;
+  color: white;
+}
+
+.dialog_links {
+  text-decoration: none;
+<<<<<<< HEAD
+  color: #B9BABD;
+}
+
+.dialog_main {
+  margin-top: 67px;
+  position: fixed;
+  top: 14px;
+  right: 22px;
+  width: 160px;
+=======
+  color: #b9babd;
+}
+
+.dialog_main {
+  position: relative;
+  overflow-x: hidden;
+  width: 160px;
+  display: none;
+>>>>>>> 9d7965f2dbe228a2e04c20fde2ca49aa7e6eb138
+}
+
+.dialog_area {
+  background-color: #2a3647;
+  width: 100%;
+  padding: 10%;
+  height: 198px;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  font-size: 16px;
+  font-weight: 400;
+  gap: 2px;
+  border-radius: 15px 0px 15px 15px;
+}
+
+.dialog_nav {
+  width: 125px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.dialog_nav:hover {
+  background-color: #0919314f;
+}
+
+.dialog_nav_help {
+  width: 125px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  cursor: pointer;
+  display: none;
+}
+
+.dialog_nav_help:hover {
+  background-color: #0919314f;
+}
+
+@media (max-width: 768px) {
+  .left_bar_main {
+    display: none;
+  }
+
+  .main_bar {
+    flex-direction: column;
+  }
+
+  .mobile_main {
+    display: block;
+  }
+}
+
+@media (max-width: 645px) {
+  .top_bar_span {
+    display: none;
+  }
+
+  .top_bar_logo {
+    display: block;
+  }
+}
+
+@media (max-width: 530px) {
+  .task_bar_mobile {
+    gap: 2%;
+  }
+}
+
+@media (max-width: 460px) {
+  .left_bar_main {
+    display: none;
+  }
+}
+<<<<<<< HEAD
+
+@media (max-width: 412px) {
+  .help_info {
+    display: none;
+  }
+
+  .dialog_nav_help {
+    display: block;
+  }
+
+  .dialog_main {
+
+    transition: all 250ms ease-in-out;
+  }
+}
+=======
+>>>>>>> 9d7965f2dbe228a2e04c20fde2ca49aa7e6eb138
