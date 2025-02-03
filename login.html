@@ -18,11 +18,13 @@
     <title>join</title>
   </head>
 
-  <body onload="onloadFunc()">
+  <body onload="init()">
     <header id="header" class="atfLogin">
-      <div class="atfNav">
-        <div><a href="./index.html">Not a Join user? </a></div>
-        <button class="primaryButton">Sign up</button>
+      <div class="atfNav">      
+        <div><a href="./signup.html">Not a Join user? </a></div>
+        <a href="./signup.html">
+          <button class="primaryButton">Sign up</button>
+        </a>
       </div>
     </header>
 
@@ -37,20 +39,23 @@
             <div class="card-body">
                 <h1>Log in</h1>
                 <form class="formInputContainer">
-                    <div class="form-group">
-                    <label for="InputEmail1"></label>
-                    <input type="email" class="form-control iconEmail" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email">
-                    <small id="emailHelp" class="form-text text-muted"></small>
+                  <div class="mb-3">
+                      <label for="InputEmail1" class="form-label"></label>
+                      <input type="email" class="form-control iconEmail" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter your email" required>
+                  </div>
+              
+                  <div class="mb-3">
+                      <label for="InputPassword1" class="form-label"></label>
+                      <input type="password" class="form-control iconPassword" id="inputPassword1" placeholder="Enter your password" required>
+                      <div id="wrongPassword" class="form-text alertMessage d-none">User name and password do not match. Please try again</div>                 
                     </div>
-                    <div class="form-group">
-                    <label for="InputPassword1"></label>
-                    <input type="password" class="form-control iconPassword" id="exampleInputPassword1" placeholder="Password">
+              
+                  <div id="LoginButton" class="LoginButtonContainer d-flex gap-2">
+                      <button id="LoginButton" type="submit" class="btn btn-primary">Log in</button>
+                      <button onclick="window.location.href='./index.html'" class="btn btn-secondary">Guest Log in</button>
                     </div>
-                   <div class="LoginButtonContainer">
-                    <button type="submit" class="btn primaryButton">Log in</button>
-                    <button type="submit" class="btn secondaryButton">Guest Log in</button>
-                </div>
-                </form>
+              </form>
+              
         </div>
     </div>
       </section>
@@ -65,4 +70,5 @@
 
   <script src="./script.js"></script>
   <script src="./scripts/login.js"></script>
+  <script src="./scripts/db.js"></script>
 </html>
