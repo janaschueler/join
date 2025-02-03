@@ -10,10 +10,6 @@ h1 {
   font-size: 61px !important;
 }
 
-span {
-  color: rgba(0, 0, 0, 1);
-}
-
 body {
   font-family: "Open Sans";
   font-weight: normal;
@@ -57,10 +53,4 @@ header {
 
 .back_color {
   background-color: #091931;
-}
-
-@media (max-width: 480px) {
-  h1 {
-    font-size: 47px !important;
-  }
 }
