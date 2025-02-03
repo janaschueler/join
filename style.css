@@ -59,9 +59,7 @@ header {
   background-color: #091931;
 }
 
-
 @media (max-width: 480px) {
-
   h1 {
     font-size: 47px !important;
   }
