@@ -1,42 +1,34 @@
 const BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
 
 let allUsers = [];
+let selectedContactId = null;
 
 function init() {
-    fetchData();
+    fetchData();      
     renderSmallContacts();
     renderBigContacts();
 }
 
 async function fetchData(path = "") {
-    let response = await fetch(BASE_URL + path + ".json");
-    let data = await response.json();
-    allUsers.push(data.contacts)
-}
-
-function addContact() {
-    let nameRef = document.getElementById('recipient-name');
-    let emailRef = document.getElementById('recipient-email');
-    let PhoneRef = document.getElementById('recipient-phone');
-    let nameNote = nameRef.value;
-    let emailNote = emailRef.value;
-    let phoneNote = PhoneRef.value;
-    let contactId = {
-        name: nameNote,
-        email: emailNote,
-        phone: phoneNote
-    };
-    postData("contacts", contactId);
-}
-
-function pushToContacts() {
-    
+    try {
+        let response = await fetch(BASE_URL + path + ".json");
+        let data = await response.json();
+        if (data && data.contacts) {
+            allUsers = Object.values(data.contacts);
+        } else {
+            allUsers = [];
+        }
+        renderSmallContacts();
+        renderBigContacts();
+    } catch (error) {
+        console.error("Fehler beim Laden der Daten:", error);
+    }
 }
 
 async function postData(path = "", data = {}) {
     let response = await fetch(BASE_URL + path + ".json", {
         method: "POST",
-        header: {
+        headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(data)
@@ -44,18 +36,73 @@ async function postData(path = "", data = {}) {
     return responseToJson = await response.json();
 }
 
-function renderSmallContacts() {
-    let contactsSmallRef = document.getElementById('contactsSmall_content');
-    for (let i = 0; i < allUsers.length; i++) {
-        const currentDatas = allUsers[i];
-        contactsSmallRef.innerHTML += templateSmallContacts(currentDatas);
+async function addContact() {
+    let nameRef = document.getElementById('recipient-name');
+    let emailRef = document.getElementById('recipient-email');
+    let phoneRef = document.getElementById('recipient-phone');
+    let newContact = {
+        id: Date.now().toString(),
+        name: nameRef.value,
+        email: emailRef.value,
+        phone: phoneRef.value
+    };    
+    if (nameRef.value == "" || emailRef.value == "" || phoneRef.value == "") {
+        return
     }
+    /** Sende den Kontakt an Firebase */
+    await postData("contacts", newContact);    
+    /** Füge den neuen Kontakt in allUsers ein & speichere ihn lokal */
+    allUsers.push(newContact);    
+    selectedContactId = newContact.id;     
+    renderSmallContacts();  
+    renderBigContacts();    
+    nameRef.value = "";
+    emailRef.value = "";
+    phoneRef.value = "";
+}
+
+function selectContact(contactId) {
+    selectedContactId = contactId;                   
+    renderBigContacts();    
+}
+
+function renderSmallContacts() {
+    allUsers.sort((a, b) => {
+        let nameA = a.name.trim().split(" ")[0].toUpperCase();
+        let nameB = b.name.trim().split(" ")[0].toUpperCase(); 
+        if (nameA < nameB) {
+            return -1;
+        }
+        if (nameA > nameB) {
+            return 1;
+        }
+        return 0;
+    });
+    let contactsSmallRef = document.getElementById('contactsSmall_content');
+    contactsSmallRef.innerHTML = "";
+    allUsers.forEach(contact => {
+        contactsSmallRef.innerHTML += templateSmallContacts(contact);
+    });
 }
 
 function renderBigContacts() {
     let contactsBigRef = document.getElementById('contactsBig_content');
-    for (let i = 0; i < allUsers.length; i++) {
-        const currentDatas = allUsers[i];
-        contactsBigRef.innerHTML += templateBigContacts(currentDatas);
+    contactsBigRef.innerHTML = "";
+    if (selectedContactId) {
+        let selectedContact = allUsers.find(contact => contact.id === selectedContactId);
+        if (selectedContact) {
+            contactsBigRef.innerHTML = templateBigContacts(selectedContact);
+        }
     }
 }
+
+// function saveToLocalStorage(key, obj) {
+//     const jsonString = JSON.stringify(obj);
+//     localStorage.setItem(key, jsonString);
+// }
+
+// function getFromLocalStorage(key) {
+//     const jsonString = localStorage.getItem(key);
+//     return jsonString ? JSON.parse(jsonString) : null;
+// }
+

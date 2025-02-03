@@ -19,6 +19,7 @@
 
   <script src="scripts/contacts.js"></script>
   <script src="scripts/template_contacts.js"></script>
+  <script src="script.js"></script>
 
   <link rel="icon" type="image/svg+xml" href="../assets/icons/join_logo_desktop.svg" />
   <title>join</title>
@@ -71,12 +72,28 @@
           <img class="top_bar_logo" src="./assets/icons/join_logo_desktop.svg" alt="">
           <span class="top_bar_span">Kanban Project Management Tool</span>
           <div class="user_main">
-            <a class="help_info" href="">
+            <a class="help_info">
               <img src="./assets/icons/help.svg" alt="">
-            </a>
-            <a class="user_profil" href="">
+            </a>           
+            <div onclick="showDesktopMenu()" class="user_profil" href="">
               <span>SM</span>
-            </a>
+            </div>
+          </div>
+        </div>
+        <div id="deskMenu_content" class="dialog_main d_none">
+          <div class="dialog_area">
+            <div class="dialog_nav_help">
+              <a class="dialog_links" href="">Help</a>
+            </div>
+            <div class="dialog_nav">
+              <a class="dialog_links" href="">Legal Notice</a>
+            </div>
+            <div class="dialog_nav">
+              <a class="dialog_links" href="">Privacy Policy</a>
+            </div>
+            <div class="dialog_nav">
+              <a class="dialog_links" href="">Log out</a>
+            </div>
           </div>
         </div>
       </section>
@@ -104,7 +121,7 @@
         </section>
       </section>
 
-      <section>
+      <section id="dialog_content">
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -160,7 +177,7 @@
                       </div>
                       <div>
                         <label for="recipient-phone" class="col-form-label"></label>
-                        <input type="tel" class="form-control iconPhone" placeholder="Phone" id="recipient-phone">
+                        <input type="number" class="form-control iconPhone" placeholder="Phone" id="recipient-phone">
                       </div>
                     </form>
 
@@ -173,7 +190,6 @@
               </div>
             </div>
       </section>
-
     </main>
     <section class="mobile_main">
       <div class="task_bar_mobile">

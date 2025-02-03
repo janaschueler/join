@@ -157,6 +157,7 @@ main {
   padding: 10px 0px 10px 28px;
   border-radius: 8px;
   margin-left: -32px;
+  cursor: pointer;
 }
 
 .listBody:hover {
@@ -583,5 +584,17 @@ h2 {
     width: 30%;
     height: 2px;
     background-color: rgba(41, 171, 226, 1); /* Die Farbe der Unterstreichung */
+  }
+
+  input.iconPhone {
+    -moz-appearance: textfield; 
+    -webkit-appearance: none;    
+    appearance: none;            
+  }
+    
+  input.iconPhone::-webkit-outer-spin-button,
+  input.iconPhone::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }
