@@ -8,7 +8,7 @@ function templateSmallContacts(currentDatas) {
   return `<div class="list" onclick="selectContact('${currentDatas.id}')">
             <div class="list-header">
               <div class="listHeader">
-                <span>${firstNameInitial}</span> <!-- Nur der erste Buchstabe des Vornamens -->
+                <span>${firstNameInitial}</span> 
                 <div class="horizontalLine"></div>
               </div>
               <div class="listBody">
@@ -16,7 +16,7 @@ function templateSmallContacts(currentDatas) {
                   xmlns="http://www.w3.org/2000/svg">
                   <circle cx="16" cy="16" r="15.5" fill="#FF7A00" stroke="white" />
                   <text x="50%" y="50%" font-family="Arial" font-size="12" fill="white" text-anchor="middle"
-                    alignment-baseline="central">${initials}</text> <!-- Zwei Buchstaben im Kreis -->
+                    alignment-baseline="central">${initials}</text> 
                 </svg>
                 <div class="listName_Email">
                   <span class="listName">${currentDatas.name}</span>
@@ -42,7 +42,7 @@ function templateBigContacts(currentDatas) {
               <span>${currentDatas.name}</span>
               <div class="editContainer">
                 <button class="editIcon">Edit</button>
-                <button class="deleteIcon">Delete</button>
+                <button onclick="deleteContact('${currentDatas.id}')" class="deleteIcon">Delete</button>
               </div>
             </div>
           </div>

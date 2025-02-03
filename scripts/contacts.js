@@ -4,7 +4,7 @@ let allUsers = [];
 let selectedContactId = null;
 
 function init() {
-    fetchData();      
+    fetchData();
     renderSmallContacts();
     renderBigContacts();
 }
@@ -36,6 +36,21 @@ async function postData(path = "", data = {}) {
     return responseToJson = await response.json();
 }
 
+async function deleteData(path = "", data = {}) {
+    let response = await fetch(BASE_URL + path + ".json", {
+        method: "DELETE",
+    });
+    return responseToJson = await response.json();
+}
+
+async function deleteContact(contactId) {    
+    let deleteArr = allUsers.filter(contact => contact.id === contactId); 
+    selectedContactId === contactId
+    await deleteData("contacts", deleteArr);     
+    renderSmallContacts();
+    renderBigContacts();   
+}
+
 async function addContact() {
     let nameRef = document.getElementById('recipient-name');
     let emailRef = document.getElementById('recipient-email');
@@ -45,31 +60,29 @@ async function addContact() {
         name: nameRef.value,
         email: emailRef.value,
         phone: phoneRef.value
-    };    
+    };
     if (nameRef.value == "" || emailRef.value == "" || phoneRef.value == "") {
         return
     }
-    /** Sende den Kontakt an Firebase */
-    await postData("contacts", newContact);    
-    /** Füge den neuen Kontakt in allUsers ein & speichere ihn lokal */
-    allUsers.push(newContact);    
-    selectedContactId = newContact.id;     
-    renderSmallContacts();  
-    renderBigContacts();    
+    await postData("contacts", newContact);
+    allUsers.push(newContact);
+    selectedContactId = newContact.id;
+    renderSmallContacts();
+    renderBigContacts();
     nameRef.value = "";
     emailRef.value = "";
     phoneRef.value = "";
 }
 
 function selectContact(contactId) {
-    selectedContactId = contactId;                   
-    renderBigContacts();    
+    selectedContactId = contactId;
+    renderBigContacts();
 }
 
 function renderSmallContacts() {
     allUsers.sort((a, b) => {
         let nameA = a.name.trim().split(" ")[0].toUpperCase();
-        let nameB = b.name.trim().split(" ")[0].toUpperCase(); 
+        let nameB = b.name.trim().split(" ")[0].toUpperCase();
         if (nameA < nameB) {
             return -1;
         }
@@ -96,13 +109,4 @@ function renderBigContacts() {
     }
 }
 
-// function saveToLocalStorage(key, obj) {
-//     const jsonString = JSON.stringify(obj);
-//     localStorage.setItem(key, jsonString);
-// }
-
-// function getFromLocalStorage(key) {
-//     const jsonString = localStorage.getItem(key);
-//     return jsonString ? JSON.parse(jsonString) : null;
-// }
 
