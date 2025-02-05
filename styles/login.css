@@ -48,6 +48,7 @@ body {
   padding: 15px 16px;
   border-radius: 8px;
   gap: 10px;
+  text-align: center;
 }
 
 .secondaryButton {
@@ -181,4 +182,10 @@ footer {
     background-size: contain;
     background-repeat: no-repeat;
   }
+}
+
+.alertMessage {
+  color: red !important;
+  text-align: left;
+  font-size: 12px !important;
 }

@@ -7,15 +7,14 @@ function templateSmallContacts(currentDatas) {
   }
   return `<div class="list" onclick="selectContact('${currentDatas.id}')">
             <div class="list-header">
-              <div class="listHeader">
-                <span>${firstNameInitial}</span> 
+              <div class="listHeader">                 
                 <div class="horizontalLine"></div>
               </div>
               <div class="listBody">
                 <svg class="circle" width="32" height="32" viewBox="0 0 32 32" fill="none"
                   xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="16" cy="16" r="15.5" fill="#FF7A00" stroke="white" />
-                  <text x="50%" y="50%" font-family="Arial" font-size="12" fill="white" text-anchor="middle"
+                  <circle cx="16" cy="16" r="15.5" fill="${currentDatas.color}" stroke="white" />
+                  <text id="color_content" x="50%" y="50%" font-family="Arial" font-size="12" fill="white" text-anchor="middle"
                     alignment-baseline="central">${initials}</text> 
                 </svg>
                 <div class="listName_Email">
@@ -41,7 +40,7 @@ function templateBigContacts(currentDatas) {
             <div class="contactName">
               <span>${currentDatas.name}</span>
               <div class="editContainer">
-                <button class="editIcon">Edit</button>
+                <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="editIcon">Edit</button>
                 <button onclick="deleteContact('${currentDatas.id}')" class="deleteIcon">Delete</button>
               </div>
             </div>

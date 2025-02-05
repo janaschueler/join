@@ -319,15 +319,15 @@ input {
   @media (max-width: 412px) {
     #board {
       display: flex !important;
-      flex-wrap: wrap !important; /* Damit die Liste umbricht */
-      justify-content: center; /* Optional: Zentrieren der Liste */
-      gap: 16px; /* Optional: Abstand zwischen den Elementen */
+      flex-wrap: wrap !important; 
+      justify-content: center; 
+      gap: 16px; 
     }
 
     .listContainer {
-      flex: 0 0 100% !important; /* Nimmt die volle Breite ein */
-      max-width: 100% !important; /* Verhindert, dass die Liste zu breit wird */
-      margin-left: 0 !important; /* Optional: Passe die Abstände an */
+      flex: 0 0 100% !important;
+      max-width: 100% !important; 
+      margin-left: 0 !important; 
       margin-right: 0 !important;
     }
 

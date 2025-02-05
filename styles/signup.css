@@ -169,7 +169,54 @@ footer {
 }
 
 .primaryButton {
-  margin-top: 16px;
+  margin-top: 32px;
+}
+
+.buttonBack {
+  border: transparent;
+  background-color: transparent;
+}
+
+.toast {
+  background-color: transparent;
+  border-radius: 16px !important;
+  border: none !important;
+  z-index: 1050;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.toast-body {
+  text-align: center;
+  background-color: rgba(42, 54, 71, 1);
+  color: white;
+  font-size: 20px;
+  border-radius: 16px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 10;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.alertMessage {
+  color: red !important;
+  text-align: left;
+  font-size: 12px !important;
 }
 
 @media (max-width: 1000px) {
@@ -262,5 +309,31 @@ footer {
 
   .positionMobileSignup {
     margin-top: 20px;
+  }
+
+  .toast {
+    background-color: transparent;
+    border-radius: 16px !important;
+    border: none !important;
+    z-index: 1050;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .toast-body {
+    text-align: center;
+    background-color: rgba(42, 54, 71, 1);
+    color: white;
+    font-size: 20px;
+    border-radius: 16px;
+  }
+
+  .toast {
+    width: 80%;
+  }
+  .overlay {
+    background-color: rgba(0, 0, 0, 0.5) !important;
   }
 }
