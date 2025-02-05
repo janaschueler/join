@@ -186,7 +186,6 @@ main {
 
 .dialog_links {
   text-decoration: none;
-<<<<<<< HEAD
   color: #B9BABD;
 }
 
@@ -196,16 +195,6 @@ main {
   top: 14px;
   right: 22px;
   width: 160px;
-=======
-  color: #b9babd;
-}
-
-.dialog_main {
-  position: relative;
-  overflow-x: hidden;
-  width: 160px;
-  display: none;
->>>>>>> 9d7965f2dbe228a2e04c20fde2ca49aa7e6eb138
 }
 
 .dialog_area {
@@ -284,7 +273,6 @@ main {
     display: none;
   }
 }
-<<<<<<< HEAD
 
 @media (max-width: 412px) {
   .help_info {
@@ -300,5 +288,3 @@ main {
     transition: all 250ms ease-in-out;
   }
 }
-=======
->>>>>>> 9d7965f2dbe228a2e04c20fde2ca49aa7e6eb138

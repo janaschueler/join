@@ -83,11 +83,59 @@
             <div class="searchContainer">
               <form class="form-inline my-2 my-lg-0 d-flex">
                 <input class="form-control mr-sm-2 iconSearch" type="search" placeholder="Find task" aria-label="Add task" />
-                <button onclick="addTaskSectionForm()" class="btn btn-outline-success my-2 my-sm-0 primaryButton" type="submit">Add task<img class="iconAdd" src="./assets/icons/add.svg" alt="add button" /></button>
+                <button onclick="addTaskSectionForm()" class="btn btn-outline-success my-2 my-sm-0 primaryButton" type="button">Add task<img class="iconAdd" src="./assets/icons/add.svg" alt="add button" /></button>
               </form>
           </div>
           </div>
         </section>
+
+
+
+        <section id="TaskSection" class="addTaskSection" style="display: none;">
+          <form class="task-form">
+              <div class="side1">
+                <label for="inputField">Title*</label>
+                <input id="inputField" type="text" placeholder="Enter a title" required>
+                  
+                  <label for="description">Description</label>
+                  <textarea id="description" placeholder="Enter a Description"></textarea>
+                  
+                  <label for="assigned">Assigned to</label>
+                  <select id="assigned">
+                      <option>Select contacts to assign</option>
+                  </select>
+              </div>
+              <div class="divider"></div>
+              <div class="side2">
+                  <label for="due-date">Due date*</label>
+                  <input type="date" id="due-date" required>
+                  
+                  <label>Priority</label>
+                  <div class="priority">
+                      <button type="button" class="urgent">Urgent
+                        <img src="assets/icons/urgent.svg" alt="">
+                      </button>
+                      <button type="button" class="medium">Medium
+                        <img src="assets/icons/medium.svg" alt="">
+                      </button>
+                      <button type="button" class="low">Low
+                        <img src="assets/icons/low.svg" alt="">
+                      </button>
+                  </div>
+                  
+                  <label for="category">Category*</label>
+                  <select id="category" required>
+                      <option>Select task category</option>
+                  </select>
+                  
+                  <label>Subtasks</label>
+                  <div class="add-subtask">
+                      <input type="text" placeholder="Add new subtask">
+                      <button type="button">+</button>
+                  </div>
+              </div>
+          </form>
+      </section>
 
         <section class="canvasContainer">
             <ol id="board" class="canvas" data-auto-scrollable="true" data-drag-scroll-enabled="true">
