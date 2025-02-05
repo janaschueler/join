@@ -19,7 +19,7 @@
   </head>
 
   <body onload="init()">
-    <header id="header" class="atfLogin">
+    <header id="header" class="atfLogin fade-in">
       <div class="atfNav">      
         <div><a href="./signup.html">Not a Join user? </a></div>
         <a href="./signup.html">
@@ -29,12 +29,16 @@
     </header>
 
     <main>
-      <div id="loadingMessage">
-        <img class="startScreenLogo" src="./assets/icons/join_logo_desktop.svg" alt="Logo" />
+      <div id="loadingMessage" class="fade-in">
+        <img  src="./assets/icons/join_logo_desktop.svg" alt="Logo" />
       </div>
       
+      <div id="loadingMessageMobile" class="fade-in">
+        <img  id="mobileLogoChange"  src="./assets/icons/join_logo_mobile.svg" alt="Logo" />
+        <img id="mobileLogoChangeDark" class="fade-in" src="./assets/icons/join_logo_desktop.svg" alt="Logo" />
+      </div>
   
-      <section id="loginContainer" class="LoginContainer">
+      <section id="loginContainer" class="LoginContainer fade-in">
         <div class="card">
             <div class="card-body">
                 <h1>Log in</h1>
@@ -51,17 +55,21 @@
                     </div>
               
                   <div id="LoginButton" class="LoginButtonContainer d-flex gap-2">
-                      <button id="LoginButton" type="submit" class="btn btn-primary">Log in</button>
-                      <button onclick="window.location.href='./index.html'" class="btn btn-secondary">Guest Log in</button>
-                    </div>
-              </form>
-              
-        </div>
-    </div>
+                      <button type="submit" class="btn primaryButton">Log in</button>
+                      <button onclick="window.location.href='./index.html'" class="btn secondaryButton">Guest Log in</button>
+                  </div>
+               </form>
+             </div>
+         </div>
       </section>
+
+      <div id="mobileNav" class="atfNavMobile fade-in">      
+        <div><a href="./signup.html">Not a Join user? </a></div>
+        <a href="./signup.html"><button class="primaryButton">Sign up</button></a>
+      </div>
     </main>
 
-    <footer id="footer">
+    <footer id="footer" class="fade-in">
       <div class="footerNav">
       <div><a href="./privacy-policy.html">Privacy Policy </a></div>
       <div><a href="./legal-notice.html">Legal notice </a></div>

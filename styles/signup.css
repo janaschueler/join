@@ -64,7 +64,7 @@ body {
   background: white;
   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 800px;
+  max-width: 600px;
   margin-top: 120px;
   margin-bottom: 80px;
   border-color: white !important;
@@ -237,6 +237,10 @@ footer {
 @media (max-width: 480px) {
   .atfsignup {
     display: block;
+  }
+
+  .card-body h1 {
+    font-size: 48px !important;
   }
 
   .atfNav {
