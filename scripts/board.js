@@ -1,11 +1,12 @@
 const BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
 
 let allTasks = { id: [], assignedTo: [], category: [], createdAt: [], description: [], dueDate: [], priority: [], subtasks: [], title: [], status: [] };
-let allContacts = { idContact: [], contactName: [], contactAbbreviation: [] };
+let allContacts = { idContact: [], contactName: [], contactAbbreviation: [], contactColor: [] };
 
 async function inti() {
   allTasks = await getDataTasks();
   allContacts = await getDataContacts();
+  loadBoardContent();
 }
 
 async function getDataTasks(path = "") {
@@ -27,6 +28,7 @@ async function getDataTasks(path = "") {
       priority: task.priority,
       subtasks: task.subtasks,
       title: task.title,
+      status: determinStatus(key, task.status),
     });
   }
   console.log(tasks);
@@ -44,9 +46,9 @@ async function getDataContacts(path = "") {
 
     contacts.push({
       idContact: key,
-      contactName: contact.contactName,
-      contactAbbreviation: generateAbbreviation(contact.contactName),
-      contactStatus: determinStatu(contact.contactStatus),
+      contactName: contact.name,
+      contactAbbreviation: generateAbbreviation(contact.name),
+      contactColor: contact.contactColor,
     });
   }
   console.log(contacts);
@@ -55,6 +57,8 @@ async function getDataContacts(path = "") {
 }
 
 function generateAbbreviation(newName) {
+  console.log(newName);
+
   if (typeof newName === "object" && newName !== null) {
     newName = Object.keys(newName)[0];
   }
@@ -67,23 +71,111 @@ function generateAbbreviation(newName) {
   return abbreviation.toUpperCase();
 }
 
-function determinStatu(contactStatus) {
-  if (contactStatus === null || contactStatus === undefined) {
-    contactStatus = 1;
-    return contactStatus;
+function determinStatus(key, status) {
+  if (status === null || status === undefined) {
+    status = 1;
+    addStatus(key, status);
+    return status;
   } else {
-    return contactStatus;
+    return status;
   }
 }
 
-function loadBordcontent() {
-  let toDo = allTasks.filter((t) => t["status"]) == "1";
-  let toDoContainer = document.getElementById("ToDoTaskContainer");
-  toDoContainer.innerHTML = "";
+function addStatus(key, status) {
+  postToDatabase(key, "/status", status);
+}
 
-  for (let indexToDo = 0; Tasks < toDo.length; indexToDo++) {
-    const allTodos = toDo[Tasks];
+async function postToDatabase(path1 = "", path2 = "", data = {}) {
+  const url = `${BASE_URL}tasks/${path1}${path2}.json`;
+  console.log("URL:", url);
+  try {
+    let response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (response.ok) {
+      console.log("Daten erfolgreich gesendet!");
+      return;
+    } else {
+      console.error("Fehler bei der Anfrage:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Fehler beim Posten:", error);
+  }
+}
 
-    toDoContainer.innerHTML += generateToDoHTML(allTodos);
+function loadBoardContent() {
+  loadBordContentByStatus(1, "ToDoTaskContainer");
+  loadBordContentByStatus(2, "inProgressContainer");
+  loadBordContentByStatus(3, "TestingContainer");
+  loadBordContentByStatus(4, "doneContainer");
+}
+
+function loadBordContentByStatus(status, containerId) {
+  let tasks = allTasks.filter((t) => t["status"] === status);
+
+  if (tasks.length === 0) {
+    return;
+  }
+
+  let container = document.getElementById(containerId);
+  container.innerHTML = "";
+
+  for (let index = 0; index < tasks.length; index++) {
+    const task = tasks[index];
+    let priority = task.priority;
+    let priorityIcon = determinePriotiry(priority);
+    numberOfSubtasks = task.subtasks.length;
+    progressOfProgressbar = 50;
+
+    container.innerHTML += generateToDoHTML(task, priorityIcon, numberOfSubtasks, progressOfProgressbar);
+    // if (numberOfSubtasks == null ||numberOfSubtasks == undefined ) {}
+    // document.getElementById("progressContainer").addClasslist("d-none")
+
+    injectAssignees(task);
+  }
+}
+
+function determinePriotiry(priority) {
+  if (priority === "low") {
+    priority = "./assets/icons/priority_low.svg";
+  }
+  if (priority === "medium") {
+    priority = "./assets/icons/priority_medium.svg";
+  }
+  if (priority === "high") {
+    priority = "./assets/icons/priority_high.svg";
+  }
+  return priority;
+}
+
+async function injectAssignees(task) {
+  const assigneeContainer = document.getElementById(`assigneeContainer${task["id"]}`);
+  assigneeContainer.innerHTML = "";
+
+  for (let indexAssingee = 0; indexAssingee < Object.keys(task.assignedTo).length; indexAssingee++) {
+    const assignee = Object.keys(task.assignedTo)[indexAssingee];
+    const assigneeAbbreviation = assignee
+      .split(" ")
+      .map((word) => word.charAt(0))
+      .join("");
+    const assingeeColor = findContactColor(assignee);
+
+    assigneeContainer.innerHTML += generateAssigneeCircle(assigneeAbbreviation, assingeeColor);
+  }
+}
+
+function findContactColor(name) {
+  let contactNames = allContacts.map((contact) => contact.contactName);
+  const index = contactNames.indexOf(name);
+
+  if (index !== -1) {
+    return allContacts[index].contactColor;
+  } else {
+    console.log("Kontaktname nicht gefunden");
+    return null;
   }
 }
