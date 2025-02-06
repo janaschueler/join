@@ -1,5 +1,5 @@
 function generateToDoHTML(allTodos, priorityIcon, numberOfSubtasks, progressOfProgressbar) {
-  return ` <div draggable ="true" ondragstart="startDragging(id)" class="listContainerContent">
+  return ` <div draggable ="true" ondragstart="startDragging('${allTodos["id"]}')" class="listContainerContent">
                         <div class="category">
                           <span>${allTodos["category"]}</span>
                         </div>

@@ -1,7 +1,9 @@
 const BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
 
 let allTasks = { id: [], assignedTo: [], category: [], createdAt: [], description: [], dueDate: [], priority: [], subtasks: [], title: [], status: [] };
-let allContacts = { idContact: [], contactName: [], contactAbbreviation: [], contactColor: [] };
+let allContacts = { idContact: [], contactName: [], contactAbbreviation: [], color: [] };
+
+let currentDraggedElement;
 
 async function inti() {
   allTasks = await getDataTasks();
@@ -48,7 +50,7 @@ async function getDataContacts(path = "") {
       idContact: key,
       contactName: contact.name,
       contactAbbreviation: generateAbbreviation(contact.name),
-      contactColor: contact.contactColor,
+      color: contact.color,
     });
   }
   console.log(contacts);
@@ -81,8 +83,15 @@ function determinStatus(key, status) {
   }
 }
 
-function addStatus(key, status) {
-  postToDatabase(key, "/status", status);
+async function addStatus(key, status) {
+  try {
+    // Sicherstellen, dass postToDatabase eine Promise zurückgibt
+    await postToDatabase(key, "/status", status);
+    console.log("Status erfolgreich gesetzt");
+  } catch (error) {
+    console.error("Fehler beim Setzen des Status:", error);
+    throw error; // Fehler weitergeben
+  }
 }
 
 async function postToDatabase(path1 = "", path2 = "", data = {}) {
@@ -173,9 +182,33 @@ function findContactColor(name) {
   const index = contactNames.indexOf(name);
 
   if (index !== -1) {
-    return allContacts[index].contactColor;
+    return allContacts[index].color;
   } else {
     console.log("Kontaktname nicht gefunden");
     return null;
   }
+}
+
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+async function drop(status) {
+  const task = Object.values(allTasks).find((t) => t.id === currentDraggedElement);
+  task.status = status;
+
+  try {
+    await addStatus(currentDraggedElement, status);
+  } catch (error) {
+    return;
+  }
+  location.reload(true);
+}
+
+function startDragging(id) {
+  currentDraggedElement = id;
 }
