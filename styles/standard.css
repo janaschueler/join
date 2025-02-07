@@ -141,7 +141,7 @@ main {
   display: none;
   position: fixed;
   bottom: 0;
-  z-index: 1;
+  z-index: 9999;
 }
 
 .task_bar_mobile {
@@ -171,7 +171,6 @@ main {
 
 .nav_bar_mobile:focus {
   background-color: #091931;
-
 }
 
 .mobile_img {
@@ -186,7 +185,7 @@ main {
 
 .dialog_links {
   text-decoration: none;
-  color: #B9BABD;
+  color: #b9babd;
 }
 
 .dialog_main {
@@ -284,7 +283,6 @@ main {
   }
 
   .dialog_main {
-
     transition: all 250ms ease-in-out;
   }
 }

@@ -1,6 +1,6 @@
 const BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
 
-let allTasks = { id: [], assignedTo: [], category: [], createdAt: [], description: [], dueDate: [], priority: [], subtasks: [], title: [], status: [] };
+let allTasks = { id: [], assignedTo: [], category: [], createdAt: [], description: [], dueDate: [], priority: [], subtasks: [], title: [], status: [], categoryColor: [] };
 let allContacts = { idContact: [], contactName: [], contactAbbreviation: [], color: [] };
 
 let currentDraggedElement;
@@ -85,12 +85,11 @@ function determinStatus(key, status) {
 
 async function addStatus(key, status) {
   try {
-    // Sicherstellen, dass postToDatabase eine Promise zurückgibt
     await postToDatabase(key, "/status", status);
     console.log("Status erfolgreich gesetzt");
   } catch (error) {
     console.error("Fehler beim Setzen des Status:", error);
-    throw error; // Fehler weitergeben
+    throw error;
   }
 }
 
@@ -149,13 +148,16 @@ function loadBordContentByStatus(status, containerId) {
 }
 
 function determinePriotiry(priority) {
+  priority = priority.toLowerCase();
+  priority = priority.trim();
+
   if (priority === "low") {
     priority = "./assets/icons/priority_low.svg";
   }
   if (priority === "medium") {
     priority = "./assets/icons/priority_medium.svg";
   }
-  if (priority === "high") {
+  if (priority === "urgent") {
     priority = "./assets/icons/priority_high.svg";
   }
   return priority;
@@ -211,4 +213,106 @@ async function drop(status) {
 
 function startDragging(id) {
   currentDraggedElement = id;
+}
+
+document.getElementById("searchForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  console.log("test");
+
+  const searchInput = document.getElementById("searchInput");
+  const searchMessageContainer = document.getElementById("searchMessageContainer");
+
+  searchTasks(searchInput.value); // Ruft die searchTasks-Funktion mit dem Suchinput auf
+});
+
+function searchTasks(searchInput) {
+  let toDoContainer = document.getElementById("ToDoTaskContainer");
+  let inProgressContainer = document.getElementById("inProgressContainer");
+  let testingContainer = document.getElementById("TestingContainer");
+  let doneContainer = document.getElementById("doneContainer");
+
+  toDoContainer.innerHTML = "";
+  inProgressContainer.innerHTML = "";
+  testingContainer.innerHTML = "";
+  doneContainer.innerHTML = "";
+
+  const filteredTasks = allTasks.filter((task) => task.title && task.title.toLowerCase().includes(searchInput.toLowerCase()));
+
+  if (filteredTasks.length > 0) {
+    filteredTasks.forEach((task) => {
+      let containerId;
+      switch (task.status) {
+        case 1:
+          containerId = "ToDoTaskContainer";
+          break;
+        case 2:
+          containerId = "inProgressContainer";
+          break;
+        case 3:
+          containerId = "TestingContainer";
+          break;
+        case 4:
+          containerId = "doneContainer";
+          break;
+        default:
+          console.error("Ungültiger Status:", task.status);
+          return;
+      }
+
+      let container = document.getElementById(containerId);
+      let priority = task.priority;
+      let priorityIcon = determinePriotiry(priority);
+      let numberOfSubtasks = task.subtasks ? task.subtasks.length : 0;
+      let progressOfProgressbar = 50;
+
+      container.innerHTML += generateToDoHTML(task, priorityIcon, numberOfSubtasks, progressOfProgressbar);
+
+      injectAssignees(task);
+    });
+  } else {
+    console.log("Keine Ergebnisse für die Suche gefunden.");
+  }
+}
+
+function closeModal() {
+  document.getElementById("taskSummaryModal").style.display = "none";
+}
+
+
+function openModal(id) {
+  document.getElementById("taskSummaryModal").style.display = "block";
+  loadTaskSummaryModal(id);
+}
+
+
+function loadTaskSummaryModal(id) {
+  let tasks = allTasks.filter((t) => t["id"] === id);
+
+  if (tasks.length === 0) {
+    return;
+  }
+  let taskModal = document.getElementById("taskSummaryModal");
+  taskModal.innerHTML = "";
+  let priority = tasks.priority;
+    let priorityIcon = determinePriotiry(priority);
+    container.innerHTML += generateTaskSummaryModal(tasks, priorityIcon);
+   
+    injectAssigneeComntacts(tasks)
+    injectSubtasks(tasks) 
+}
+
+async function injectAssigneeComntacts(tasks) {
+  const assigneeContainer = document.getElementById(`assigneeListModal${tasks["id"]}`);
+  assigneeContainer.innerHTML = "";
+
+  for (let indexAssingee = 0; indexAssingee < Object.keys(tasks.assignedTo).length; indexAssingee++) {
+    const assignee = Object.keys(tasks.assignedTo)[indexAssingee];
+    const assigneeAbbreviation = assignee
+      .split(" ")
+      .map((word) => word.charAt(0))
+      .join("");
+    const assingeeColor = findContactColor(assignee);
+
+    assigneeContainer.innerHTML += generateAssigneeComntacts(assigneeAbbreviation, assingeeColor, assignee);
+  }
 }

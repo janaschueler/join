@@ -81,8 +81,8 @@
               <button class="primaryAddButton"></button>
             </div>
             <div class="searchContainer">
-              <form class="form-inline my-2 my-lg-0 d-flex">
-                <input class="form-control mr-sm-2 iconSearch" type="search" placeholder="Find task" aria-label="Add task" />
+              <form id="searchForm" class="form-inline my-2 my-lg-0 d-flex">
+                <input id="searchInput" class="form-control mr-sm-2 iconSearch" type="search" placeholder="Find task" aria-label="Add task" />
                 <button class="btn btn-outline-success my-2 my-sm-0 primaryButton" type="submit">Add task<img class="iconAdd" src="./assets/icons/add.svg" alt="add button" /></button>
               </form>
           </div>
@@ -169,7 +169,9 @@
                 </div>
               </li>  
             </ol>
-          </div>
+        </section>
+        <section id="taskSummaryModal" class="modal-backdrop" >
+          
         </section>
       </main>
       <section class="mobile_main">
@@ -206,3 +208,6 @@
 <script src="./scripts/board.js"></script>
 <script src="./assets/template/boardTemplate.js"></script>
 </html>
+
+
+<div class="category" style="background-color:red;"></div>
