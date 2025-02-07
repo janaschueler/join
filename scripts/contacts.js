@@ -29,6 +29,7 @@ async function fetchData(path = "") {
         }
         renderSmallContacts();
         renderBigContacts();
+        return data;
     } catch (error) {
         console.error("Fehler beim Laden der Daten:", error);
     }
@@ -45,7 +46,7 @@ async function postData(path = "", data = {}) {
     return responseToJson = await response.json();
 }
 
-async function deleteData(path = "", data = {}) {
+async function deleteData(path = "") {
     let response = await fetch(BASE_URL + path + ".json", {
         method: "DELETE",
     });
@@ -53,80 +54,81 @@ async function deleteData(path = "", data = {}) {
 }
 
 async function patchData(path = "", data = {}) {
-    let response = await fetch(BASE_URL + path + ".json", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+    const response = await fetch(BASE_URL + path + '.json', {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
         body: JSON.stringify(data),
     });
     return await response.json();
 }
 
-// async function editContact() {
-//     let nameRef = document.getElementById('recipient-name');
-//     let emailRef = document.getElementById('recipient-email');
-//     let phoneRef = document.getElementById('recipient-phone');
-//     let contactId = selectedContactId;
-//     let updatedData= {        
-//         id: contactId,
-//         name: nameRef.value,
-//         email: emailRef.value,
-//         phone: phoneRef.value, 
-//         color: getColorById(contactId),    
-//     }; 
-//     if (nameRef.value == "" || emailRef.value == "" || phoneRef.value == "") {
-//         return
-//     }
-//     await patchData(`contacts/${contactId}`, updatedData);   
-//     let userContact = allUsers.find(user => user.id === contactId);
-//     if (userContact) {
-//         Object.assign(userContact, updatedData);
-//     }     
-//     renderSmallContacts();
-//     renderBigContacts();
-//     nameRef.value = "";
-//     emailRef.value = "";
-//     phoneRef.value = "";
-//     signupSuccessfullMessage();
-// }
-
 async function getFirebaseId(contactId) {
     let response = await fetch(BASE_URL + "contacts.json");
     let data = await response.json();
     for (let firebaseId in data) {
-        if (data[firebaseId].id === contactId) {
+        if (data[firebaseId].id === contactId.toString()) {
             return firebaseId;
         }
     }
     return null;
 }
 
-async function deleteContact(contactId) {
+async function openEditDialog(contactId) {
+    let showDialog = document.getElementById('dialog_content');
+    let nameRef = document.getElementById('dialog-name');
+    let emailRef = document.getElementById('dialog-email');
+    let phoneRef = document.getElementById('dialog-phone');
+    showDialog.classList.remove('d_none');
     let firebaseId = await getFirebaseId(contactId);
-    if (selectedContactId === contactId) {
-        selectedContactId = null;
+    try {
+        let contactData = await fetchData(`contacts/${firebaseId}`);
+        nameRef.value = contactData.name || "";
+        emailRef.value = contactData.email || "";
+        phoneRef.value = contactData.phone || "";
+    } catch (error) {
+        console.error("Fehler beim Speichern des Kontakts:", error);
     }
-    await deleteData(`contacts/${firebaseId}`);
-    allUsers = allUsers.filter(contact => contact.id !== contactId);
-    renderSmallContacts();
-    renderBigContacts();
+}
+
+async function saveEditedContact() {
+    let closDialog = document.getElementById('dialog_content');
+    let nameRef = document.getElementById('dialog-name');
+    let emailRef = document.getElementById('dialog-email');
+    let phoneRef = document.getElementById('dialog-phone');
+    let firebaseId = await getFirebaseId(selectedContactId);
+    let updatedData = {
+        id: selectedContactId,
+        name: nameRef.value,
+        email: emailRef.value,
+        phone: phoneRef.value,
+        color: getColorById(selectedContactId),
+    };
+    await patchData(`contacts/${firebaseId}`, updatedData);
+    closDialog.classList.add('d_none');
+    nameRef.value = "";
+    emailRef.value = "";
+    phoneRef.value = "";
+    signupSuccessfullMessage();
 }
 
 async function addContact() {
     let nameRef = document.getElementById('recipient-name');
     let emailRef = document.getElementById('recipient-email');
-    let phoneRef = document.getElementById('recipient-phone'); 
-    let contactId = Date.now().toString();  
-    let newContact = {        
+    let phoneRef = document.getElementById('recipient-phone');
+    let contactId = Date.now().toString();
+    let newContact = {
         id: contactId,
         name: nameRef.value,
         email: emailRef.value,
-        phone: phoneRef.value, 
-        color: getColorById(contactId),    
+        phone: phoneRef.value,
+        color: getColorById(contactId),
     };
     if (nameRef.value == "" || emailRef.value == "" || phoneRef.value == "") {
         return
-    }    
-    await postData("contacts", newContact);    
+    }
+    await postData("contacts", newContact);
     allUsers.push(newContact);
     selectedContactId = newContact.id;
     renderSmallContacts();
@@ -135,6 +137,14 @@ async function addContact() {
     emailRef.value = "";
     phoneRef.value = "";
     signupSuccessfullMessage();
+}
+
+async function deleteContact(contactId) {
+    let firebaseId = await getFirebaseId(contactId);
+    await deleteData(`contacts/${firebaseId}`);
+    allUsers = allUsers.filter(contact => contact.id !== contactId);
+    renderSmallContacts();
+    renderBigContacts();
 }
 
 function selectContact(contactId) {
@@ -155,7 +165,7 @@ function renderSmallContacts() {
         let firstLetter = contact.name.trim().split(" ")[0].charAt(0).toUpperCase();
         if (firstLetter !== currentGroup) {
             currentGroup = firstLetter;
-            contactsSmallRef.innerHTML += `<div class="category"><span>${firstLetter}</span></div>`;
+            contactsSmallRef.innerHTML += `<div class="category"><span><b>${firstLetter}<b></span></div>`;
         }
         contactsSmallRef.innerHTML += templateSmallContacts(contact);
     });
@@ -191,4 +201,9 @@ function signupSuccessfullMessage() {
         overlay.style.display = "none";
         location.reload();
     });
+}
+
+function cancelAndCross() {
+    let showDialog = document.getElementById('dialog_content');
+    showDialog.classList.add('d_none');
 }

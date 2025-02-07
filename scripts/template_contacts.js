@@ -40,7 +40,7 @@ function templateBigContacts(currentDatas) {
             <div class="contactName">
               <span>${currentDatas.name}</span>
               <div class="editContainer">
-                <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="editIcon">Edit</button>
+                <button onclick="openEditDialog('${currentDatas.id}')" class="editIcon">Edit</button>
                 <button onclick="deleteContact('${currentDatas.id}')" class="deleteIcon">Delete</button>
               </div>
             </div>
