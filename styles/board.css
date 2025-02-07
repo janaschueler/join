@@ -193,7 +193,6 @@ ol {
 }
 
 .category {
-  background-color: rgba(0, 56, 255, 1);
   border-radius: 8px;
   color: white;
   padding: 2px 12px;
@@ -294,6 +293,233 @@ input {
   min-width: 232px;
 }
 
+#ToDoTaskContainer {
+  min-height: 180px;
+}
+
+#inProgressContaine {
+  min-height: 180px;
+}
+
+#TestingContainer {
+  min-height: 180px;
+}
+
+#doneContainer {
+  min-height: 180px;
+}
+
+.editContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.editIcon {
+  border: none;
+  background-color: transparent;
+  font-size: 12px;
+  width: 60px;
+  background-image: url(../assets/icons/edit.svg);
+  background-size: 12px;
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: 0%;
+}
+
+.deleteIcon {
+  border: none;
+  background-color: transparent;
+  font-size: 12px;
+  width: 72px;
+  background-image: url(../assets/icons/delete.svg);
+  background-size: 10px;
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: 0%;
+}
+
+#taskSummaryModal {
+  display: none;
+}
+
+.ModalCloseButton {
+  top: 24px;
+  right: 24px;
+  width: 12px;
+  height: 16px;
+  background-image: url("../assets/icons/close.svg");
+  border: none !important;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+#modalTaskSummary {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: var(--bs-modal-zindex);
+  display: block;
+  width: 40%;
+  height: auto; /* Passe die Höhe bei Bedarf an */
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: 0;
+  background-color: white;
+  border-radius: 20px;
+  padding: 15px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  color: rgb(7, 36, 46);
+  box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.08);
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+li {
+  list-style-type: none;
+}
+
+.summaryTaskContainer h1 {
+  text-align: left;
+  margin-bottom: 0px;
+  margin-top: 6px;
+}
+
+.listDiscription span {
+  margin-top: 2px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+}
+
+.ModalheaderContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.contentmodlaTask body {
+  padding-bottom: 8px;
+}
+
+.contentmodlaTask td {
+  padding-top: 8px;
+  font-weight: 400;
+}
+
+.contentmodlaTask span {
+  color: rgba(42, 54, 71, 1);
+}
+
+.contentmodlaTask td:fse-child {
+  color: rgba(42, 54, 71, 1);
+  padding-right: 8px;
+}
+
+.iconSummaryModal {
+  margin-left: 8px;
+  width: 12px;
+}
+
+#subtaskContainer span {
+  margin-top: 2px;
+  font-weight: 400;
+  color: rgba(42, 54, 71, 1);
+}
+
+.margin_8 {
+  margin-top: 8px;
+}
+
+#assigneeListModal {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+#assigneeListModal .circle {
+  display: inline-block;
+  position: relative;
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+.subtasksUnit {
+  font-size: 12px;
+  margin-top: 2px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+}
+
+.marginLR_8 {
+  margin-right: 8px;
+  margin-left: 10px;
+}
+
+.spanBlue {
+  color: rgba(42, 54, 71, 1);
+  font-weight: 400;
+}
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5) !important ;
+}
+
+.customCheckboxContainer {
+  display: flex;
+  align-items: center;
+}
+
+.customCheckboxContainer input[type="checkbox"] {
+  display: none;
+}
+
+.customCheckboxContainer .customCheckbox {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-image: url("../assets/icons/checkbox_empty.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+  cursor: pointer;
+  margin-right: 8px;
+  margin-left: 10px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.customCheckboxContainer input[type="checkbox"]:checked + .customCheckbox {
+  background-image: none;
+}
+
+.customCheckboxContainer input[type="checkbox"]:checked + .customCheckbox::after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-image: url("../assets/icons/check_withBox.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  margin-right: 8px;
+  top: 0;
+  left: 0;
+}
+
+.customCheckboxContainer .subtasksUnit {
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+
+.customCheckboxContainer:hover .customCheckbox {
+  border-color: #555;
+}
+
 @media (max-width: 768px) {
   .primaryButton {
     display: none !important;
@@ -320,7 +546,7 @@ input {
     width: 100%;
   }
 
-  @media (max-width: 412px) {
+  @media (max-width: 480px) {
     #board {
       display: flex !important;
       flex-wrap: wrap !important;
@@ -346,6 +572,7 @@ input {
     .canvasContainer {
       margin-right: 5%;
       margin-left: 5%;
+      margin-bottom: 80px;
     }
 
     .my-2 {
@@ -371,6 +598,21 @@ input {
     }
     .headerBoard input {
       flex: 1;
+    }
+    #ToDoTaskContainer {
+      min-height: 20px;
+    }
+
+    #inProgressContaine {
+      min-height: 20px;
+    }
+
+    #TestingContainer {
+      min-height: 20px;
+    }
+
+    #doneContainer {
+      min-height: 20px;
     }
   }
 }

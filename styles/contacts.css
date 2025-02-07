@@ -615,16 +615,7 @@ h2 {
     justify-content: center;
     align-items: center;
   }
-
-  .closeButton {
-    top: 24px;
-    right: 24px;
-    width: 12px;
-    height: 16px;
-    background-image: url("../assets/icons/close_white.svg");
-  }
-
-  modalHeader span::after {
+  .modalHeader span::after {
     content: "";
     position: absolute;
     bottom: -5px;
