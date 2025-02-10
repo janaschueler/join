@@ -37,7 +37,7 @@ function generateTaskSummaryModal(allTodos, priorityIcon) {
               <button onclick="closeModal()"  type="button" class="ModalCloseButton"></button>
             </div>
             <div class="listDiscription">
-              <h1>${allTodos["title"]}</h1> 
+              <h1 class="mobileHeadline" >${allTodos["title"]}</h1> 
               <span class="descriptionCopy">${allTodos["description"]}</span>
             </div>
             <table class="contentmodlaTask">
@@ -56,37 +56,38 @@ function generateTaskSummaryModal(allTodos, priorityIcon) {
               </ol>
             </div>
             <div>
-              <div id="subtaskContainer">
-               <span>Subtasks</span> 
+              <div id="subtaskContainer${allTodos["id"]}" class="styleSubstaskSpan">
                 <ol id="subtaskListModal${allTodos["id"]}">
                 </ol>
             </div>
             <div class="buttonContainer">
               <div class="editContainer">
                 <button onclick="openEditModal${allTodos["id"]}(" class="editIcon">Edit</button>
-                <button onclick="deleteTask${allTodos["id"]}" class="deleteIcon">Delete</button>
+                <button onclick="deleteTask('${allTodos["id"]}')" class="deleteIcon">Delete</button>
               </div>
             </div>
           </div>`;
 }
 
-
 function generateAssigneeComntacts(assigneeAbbreviation, assingeeColor, assignee) {
   return `      <li>
-                  <svg class="circle" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="16" cy="16" r="15.5" fill="${assingeeColor}" stroke="white"/>
-                    <text x="50%" y="50%" font-family="Arial" font-size="12" fill="white" text-anchor="middle" alignment-baseline="central">${assigneeAbbreviation}</text>
-                </svg>
-                <span>${assignee}</span>
+                  <div class="groupAssignee">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="16" cy="16" r="15.5" fill="${assingeeColor}" stroke="white"/>
+                      <text x="50%" y="50%" font-family="Arial" font-size="12" fill="white" text-anchor="middle" alignment-baseline="central">${assigneeAbbreviation}</text>
+                  </svg>
+                  <span>${assignee}</span>
+                </div>
                 </li>`;
 }
 
-function generateSubtasks(allTodos) {
-  return `        <li>
+function generateSubtasks(allTodos, subtask) {
+  return `        <span>Subtasks</span> 
+                  <li>
                     <label class="customCheckboxContainer">
                       <input class="marginLR_8" type="checkbox" id="${allTodos["id"]}" name="" value="">
                       <span class="customCheckbox"></span>
-                      <span class="subtasksUnit">${allTodos["subtask"]}</span>
+                      <span class="subtasksUnit">${subtask}</span>
                     </label>
                   </li>`;
 }

@@ -92,6 +92,10 @@ h2 {
   flex-shrink: 0;
 }
 
+.main_bar {
+  overflow-x: auto;
+}
+
 .canvasContainer {
   overflow-x: auto;
   white-space: nowrap;
@@ -369,13 +373,14 @@ input {
   outline: 0;
   background-color: white;
   border-radius: 20px;
-  padding: 15px;
+  padding: 24px;
   margin-top: 16px;
   margin-bottom: 16px;
   color: rgb(7, 36, 46);
   box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.08);
   white-space: normal;
   word-wrap: break-word;
+  width: 500px;
 }
 
 li {
@@ -389,7 +394,7 @@ li {
 }
 
 .listDiscription span {
-  margin-top: 2px;
+  margin-top: 12px;
   font-weight: 400;
   color: rgba(0, 0, 0, 1);
 }
@@ -411,13 +416,19 @@ li {
   font-weight: 400;
 }
 
-.contentmodlaTask span {
-  color: rgba(42, 54, 71, 1);
+table td:first-child {
+  color: rgba(66, 82, 110, 1);
+  padding-right: 8px;
+  padding-top: 16px;
 }
 
-.contentmodlaTask td:fse-child {
-  color: rgba(42, 54, 71, 1);
-  padding-right: 8px;
+.styleSubstaskSpan {
+  margin-top: 16px;
+}
+
+.styleSubstaskSpan span {
+  color: rgba(66, 82, 110, 1);
+  padding-bottom: 8px;
 }
 
 .iconSummaryModal {
@@ -428,11 +439,11 @@ li {
 #subtaskContainer span {
   margin-top: 2px;
   font-weight: 400;
-  color: rgba(42, 54, 71, 1);
+  color: rgba(66, 82, 110, 1);
 }
 
 .margin_8 {
-  margin-top: 8px;
+  margin-top: 12px;
 }
 
 #assigneeListModal {
@@ -446,7 +457,6 @@ li {
   display: inline-block;
   position: relative;
   margin-right: 8px;
-  margin-left: 8px;
 }
 
 .subtasksUnit {
@@ -473,6 +483,7 @@ li {
 .customCheckboxContainer {
   display: flex;
   align-items: center;
+  margin-top: 4px;
 }
 
 .customCheckboxContainer input[type="checkbox"] {
@@ -489,7 +500,7 @@ li {
   position: relative;
   cursor: pointer;
   margin-right: 8px;
-  margin-left: 10px;
+  margin-left: 16px;
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -520,7 +531,35 @@ li {
   border-color: #555;
 }
 
-@media (max-width: 768px) {
+.groupAssignee {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 8px;
+  margin-left: 16px;
+}
+
+.groupAssignee {
+  margin-top: 8px;
+}
+
+@media (max-width: 1500px) {
+  .headerBoard {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 900px) {
+  .headerBoard {
+    justify-content: flex-start;
+  }
+
+  form {
+    height: auto !important;
+    min-height: 40px;
+    width: 100%;
+  }
+
   .primaryButton {
     display: none !important;
   }
@@ -540,79 +579,93 @@ li {
     justify-content: center;
     align-items: stretch;
   }
+
+  .searchContainer {
+    width: 40%;
+  }
+}
+
+@media (max-width: 768px) {
+  #modalTaskSummary {
+    width: 95%;
+    max-width: 500px;
+  }
+
+  .searchContainer {
+    min-width: 100vw;
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .mobileHeadline {
+    font-size: 36px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  #board {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .listContainer {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .headerBoard button {
+    margin-right: 5%;
+  }
+
+  .secondaryAddButton {
+    margin-right: 2px;
+  }
+
+  .canvasContainer {
+    margin-right: 5%;
+    margin-left: 5%;
+    margin-bottom: 80px;
+  }
+
+  .my-2 {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+  }
+
+  .d-flex {
+    display: block;
+  }
+  form {
+    margin-left: 0px !important;
+  }
+
   form {
     height: auto !important;
     min-height: 40px;
     width: 100%;
   }
 
-  @media (max-width: 480px) {
-    #board {
-      display: flex !important;
-      flex-wrap: wrap !important;
-      justify-content: center;
-      gap: 16px;
-    }
+  .headerBoard input {
+    flex: 1;
+  }
+  #ToDoTaskContainer {
+    min-height: 20px;
+  }
 
-    .listContainer {
-      flex: 0 0 100% !important;
-      max-width: 100% !important;
-      margin-left: 0 !important;
-      margin-right: 0 !important;
-    }
+  #inProgressContaine {
+    min-height: 20px;
+  }
 
-    .headerBoard button {
-      margin-right: 5%;
-    }
+  #TestingContainer {
+    min-height: 20px;
+  }
 
-    .secondaryAddButton {
-      margin-right: 2px;
-    }
-
-    .canvasContainer {
-      margin-right: 5%;
-      margin-left: 5%;
-      margin-bottom: 80px;
-    }
-
-    .my-2 {
-      margin-top: 0px !important;
-      margin-bottom: 0px !important;
-    }
-
-    .d-flex {
-      display: block;
-    }
-    form {
-      margin-left: 0px !important;
-    }
-
-    form {
-      height: auto !important;
-      min-height: 40px;
-      width: 100%;
-    }
-
-    .searchContainer {
-      width: 100%;
-    }
-    .headerBoard input {
-      flex: 1;
-    }
-    #ToDoTaskContainer {
-      min-height: 20px;
-    }
-
-    #inProgressContaine {
-      min-height: 20px;
-    }
-
-    #TestingContainer {
-      min-height: 20px;
-    }
-
-    #doneContainer {
-      min-height: 20px;
-    }
+  #doneContainer {
+    min-height: 20px;
   }
 }

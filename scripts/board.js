@@ -33,7 +33,6 @@ async function getDataTasks(path = "") {
       status: determinStatus(key, task.status),
     });
   }
-  console.log(tasks);
   return tasks;
 }
 
@@ -53,14 +52,11 @@ async function getDataContacts(path = "") {
       color: contact.color,
     });
   }
-  console.log(contacts);
 
   return contacts;
 }
 
 function generateAbbreviation(newName) {
-  console.log(newName);
-
   if (typeof newName === "object" && newName !== null) {
     newName = Object.keys(newName)[0];
   }
@@ -69,7 +65,6 @@ function generateAbbreviation(newName) {
     .split(" ")
     .map((word) => word.charAt(0))
     .join("");
-  console.log(abbreviation.toUpperCase());
   return abbreviation.toUpperCase();
 }
 
@@ -95,7 +90,6 @@ async function addStatus(key, status) {
 
 async function postToDatabase(path1 = "", path2 = "", data = {}) {
   const url = `${BASE_URL}tasks/${path1}${path2}.json`;
-  console.log("URL:", url);
   try {
     let response = await fetch(url, {
       method: "PUT",
@@ -217,7 +211,6 @@ function startDragging(id) {
 
 document.getElementById("searchForm").addEventListener("submit", function (e) {
   e.preventDefault();
-  console.log("test");
 
   const searchInput = document.getElementById("searchInput");
   const searchMessageContainer = document.getElementById("searchMessageContainer");
@@ -278,14 +271,15 @@ function closeModal() {
   document.getElementById("taskSummaryModal").style.display = "none";
 }
 
-
 function openModal(id) {
   document.getElementById("taskSummaryModal").style.display = "block";
   loadTaskSummaryModal(id);
 }
 
-
 function loadTaskSummaryModal(id) {
+  let summaryModal = document.getElementById("taskSummaryModal");
+  summaryModal.innerHTML = "";
+
   let tasks = allTasks.filter((t) => t["id"] === id);
 
   if (tasks.length === 0) {
@@ -293,20 +287,30 @@ function loadTaskSummaryModal(id) {
   }
   let taskModal = document.getElementById("taskSummaryModal");
   taskModal.innerHTML = "";
-  let priority = tasks.priority;
-    let priorityIcon = determinePriotiry(priority);
-    container.innerHTML += generateTaskSummaryModal(tasks, priorityIcon);
-   
-    injectAssigneeComntacts(tasks)
-    injectSubtasks(tasks) 
+
+  let task = tasks[0];
+  let priority = task.priority;
+  let priorityIcon = determinePriotiry(priority);
+  summaryModal.innerHTML += generateTaskSummaryModal(task, priorityIcon);
+
+  injectAssigneeComntacts(task);
+  injectSubtasks(task);
 }
 
 async function injectAssigneeComntacts(tasks) {
   const assigneeContainer = document.getElementById(`assigneeListModal${tasks["id"]}`);
   assigneeContainer.innerHTML = "";
 
-  for (let indexAssingee = 0; indexAssingee < Object.keys(tasks.assignedTo).length; indexAssingee++) {
-    const assignee = Object.keys(tasks.assignedTo)[indexAssingee];
+  let assigneeList = [];
+
+  if (typeof tasks.assignedTo === "string") {
+    assigneeList = [tasks.assignedTo];
+  } else if (typeof tasks.assignedTo === "object") {
+    assigneeList = Object.keys(tasks.assignedTo);
+  }
+
+  for (let indexAssingee = 0; indexAssingee < assigneeList.length; indexAssingee++) {
+    const assignee = assigneeList[indexAssingee];
     const assigneeAbbreviation = assignee
       .split(" ")
       .map((word) => word.charAt(0))
@@ -315,4 +319,32 @@ async function injectAssigneeComntacts(tasks) {
 
     assigneeContainer.innerHTML += generateAssigneeComntacts(assigneeAbbreviation, assingeeColor, assignee);
   }
+}
+
+async function injectSubtasks(tasks) {
+  const subtaskContainer = document.getElementById(`subtaskContainer${tasks["id"]}`);
+  subtaskContainer.innerHTML = "";
+
+  if (typeof tasks.subtasks === "string") {
+    tasks.subtasks = [tasks.subtasks];
+  }
+
+  for (let indexSubtask = 0; indexSubtask < tasks.subtasks.length; indexSubtask++) {
+    const subtask = tasks.subtasks;
+
+    subtaskContainer.innerHTML += generateSubtasks(tasks, subtask);
+  }
+}
+
+function deleteTask(taskId) {
+  let taskToDelete = allTasks.find((t) => t.id === taskId);
+
+  if (taskToDelete) {
+    const index = allTasks.indexOf(taskToDelete);
+    allTasks.splice(index, 1);
+  }
+
+  postToDatabase("", "", allTasks);
+  loadBoardContent()
+  closeModal();
 }
