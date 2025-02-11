@@ -1,5 +1,3 @@
-const BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
-
 let allTasks = { id: [], assignedTo: [], category: [], createdAt: [], description: [], dueDate: [], priority: [], subtasks: [], title: [], status: [], categoryColor: [] };
 let allContacts = { idContact: [], contactName: [], contactAbbreviation: [], color: [] };
 
@@ -9,6 +7,7 @@ async function inti() {
   allTasks = await getDataTasks();
   allContacts = await getDataContacts();
   loadBoardContent();
+  renderTopBarSummary();
 }
 
 async function getDataTasks(path = "") {
@@ -33,6 +32,8 @@ async function getDataTasks(path = "") {
       status: determinStatus(key, task.status),
     });
   }
+  console.log(tasks);
+
   return tasks;
 }
 
@@ -52,7 +53,6 @@ async function getDataContacts(path = "") {
       color: contact.color,
     });
   }
-
   return contacts;
 }
 
@@ -126,19 +126,20 @@ function loadBordContentByStatus(status, containerId) {
   let container = document.getElementById(containerId);
   container.innerHTML = "";
 
-  for (let index = 0; index < tasks.length; index++) {
-    const task = tasks[index];
-    let priority = task.priority;
-    let priorityIcon = determinePriotiry(priority);
-    numberOfSubtasks = task.subtasks.length;
-    progressOfProgressbar = 50;
+  tasks.forEach((task) => renderTask(task, container));
+}
 
-    container.innerHTML += generateToDoHTML(task, priorityIcon, numberOfSubtasks, progressOfProgressbar);
-    // if (numberOfSubtasks == null ||numberOfSubtasks == undefined ) {}
-    // document.getElementById("progressContainer").addClasslist("d-none")
+function renderTask(task, container) {
+  let priorityIcon = determinePriotiry(task.priority);
+  let numberOfSubtasks = Array.isArray(task.subtasks) ? task.subtasks.length : 0;
+  let progressOfProgressbar = determineProgress(task, task.status, numberOfSubtasks);
 
-    injectAssignees(task);
+  container.innerHTML += generateToDoHTML(task, priorityIcon, numberOfSubtasks, progressOfProgressbar);
+
+  if (numberOfSubtasks === 0) {
+    document.getElementById("progressContainer").style.display = "none";
   }
+  injectAssignees(task);
 }
 
 function determinePriotiry(priority) {
@@ -157,28 +158,42 @@ function determinePriotiry(priority) {
   return priority;
 }
 
+function determineProgress(status, numberOfSubtasks) {
+  let statusProgress;
+  if (status == 4) {
+    return 100;
+  } else {
+  }
+}
+
 async function injectAssignees(task) {
   const assigneeContainer = document.getElementById(`assigneeContainer${task["id"]}`);
   assigneeContainer.innerHTML = "";
 
-  let assigneeList = [];
+  const assigneeList = getAssigneeList(task.assignedTo);
 
-  if (typeof task.assignedTo === "string") {
-    assigneeList = [task.assignedTo];
-  } else if (typeof task.assignedTo === "object") {
-    assigneeList = Object.keys(tasks.assignedTo);
-  }
-
-  for (let indexAssingee = 0; indexAssingee < assigneeList.length; indexAssingee++) {
-    const assignee = assigneeList[indexAssingee];
-    const assigneeAbbreviation = assignee
-      .split(" ")
-      .map((word) => word.charAt(0))
-      .join("");
+  assigneeList.forEach((assignee) => {
+    const assigneeAbbreviation = getAssigneeAbbreviation(assignee);
     const assingeeColor = findContactColor(assignee);
-
     assigneeContainer.innerHTML += generateAssigneeCircle(assigneeAbbreviation, assingeeColor);
+  });
+}
+
+function getAssigneeList(assignedTo) {
+  if (typeof assignedTo === "string") {
+    return [assignedTo];
   }
+  if (typeof assignedTo === "object") {
+    return Object.keys(assignedTo);
+  }
+  return [];
+}
+
+function getAssigneeAbbreviation(assignee) {
+  return assignee
+    .split(" ")
+    .map((word) => word.charAt(0))
+    .join("");
 }
 
 function findContactColor(name) {
@@ -219,59 +234,55 @@ function startDragging(id) {
 
 document.getElementById("searchForm").addEventListener("submit", function (e) {
   e.preventDefault();
-
   const searchInput = document.getElementById("searchInput");
   const searchMessageContainer = document.getElementById("searchMessageContainer");
 
-  searchTasks(searchInput.value); // Ruft die searchTasks-Funktion mit dem Suchinput auf
+  searchTasks(searchInput.value);
 });
 
 function searchTasks(searchInput) {
-  let toDoContainer = document.getElementById("ToDoTaskContainer");
-  let inProgressContainer = document.getElementById("inProgressContainer");
-  let testingContainer = document.getElementById("TestingContainer");
-  let doneContainer = document.getElementById("doneContainer");
-
-  toDoContainer.innerHTML = "";
-  inProgressContainer.innerHTML = "";
-  testingContainer.innerHTML = "";
-  doneContainer.innerHTML = "";
+  ["ToDoTaskContainer", "inProgressContainer", "TestingContainer", "doneContainer"].forEach((id) => {
+    document.getElementById(id).innerHTML = "";
+  });
 
   const filteredTasks = allTasks.filter((task) => task.title && task.title.toLowerCase().includes(searchInput.toLowerCase()));
 
   if (filteredTasks.length > 0) {
-    filteredTasks.forEach((task) => {
-      let containerId;
-      switch (task.status) {
-        case 1:
-          containerId = "ToDoTaskContainer";
-          break;
-        case 2:
-          containerId = "inProgressContainer";
-          break;
-        case 3:
-          containerId = "TestingContainer";
-          break;
-        case 4:
-          containerId = "doneContainer";
-          break;
-        default:
-          console.error("Ungültiger Status:", task.status);
-          return;
-      }
-
-      let container = document.getElementById(containerId);
-      let priority = task.priority;
-      let priorityIcon = determinePriotiry(priority);
-      let numberOfSubtasks = task.subtasks ? task.subtasks.length : 0;
-      let progressOfProgressbar = 50;
-
-      container.innerHTML += generateToDoHTML(task, priorityIcon, numberOfSubtasks, progressOfProgressbar);
-
-      injectAssignees(task);
-    });
+    filteredTasks.forEach((task) => renderTaskByStatus(task));
   } else {
     console.log("Keine Ergebnisse für die Suche gefunden.");
+  }
+}
+
+function renderTaskByStatus(task) {
+  const containerId = getContainerIdByStatus(task.status);
+  if (!containerId) {
+    console.error("Ungültiger Status:", task.status);
+    return;
+  }
+
+  const container = document.getElementById(containerId);
+  const priority = task.priority;
+  const priorityIcon = determinePriotiry(priority);
+  const numberOfSubtasks = task.subtasks ? task.subtasks.length : 0;
+  const progressOfProgressbar = 50;
+
+  container.innerHTML += generateToDoHTML(task, priorityIcon, numberOfSubtasks, progressOfProgressbar);
+  injectAssignees(task);
+}
+
+function getContainerIdByStatus(status) {
+  switch (status) {
+    case 1:
+      return "ToDoTaskContainer";
+    case 2:
+      return "inProgressContainer";
+    case 3:
+      return "TestingContainer";
+    case 4:
+      return "doneContainer";
+    default:
+      return null;
   }
 }
 
@@ -287,19 +298,16 @@ function openModal(id) {
 function loadTaskSummaryModal(id) {
   let summaryModal = document.getElementById("taskSummaryModal");
   summaryModal.innerHTML = "";
-
   let tasks = allTasks.filter((t) => t["id"] === id);
 
   if (tasks.length === 0) {
     return;
   }
-  let taskModal = document.getElementById("taskSummaryModal");
-  taskModal.innerHTML = "";
 
   let task = tasks[0];
-  let priority = task.priority;
-  let priorityIcon = determinePriotiry(priority);
-  summaryModal.innerHTML += generateTaskSummaryModal(task, priorityIcon);
+  let formatedDueDate = convertTask(task.dueDate);
+  let priorityIcon = determinePriotiry(task.priority);
+  summaryModal.innerHTML += generateTaskSummaryModal(task, priorityIcon, formatedDueDate);
 
   injectAssigneeComntacts(task);
   injectSubtasks(task);
@@ -353,6 +361,12 @@ function deleteTask(taskId) {
   }
 
   postToDatabase("", "", allTasks);
-  loadBoardContent()
+  loadBoardContent();
   closeModal();
+}
+
+function convertTask(dueDate) {
+  let formatedDueDate = new Intl.DateTimeFormat("en-Gb").format(new Date(dueDate));
+
+  return formatedDueDate;
 }

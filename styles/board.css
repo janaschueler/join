@@ -215,16 +215,16 @@ ol {
 }
 
 .titleCopy {
-  font-weight: bold;
+  font-weight: bold !important;
   text-align: left;
   padding-top: 8px;
   color: rgba(42, 54, 71, 1);
 }
 
 .descriptionCopy {
-  color: rgba(168, 168, 168, 1);
+  color: rgba(168, 168, 168, 1) !important;
   text-align: left;
-  margin-top: -20px;
+  margin-top: -20px !important;
 }
 
 .progress-bar {
@@ -317,6 +317,7 @@ input {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 12px;
+  margin-top: 12px;
 }
 
 .editIcon {
@@ -545,8 +546,6 @@ table td:first-child {
 .groupAssignee {
   margin-top: 8px;
 }
-
-
 
 @media (max-width: 1500px) {
   .headerBoard {

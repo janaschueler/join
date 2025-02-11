@@ -64,7 +64,7 @@ function generateAbbreviation(newName) {
 function determineColor() {
   let numberOfUsers = allUsersName.length;
   let userColor = coloursArray[numberOfUsers % coloursArray.length];
-  
+
   return userColor;
 }
 
@@ -114,7 +114,7 @@ async function postToDatabase(path = "", data = {}) {
     if (response.ok) {
       signupSuccessfullMessage();
       document.getElementById("signupForm").reset();
-      window.location.assign("./board.html");
+      window.location.assign("./login.html");
     } else {
       console.error("Fehler bei der Anfrage:", response.statusText);
     }

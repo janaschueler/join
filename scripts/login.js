@@ -1,47 +1,54 @@
 const BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
 
-let allUser = { contactEmail: [], contactPassword: [] };
+let allUser = { contactEmail: [], contactPassword: [], contactId: [], contactName: [], contactAbbreviation: [] };
 
 function init() {
   showLoadingMessage();
-  // setTimeout(hideLoadingBackground, 3000); // Nach 3 Sekunden ausblenden
 }
 
 function showLoadingMessage() {
-  const loadingMessageMobile = document.getElementById("loadingMessageMobile");
+  if (window.innerWidth > 480) {
+    showDesktopLoadingMessage();
+    showDesktopContent();
+  } else {
+    showMobileLoadingMessage();
+    switchMobileLogo();
+    showMobileContent();
+  }
+}
+
+function showDesktopLoadingMessage() {
   const loadingMessage = document.getElementById("loadingMessage");
+  setTimeout(() => {
+    document.getElementById("loadingMessage").classList.add("show");
+  }, 100);
+  setTimeout(() => {
+    loadingMessage.style.display = "flex";
+    loadingMessage.style.width = "100px";
+    loadingMessage.style.height = "50px";
+    loadingMessage.style.transform = "scale(0.375) translate(100px, -150px)";
+    loadingMessage.style.top = "133px";
+    loadingMessage.style.left = "68px";
+  }, 1000);
+}
+
+function showDesktopContent() {
   const loginContainer = document.getElementById("loginContainer");
   const footer = document.getElementById("footer");
   const header = document.getElementById("header");
-  const mobileNav = document.getElementById("mobileNav");
-  const mobileLogoChange = document.getElementById("mobileLogoChange");
-  const mobileLogoChangeDark = document.getElementById("mobileLogoChangeDark");
 
-  if (window.innerWidth > 480) {
-    setTimeout(() => {
-      document.getElementById("loadingMessage").classList.add("show");
-    }, 100);
-    setTimeout(() => {
-      loadingMessage.style.display = "flex";
-      loadingMessage.style.width = "100px";
-      loadingMessage.style.height = "50px";
-      loadingMessage.style.transform = "scale(0.375) translate(100px, -150px)";
-      loadingMessage.style.top = "133px";
-      loadingMessage.style.left = "68px";
-    }, 1000);
+  setTimeout(() => {
+    loginContainer.style.display = "flex";
+    footer.style.display = "block";
+    header.style.display = "flex";
+    loginContainer.classList.add("show");
+    footer.classList.add("show");
+    header.classList.add("show");
+  }, 1500);
+}
 
-    setTimeout(() => {
-      loginContainer.style.display = "flex";
-      footer.style.display = "block";
-      header.style.display = "flex";
-
-      loginContainer.classList.add("show");
-      footer.classList.add("show");
-      header.classList.add("show");
-    }, 1500);
-
-    return;
-  }
+function showMobileLoadingMessage() {
+  const loadingMessageMobile = document.getElementById("loadingMessageMobile");
 
   setTimeout(() => {
     document.getElementById("loadingMessageMobile").classList.add("show");
@@ -54,6 +61,11 @@ function showLoadingMessage() {
     loadingMessageMobile.style.top = "64px";
     loadingMessageMobile.style.left = "-80px";
   }, 1000);
+}
+
+function switchMobileLogo() {
+  const mobileLogoChange = document.getElementById("mobileLogoChange");
+  const mobileLogoChangeDark = document.getElementById("mobileLogoChangeDark");
 
   setTimeout(() => {
     mobileLogoChange.style.display = "none";
@@ -61,14 +73,17 @@ function showLoadingMessage() {
     mobileLogoChangeDark.style.opacity = "1";
     mobileLogoChangeDark.style.visibility = "visible";
   }, 1500);
+}
+
+function showMobileContent() {
+  const loginContainer = document.getElementById("loginContainer");
+  const mobileNav = document.getElementById("mobileNav");
 
   setTimeout(() => {
     document.body.style.setProperty("background", "rgb(246, 247, 248)", "important");
     loginContainer.style.display = "flex";
-    footer.style.display = "block";
     mobileNav.style.display = "flex";
     loginContainer.classList.add("show");
-    footer.classList.add("show");
     mobileNav.classList.add("show");
   }, 1500);
 }
@@ -94,6 +109,9 @@ async function getData(path = "") {
     users.push({
       contactEmail: user.contactEmail,
       contactPassword: user.contactPassword,
+      contactId: key,
+      contactName: user.contactName,
+      contactAbbreviation: user.contactAbbreviation,
     });
   }
 
@@ -119,6 +137,7 @@ function checkLogin() {
   });
 
   if (user) {
+    transfereLoginData(user);
     window.location.assign("./index.html");
   } else {
     document.getElementById("wrongPassword").classList.remove("d-none");
