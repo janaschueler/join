@@ -161,8 +161,16 @@ async function injectAssignees(task) {
   const assigneeContainer = document.getElementById(`assigneeContainer${task["id"]}`);
   assigneeContainer.innerHTML = "";
 
-  for (let indexAssingee = 0; indexAssingee < Object.keys(task.assignedTo).length; indexAssingee++) {
-    const assignee = Object.keys(task.assignedTo)[indexAssingee];
+  let assigneeList = [];
+
+  if (typeof task.assignedTo === "string") {
+    assigneeList = [task.assignedTo];
+  } else if (typeof task.assignedTo === "object") {
+    assigneeList = Object.keys(tasks.assignedTo);
+  }
+
+  for (let indexAssingee = 0; indexAssingee < assigneeList.length; indexAssingee++) {
+    const assignee = assigneeList[indexAssingee];
     const assigneeAbbreviation = assignee
       .split(" ")
       .map((word) => word.charAt(0))

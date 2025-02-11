@@ -91,3 +91,45 @@ function generateSubtasks(allTodos, subtask) {
                     </label>
                   </li>`;
 }
+
+
+function generateAddTask(allTodos, priorityIcon) {
+  return ` <div id="modalTaskSummary" class="summaryTaskContainer">
+            <div class="ModalheaderContainer">
+              <div class="category" style="background-color:red;">
+              <span>${allTodos["category"]}</span>
+              </div>
+              <button onclick="closeModal()"  type="button" class="ModalCloseButton"></button>
+            </div>
+            <div class="listDiscription">
+              <h1 class="mobileHeadline" >${allTodos["title"]}</h1> 
+              <span class="descriptionCopy">${allTodos["description"]}</span>
+            </div>
+            <table class="contentmodlaTask">
+              <tr>
+                <td>Due date:</td>
+                <td>${allTodos["date"]}</td>
+              </tr>
+              <tr>
+                <td>Priority:</td>
+                <td>${allTodos["priority"]}<img class="iconSummaryModal" src="${priorityIcon}" alt=""></td>
+              </tr>
+            </table>
+            <div class="margin_8">
+              <span class="spanBlue">Assinged To:</span>
+              <ol id="assigneeListModal${allTodos["id"]}">
+              </ol>
+            </div>
+            <div>
+              <div id="subtaskContainer${allTodos["id"]}" class="styleSubstaskSpan">
+                <ol id="subtaskListModal${allTodos["id"]}">
+                </ol>
+            </div>
+            <div class="buttonContainer">
+              <div class="editContainer">
+                <button onclick="openEditModal${allTodos["id"]}(" class="editIcon">Edit</button>
+                <button onclick="deleteTask('${allTodos["id"]}')" class="deleteIcon">Delete</button>
+              </div>
+            </div>
+          </div>`;
+}

@@ -134,7 +134,7 @@ main {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  height: 100vh;
+  height: calc(100vh - 80px);
   width: 300px;
   overflow-x: hidden;
   overflow-y: auto;
@@ -143,6 +143,7 @@ main {
 .listHeader {
   margin-top: 12px !important;
 }
+
 .horizontalLine {
   background-color: rgba(209, 209, 209, 1);
   height: 1px;
@@ -185,7 +186,7 @@ main {
 }
 
 .contactHeader svg {
-  margin-left: 32px;
+  margin-left: 5%;
   margin-top: 16px;
 }
 
@@ -256,7 +257,7 @@ h2 {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-left: 32px;
+  margin-left: 5%;
   margin-top: 16px;
 }
 
@@ -264,6 +265,7 @@ h2 {
   text-decoration: none;
   font-size: 12px;
   color: rgba(0, 124, 238, 1);
+  width: 170px;
 }
 
 .categoryLine {
@@ -280,7 +282,6 @@ h2 {
 .headerBoardTitle {
   display: flex;
   align-items: center;
-  justify-content: start;
 }
 
 .headerBoardTitle span {
@@ -341,6 +342,7 @@ h2 {
   margin-top: 120px;
   padding-right: 0px !important;
 }
+
 .modal-dialog {
   align-items: center;
   justify-content: center;
@@ -393,7 +395,8 @@ h2 {
   left: 0;
   width: 30%;
   height: 2px;
-  background-color: rgba(41, 171, 226, 1); /* Die Farbe der Unterstreichung */
+  background-color: rgba(41, 171, 226, 1);
+  /* Die Farbe der Unterstreichung */
 }
 
 .contactCircle {
@@ -504,12 +507,158 @@ h2 {
   border-radius: 16px;
 }
 
-/* .show {
-  opacity: 1 !important;
-  visibility: visible !important;
-} */
+.o_none {
+  overflow: hidden;
+}
+
+.overlay_dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--bs-modal-zindex);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: #000000a6;
+}
+
+.modal_edit {
+  height: auto !important;
+  margin-top: 120px;
+  width: 800px;
+  margin-left: 3%;
+  margin-right: 3%;
+}
+
+.headerBoard {
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.mobile_arrow_btn {
+  display: none;
+}
+
+.dialog_main {
+  z-index: 1;
+}
+
+.mobile_edit_info {
+  display: none;
+}
+
+.option_area {
+  background: white;
+  border-radius: 15px 15px 0px 15px;
+  width: 110px;
+  height: 95px;
+  position: fixed;
+  bottom: 167px;
+  right: 30px;
+  box-shadow: -3px 3px 4px 1px lightgray;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 13px;
+}
+
+.option_btn {
+  display: flex;
+  justify-content: flex-start;
+  padding-block: 0px;
+  padding-inline: 0px;
+  border: none;
+  background: transparent;
+  width: 75px;
+  font-size: 18px;
+  gap: 9px;
+}
 
 @media (max-width: 768px) {
+  .main_content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .top_bar_main {
+    z-index: 1;
+    width: 100%;
+  }
+
+  .mobile_edit_info {
+    background: transparent;
+    padding-inline: 0px;
+    border-width: 0px;
+    display: block;
+    display: flex;
+    justify-content: end;
+    margin-right: 5%;
+    position: fixed;
+    bottom: 95px;
+    right: 4px;
+  }
+
+  body {
+    overflow: hidden;
+  }
+
+  h1 {
+    font-size: 53px !important;
+  }
+
+  .mobile_header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .mobile_arrow_btn {
+    padding-block: 0px;
+    padding-inline: 0px;
+    border: none;
+    background: transparent;
+    display: block;
+  }
+
+  .arrow_left {
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    transition: transform 0.1s ease, background-color 0.1s ease;
+  }
+
+  .arrow_left:active {
+    transform: scale(1.2);
+    background-color: #d3d3d354;
+    border-radius: 50%;
+  }
+
+  .contactName {
+    margin-top: 0px;
+    font-weight: 700;
+  }
+
+  .editIcon {
+    display: none;
+  }
+
+  .deleteIcon {
+    display: none;
+  }
+
+  .headerBoardTitle {
+    margin-left: 5%;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 90%;
+  }
+
+  .headerBoardTitle h1::after {
+    display: none;
+  }
+
   .primaryAddButton {
     display: block !important;
     margin-right: 20px;
@@ -517,20 +666,32 @@ h2 {
 
   .headerBoard {
     flex-direction: column;
-    justify-content: center;
-    align-items: stretch;
   }
 
   form {
     margin-left: 32px;
   }
 
-  .headerContainer {
-    display: none;
+  .d_none_mobile {
+    display: none !important;
   }
+
+  .headerContainer {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    background-color: rgb(246, 247, 248);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+  }
+
   .contactContainer {
     width: 100%;
     margin-left: 0;
+    background-color: transparent;
+    height: calc(94vh - 80px);
   }
 
   .contacthead {
@@ -550,7 +711,7 @@ h2 {
   }
 
   .modalBody {
-    flex-direction: column !important  ;
+    flex-direction: column !important;
     max-height: 85vh !important;
     overflow-y: auto !important;
   }
@@ -591,6 +752,7 @@ h2 {
     justify-content: center;
     align-items: center;
   }
+
   .modalHeader span::after {
     content: "";
     position: absolute;
@@ -598,7 +760,8 @@ h2 {
     left: 0;
     width: 30%;
     height: 2px;
-    background-color: rgba(41, 171, 226, 1); /* Die Farbe der Unterstreichung */
+    background-color: rgba(41, 171, 226, 1);
+    /* Die Farbe der Unterstreichung */
   }
 
   input.iconPhone {
@@ -626,6 +789,10 @@ h2 {
     transform: translate(-50%, -50%);
   }
 
+  .big_circle {
+    width: 70px;
+  }
+
   .toast-body {
     text-align: center;
     background-color: rgba(42, 54, 71, 1);
@@ -637,6 +804,7 @@ h2 {
   .toast {
     width: 80%;
   }
+
   .overlay {
     background-color: rgba(0, 0, 0, 0.5) !important;
   }
