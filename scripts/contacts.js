@@ -5,6 +5,7 @@ let selectedContactId = null;
 
 function init() {
     fetchData();
+    renderTopBarContact()
     renderSmallContacts();
     renderBigContacts();
 }
@@ -141,15 +142,15 @@ async function addContact() {
 
 async function deleteContact(contactId) {
     let contactsSmallRef = document.getElementById('contactsSmall_content');
-    let firebaseId = await getFirebaseId(contactId);
-    if (window.matchMedia("(max-width: 768px)").matches) {
-        location.reload();
-    }
+    let firebaseId = await getFirebaseId(contactId);    
     await deleteData(`contacts/${firebaseId}`);
     allUsers = allUsers.filter(contact => contact.id !== contactId);
     contactsSmallRef.innerHTML = "";
     renderSmallContacts();
     renderBigContacts();
+    if (window.matchMedia("(max-width: 768px)").matches) {
+        location.reload();
+    }
 }
 
 function selectContact(contactId) {
@@ -207,7 +208,7 @@ function signupSuccessfullMessage() {
 
 function cancelAndCross() {
     let showDialog = document.getElementById('dialog_content');
-    showDialog.classList.add('d_none');
+    showDialog.classList.toggle('d_none');
     location.reload();
 }
 
@@ -225,5 +226,9 @@ function mobileContactInfo() {
 
 function showEditandDeleteBtn() {
   let showOption = document.getElementById('showOption_content');
-  showOption.classList.toggle('d_none_mobile');
+  showOption.classList.toggle('d_none');
+}
+
+function protection(event) {
+    event.stopPropagation()
 }

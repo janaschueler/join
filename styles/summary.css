@@ -5,6 +5,10 @@
     margin-top: 40px;
 }
 
+body {
+    background-color: rgb(246, 247, 248) !important;
+}
+
 .summary_header {
     width: 100%;
     display: flex;

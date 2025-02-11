@@ -49,9 +49,9 @@ function templateBigContacts(currentDatas) {
             <span class="categoryLine">Email</span>
             <a class="emailLink" href="mailto:${currentDatas.email}">${currentDatas.email}</a>
             <span class="categoryLine">Phone</span>
-            <a class="phoneLink" href="tel:${currentDatas.phone}">${currentDatas.phone}</a>
+            <a class="phoneLink" href="tel:${currentDatas.phone}">+49 ${currentDatas.phone}</a>
           </div>
-          <div id="showOption_content" class="option_main d_none_mobile">
+          <div id="showOption_content" class="option_main d_none">
             <div class="option_area">
               <button onclick="openEditDialog('${currentDatas.id}')" class="option_btn">
                 <img src="./assets/icons/edit.svg" alt="">

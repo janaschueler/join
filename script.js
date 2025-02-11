@@ -13,5 +13,15 @@ function showDesktopMenu() {
   deskMenuRef.classList.toggle('d_none'); 
 }
 
+function renderTopBarSummary() {
+  let topBarRef = document.getElementById('topbar_summary');
+  topBarRef.innerHTML += templateTopBar(); 
+}
+
+function renderTopBarContact() {
+  let topBarRef = document.getElementById('topbar_contact');  
+  topBarRef.innerHTML += templateTopBar();
+}
+  
 
 
