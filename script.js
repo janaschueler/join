@@ -9,9 +9,10 @@ function showDesktopMenu() {
   deskMenuRef.classList.toggle("d_none");
 }
 
-function renderTopBarSummary() {
+async function renderTopBarSummary() {
+  logedInUser = await getSigneInUserData();
   let topBarRef = document.getElementById("topbar_summary");
-  let contactAbbreviation = logedInUser.contactAbbreviation.join('');
+  let contactAbbreviation = logedInUser.contactAbbreviation.join("");
   console.log(contactAbbreviation);
 
   if (!contactAbbreviation) {
@@ -28,8 +29,47 @@ function renderTopBarContact() {
 }
 
 function transfereLoginData(user) {
-  logedInUser.contactEmail.push(user.contactEmail);
-  logedInUser.contactId.push(user.contactId);
-  logedInUser.contactName.push(user.contactName);
-  logedInUser.contactAbbreviation.push(user.contactAbbreviation);
+  postSignedInUserToDatabase(user);
+}
+
+async function guestLogIn() {
+  let guest = {
+    contactAbbreviation: ["G"],
+    contactEmail: [""],
+    contactId: "",
+    contactName: ["Guest"],
+    contactPassword: [""],
+  };
+
+  await postSignedInUserToDatabase(guest);
+  window.location.href = "./index.html";
+}
+
+async function postSignedInUserToDatabase(data = {}) {
+  const url = `${BASE_URL}signedIn/.json`;
+  try {
+    let response = await fetch(url, {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (response.ok) {
+      console.log("Daten erfolgreich gesendet!");
+      return;
+    } else {
+      console.error("Fehler bei der Anfrage:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Fehler beim Posten:", error);
+  }
+}
+
+async function getSigneInUserData() {
+  let response = await fetch(BASE_URL + "signedIn/" + ".json");
+  let logedInUsers = await response.json();
+  console.log(logedInUsers);
+
+  return logedInUsers;
 }
