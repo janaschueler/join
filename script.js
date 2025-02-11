@@ -1,27 +1,35 @@
-/**
- * This function is used to greet someone on the comand line
- *
- * @param {string} name - this is the dame of the person that you want ot greet
- */
+logedInUser = { contactEmail: [], contactPassword: [], contactId: [], contactName: [], contactAbbreviation: [] };
 
 function greet(name) {
   console("hallo" + name);
 }
 
 function showDesktopMenu() {
-  let deskMenuRef = document.getElementById('deskMenu_content');
-  deskMenuRef.classList.toggle('d_none'); 
+  let deskMenuRef = document.getElementById("deskMenu_content");
+  deskMenuRef.classList.toggle("d_none");
 }
 
 function renderTopBarSummary() {
-  let topBarRef = document.getElementById('topbar_summary');
-  topBarRef.innerHTML += templateTopBar(); 
+  let topBarRef = document.getElementById("topbar_summary");
+  let contactAbbreviation = logedInUser.contactAbbreviation.join('');
+  console.log(contactAbbreviation);
+
+  if (!contactAbbreviation) {
+    contactAbbreviation = "G";
+  }
+  console.log(contactAbbreviation);
+
+  topBarRef.innerHTML += templateTopBar(contactAbbreviation);
 }
 
 function renderTopBarContact() {
-  let topBarRef = document.getElementById('topbar_contact');  
-  topBarRef.innerHTML += templateTopBar();
+  let topBarRef = document.getElementById("topbar_contact");
+  topBarRef.innerHTML += templateTopBar(contactAbbreviation);
 }
-  
 
-
+function transfereLoginData(user) {
+  logedInUser.contactEmail.push(user.contactEmail);
+  logedInUser.contactId.push(user.contactId);
+  logedInUser.contactName.push(user.contactName);
+  logedInUser.contactAbbreviation.push(user.contactAbbreviation);
+}
