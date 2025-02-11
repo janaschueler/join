@@ -1,13 +1,13 @@
-function templateTopBar() {
-    return ` <div class="top_bar_area">
+function templateTopBar(AB) {
+  return ` <div class="top_bar_area">
           <img class="top_bar_logo" src="./assets/icons/join_logo_desktop.svg" alt="">
           <span class="top_bar_span">Kanban Project Management Tool</span>
           <div class="user_main">
             <a class="help_info">
               <img src="./assets/icons/help.svg" alt="">
             </a>
-            <button onclick="showDesktopMenu()" class="user_profil" href="">
-              <span>SM</span>
+            <button onclick="showDeasktopMenu()" class="user_profil" href="">
+              <span>${AB}</span>
             </button>
           </div>
         </div>
@@ -26,5 +26,5 @@ function templateTopBar() {
               <a class="dialog_links" href="">Log out</a>
             </div>
           </div>
-        </div>`
+        </div>`;
 }
