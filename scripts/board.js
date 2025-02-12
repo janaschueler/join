@@ -147,13 +147,13 @@ function determinePriotiry(priority) {
   priority = priority.trim();
 
   if (priority === "low") {
-    priority = "./assets/icons/priority_low.svg";
+    priority = "../assets/icons/priority_low.svg";
   }
   if (priority === "medium") {
-    priority = "./assets/icons/priority_medium.svg";
+    priority = "../assets/icons/priority_medium.svg";
   }
   if (priority === "urgent") {
-    priority = "./assets/icons/priority_high.svg";
+    priority = "../assets/icons/priority_high.svg"; 
   }
   return priority;
 }

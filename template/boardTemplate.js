@@ -38,7 +38,7 @@ function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate) {
             </div>
             <div class="listDiscription">
               <h1 class="mobileHeadline" >${allTodos["title"]}</h1> 
-              <span class="descriptionCopy">${allTodos["description"]}</span>
+              <span class="descriptionCopyModal">${allTodos["description"]}</span>
             </div>
             <table class="contentmodlaTask">
               <tr>
