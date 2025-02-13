@@ -88,6 +88,238 @@ h1 {
   justify-content: space-between;
 }
 .priority button {
+  /* Standard-Styles *aller* Priority-Buttons */
+  padding: 8px 12px;
+  border: 1px solid #ccc; /* Standard-Rahmen */
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px; /* Abstand zwischen den Buttons */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 140px;
+  background-color: white; /* Standard-Hintergrund */
+  color: black;          /* Standard-Textfarbe */
+}
+
+.priority button img {
+    margin-left: 10px;
+}
+
+.priority button:hover {
+    background-color: #ddd; /* Etwas dunkler beim Hover */
+}
+
+/* .selected-Klasse: Überschreibt *nur*, was sich ändert */
+.priority button.selected {
+  border-width: 2px; /* Dickere Border */
+  font-weight: bold; /* Fettschrift */
+    /* KEINE Farben hier! */
+}
+
+/* Spezifische Farben für die ausgewählten Zustände */
+.priority button.selected.urgent {
+  background-color: #FF3D00; /* Rot */
+  border-color: #FF3D00;    /* Roter Rahmen */
+  color: white;             /* Weiße Schrift */
+}
+.priority button.selected.urgent img{
+    content: url(assets/icons/urgent-white.svg);
+}
+
+.priority button.selected.medium {
+  background-color: #FFA800; /* Orange */
+  border-color: #FFA800;
+  color: white;
+}
+.priority button.selected.medium img{
+    content: url(assets/icons/medium-white.svg);
+}
+
+.priority button.selected.low {
+  background-color: #7AE229; /* Grün */
+  border-color: #7AE229;
+  color: white;
+}
+.priority button.selected.low img{
+    content: url(assets/icons/low-white.svg);
+}
+.add-subtask {
+  display: flex;
+  gap: 5px;
+}
+
+.side1,
+.side2 {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+}
+
+
+.task-form {
+  padding: 20px;
+  border-radius: 10px;
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  margin-top: 50px;
+}
+
+
+#assigned option {
+  display: flex; 
+  align-items: center; 
+  padding: 5px; 
+}
+
+#assigned option > div{ 
+  display: flex;
+  align-items: center;
+}
+
+
+#assigned .circle {
+  margin-right: 8px; 
+
+}
+
+.addTaskSection {
+  margin-top: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+.taskButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  gap: 10px;
+}
+
+.taskButton img {
+  width: 20px;
+ 
+}
+.divider {
+  width: 1px;
+  background-color: #ccc;
+  height: 30%;
+
+
+}
+
+.addTaskButton {
+  margin-top: 3rem;
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 25%;
+}
+
+
+.taskButton:nth-child(2) {
+  background-color: rgba(42, 54, 71, 1) !important;
+  color: rgba(255, 255, 255, 1) !important;
+  border: none;
+  outline: none;
+  padding: 15px 16px;
+  border-radius: 8px;
+  gap: 10px;
+}
+
+.taskButton:nth-child(2):hover {
+  background-color: rgba(41, 171, 226, 1) !important;
+}
+
+.taskButton {
+  padding: 12px;
+  font-family: "Inter 18pt";
+  font-weight: bold;
+  margin: 12px;
+  border-radius: 5px;
+}
+
+
+/* styles/addtask.css  (or your appropriate stylesheet) */
+
+.priority button {
+  /* Default styles for all priority buttons */
+
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  margin-right: 5px; /* Add some spacing between buttons */
+  display: flex;
+  align-items: center; /* Center the icon and text vertically */
+  justify-content: space-between;
+  width: 140px;
+}
+
+.priority button img {
+  margin-left: 10px;
+}
+
+.priority button:hover {
+  /* Styles for when hovering over a button */
+  background-color: #ddd; /* Slightly darker gray on hover */
+}
+
+.priority button.selected {
+  /* Styles for the selected button */
+  border: 2px solid #29abe2;
+  background-color: #2a3647;
+  color: white;
+  font-weight: bold; /* Make the text bold */
+}
+
+.priority button.selected.urgent {
+  background-color: #FF4141; /* Red for urgent */
+  border: 2px solid #FF4141;
+}
+
+.priority button.selected.medium {
+  background-color: #FFAA2A; /* Orange for medium */
+  border: 2px solid #FFAA2A;
+}
+
+.priority button.selected.low {
+  background-color: #90EE90; /* Light green for low */
+  border: 2px solid #90EE90;
+}
+
+h1 {
+  margin-bottom: 5rem;
+  display: flex;
+  align-self: flex-start;
+  font-size: 4rem !important;
+}
+.task-form label {
+
+  align-self: flex-start;
+}
+.task-form input,
+.task-form textarea,
+.task-form select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.priority {
+  display: flex;
+  justify-content: space-between;
+}
+.priority button {
   padding: 8px 12px;
   border: none;
   border-radius: 5px;
@@ -103,11 +335,31 @@ h1 {
 .low {
   background-color: white;
 }
-.add-subtask {
+
+
+
+
+/* Wichtig für das Aussehen in der Auswahlliste */
+#assigned option {
+  display: flex; /* Flexbox für das Layout */
+  align-items: center; /* Vertikal zentrieren */
+  padding: 5px; /* Etwas Padding */
+}
+/*damit es einheitlich aussieht*/
+#assigned option > div{ 
   display: flex;
-  gap: 5px;
+  align-items: center;
 }
 
+/*Stlyes für die Kreise*/
+#assigned .circle {
+  margin-right: 8px; /* Abstand zwischen SVG und Text */
+  /* Weitere Styles für das SVG (Größe, Farbe, etc.) */
+}
+.small_circle{
+    width: 20px;
+    height: 20px;
+}
 .side1,
 .side2 {
   flex: 1;
@@ -115,4 +367,89 @@ h1 {
   align-items: center;
   flex-direction: column;
   gap: 15px;
+}
+
+
+/* Für Tablets (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .task-form {
+    width: 80%; /* Breiter auf Tablets */
+    flex-direction: column; /* Stapeln von Side1 & Side2 */
+    gap: 20px;
+  }
+
+  .divider {
+    display: none; /* Trennlinie ausblenden */
+  }
+
+  .addTaskButton {
+    margin-left: 0;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  h1 {
+    font-size: 3rem !important;
+    margin-bottom: 3rem;
+    margin-left: 5%
+  }
+}
+
+/* Für Smartphones (max-width: 768px) */
+@media (max-width: 768px) {
+  body {
+    background: white !important; /* Hellere Farbe für kleinere Bildschirme */
+  }
+
+  .task-form {
+    width: 95%;
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .side1,
+  .side2 {
+    width: 100%; /* Volle Breite */
+    gap: 10px;
+  }
+
+  .priority button {
+    width: 100%; /* Buttons über die volle Breite */
+    justify-content: center;
+  }
+
+  .add-subtask input {
+    width: 70%;
+  }
+
+  .add-subtask button {
+    padding: 8px;
+  }
+
+  .addTaskButton {
+    flex-direction: column; /* Buttons übereinander */
+    gap: 10px;
+    align-items: center;
+  }
+
+  h1 {
+    font-size: 2.5rem !important;
+    text-align: center;
+  }
+}
+
+/* Ultra-small Devices (max-width: 480px) */
+@media (max-width: 480px) {
+  .taskButton {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .priority button img {
+    width: 16px;
+  }
+
+  h1 {
+    font-size: 2rem !important;
+  }
 }
