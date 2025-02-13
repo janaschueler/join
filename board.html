@@ -62,18 +62,24 @@
       <main class="main_content">
         <section id="topbar_summary" class="top_bar_main">        
         </section>
+        <!-- <section class="BoardContentContainer"> -->
         <section class="headerContainer">
           <div class="headerBoard">
             <div class="headerBoardTitle">
               <h1>Board</h1>
-              <button class="primaryAddButton"></button>
+              <button class="primaryAddButton headerBoardButton"></button>
             </div>
-            <div class="searchContainer">
-              <form id="searchForm" class="form-inline my-2 my-lg-0 d-flex">
-                <input id="searchInput" class="form-control mr-sm-2 iconSearch" type="search" placeholder="Find task" aria-label="Add task" />
-                <button class="btn btn-outline-success my-2 my-sm-0 primaryButton" type="submit">Add task<img class="iconAdd" src="./assets/icons/add.svg" alt="add button" /></button>
+
+          <div class="searchContainer">
+            <form id="searchForm" class="form-inline my-2 my-lg-0 d-flex">
+                <div class="input-wrapper">
+                <input id="searchInput" class="form-control"  type="search" placeholder="Find task" aria-label="Add task" />
+                <button  class="iconSearch searchButton" type="submit"></button>
+              </div>
               </form>
+                <button class="primaryButton headerBoardButton" type="submit">Add task<img class="iconAdd" src="./assets/icons/add.svg" alt="add button" /></button>            </form>
           </div>
+
           </div>
         </section>
 
@@ -85,7 +91,7 @@
                     <div class="listHeader">
                       <h2 class="list-title">To do</h2>
                       <button class="secondaryAddButton">
-                        <svg class="icon" width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="icon" width="15" height="15" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M5 1.5V9.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                           <path d="M9 5.57544L1 5.57544" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                         </svg>
@@ -105,7 +111,7 @@
                     <div class="listHeader">
                       <h2 class="list-title">In progress</h2>
                       <button class="secondaryAddButton">
-                        <svg class="icon" width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="icon" width="15" height="15" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M5 1.5V9.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                           <path d="M9 5.57544L1 5.57544" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                         </svg>
@@ -124,7 +130,7 @@
                     <div class="listHeader">
                       <h2 class="list-title">Testing</h2>
                       <button class="secondaryAddButton">
-                        <svg class="icon" width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="icon" width="15" height="15" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M5 1.5V9.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                           <path d="M9 5.57544L1 5.57544" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                         </svg>
@@ -143,7 +149,7 @@
                     <div class="listHeader">
                       <h2 class="list-title">Done</h2>
                       <button class="secondaryAddButton">
-                        <svg class="icon" width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="icon" width="15" height="15" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M5 1.5V9.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                           <path d="M9 5.57544L1 5.57544" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                         </svg>
@@ -158,9 +164,9 @@
               </li>
             </ol>
         </section>
-        <section id="taskSummaryModal" class="modal-backdrop" >
+        <section id="taskSummaryModal" class="modal-backdrop" onclick="closeModal(event)">
         </section>
-
+      </section>
       </main>
       <section class="mobile_main">
         <div class="task_bar_mobile">

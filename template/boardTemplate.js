@@ -8,7 +8,7 @@ function generateToDoHTML(allTodos, priorityIcon, numberOfSubtasks, progressOfPr
                           <span class="descriptionCopy">${allTodos["description"]} </span>
                         </div>
                         <div>
-                          <div id="progressContainer" class="progressContainer">
+                          <div id="progressContainer${allTodos["id"]}" class="progressContainer">
                             <div class="progress-bar" role="progressbar" style="width: ${progressOfProgressbar}%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                             <span class="sr-only">1/${numberOfSubtasks} Subtasks</span>
                         </div>
@@ -29,7 +29,7 @@ function generateAssigneeCircle(assigneeAbbreviation, assingeeColor) {
 }
 
 function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate) {
-  return ` <div id="modalTaskSummary" class="summaryTaskContainer">
+  return ` <div id="modalTaskSummary" class="summaryTaskContainer modal">
             <div class="ModalheaderContainer">
               <div class="category" style="background-color:red;">
               <span>${allTodos["category"]}</span>
@@ -98,7 +98,7 @@ function generateAddTask(allTodos, priorityIcon) {
               <div class="category" style="background-color:red;">
               <span>${allTodos["category"]}</span>
               </div>
-              <button onclick="closeModal()"  type="button" class="ModalCloseButton"></button>
+              <button onclick="closeModal(event)" type="button" class="ModalCloseButton"></button>
             </div>
             <div class="listDiscription">
               <h1 class="mobileHeadline" >${allTodos["title"]}</h1> 

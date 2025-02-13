@@ -4,30 +4,25 @@ body {
 }
 
 .task-form {
-  padding: 20px;
-  border-radius: 10px;
-  width: 40%;
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: 50px;
   margin-top: 50px;
+  flex-direction: row;
+}
+
+.red {
+  color: red;
+  font-weight: 200;
 }
 
 .addTaskSection {
-  margin-top: 5rem;
+  margin-top: 64px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-}
-
-.taskButton {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  gap: 10px;
+  margin-left: 5%;
 }
 
 .taskButton img {
@@ -36,9 +31,8 @@ body {
 .divider {
   width: 1px;
   background-color: #ccc;
-  height: 30%;
+  height: 60%;
   position: absolute;
-  left: 55%;
   transform: translateX(-50%);
 }
 
@@ -49,8 +43,6 @@ body {
   justify-content: space-between;
   margin-left: 25%;
 }
-
-
 
 .taskButton:nth-child(2) {
   background-color: rgba(42, 54, 71, 1) !important;
@@ -81,7 +73,6 @@ h1 {
   font-size: 4rem !important;
 }
 .task-form label {
-  font-weight: bold;
   align-self: flex-start;
 }
 .task-form input,

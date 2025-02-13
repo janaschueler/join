@@ -12,7 +12,6 @@ function addTask() {
     const subtasksInputs = document.querySelectorAll(".add-subtask input");
     const subtasks = Array.from(subtasksInputs).map(input => input.value.trim()).filter(value => value !== "");
 
-
     let priority = document.querySelector(".priority .selected")?.textContent || "Medium";
 
     if (!title || !dueDate || !category) {

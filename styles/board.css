@@ -2,6 +2,11 @@ body {
   background: rgb(246, 247, 248) !important;
 }
 
+.left-main-bar.collapsed {
+  width: 80px; /* Die Breite, wenn die Sidebar eingeklappt ist */
+}
+
+
 .headerContaine {
   display: flex;
 }
@@ -19,8 +24,8 @@ body {
   height: 40px;
 }
 
-.headerBoard button {
-  width: 250px;
+.headerBoardButton {
+  width: 150px;
   display: flex;
   align-items: center;
   height: 40px;
@@ -29,7 +34,7 @@ body {
   margin-right: 5%;
 }
 
-.headerBoard button:hover {
+.headerBoardButton:hover {
   background-color: rgba(41, 171, 226, 1) !important;
   border-color: rgba(41, 171, 226, 1) !important;
 }
@@ -38,13 +43,44 @@ main {
   flex: 1;
 }
 
+.searchButton {
+  width: 50px;
+  height: 40px;
+  position: relative;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
 .iconSearch {
   background-image: url(../assets/icons/horizontalline.svg), url(../assets/icons/search.svg);
-  background-size: 2px, 16px;
   background-repeat: no-repeat, no-repeat;
-  margin-right: 20px;
   background-position-y: center;
-  background-position-x: 80%, 90%;
+  background-position-x: 10%, 50%;
+  background-size: 1.5px, 15px;
+  z-index: 5;
+}
+
+.searchButton:hover::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
+  z-index: 4;
+}
+
+#searchInput::-webkit-search-cancel-button {
+  display: none;
+}
+
+#searchInput:focus {
+  border: 1px solid rgba(41, 171, 226, 1);
+  box-shadow: none;
 }
 
 .primaryButton img {
@@ -62,7 +98,7 @@ form {
 #board {
   display: flex;
   flex-wrap: nowrap;
-  overflow-x: auto;
+  overflow: auto;
   gap: 16px;
   scroll-behavior: smooth;
   list-style-type: none;
@@ -85,11 +121,13 @@ h2 {
 
 .listContainer {
   flex: 0 0 auto;
-  min-width: 252px;
-  max-width: 252px;
+  width: 280px;
   margin-left: 32px;
   margin-right: 8px;
   flex-shrink: 0;
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hide;
 }
 
 .main_bar {
@@ -97,7 +135,7 @@ h2 {
 }
 
 .canvasContainer {
-  overflow-x: auto;
+  overflow: auto;
   white-space: nowrap;
   margin-left: 2%;
 }
@@ -123,6 +161,7 @@ h2 {
   font-size: 0px;
   background-color: rgb(246, 247, 248);
   border-radius: 8px;
+  padding: 0px 4px 0px 4px;
 }
 
 .secondaryAddButton .icon {
@@ -170,19 +209,22 @@ ol {
   background-color: white;
   border-radius: 20px;
   padding: 15px;
-  margin-top: 16px;
-  margin-bottom: 16px;
   text-align: center;
   color: rgb(7, 36, 46);
   box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.08);
   white-space: normal;
   word-wrap: break-word;
+  margin: 16px 4px;
+}
+
+.listContainerContent:hover {
+  box-shadow: 0 0 4px rgba(41, 171, 226, 1);
 }
 
 .searchContainer {
   display: flex;
-  align-items: center;
   margin-top: 16px;
+  gap: 16px;
 }
 
 .titleCopy,
@@ -349,12 +391,59 @@ input {
   background-position-x: 0%;
 }
 
-#taskSummaryModal {
-  display: none;
+#modalTaskSummary {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateX(100%); 
+  display: block;
+  width: 40%;
+  max-width: 500px;
+  height: auto;
+  background-color: white;
+  border-radius: 20px;
+  padding: 24px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  word-wrap: break-word;
+  visibility: hidden; 
+  opacity: 0; 
+  transition: opacity 0.3s ease, transform 0.3s ease; 
+}
+
+#modalTaskSummary.show {
+  visibility: visible;
+  opacity: 1;
+  transform: translate(-50%, -50%) translateX(0);
+}
+
+#modalTaskSummary.hide {
+  visibility: visible;
+  opacity: 0;
+  transform: translate(-50%, -50%) translateX(100%); 
 }
 
 #taskSummaryModal {
-  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+  visibility: hidden; 
+  opacity: 0;
+  transition: opacity 0.3s ease; 
+}
+
+#taskSummaryModal.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+#taskSummaryModal.hide {
+  visibility: hidden;
+  opacity: 0;
 }
 
 .ModalCloseButton {
@@ -369,29 +458,7 @@ input {
   background-position: center;
 }
 
-#modalTaskSummary {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: var(--bs-modal-zindex);
-  display: block;
-  width: 40%;
-  height: auto; /* Passe die Höhe bei Bedarf an */
-  overflow-x: hidden;
-  overflow-y: auto;
-  outline: 0;
-  background-color: white;
-  border-radius: 20px;
-  padding: 24px;
-  margin-top: 16px;
-  margin-bottom: 16px;
-  color: rgb(7, 36, 46);
-  box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.08);
-  white-space: normal;
-  word-wrap: break-word;
-  width: 500px;
-}
+
 
 li {
   list-style-type: none;
@@ -485,10 +552,6 @@ table td:first-child {
   font-weight: 400;
 }
 
-.modal-backdrop {
-  background-color: rgba(0, 0, 0, 0.5) !important ;
-}
-
 .customCheckboxContainer {
   display: flex;
   align-items: center;
@@ -552,13 +615,31 @@ table td:first-child {
   margin-top: 8px;
 }
 
+.input-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.input-wrapper input {
+  padding-right: 40px;
+}
+
+.input-wrapper button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
 @media (max-width: 1500px) {
   .headerBoard {
     justify-content: flex-start;
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 998px) {
   .headerBoard {
     justify-content: flex-start;
   }
@@ -569,13 +650,11 @@ table td:first-child {
     width: 100%;
   }
 
-  .primaryButton {
-    display: none !important;
-  }
 
   .primaryAddButton {
     display: block !important;
   }
+
 
   .headerBoardTitle {
     display: flex;
@@ -590,11 +669,22 @@ table td:first-child {
   }
 
   .searchContainer {
-    width: 40%;
+    width: 30%;
+  }
+
+  
+  .headerBoardButton {
+    margin-top: 6px;
+    width: 220px;
   }
 }
 
 @media (max-width: 768px) {
+
+  .primaryButton {
+    display: none !important;
+  }
+
   #modalTaskSummary {
     width: 95%;
     max-width: 500px;
@@ -604,6 +694,7 @@ table td:first-child {
     min-width: 100vw;
     width: 100% !important;
   }
+
 }
 
 @media (max-width: 500px) {
@@ -627,7 +718,7 @@ table td:first-child {
     margin-right: 0 !important;
   }
 
-  .headerBoard button {
+  .headerBoardButton {
     margin-right: 5%;
   }
 

@@ -98,7 +98,7 @@
         <h1>Add Task</h1>
         <form class="task-form">
           <div class="side1">
-            <label for="inputField">Title*</label>
+            <label for="inputField">Title<span class="red">*</span></label>
             <input id="inputField" type="text" placeholder="Enter a title" required>
 
             <label for="description">Description</label>
@@ -111,7 +111,7 @@
           </div>
           <div class="divider"></div>
           <div class="side2">
-            <label for="due-date">Due date*</label>
+            <label for="due-date">Due date<span class="red">*</span></label>
             <input type="date" id="due-date" required>
 
             <label>Priority</label>
@@ -127,16 +127,20 @@
               </button>
             </div>
 
-            <label for="category">Category*</label>
-            <select id="category" required>
-              <option>Select task category</option>
-            </select>
+            <label for="category">Category<span class="red">*</span></label>
+            <input list="listOfTaskCategries" id="category" name="category" />
+            <datalist id="listOfTaskCategries">
+              <option value="UX/UI"></option>
+              <option value="Bug"></option>
+              <option value="Feature"></option>
+            </datalist>
 
-            <label>Subtasks</label>
-            <div class="add-subtask">
-              <input type="text" placeholder="Add new subtask">
-              <button type="button">+</button>
-            </div>
+            <label for="Subtasks">Subtasks<span class="red">*</span></label>
+            <input list="listOfTasksOptions" id="Subtasks" name="Subtasks" />
+            <datalist id="listOfTasksOptions">
+              <option value="Subtask"></option>
+            </datalist>
+
           </div>
         </form>
 
