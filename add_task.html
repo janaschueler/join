@@ -79,7 +79,7 @@
                 <h1>Add Task</h1>
                 <form class="task-form">
                     <div class="side1">
-                      <label for="inputField">Title*</label>
+                      <label for="inputField"><span class="red">*</span></label>
                       <input id="inputField" type="text" placeholder="Enter a title" required>
                         
                         <label for="description">Description</label>
@@ -92,7 +92,7 @@
                     </div>
                     <div class="divider"></div>
                     <div class="side2">
-                        <label for="due-date">Due date*</label>
+                        <label for="due-date">Due date<span class="red">*</span></label>
                         <input type="date" id="due-date" required>
                         
                         <label>Priority</label>
@@ -108,33 +108,32 @@
                             </button>
                         </div>
                         
-                        <label for="category">Category*</label>
+                        <label for="category">Category<span class="red">*</span></label>
                         <select id="category" required>
                             <option class="option" value="">Select task category</option>
                             <option class="option" value="technical">Technical Task</option>  <option value="user-story">User Story</option></select>
-                        
-                      
-                            <label for="category">Subtasks</label>
-                            <input type="text" id="new-subtask-input" placeholder="add new sub task">
-                            <button type="button" onclick="addSubtask()">
-                              <img src="assets/icons/addsubtask.svg" alt="">
-                            </button>
                             
-                            <div id="subtasks-container"></div>
+
+                            <label for="category">Subtasks</label>
+                            <div class="input-wrapper">
+                            <input type="text" id="new-subtask-input" placeholder="add new sub task">
+                            <button class="iconAdd" type="button" onclick="addSubtask()">
+                            </button>
+                          </div>
+                            <div id="subtasks-container">
+                          </div>
+
                             <div id="contacts-list"> </div>
-                       
-                              
-            
                 <div class="addTaskButton">
                     <button onclick="clearForm()" class="taskButton">Clear
                       <img src="assets/icons/close.svg" alt="">
                     </button> 
-
                     <button type="button" onclick="addTask()" class="taskButton">
                              Create Task
                      <img src="assets/icons/check.svg" alt="">
                           </button>
                 </div>
+              </form>
             </section>
 
 
@@ -169,5 +168,6 @@
             </section>
           </div>
   <script src="scripts/add-task.js"></script>
+  <script src="./template/template_addTask.js"></script>
 </body>
 </html>

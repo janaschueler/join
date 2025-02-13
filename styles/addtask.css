@@ -1,6 +1,7 @@
 body {
   margin: 0;
   background: rgb(246, 247, 248) !important;
+  overflow: visible;
 }
 
 h1 {
@@ -10,16 +11,20 @@ h1 {
   align-self: flex-start;
 }
 
+.addTaskSection {
+  margin-top: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-left: 5%;
+}
+
 .task-form {
   display: flex;
   justify-content: center;
-  flex-direction: row;
-  align-items: center;
   gap: 50px;
   margin-top: 50px;
-  width: 40%;
-  padding: 20px;
-  border-radius: 10px;
 }
 
 .task-form label {
@@ -33,6 +38,7 @@ h1 {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  position: relative;
 }
 
 .red {
@@ -99,6 +105,11 @@ h1 {
   color: black;
 }
 
+.red {
+  color: red;
+  font-weight: 200;
+}
+
 .priority button img {
   margin-left: 10px;
 }
@@ -113,8 +124,8 @@ h1 {
 }
 
 .priority button.selected.urgent {
-  background-color: #FF3D00;
-  border-color: #FF3D00;
+  background-color: #ff3d00;
+  border-color: #ff3d00;
   color: white;
 }
 
@@ -123,8 +134,8 @@ h1 {
 }
 
 .priority button.selected.medium {
-  background-color: #FFA800;
-  border-color: #FFA800;
+  background-color: #ffa800;
+  border-color: #ffa800;
   color: white;
 }
 
@@ -133,8 +144,8 @@ h1 {
 }
 
 .priority button.selected.low {
-  background-color: #7AE229;
-  border-color: #7AE229;
+  background-color: #7ae229;
+  border-color: #7ae229;
   color: white;
 }
 
@@ -142,26 +153,169 @@ h1 {
   content: url(assets/icons/low-white.svg);
 }
 
-.addTaskSection {
-  margin-top: 5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
 .add-subtask {
   display: flex;
   gap: 5px;
 }
 
+.input-wrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.input-wrapper input {
+  padding-right: 40px;
+}
+
+.input-wrapper button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+#searchInput::-webkit-search-cancel-button {
+  display: none;
+}
+
+#searchInput:focus {
+  border: 1px solid rgba(41, 171, 226, 1);
+  box-shadow: none;
+}
+
+.iconAdd {
+  background-image: url(../assets/icons/addthin.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px;
+  width: 32px;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+}
+
+.iconAdd:hover::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
+  z-index: 4;
+}
+
+.formateList {
+  margin-left: 24px;
+  margin-top: 8px;
+}
+
+.editSubtask {
+  width: 64px;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+#subtasks-container .input-wrapper:hover .editIconSubtask,
+#subtasks-container .input-wrapper:hover .lineSubtask,
+#subtasks-container .input-wrapper:hover .deleteSubtask {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editIconSubtask {
+  display: none;
+  position: absolute;
+  background-image: url(../assets/icons/edit.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px;
+  width: 56px;
+  height: 12px;
+  margin-right: 12px;
+}
+
+#subtasks-container .input-wrapper:hover::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 0;
+  width: 100%;
+  height: 25px;
+  border-radius: 4px;
+  background-color: rgba(128, 128, 128, 0.1); /* Grauer, halbtransparenter Hintergrund */
+  z-index: 4;
+}
+
+.lineSubtask {
+  display: none;
+  position: absolute;
+  background-image: url(../assets/icons/verticalLine.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+  width: 1px;
+  height: 16px;
+  margin-right: -8px;
+  align-self: center;
+}
+
+#subtasks-container .input-wrapper .deleteSubtask {
+  display: none;
+}
+
+.deleteSubtask {
+  position: absolute;
+  background-image: url(../assets/icons/delete.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px;
+  width: 32px;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+}
+
+
+
 .side1,
 .side2 {
   flex: 1;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 15px;
+  max-width: 400px;
+  position: relative;
+}
+
+label {
+  margin-top: 20px;
+  margin-bottom: 8px;
 }
 
 .divider {
