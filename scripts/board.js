@@ -32,8 +32,6 @@ async function getDataTasks(path = "") {
       status: determinStatus(key, task.status),
     });
   }
-  console.log(tasks);
-
   return tasks;
 }
 
@@ -81,7 +79,6 @@ function determinStatus(key, status) {
 async function addStatus(key, status) {
   try {
     await postToDatabase(key, "/status", status);
-    console.log("Status erfolgreich gesetzt");
   } catch (error) {
     console.error("Fehler beim Setzen des Status:", error);
     throw error;
@@ -99,7 +96,6 @@ async function postToDatabase(path1 = "", path2 = "", data = {}) {
       body: JSON.stringify(data),
     });
     if (response.ok) {
-      console.log("Daten erfolgreich gesendet!");
       return;
     } else {
       console.error("Fehler bei der Anfrage:", response.statusText);
@@ -136,8 +132,8 @@ function renderTask(task, container) {
 
   container.innerHTML += generateToDoHTML(task, priorityIcon, numberOfSubtasks, progressOfProgressbar);
 
-  if (numberOfSubtasks === 0) {
-    document.getElementById("progressContainer").style.display = "none";
+  if (!numberOfSubtasks) {
+    document.getElementById(`progressContainer${task.id}`).style.display = "none";
   }
   injectAssignees(task);
 }
@@ -147,13 +143,13 @@ function determinePriotiry(priority) {
   priority = priority.trim();
 
   if (priority === "low") {
-    priority = "./assets/icons/priority_low.svg";
+    priority = "../assets/icons/priority_low.svg";
   }
   if (priority === "medium") {
-    priority = "./assets/icons/priority_medium.svg";
+    priority = "../assets/icons/priority_medium.svg";
   }
   if (priority === "urgent") {
-    priority = "./assets/icons/priority_high.svg";
+    priority = "../assets/icons/priority_high.svg";
   }
   return priority;
 }
@@ -286,34 +282,64 @@ function getContainerIdByStatus(status) {
   }
 }
 
-function closeModal() {
-  document.getElementById("taskSummaryModal").style.display = "none";
+function loadTaskSummaryModal(id) {
+  return new Promise((resolve, reject) => {
+    let summaryModal = document.getElementById("taskSummaryModal");
+    summaryModal.innerHTML = "";
+
+    let tasks = allTasks.filter((t) => t["id"] === id);
+
+    let task = tasks[0];
+    let formatedDueDate = convertTask(task.dueDate);
+    let priorityIcon = determinePriotiry(task.priority);
+    summaryModal.innerHTML += generateTaskSummaryModal(task, priorityIcon, formatedDueDate);
+
+    injectAssigneeContacts(task);
+    injectSubtasks(task);
+
+    setTimeout(() => {
+      resolve();
+    }, 0);
+  });
 }
 
 function openModal(id) {
-  document.getElementById("taskSummaryModal").style.display = "block";
-  loadTaskSummaryModal(id);
+  loadTaskSummaryModal(id)
+    .then(() => {
+      var modal = document.getElementById("modalTaskSummary");
+      var backdrop = document.getElementById("taskSummaryModal");
+
+      backdrop.style.visibility = "visible";
+      backdrop.style.opacity = "1";
+
+      modal.style.visibility = "visible";
+      modal.classList.remove("hide");
+      modal.classList.add("show");
+         })
+    .catch((error) => {
+      console.error("Fehler beim Laden des Inhalts:", error);
+    });
 }
 
-function loadTaskSummaryModal(id) {
-  let summaryModal = document.getElementById("taskSummaryModal");
-  summaryModal.innerHTML = "";
-  let tasks = allTasks.filter((t) => t["id"] === id);
+function closeModal(event) {
+  var modal = document.getElementById("modalTaskSummary");
+  var backdrop = document.getElementById("taskSummaryModal");
 
-  if (tasks.length === 0) {
-    return;
+  if (!event || event.target === backdrop || event.target.classList.contains("ModalCloseButton")) {
+    modal.classList.add("hide");
+    backdrop.classList.add("hide");
+
+    setTimeout(function () {
+      modal.style.visibility = "hidden";
+      backdrop.style.visibility = "hidden";
+      modal.classList.remove("show");
+    }, 500);
   }
-
-  let task = tasks[0];
-  let formatedDueDate = convertTask(task.dueDate);
-  let priorityIcon = determinePriotiry(task.priority);
-  summaryModal.innerHTML += generateTaskSummaryModal(task, priorityIcon, formatedDueDate);
-
-  injectAssigneeComntacts(task);
-  injectSubtasks(task);
 }
 
-async function injectAssigneeComntacts(tasks) {
+
+
+async function injectAssigneeContacts(tasks) {
   const assigneeContainer = document.getElementById(`assigneeListModal${tasks["id"]}`);
   assigneeContainer.innerHTML = "";
 
@@ -342,7 +368,11 @@ async function injectSubtasks(tasks) {
   subtaskContainer.innerHTML = "";
 
   if (typeof tasks.subtasks === "string") {
-    tasks.subtasks = [tasks.subtasks];
+    tasks.subtasks = [tasks.assignedTo];
+  } else if (typeof tasks.subtasks === "object") {
+    tasks.subtasks = Object.keys(tasks.subtasks);
+  } else if (!tasks.subtasks) {
+    tasks.subtasks = 0;
   }
 
   for (let indexSubtask = 0; indexSubtask < tasks.subtasks.length; indexSubtask++) {
