@@ -1,4 +1,4 @@
-function templateSummary() {
+function templateSummary(currentData) {
     return `
       <div class="summary_main">
           <div class="summary_header">
@@ -17,7 +17,7 @@ function templateSummary() {
                   </svg>
                 </div>
                 <div class="side_info">
-                  <span class="side_number">1</span>
+                  <span class="side_number" id="toDoOne_content"></span>
                   <span class="under_task_word">To-do</span>
                 </div>
               </a>
@@ -26,11 +26,11 @@ function templateSummary() {
                   <svg class="side_img_c" width="38" height="30" viewBox="0 0 38 30" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path d="M4.02832 15.0001L15.2571 26.0662L33.9717 3.93408" stroke-width="7" stroke-linecap="round"
-                      stroke-linejoin="round" />
+                      stroke-linejoin="round"/>
                   </svg>
                 </div>
                 <div class="side_info">
-                  <span class="side_number">1</span>
+                  <span class="side_number" id="toDoFour_content"></span>
                   <span class="under_task_word">done</span>
                 </div>
               </a>
@@ -56,19 +56,19 @@ function templateSummary() {
             <div class="under_task">
               <a class="under_task_area" href="add_task.html">
                 <div class="side_info">
-                  <span class="side_number">5</span>
+                  <span class="side_number" id="toDoBoard_content"></span>
                   <span class="under_task_word">Tasks in <br> board</span>
                 </div>
               </a>
               <a class="under_task_area" href="">
                 <div class="side_info">
-                  <span class="side_number">2</span>
+                  <span class="side_number" id="toDoTwo_content"></span>
                   <span class="under_task_word">Tasks in <br> Progress</span>
                 </div>
               </a>
               <a class="under_task_area" href="add_task.html">
                 <div class="side_info">
-                  <span class="side_number">2</span>
+                  <span class="side_number" id="toDoThree_content"></span>
                   <span class="under_task_word">Tasks in <br> Feedback</span>
                 </div>
               </a>

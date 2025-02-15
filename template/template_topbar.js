@@ -6,7 +6,7 @@ function templateTopBar(AB) {
             <a class="help_info">
               <img src="./assets/icons/help.svg" alt="">
             </a>
-            <button onclick="showDeasktopMenu()" class="user_profil" href="">
+            <button onclick="showDesktopMenu()" class="user_profil" href="">
               <span>${AB}</span>
             </button>
           </div>
