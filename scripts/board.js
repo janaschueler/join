@@ -7,7 +7,7 @@ async function inti() {
   allTasks = await getDataTasks();
   allContacts = await getDataContacts();
   loadBoardContent();
-  renderTopBarSummary();
+  renderTopBar();
 }
 
 async function getDataTasks(path = "") {

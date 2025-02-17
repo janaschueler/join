@@ -102,6 +102,7 @@ async function getData(path = "") {
   let responseToJson = await response.json();
 
   let users = [];
+  
 
   for (let key in responseToJson) {
     let user = responseToJson[key];
@@ -112,15 +113,15 @@ async function getData(path = "") {
       contactId: key,
       contactName: user.contactName,
       contactAbbreviation: user.contactAbbreviation,
-    });
+    });    
   }
 
   return users;
 }
 
 async function initializeCheck() {
-  allUser = await getData();
-  checkLogin();
+  allUser = await getData();   
+ checkLogin();
 }
 
 document.querySelector("#LoginButton").addEventListener("click", function (event) {
@@ -138,7 +139,10 @@ function checkLogin() {
 
   if (user) {
     transfereLoginData(user);
-    window.location.assign("./index.html");
+    setTimeout(() => {
+      window.location.assign("./index.html");
+    }, 1000);
+    
   } else {
     document.getElementById("wrongPassword").classList.remove("d-none");
   }

@@ -1,4 +1,4 @@
-function templateSummary(currentData) {
+function templateSummary(signedInName) {
     return `
       <div class="summary_main">
           <div class="summary_header">
@@ -39,7 +39,7 @@ function templateSummary(currentData) {
               <div class="date_area">
                 <img class="side_img" src="./assets/icons/orange_arrow.svg" alt="">
                 <div class="side_info">
-                  <span class="side_number">1</span>
+                  <span class="side_number" id="urgent_content"></span>
                   <span class="under_task_word">Urgent</span>
                 </div>
               </div>
@@ -48,7 +48,7 @@ function templateSummary(currentData) {
               </div>
               <div class="date_area">
                 <div class="side_info">
-                  <span class="date_number">October 16, 2022</span>
+                  <span class="date_number" id="deadline_content"></span>
                   <span class="under_task_word">Upcoming Deadline</span>
                 </div>
               </div>
@@ -60,7 +60,7 @@ function templateSummary(currentData) {
                   <span class="under_task_word">Tasks in <br> board</span>
                 </div>
               </a>
-              <a class="under_task_area" href="">
+              <a class="under_task_area" href="add_task.html">
                 <div class="side_info">
                   <span class="side_number" id="toDoTwo_content"></span>
                   <span class="under_task_word">Tasks in <br> Progress</span>
@@ -76,7 +76,7 @@ function templateSummary(currentData) {
           </div>
         </div>
         <div class="greetings">
-          <span class="morning">Good morning,</span>
-          <span class="user_name">Sofia Müller</span>
+          <span class="morning" id="greeting_content">Good morning,</span>
+          <span class="user_name">${signedInName}</span>
         </div>`
 }

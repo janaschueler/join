@@ -1,13 +1,11 @@
 const BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
 
 let allUsers = [];
-console.log(allUsers);
-
 let selectedContactId = null;
 
 function init() {
     fetchData();
-    renderTopBarContact()
+    renderTopBar();
     renderSmallContacts();
     renderBigContacts();
 }
