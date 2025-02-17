@@ -221,41 +221,46 @@ function highlightButton(button) {
     button.querySelector("img").src = `assets/icons/${button.classList[0]}-white.svg`;
 }
 
-async function addSubtask() {
+function addSubtask() {
     let subTaskInputRef = document.getElementById("new-subtask-input");
     let subTaskInput = subTaskInputRef.value.trim();
     let subTaskContainer = document.getElementById("subtasks-container");
-
+  
     if (!subTaskInput) {
-        return;
+      return;
     }
-
+  
     if (!subTaskCount) {
-        subTaskCount = 0;
+      subTaskCount = 0;
     }
-
+  
     subTaskCount += 1;
-
-    const subtaskData = { text: subTaskInput };
-    await saveSubtask(subTaskInput);  
-
-    const subtaskElement = document.createElement("div");
-    subtaskElement.id = `subTaskUnit${subTaskCount}`;
-    subtaskElement.classList.add("subtask-item");
-    subtaskElement.innerHTML = `
-        <span class="subtask-text">${subTaskInput}</span>
-        <button onclick="deleteSubtask(${subTaskCount})">X</button>
-    `;
-
-    subTaskContainer.appendChild(subtaskElement);
+  
+    subTaskContainer.innerHTML += addSubtaskTemplate(subTaskInput, subTaskCount);
     subTaskInputRef.value = "";
-}
-
-function deleteSubtask(id) {
+  }
+  
+  function deleteSubtask(id) {
     const removeSubtask = document.getElementById(`subTaskUnit${id}`);
     removeSubtask.remove();
-}
-
+  }
+  
+  function editSubtask(id, subTaskInput) {
+    let editSubtask = document.getElementById(`subTaskUnit${id}`);
+    editSubtask.innerHTML = "";
+    editSubtask.classList.add("editing");
+    editSubtask.innerHTML = addInputField(id, subTaskInput);
+  }
+  
+  function accept(id, subTaskInput) {
+    let subTaskContainer = document.getElementById("subtasks-container");
+  
+    const removeSubtask = document.getElementById(`subTaskUnit${id}`);
+    removeSubtask.remove();
+  
+    subTaskContainer.innerHTML += addSubtaskTemplate(subTaskInput, id);
+  }
+  
 function getRandomColor() {
     const letters = "0123456789ABCDEF";
     let color = "#";
