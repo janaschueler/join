@@ -414,9 +414,9 @@ h1 {
   margin-top: 14px;
 }
 
-/* #subtasks-container .input-wrapper .deleteSubtask {
+#subtasks-container .input-wrapper .deleteSubtask {
   display: none;
-} */
+}
 
 .deleteSubtask {
   position: absolute;

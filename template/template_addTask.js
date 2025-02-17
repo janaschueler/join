@@ -1,6 +1,6 @@
 function addSubtaskTemplate(subTaskInput, id) {
   return `                <div id="subTaskUnit${id}" class="input-wrapper">
-                              <li id="edit${id}" class="formateList subtask-text-item">${subTaskInput}</li>
+                              <li id="edit${id}" class="formateList subtask-text">${subTaskInput}</li>
                               <button id="editBtn${id}" onclick="editSubtask('${id}', '${subTaskInput}')" class="editSubtask">
                                 <span class="editIconSubtask"></span>
                                 <span class="lineSubtask"></span>

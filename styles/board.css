@@ -281,7 +281,14 @@ ol {
   transition: width 0.6s ease !important;
   border-radius: 8px !important;
   height: 10px !important;
-  width: 150px !important;
+}
+
+.limitProgressBar {
+  width: 160px;
+  background-color: rgba(244, 244, 244, 1);  /* Grauer Hintergrund für den "ungemachten" Bereich */
+  border-radius: 8px;
+  height: 10px;
+  overflow: hidden;
 }
 
 .progressContainer {
