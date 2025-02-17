@@ -1,7 +1,11 @@
 body {
   margin: 0;
   background: rgb(246, 247, 248) !important;
+}
 
+main {
+  overflow-y: auto;
+  max-height: 100vh;
 }
 
 h1 {
@@ -54,8 +58,8 @@ h1 {
   font-family: "Inter 18pt";
   font-weight: bold;
   margin: 12px;
-  border-radius: 5px;
-  gap: 10px;
+  border-radius: 10px;
+  gap: 4px;
 }
 
 .taskButton img {
@@ -85,16 +89,12 @@ h1 {
   justify-content: space-between;
   flex: 1;
   margin-left: 10%;
-
-
 }
 
 .addTaskButton .taskButton {
   flex: 1;
-border-radius: 10px;
+  border-radius: 10px;
 }
-
-
 
 .priority {
   display: flex;
@@ -136,13 +136,12 @@ border-radius: 10px;
 .priority button.selected.urgent {
   background-color: #ff3d00;
   border-color: #ff3d00;
-  color: white;
+color: white !important;
 }
 
 .priority button.selected.urgent img {
   content: url(assets/icons/urgent-white.svg);
 }
-
 
 .selected-contacts-container {
   display: flex;
@@ -222,7 +221,6 @@ border-radius: 10px;
   filter: brightness(0) invert(1); /* Falls du das SVG weiß färben willst */
 }
 
-
 .custom-dropdown {
   position: relative;
   width: 100%;
@@ -252,15 +250,6 @@ border-radius: 10px;
   display: block;
 }
 
-.dropdown-option {
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  cursor: pointer;
-}
-
 /* Entfernt die Trennlinie */
 .dropdown-option:hover {
   background-color: #f0f0f0;
@@ -284,19 +273,6 @@ border-radius: 10px;
   font-size: 16px;
   font-weight: 500;
 }
-
-.contact-checkbox {
-  margin-left: 100px; /* Schiebt die Checkbox ganz nach rechts */
-  cursor: pointer;
-}
-
-.contact-svg {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-}
-
-
 
 .add-subtask {
   display: flex;
@@ -359,7 +335,12 @@ border-radius: 10px;
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
+  background-color: rgba(
+    128,
+    128,
+    128,
+    0.2
+  ); /* Grauer, halbtransparenter Hintergrund */
   z-index: 4;
 }
 
@@ -408,7 +389,12 @@ border-radius: 10px;
   width: 100%;
   height: 25px;
   border-radius: 4px;
-  background-color: rgba(128, 128, 128, 0.1); /* Grauer, halbtransparenter Hintergrund */
+  background-color: rgba(
+    128,
+    128,
+    128,
+    0.1
+  ); /* Grauer, halbtransparenter Hintergrund */
   z-index: 4;
 }
 
@@ -449,8 +435,6 @@ border-radius: 10px;
   z-index: 5;
 }
 
-
-
 .side1,
 .side2 {
   flex: 1;
@@ -469,6 +453,34 @@ label {
   height: 60%;
   position: absolute;
   transform: translateX(-50%);
+}
+
+#assigned-select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: white;
+  cursor: pointer;
+  appearance: auto; /* Stellt sicher, dass der Standard-Pfeil sichtbar ist */
+}
+
+.dropdown-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.contact-svg {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.contact-checkbox {
+  margin-left: auto;
+  cursor: pointer;
 }
 
 #assigned option {
@@ -491,16 +503,91 @@ label {
   height: 20px;
 }
 
-@media (max-width: 767px) {
-.task-form {
-  flex-direction: column;
-  width: 100%;
+@media (max-width: 1024px) {
+  .task-form {
+    width: 90%;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .priority {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .addTaskButton {
+    justify-content: center;
+    gap: 15px;
+  }
+
+  h1 {
+    font-size: 3rem !important;
+    margin-bottom: 3rem;
+    margin-left: 5%;
+  }
 }
 
-.divider {
-  display: none;
+@media (max-width: 768px) {
+  .task-form {
+    width: 95%;
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .side1,
+  .side2 {
+    width: 100%;
+    gap: 10px;
+  }
+
+  .priority {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .priority button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .addTaskButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000px;
+    gap: 10px;
+    margin-bottom: 3rem;
+    align-items: center;
+  }
+
+  h1 {
+    font-size: 2.5rem !important;
+    text-align: center;
+  }
 }
 
+@media (max-width: 480px) {
+  .taskButton {
+    font-size: 14px;
+    padding: 10px;
+    width: 100%;
+  }
 
+  .priority button {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
 
+  h1 {
+    font-size: 2rem !important;
+  }
+
+  .task-form {
+    width: 100%;
+  }
 }

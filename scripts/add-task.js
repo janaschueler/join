@@ -9,8 +9,6 @@ function initAddTask() {
     initPriorityButtons();
     fetchContacts();
     fetchSubtasks();
- 
-   
 }
 
 
@@ -25,36 +23,137 @@ function toggleDropdown() {
     dropdownContent.classList.toggle("visible");
 }
 
+
 async function fetchContacts() {
     try {
+        console.log("Lade Kontakte aus Firebase...");
         const response = await fetch(`${BASE_URL}/contacts.json`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
 
-        contacts = Object.entries(data || {}).map(([id, contact]) => ({
+        if (!response.ok) {
+            throw new Error(`Fehler beim Laden der Kontakte! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (!data) {
+            console.warn("Keine Kontakte in Firebase gefunden!");
+            return;
+        }
+
+        contacts = Object.entries(data).map(([id, contact]) => ({
             id,
             name: contact.name || "Unbekannt",
             email: contact.email || "",
             color: contact.color || getRandomColor()
         }));
 
+        console.log("Kontakte erfolgreich geladen:", contacts);
         populateAssignedToSelect(contacts);
     } catch (error) {
         console.error("Fehler beim Abrufen der Kontakte:", error);
     }
 }
 
+async function saveContact(contact) {
+    try {
+        const response = await fetch(`${BASE_URL}/contacts.json`, {
+            method: "POST", // Firebase erstellt eine eigene ID
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(contact)
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fehler beim Speichern des Kontakts: ${response.status}`);
+        }
+
+        console.log("✅ Kontakt gespeichert:", await response.json());
+    } catch (error) {
+        console.error("Fehler beim Speichern des Kontakts:", error);
+    }
+}
+
+
+async function saveSubtask(subtaskText) {
+    try {
+        const response = await fetch(`${BASE_URL}/subtasks.json`, {
+            method: "POST", 
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: subtaskText })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fehler beim Speichern des Subtasks: ${response.status}`);
+        }
+
+        console.log("Subtask gespeichert:", await response.json());
+    } catch (error) {
+        console.error("Fehler beim Speichern des Subtasks:", error);
+    }
+}
+
+
+async function addTask() {
+    const title = document.getElementById("inputField").value.trim();
+    const description = document.getElementById("description").value.trim();
+    const dueDate = document.getElementById("due-date").value.trim();
+    const category = document.getElementById("category").value;
+
+    const selectedCheckboxes = document.querySelectorAll('#assigned-select option:checked');
+    const selectedContactIds = Array.from(selectedCheckboxes).map(option => option.value);
+    const assignedContacts = contacts.filter(contact => selectedContactIds.includes(contact.id));
+
+    if (!title || !dueDate || !category || !selectedPriority) {
+        alert("Bitte alle Pflichtfelder ausfüllen und eine Priorität auswählen.");
+        return;
+    }
+
+    const subtaskItems = document.querySelectorAll(".subtask-text");
+    const subtasks = Array.from(subtaskItems).map(item => item.textContent.trim());
+
+    const taskData = {
+        title,
+        description,
+        assignedTo: assignedContacts,
+        dueDate,
+        category,
+        priority: selectedPriority,
+        subtasks,
+        createdAt: new Date().toISOString(),
+    };
+
+    try {
+        const response = await fetch(`${BASE_URL}/tasks.json`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(taskData)
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
+        }
+
+        console.log("✅ Aufgabe erfolgreich gespeichert:", await response.json());
+        
+        
+        window.location.href = "board.html";
+
+    } catch (error) {
+        console.error("Fehler beim Speichern der Aufgabe:", error);
+        alert("Es gab einen Fehler beim Speichern der Aufgabe. Bitte prüfe die Konsole.");
+    }
+}
+
 async function fetchSubtasks() {
     try {
+        console.log("📡 Lade Subtasks...");
         const response = await fetch(`${BASE_URL}/subtasks.json`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
 
+        if (!response.ok) {
+            throw new Error(`Fehler beim Laden der Subtasks! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
         if (!data) {
+            console.warn("Keine Subtasks in Firebase gefunden!");
             return;
         }
 
@@ -63,11 +162,13 @@ async function fetchSubtasks() {
             text: subtask.text
         }));
 
+        console.log("Subtasks erfolgreich geladen:", subtasks);
         displaySubtasks(subtasks);
     } catch (error) {
         console.error("Fehler beim Abrufen der Subtasks:", error);
     }
 }
+
 
 function initPriorityButtons() {
     const priorityButtons = document.querySelectorAll(".priority button");
@@ -120,7 +221,7 @@ function highlightButton(button) {
     button.querySelector("img").src = `assets/icons/${button.classList[0]}-white.svg`;
 }
 
-function addSubtask() {
+async function addSubtask() {
     let subTaskInputRef = document.getElementById("new-subtask-input");
     let subTaskInput = subTaskInputRef.value.trim();
     let subTaskContainer = document.getElementById("subtasks-container");
@@ -134,6 +235,9 @@ function addSubtask() {
     }
 
     subTaskCount += 1;
+
+    const subtaskData = { text: subTaskInput };
+    await saveSubtask(subTaskInput);  
 
     const subtaskElement = document.createElement("div");
     subtaskElement.id = `subTaskUnit${subTaskCount}`;
@@ -194,8 +298,41 @@ function createContactSVG(contact, size = 32) {
     return svg;
 }
 
+
+function populateAssignedToSelect(contacts) {
+    const selectElement = document.getElementById("assigned-select");
+    if (!selectElement) {
+        console.error("Fehler: Element mit ID 'assigned-select' nicht gefunden!");
+        return;
+    }
+
+    // Standardoption beibehalten
+    selectElement.innerHTML = `<option value="">Select contacts to assign</option>`;
+
+    contacts.forEach((contact) => {
+        const option = document.createElement("option");
+        option.value = contact.id;
+        option.textContent = contact.name;
+        option.dataset.contact = JSON.stringify(contact);
+        selectElement.appendChild(option);
+    });
+}
+
+function handleContactSelection(event) {
+    const selectedContactId = event.target.value;
+    if (!selectedContactId) return;
+
+    const selectedOption = event.target.options[event.target.selectedIndex];
+    const selectedContact = JSON.parse(selectedOption.dataset.contact);
+
+    if (!selectedContact) return;
+
+    updateSelectedContacts(selectedContact, true);
+}
+
 function updateSelectedContacts(contact, isChecked) {
     const selectedContactsContainer = document.getElementById("selected-contacts");
+
     if (isChecked) {
         if (!document.getElementById(`selected-${contact.id}`)) {
             const contactElement = document.createElement("div");
@@ -218,9 +355,10 @@ function removeSelectedContact(contactId) {
     if (contactElement) {
         contactElement.remove();
     }
-    const checkbox = document.querySelector(`input[data-contact-id="${contactId}"]`);
-    if (checkbox) {
-        checkbox.checked = false;
+
+    const selectElement = document.getElementById("assigned-select");
+    if (selectElement) {
+        selectElement.value = "";
     }
 }
 
@@ -228,114 +366,16 @@ function getInitials(name) {
     return name.split(" ").map(word => word[0]).join("").toUpperCase();
 }
 
-
-function addTask() {
-    const title = document.getElementById("inputField").value.trim();
-    const description = document.getElementById("description").value.trim();
-    const dueDate = document.getElementById("due-date").value.trim();
-    const category = document.getElementById("category").value;
-
-    const selectedCheckboxes = document.querySelectorAll('#assigned .dropdown-content input[type="checkbox"]:checked');
-    const selectedContactIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.dataset.contactId);
-    const assignedContacts = contacts.filter(contact => selectedContactIds.includes(contact.id));
-
-    if (!title || !dueDate || !category || !selectedPriority) {
-        alert("Bitte alle Pflichtfelder ausfüllen und eine Priorität auswählen.");
-        return;
+function getRandomColor() {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
     }
-
-    const subtaskItems = document.querySelectorAll(".subtask-text-item");
-    const subtasks = Array.from(subtaskItems).map(item => item.textContent.trim());
-
-    const taskData = {
-        title,
-        description,
-        assignedTo: assignedContacts,
-        dueDate,
-        category,
-        priority: selectedPriority,
-        subtasks,
-        createdAt: new Date().toISOString(),
-    };
-
-    fetch(`${BASE_URL}/tasks.json`, {
-        method: "POST",
-        body: JSON.stringify(taskData),
-        headers: { "Content-Type": "application/json" }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log("Task added:", data);
-        clearForm();
-        window.location.href = "board.html";
-    })
-    .catch(error => {
-        console.error("Error adding task:", error);
-        alert("There was an error adding the task. Please check the console for details.");
-    });
+    return color;
 }
 
-function populateAssignedToSelect(contacts) {
-    const assignedToSelect = document.getElementById("assigned");
-    if (!assignedToSelect) {
-        console.error("Fehler: Element mit ID 'assigned' nicht gefunden!");
-        return;
-    }
-}
-
-
-function populateAssignedToSelect(contacts) {
-    const dropdownContent = document.getElementById("dropdown-content");
-    if (!dropdownContent) {
-        console.error("Fehler: Element mit ID 'dropdown-content' nicht gefunden!");
-        return;
-    }
-
-    // Lösche nur alte Kontakte, aber nicht das Dropdown selbst
-    dropdownContent.innerHTML = "";
-
-    contacts.forEach((contact) => {
-        const label = document.createElement("label");
-        label.classList.add("dropdown-option");
-
-        const optionContent = document.createElement("div");
-        optionContent.classList.add("option-content");
-
-        // SVG-Icon für den Kontakt
-        const contactSVG = createContactSVG(contact, 32);
-
-        // Name des Kontakts
-        const nameSpan = document.createElement("span");
-        nameSpan.textContent = contact.name;
-        nameSpan.classList.add("contact-name");
-
-        // Checkbox für Auswahl
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.value = contact.id;
-        checkbox.dataset.contactId = contact.id;
-        checkbox.classList.add("contact-checkbox");
-        checkbox.addEventListener("change", () => updateSelectedContacts(contact, checkbox.checked));
-
-        const leftContent = document.createElement("div");
-        leftContent.classList.add("dropdown-left");
-        leftContent.appendChild(contactSVG);
-        leftContent.appendChild(nameSpan);
-
-        optionContent.appendChild(leftContent);
-        optionContent.appendChild(checkbox);
-
-        label.appendChild(optionContent);
-        dropdownContent.appendChild(label);
-    });
-}
-
-
+document.addEventListener("DOMContentLoaded", fetchContacts);
 function clearForm() {
     document.getElementById("inputField").value = "";
     document.getElementById("description").value = "";
@@ -349,4 +389,5 @@ function clearForm() {
 
 function init() {
     initAddTask();
+
 }
