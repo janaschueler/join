@@ -17,8 +17,6 @@
   .main_bar {
     display: flex;
     min-height: 100vh;
-    width: min(100%, 1920px);
-    margin-inline: auto;
   }
   
   .left_bar_main {

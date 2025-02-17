@@ -167,17 +167,21 @@ function determinePriotiry(priority) {
 
 function determineProgress(numberOfSubtasks, subtasksStatus) {
   if (!Array.isArray(subtasksStatus) || subtasksStatus.length === 0) {
-    return 0; 
+    return 0;
   }
-  const completedSubtasks = subtasksStatus.filter(status => status === 1).length;
+  const completedSubtasks = subtasksStatus.filter((status) => status === 1).length;
   const progressPercentage = (completedSubtasks / numberOfSubtasks) * 100;
 
-  return Math.round(progressPercentage); 
+  return Math.round(progressPercentage);
 }
 
-function determineNumberCompletetSubtasks (subtasksStatus) {
-  const completedSubtasks = subtasksStatus.filter(status => status === 1).length;
-  return completedSubtasks
+function determineNumberCompletetSubtasks(subtasksStatus) {
+  if (!subtasksStatus) {
+    return;
+  }
+  const completedSubtasks = subtasksStatus.filter((status) => status === 1).length;
+
+  return completedSubtasks;
 }
 
 async function injectAssignees(task) {
@@ -191,11 +195,14 @@ async function injectAssignees(task) {
       assigneeContainer.innerHTML += generateAssigneeCircle(assigneeAbbreviation, assigneeColor);
     });
   } else {
-    console.error("assignedTo ist kein Array");
+    return;
   }
 }
 
 function getAssigneeAbbreviation(assignee) {
+  if (!assignee) {
+    return;
+  }
   return assignee
     .split(" ")
     .map((word) => word.charAt(0))
@@ -277,7 +284,8 @@ function renderTaskByStatus(task) {
   injectAssignees(task);
 
   if (!numberOfSubtasks) {
-    progressContainer${allTodos["id"]}
+    const progressElement = document.getElementById(progressContainer(task.id));
+    progressElement.style.display = "none";
   }
 }
 
@@ -303,14 +311,37 @@ function loadTaskSummaryModal(id) {
 
     let tasks = allTasks.filter((t) => t["id"] === id);
 
+    if (tasks.length === 0) {
+      reject("Task not found");
+      return;
+    }
+
     let task = tasks[0];
     let formatedDueDate = convertTask(task.dueDate);
     let priorityIcon = determinePriotiry(task.priority);
     summaryModal.innerHTML += generateTaskSummaryModal(task, priorityIcon, formatedDueDate);
 
-    injectAssigneeContacts(task);
-    injectSubtasks(task);
+    // Überprüfen, ob "assignedTo" vorhanden ist und ggf. unsichtbar machen, wenn nicht
+    if (task.assignedTo && task.assignedTo.length > 0) {
+      injectAssigneeContacts(task);
+    } else {
+      let assignedToContainer = document.getElementById(`assignedToContainer${task.id}`);
+      if (assignedToContainer) {
+        assignedToContainer.style.display = "none"; // Setzt den Container auf unsichtbar
+      }
+    }
 
+    // Überprüfen, ob "subtask" vorhanden ist und ggf. unsichtbar machen, wenn nicht
+    if (task.subtasks && task.subtasks.length > 0) {
+      injectSubtasks(task);
+    } else {
+      let subtaskContainer = document.getElementById(`subtaskContainer${task.id}`);
+      if (subtaskContainer) {
+        subtaskContainer.style.display = "none"; // Setzt den Container auf unsichtbar
+      }
+    }
+
+    // Promise nach einer kurzen Verzögerung auflösen
     setTimeout(() => {
       resolve();
     }, 0);
@@ -348,7 +379,7 @@ function closeModal(event) {
       backdrop.style.visibility = "hidden";
       modal.classList.remove("show");
     }, 500);
-    location.reload()
+    location.reload();
   }
 }
 
