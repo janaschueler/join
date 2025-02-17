@@ -1,5 +1,7 @@
 body {
   background: rgb(246, 247, 248) !important;
+  font-family: "inter 18pt";
+ 
 }
 
 .left-main-bar.collapsed {

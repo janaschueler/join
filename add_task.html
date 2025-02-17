@@ -79,16 +79,21 @@
                 <h1>Add Task</h1>
                 <form class="task-form">
                     <div class="side1">
-                      <label for="inputField"><span class="red">*</span></label>
+                      <label for="inputField">Title<span class="red">*</span></label>
                       <input id="inputField" type="text" placeholder="Enter a title" required>
                         
                         <label for="description">Description</label>
                         <textarea id="description" placeholder="Enter a Description"></textarea>
                         
                         <label for="assigned">Assigned to</label>
-                        <select id="assigned">
-                            <option>Select contacts to assign</option>
-                        </select>
+                        <div id="assigned">
+                            <div class="custom-dropdown">
+                                <div class="dropdown-input" onclick="toggleDropdown()">Kontakte auswählen</div>
+                                <div class="dropdown-content" id="dropdown-content"></div>
+                            </div>
+                        </div>
+                        <div id="selected-contacts" class="selected-contacts-container"></div>
+
                     </div>
                     <div class="divider"></div>
                     <div class="side2">
@@ -120,10 +125,9 @@
                             <button class="iconAdd" type="button" onclick="addSubtask()">
                             </button>
                           </div>
-                            <div id="subtasks-container">
-                          </div>
+                          <div id="subtasks-container"></div>
 
-                            <div id="contacts-list"> </div>
+                        
                 <div class="addTaskButton">
                     <button onclick="clearForm()" class="taskButton">Clear
                       <img src="assets/icons/close.svg" alt="">
