@@ -1,76 +1,168 @@
 const BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
 let tasks = [];
 let subTaskCount;
+let selectedPriority = null;
+let contacts = [];
+let subtaskClickCount = 0;
 
-function addTask() {
-  const title = document.getElementById("inputField").value.trim();
-  const description = document.getElementById("description").value.trim();
-  const assignedTo = document.getElementById("assigned").value.trim();
-  const dueDate = document.getElementById("due-date").value.trim();
-  const category = document.getElementById("category").value.trim();
+function initAddTask() {
+  initPriorityButtons();
+  fetchContacts();
+  fetchSubtasks();
+}
 
-  const subtasksInputs = document.querySelectorAll(".add-subtask input");
-  const subtasks = Array.from(subtasksInputs)
-    .map((input) => input.value.trim())
-    .filter((value) => value !== "");
-
-  let priority = document.querySelector(".priority .selected")?.textContent || "Medium";
-
-  if (!title || !dueDate || !category) {
-    alert("Bitte alle Pflichtfelder ausfüllen.");
+function toggleDropdown() {
+  const dropdownContent = document.getElementById("dropdown-content");
+  if (!dropdownContent) {
+    console.error("Fehler: Element mit ID 'dropdown-content' nicht gefunden!");
     return;
   }
+  dropdownContent.classList.toggle("visible");
+}
+
+async function fetchContacts() {
+  try {
+    console.log("Lade Kontakte aus Firebase...");
+    const response = await fetch(`${BASE_URL}/contacts.json`);
+
+    if (!response.ok) {
+      throw new Error(`Fehler beim Laden der Kontakte! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    if (!data) {
+      console.warn("Keine Kontakte in Firebase gefunden!");
+      return;
+    }
+
+    contacts = Object.entries(data).map(([id, contact]) => ({
+      id,
+      name: contact.name || "Unbekannt",
+      email: contact.email || "",
+      color: contact.color || getRandomColor(),
+    }));
+
+    console.log("Kontakte erfolgreich geladen:", contacts);
+    populateAssignedToSelect(contacts);
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Kontakte:", error);
+  }
+}
+
+async function saveContact(contact) {
+  try {
+    const response = await fetch(`${BASE_URL}/contacts.json`, {
+      method: "POST", // Firebase erstellt eine eigene ID
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(contact),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Fehler beim Speichern des Kontakts: ${response.status}`);
+    }
+
+    console.log("✅ Kontakt gespeichert:", await response.json());
+  } catch (error) {
+    console.error("Fehler beim Speichern des Kontakts:", error);
+  }
+}
+
+async function saveSubtask(subtaskText) {
+  try {
+    const response = await fetch(`${BASE_URL}/subtasks.json`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: subtaskText }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Fehler beim Speichern des Subtasks: ${response.status}`);
+    }
+
+    console.log("Subtask gespeichert:", await response.json());
+  } catch (error) {
+    console.error("Fehler beim Speichern des Subtasks:", error);
+  }
+}
+
+async function addTask() {
+  const title = document.getElementById("inputField").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const dueDate = document.getElementById("due-date").value.trim();
+  const category = document.getElementById("category").value;
+
+  const selectedCheckboxes = document.querySelectorAll("#assigned-select option:checked");
+  const selectedContactIds = Array.from(selectedCheckboxes).map((option) => option.value);
+  const assignedContacts = contacts.filter((contact) => selectedContactIds.includes(contact.id));
+
+  if (!title || !dueDate || !category || !selectedPriority) {
+    alert("Bitte alle Pflichtfelder ausfüllen und eine Priorität auswählen.");
+    return;
+  }
+
+  const subtaskItems = document.querySelectorAll(".subtask-text");
+  const subtasks = Array.from(subtaskItems).map((item) => item.textContent.trim());
+
+  const subtasksStatus = new Array(subtasks.length).fill(0);
 
   const taskData = {
     title,
     description,
-    assignedTo,
+    assignedTo: assignedContacts,
     dueDate,
     category,
-    priority,
+    priority: selectedPriority,
     subtasks,
+    subtasksStatus,
     createdAt: new Date().toISOString(),
   };
 
-  fetch(`${BASE_URL}/tasks.json`, {
-    method: "POST",
-    body: JSON.stringify(taskData),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    const response = await fetch(`${BASE_URL}/tasks.json`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(taskData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
+    }
+
+    console.log("✅ Aufgabe erfolgreich gespeichert:", await response.json());
+
+    window.location.href = "board.html";
+  } catch (error) {
+    console.error("Fehler beim Speichern der Aufgabe:", error);
+    alert("Es gab einen Fehler beim Speichern der Aufgabe. Bitte prüfe die Konsole.");
+  }
 }
 
-document.querySelectorAll(".priority button").forEach((button) => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".priority button").forEach((btn) => btn.classList.remove("selected"));
-    button.classList.add("selected");
-  });
-});
+async function fetchSubtasks() {
+  try {
+    console.log("📡 Lade Subtasks...");
+    const response = await fetch(`${BASE_URL}/subtasks.json`);
 
-function clearForm() {
-  document.getElementById("inputField").value = "";
-  document.getElementById("description").value = "";
-  document.getElementById("assigned").selectedIndex = 0;
-  document.getElementById("due-date").value = "";
-  document.getElementById("category").selectedIndex = 0;
+    if (!response.ok) {
+      throw new Error(`Fehler beim Laden der Subtasks! Status: ${response.status}`);
+    }
 
-  let subtaskInputs = document.querySelectorAll(".add-subtask input");
-  subtaskInputs.forEach((input) => (input.value = ""));
+    const data = await response.json();
+    if (!data) {
+      console.warn("Keine Subtasks in Firebase gefunden!");
+      return;
+    }
+
+    const subtasks = Object.entries(data).map(([id, subtask]) => ({
+      id,
+      text: subtask.text,
+    }));
+
+    console.log("Subtasks erfolgreich geladen:", subtasks);
+    displaySubtasks(subtasks);
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Subtasks:", error);
+  }
 }
-
-let selectedPriority = null; // Einzelne Priorität (oder null)
-let contacts = []; // Hier werden die Kontakte gespeichert
-let subtaskClickCount = 0; // Zähler für Subtask-Vorschläge
-
-// --- Initialisierung ---
-
-function initAddTask() {
-  initPriorityButtons();
-  fetchContacts(); // Kontakte laden *bevor* das Formular gerendert wird
-}
-
-// --- Prioritäts-Buttons ---
 
 function initPriorityButtons() {
   const priorityButtons = document.querySelectorAll(".priority button");
@@ -83,7 +175,7 @@ function initPriorityButtons() {
 }
 
 function handlePriorityClick(clickedButton) {
-  const priorityValue = clickedButton.classList[0]; // "urgent", "medium" oder "low"
+  const priorityValue = clickedButton.classList[0];
   const priorityButtons = document.querySelectorAll(".priority button");
 
   if (selectedPriority === priorityValue) {
@@ -101,52 +193,41 @@ function handlePriorityClick(clickedButton) {
     selectedPriority = priorityValue;
     highlightButton(clickedButton);
   }
-  console.log("Ausgewählte Priorität:", selectedPriority);
 }
 
 function resetButtonState(button) {
-  if (button.classList.contains("urgent")) {
-    button.style.backgroundColor = "#FFFFFF";
-    button.querySelector("img").src = "assets/icons/urgent.svg";
-  } else if (button.classList.contains("medium")) {
-    button.style.backgroundColor = "#FFFFFF";
-    button.querySelector("img").src = "assets/icons/medium.svg";
-  } else if (button.classList.contains("low")) {
-    button.style.backgroundColor = "#FFFFFF";
-    button.querySelector("img").src = "assets/icons/low.svg";
-  }
+  button.style.backgroundColor = "#FFFFFF";
   button.style.color = "black";
+  button.querySelector("img").src = `assets/icons/${button.classList[0]}.svg`;
 }
 
 function highlightButton(button) {
-  if (button.classList.contains("urgent")) {
-    button.style.backgroundColor = "#FF3D00";
-    button.querySelector("img").src = "assets/icons/urgent-white.svg";
-    button.style.color = "white";
-  } else if (button.classList.contains("medium")) {
-    button.style.backgroundColor = "#FFA800";
-    button.querySelector("img").src = "assets/icons/medium-white.svg";
-    button.style.color = "white";
-  } else if (button.classList.contains("low")) {
-    button.style.backgroundColor = "#7AE229";
-    button.querySelector("img").src = "assets/icons/low-white.svg";
-    button.style.color = "white";
-  }
+  const priorityColors = {
+    urgent: "#FF3D00",
+    medium: "#FFA800",
+    low: "#7AE229",
+  };
+
+  button.style.backgroundColor = priorityColors[button.classList[0]];
+  button.style.color = "white";
+  button.querySelector("img").src = `assets/icons/${button.classList[0]}-white.svg`;
 }
 
 function addSubtask() {
   let subTaskInputRef = document.getElementById("new-subtask-input");
-  let subTaskInput = subTaskInputRef.value;
-
+  let subTaskInput = subTaskInputRef.value.trim();
   let subTaskContainer = document.getElementById("subtasks-container");
 
   if (!subTaskInput) {
     return;
   }
+
   if (!subTaskCount) {
     subTaskCount = 0;
   }
-  subTaskCount = subTaskCount + 1;
+
+  subTaskCount += 1;
+
   subTaskContainer.innerHTML += addSubtaskTemplate(subTaskInput, subTaskCount);
   subTaskInputRef.value = "";
 }
@@ -156,92 +237,20 @@ function deleteSubtask(id) {
   removeSubtask.remove();
 }
 
-// --- Kontakt-Funktionen ---
-function createContactSVG(contact) {
-  const initials = contact.name
-    .split(" ")
-    .map((word) => word[0])
-    .join("")
-    .toUpperCase();
-  const svgNS = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(svgNS, "svg");
-  svg.setAttribute("width", "20");
-  svg.setAttribute("height", "20");
-  svg.setAttribute("viewBox", "0 0 32 32");
-  svg.setAttribute("fill", "none");
-  svg.classList.add("circle", "small_circle");
-
-  const circle = document.createElementNS(svgNS, "circle");
-  circle.setAttribute("cx", "16");
-  circle.setAttribute("cy", "16");
-  circle.setAttribute("r", "15.5");
-  circle.setAttribute("fill", contact.color || "#ccc");
-  circle.setAttribute("stroke", "white");
-
-  const text = document.createElementNS(svgNS, "text");
-  text.setAttribute("x", "50%");
-  text.setAttribute("y", "50%");
-  text.setAttribute("font-family", "Arial");
-  text.setAttribute("font-size", "10");
-  text.setAttribute("fill", "white");
-  text.setAttribute("text-anchor", "middle");
-  text.setAttribute("alignment-baseline", "central");
-  text.textContent = initials;
-
-  svg.appendChild(circle);
-  svg.appendChild(text);
-  return svg;
+function editSubtask(id, subTaskInput) {
+  let editSubtask = document.getElementById(`subTaskUnit${id}`);
+  editSubtask.innerHTML = "";
+  editSubtask.classList.add("editing");
+  editSubtask.innerHTML = addInputField(id, subTaskInput);
 }
 
-function populateAssignedToSelect(contacts) {
-  const assignedToSelect = document.getElementById("assigned");
-  assignedToSelect.innerHTML = '<option value="">Select contacts to assign</option>';
+function accept(id, subTaskInput) {
+  let subTaskContainer = document.getElementById("subtasks-container");
 
-  contacts.forEach((contact) => {
-    const option = document.createElement("option");
-    option.value = contact.id;
+  const removeSubtask = document.getElementById(`subTaskUnit${id}`);
+  removeSubtask.remove();
 
-    const optionContent = document.createElement("div");
-    optionContent.style.display = "flex";
-    optionContent.style.alignItems = "center";
-
-    const svgContainer = document.createElement("div");
-    svgContainer.appendChild(createContactSVG(contact));
-    svgContainer.style.marginRight = "8px";
-
-    const nameSpan = document.createElement("span");
-    nameSpan.textContent = contact.name;
-
-    optionContent.appendChild(svgContainer);
-    optionContent.appendChild(nameSpan);
-    option.appendChild(optionContent);
-
-    assignedToSelect.appendChild(option);
-  });
-}
-
-function fetchContacts() {
-  fetch(`${BASE_URL}/contacts.json`)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then((contactData) => {
-      if (contactData) {
-        contacts = Object.entries(contactData).map(([id, data]) => ({
-          id,
-          ...data,
-          color: data.color || getRandomColor(),
-        }));
-        populateAssignedToSelect(contacts);
-      }
-    })
-    .catch((error) => {
-      console.error("Error fetching contacts:", error);
-      alert("Error fetching contacts. See console for details.");
-    });
+  subTaskContainer.innerHTML += addSubtaskTemplate(subTaskInput, id);
 }
 
 function getRandomColor() {
@@ -253,87 +262,131 @@ function getRandomColor() {
   return color;
 }
 
-// --- addTask und clearForm ---
+function createContactSVG(contact, size = 32) {
+  const initials = contact.name
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("width", size);
+  svg.setAttribute("height", size);
+  svg.setAttribute("viewBox", "0 0 32 32");
+  svg.setAttribute("fill", "none");
+  svg.classList.add("contact-svg");
 
-function addTask() {
-  const title = document.getElementById("inputField").value.trim();
-  const description = document.getElementById("description").value.trim();
-  const assignedToSelect = document.getElementById("assigned");
-  const dueDate = document.getElementById("due-date").value.trim();
-  const category = document.getElementById("category").value;
-  const selectedContactIds = Array.from(assignedToSelect.selectedOptions).map((option) => option.value);
-  const assignedContacts = selectedContactIds
-    .map((contactId) => {
-      const contact = contacts.find((c) => c.id === contactId);
-      return contact ? contact.name : null;
-    })
-    .filter((name) => name !== null);
+  const circle = document.createElementNS(svgNS, "circle");
+  circle.setAttribute("cx", "16");
+  circle.setAttribute("cy", "16");
+  circle.setAttribute("r", "15");
+  circle.setAttribute("fill", contact.color || "#ccc");
+  circle.setAttribute("stroke", "white");
 
-  if (!title || !dueDate || !category || !selectedPriority) {
-    alert("Bitte alle Pflichtfelder ausfüllen und eine Priorität auswählen.");
+  const text = document.createElementNS(svgNS, "text");
+  text.setAttribute("x", "50%");
+  text.setAttribute("y", "55%");
+  text.setAttribute("font-family", "Arial, sans-serif");
+  text.setAttribute("font-size", "12");
+  text.setAttribute("fill", "white");
+  text.setAttribute("text-anchor", "middle");
+  text.setAttribute("alignment-baseline", "middle");
+  text.textContent = initials;
+
+  svg.appendChild(circle);
+  svg.appendChild(text);
+  return svg;
+}
+
+function populateAssignedToSelect(contacts) {
+  const selectElement = document.getElementById("assigned-select");
+  if (!selectElement) {
+    console.error("Fehler: Element mit ID 'assigned-select' nicht gefunden!");
     return;
   }
 
-  const subtaskItems = document.querySelectorAll(".subtask-text-item");
-  const subtasks = Array.from(subtaskItems).map((item) => item.textContent.replace("• ", "").trim());
+  // Standardoption beibehalten
+  selectElement.innerHTML = `<option value="">Select contacts to assign</option>`;
 
-  const taskData = {
-    title,
-    description,
-    assignedTo: assignedContacts,
-    dueDate,
-    category,
-    priority: selectedPriority,
-    subtasks,
-    createdAt: new Date().toISOString(),
-  };
-
-  fetch(`${BASE_URL}/tasks.json`, {
-    method: "POST",
-    body: JSON.stringify(taskData),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log("Task added:", data);
-      clearForm();
-      window.location.href = "board.html";
-    })
-    .catch((error) => {
-      console.error("Error adding task:", error);
-      alert("There was an error adding the task.  Please check the console for details.");
-    });
+  contacts.forEach((contact) => {
+    const option = document.createElement("option");
+    option.value = contact.id;
+    option.textContent = contact.name;
+    option.dataset.contact = JSON.stringify(contact);
+    selectElement.appendChild(option);
+  });
 }
 
+function handleContactSelection(event) {
+  const selectedContactId = event.target.value;
+  if (!selectedContactId) return;
+
+  const selectedOption = event.target.options[event.target.selectedIndex];
+  const selectedContact = JSON.parse(selectedOption.dataset.contact);
+
+  if (!selectedContact) return;
+
+  updateSelectedContacts(selectedContact, true);
+}
+
+function updateSelectedContacts(contact, isChecked) {
+  const selectedContactsContainer = document.getElementById("selected-contacts");
+
+  if (isChecked) {
+    if (!document.getElementById(`selected-${contact.id}`)) {
+      const contactElement = document.createElement("div");
+      contactElement.id = `selected-${contact.id}`;
+      contactElement.classList.add("selected-contact");
+      contactElement.style.backgroundColor = contact.color;
+      contactElement.innerHTML = `
+                <span class="selected-contact-initials">${getInitials(contact.name)}</span>
+                <button class="remove-contact-btn" onclick="removeSelectedContact('${contact.id}')">X</button>
+            `;
+      selectedContactsContainer.appendChild(contactElement);
+    }
+  } else {
+    removeSelectedContact(contact.id);
+  }
+}
+
+function removeSelectedContact(contactId) {
+  const contactElement = document.getElementById(`selected-${contactId}`);
+  if (contactElement) {
+    contactElement.remove();
+  }
+
+  const selectElement = document.getElementById("assigned-select");
+  if (selectElement) {
+    selectElement.value = "";
+  }
+}
+
+function getInitials(name) {
+  return name
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+}
+
+function getRandomColor() {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+document.addEventListener("DOMContentLoaded", fetchContacts);
 function clearForm() {
   document.getElementById("inputField").value = "";
   document.getElementById("description").value = "";
-  document.getElementById("assigned").selectedIndex = 0;
   document.getElementById("due-date").value = "";
   document.getElementById("category").selectedIndex = 0;
   document.getElementById("new-subtask-input").value = "";
-  const subtasksContainer = document.getElementById("subtasks-container");
-  subtasksContainer.innerHTML = "";
+  document.getElementById("subtasks-container").innerHTML = "";
   subtaskClickCount = 0;
-
-  const inputField = document.getElementById("new-subtask-input");
-  if (inputField) {
-    removeInputButtons(inputField);
-    inputField.classList.remove("plus-active");
-  }
-
-  const priorityButtons = document.querySelectorAll(".priority button");
-  priorityButtons.forEach((button) => {
-    button.classList.remove("selected");
-    resetButtonState(button);
-  });
   selectedPriority = null;
 }
 

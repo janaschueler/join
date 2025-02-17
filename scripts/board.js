@@ -1,4 +1,4 @@
-let allTasks = { id: [], assignedTo: [], category: [], createdAt: [], description: [], dueDate: [], priority: [], subtasks: [], title: [], status: [], categoryColor: [] };
+let allTasks = { id: [], assignedTo: [], category: [], createdAt: [], description: [], dueDate: [], priority: [], subtasks: [], title: [], status: [], subtasksStatus: [], categoryColor: [] };
 let allContacts = { idContact: [], contactName: [], contactAbbreviation: [], color: [] };
 
 let currentDraggedElement;
@@ -29,6 +29,7 @@ async function getDataTasks(path = "") {
       priority: task.priority,
       subtasks: task.subtasks,
       title: task.title,
+      subtasksStatus: task.subtasksStatus,
       status: determinStatus(key, task.status),
     });
   }
@@ -85,6 +86,15 @@ async function addStatus(key, status) {
   }
 }
 
+async function addSubtasksStatus(key, status) {
+  try {
+    await postToDatabase(key, "/subtasksStatus", status);
+  } catch (error) {
+    console.error("Fehler beim Setzen des Status:", error);
+    throw error;
+  }
+}
+
 async function postToDatabase(path1 = "", path2 = "", data = {}) {
   const url = `${BASE_URL}tasks/${path1}${path2}.json`;
   try {
@@ -128,9 +138,10 @@ function loadBordContentByStatus(status, containerId) {
 function renderTask(task, container) {
   let priorityIcon = determinePriotiry(task.priority);
   let numberOfSubtasks = Array.isArray(task.subtasks) ? task.subtasks.length : 0;
-  let progressOfProgressbar = determineProgress(task, task.status, numberOfSubtasks);
+  let progressOfProgressbar = determineProgress(numberOfSubtasks, task.subtasksStatus);
+  let numberCompletetSubtasks = determineNumberCompletetSubtasks(task.subtasksStatus);
 
-  container.innerHTML += generateToDoHTML(task, priorityIcon, numberOfSubtasks, progressOfProgressbar);
+  container.innerHTML += generateToDoHTML(task, priorityIcon, numberOfSubtasks, progressOfProgressbar, numberCompletetSubtasks);
 
   if (!numberOfSubtasks) {
     document.getElementById(`progressContainer${task.id}`).style.display = "none";
@@ -154,38 +165,44 @@ function determinePriotiry(priority) {
   return priority;
 }
 
-function determineProgress(status, numberOfSubtasks) {
-  let statusProgress;
-  if (status == 4) {
-    return 100;
-  } else {
+function determineProgress(numberOfSubtasks, subtasksStatus) {
+  if (!Array.isArray(subtasksStatus) || subtasksStatus.length === 0) {
+    return 0;
   }
+  const completedSubtasks = subtasksStatus.filter((status) => status === 1).length;
+  const progressPercentage = (completedSubtasks / numberOfSubtasks) * 100;
+
+  return Math.round(progressPercentage);
+}
+
+function determineNumberCompletetSubtasks(subtasksStatus) {
+  if (!subtasksStatus) {
+    return;
+  }
+  const completedSubtasks = subtasksStatus.filter((status) => status === 1).length;
+
+  return completedSubtasks;
 }
 
 async function injectAssignees(task) {
   const assigneeContainer = document.getElementById(`assigneeContainer${task["id"]}`);
   assigneeContainer.innerHTML = "";
 
-  const assigneeList = getAssigneeList(task.assignedTo);
-
-  assigneeList.forEach((assignee) => {
-    const assigneeAbbreviation = getAssigneeAbbreviation(assignee);
-    const assingeeColor = findContactColor(assignee);
-    assigneeContainer.innerHTML += generateAssigneeCircle(assigneeAbbreviation, assingeeColor);
-  });
-}
-
-function getAssigneeList(assignedTo) {
-  if (typeof assignedTo === "string") {
-    return [assignedTo];
+  if (Array.isArray(task.assignedTo)) {
+    task.assignedTo.forEach((assignee) => {
+      const assigneeAbbreviation = getAssigneeAbbreviation(assignee.name);
+      const assigneeColor = assignee.color || "defaultColor";
+      assigneeContainer.innerHTML += generateAssigneeCircle(assigneeAbbreviation, assigneeColor);
+    });
+  } else {
+    return;
   }
-  if (typeof assignedTo === "object") {
-    return Object.keys(assignedTo);
-  }
-  return [];
 }
 
 function getAssigneeAbbreviation(assignee) {
+  if (!assignee) {
+    return;
+  }
   return assignee
     .split(" ")
     .map((word) => word.charAt(0))
@@ -265,6 +282,11 @@ function renderTaskByStatus(task) {
 
   container.innerHTML += generateToDoHTML(task, priorityIcon, numberOfSubtasks, progressOfProgressbar);
   injectAssignees(task);
+
+  if (!numberOfSubtasks) {
+    const progressElement = document.getElementById(progressContainer(task.id));
+    progressElement.style.display = "none";
+  }
 }
 
 function getContainerIdByStatus(status) {
@@ -289,14 +311,37 @@ function loadTaskSummaryModal(id) {
 
     let tasks = allTasks.filter((t) => t["id"] === id);
 
+    if (tasks.length === 0) {
+      reject("Task not found");
+      return;
+    }
+
     let task = tasks[0];
     let formatedDueDate = convertTask(task.dueDate);
     let priorityIcon = determinePriotiry(task.priority);
     summaryModal.innerHTML += generateTaskSummaryModal(task, priorityIcon, formatedDueDate);
 
-    injectAssigneeContacts(task);
-    injectSubtasks(task);
+    // Überprüfen, ob "assignedTo" vorhanden ist und ggf. unsichtbar machen, wenn nicht
+    if (task.assignedTo && task.assignedTo.length > 0) {
+      injectAssigneeContacts(task);
+    } else {
+      let assignedToContainer = document.getElementById(`assignedToContainer${task.id}`);
+      if (assignedToContainer) {
+        assignedToContainer.style.display = "none"; // Setzt den Container auf unsichtbar
+      }
+    }
 
+    // Überprüfen, ob "subtask" vorhanden ist und ggf. unsichtbar machen, wenn nicht
+    if (task.subtasks && task.subtasks.length > 0) {
+      injectSubtasks(task);
+    } else {
+      let subtaskContainer = document.getElementById(`subtaskContainer${task.id}`);
+      if (subtaskContainer) {
+        subtaskContainer.style.display = "none"; // Setzt den Container auf unsichtbar
+      }
+    }
+
+    // Promise nach einer kurzen Verzögerung auflösen
     setTimeout(() => {
       resolve();
     }, 0);
@@ -315,7 +360,7 @@ function openModal(id) {
       modal.style.visibility = "visible";
       modal.classList.remove("hide");
       modal.classList.add("show");
-         })
+    })
     .catch((error) => {
       console.error("Fehler beim Laden des Inhalts:", error);
     });
@@ -334,10 +379,9 @@ function closeModal(event) {
       backdrop.style.visibility = "hidden";
       modal.classList.remove("show");
     }, 500);
+    location.reload();
   }
 }
-
-
 
 async function injectAssigneeContacts(tasks) {
   const assigneeContainer = document.getElementById(`assigneeListModal${tasks["id"]}`);
@@ -345,7 +389,9 @@ async function injectAssigneeContacts(tasks) {
 
   let assigneeList = [];
 
-  if (typeof tasks.assignedTo === "string") {
+  if (Array.isArray(tasks.assignedTo)) {
+    assigneeList = tasks.assignedTo;
+  } else if (typeof tasks.assignedTo === "string") {
     assigneeList = [tasks.assignedTo];
   } else if (typeof tasks.assignedTo === "object") {
     assigneeList = Object.keys(tasks.assignedTo);
@@ -353,33 +399,75 @@ async function injectAssigneeContacts(tasks) {
 
   for (let indexAssingee = 0; indexAssingee < assigneeList.length; indexAssingee++) {
     const assignee = assigneeList[indexAssingee];
-    const assigneeAbbreviation = assignee
-      .split(" ")
-      .map((word) => word.charAt(0))
-      .join("");
-    const assingeeColor = findContactColor(assignee);
 
-    assigneeContainer.innerHTML += generateAssigneeComntacts(assigneeAbbreviation, assingeeColor, assignee);
+    const assigneeName = assignee.name ? assignee.name : "Unknown";
+
+    const assigneeAbbreviation =
+      typeof assigneeName === "string"
+        ? assigneeName
+            .split(" ")
+            .map((word) => word.charAt(0))
+            .join("")
+        : "";
+
+    const assingeeColor = assignee.color;
+
+    assigneeContainer.innerHTML += generateAssigneeComntacts(assigneeAbbreviation, assingeeColor, assigneeName);
   }
 }
 
 async function injectSubtasks(tasks) {
-  const subtaskContainer = document.getElementById(`subtaskContainer${tasks["id"]}`);
+  const subtaskContainer = document.getElementById(`subtaskListModal${tasks["id"]}`);
   subtaskContainer.innerHTML = "";
 
   if (typeof tasks.subtasks === "string") {
-    tasks.subtasks = [tasks.assignedTo];
-  } else if (typeof tasks.subtasks === "object") {
-    tasks.subtasks = Object.keys(tasks.subtasks);
-  } else if (!tasks.subtasks) {
-    tasks.subtasks = 0;
+    tasks.subtasks = [tasks.subtasks];
+  } else if (!Array.isArray(tasks.subtasks)) {
+    tasks.subtasks = [];
+  }
+
+  if (!Array.isArray(tasks.subtasksStatus)) {
+    tasks.subtasksStatus = new Array(tasks.subtasks.length).fill(0);
   }
 
   for (let indexSubtask = 0; indexSubtask < tasks.subtasks.length; indexSubtask++) {
-    const subtask = tasks.subtasks;
+    const subtask = tasks.subtasks[indexSubtask];
 
-    subtaskContainer.innerHTML += generateSubtasks(tasks, subtask);
+    let statusCheckbox = tasks.subtasksStatus[indexSubtask] === 1;
+
+    subtaskContainer.innerHTML += generateSubtasks(tasks, subtask, indexSubtask, statusCheckbox);
   }
+
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", handleCheckboxChange);
+  });
+}
+
+function handleCheckboxChange(event) {
+  const checkbox = event.target;
+  const isChecked = checkbox.checked;
+  const taskId = checkbox.id;
+  const index = checkbox.getAttribute("data-index");
+  const containerId = taskId.slice(0, taskId.length - index.length);
+
+  console.log(`Task ID: ${taskId}`);
+  console.log(`Subtask Index: ${index}`);
+
+  const subtasks = document.querySelectorAll(`#subtaskContainer${containerId} input[type="checkbox"]`);
+  console.log("Subtasks:", subtasks);
+
+  let subtasksStatus = [];
+
+  subtasks.forEach((subtaskCheckbox, idx) => {
+    const status = subtaskCheckbox.checked ? 1 : 0;
+    console.log(`Subtask ${idx}: ${status}`);
+    subtaskCheckbox.setAttribute("data-status", status);
+    subtasksStatus.push(status);
+  });
+
+  console.log("Subtasks Status:", subtasksStatus);
+  addSubtasksStatus(containerId, subtasksStatus);
 }
 
 function deleteTask(taskId) {

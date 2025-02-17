@@ -1,5 +1,5 @@
-function generateToDoHTML(allTodos, priorityIcon, numberOfSubtasks, progressOfProgressbar) {
-  return ` <div onclick="openModal('${allTodos["id"]}')" draggable ="true" ondragstart="startDragging('${allTodos["id"]}')" class="listContainerContent">
+function generateToDoHTML(allTodos, priorityIcon, numberOfSubtasks, progressOfProgressbar, numberCompletetSubtasks) {
+  return `          <div onclick="openModal('${allTodos["id"]}')" draggable ="true" ondragstart="startDragging('${allTodos["id"]}')" class="listContainerContent">
                         <div class="category" style="background-color:red;">
                           <span>${allTodos["category"]}</span>
                         </div>
@@ -7,18 +7,19 @@ function generateToDoHTML(allTodos, priorityIcon, numberOfSubtasks, progressOfPr
                           <span class="titleCopy">${allTodos["title"]}</span> <br>
                           <span class="descriptionCopy">${allTodos["description"]} </span>
                         </div>
-                        <div>
-                          <div id="progressContainer${allTodos["id"]}" class="progressContainer">
+                        <div id="progressContainer${allTodos["id"]}" class="progressContainer">
+                          <div class="limitProgressBar">
                             <div class="progress-bar" role="progressbar" style="width: ${progressOfProgressbar}%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                            <span class="sr-only">1/${numberOfSubtasks} Subtasks</span>
+                          </div>
+                          <span class="sr-only">${numberCompletetSubtasks}/${numberOfSubtasks} Subtasks</span>
                         </div>
                         <div class="priorityContainer">
                           <div id="assigneeContainer${allTodos["id"]}" class="assigneeContainer">
                           </div>
                           <img src="${priorityIcon}" alt="${allTodos["priority"]} Icon">
                         </div>
-                        </div>
-                      </div>`;
+
+                    </div>`;
 }
 
 function generateAssigneeCircle(assigneeAbbreviation, assingeeColor) {
@@ -50,14 +51,15 @@ function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate) {
                 <td>${allTodos["priority"]}<img class="iconSummaryModal" src="${priorityIcon}" alt=""></td>
               </tr>
             </table>
-            <div class="margin_8">
+            <div id="assignedToContainer${allTodos["id"]}" class="margin_8">
               <span class="spanBlue">Assinged To:</span>
               <ol id="assigneeListModal${allTodos["id"]}">
               </ol>
             </div>
             <div>
               <div id="subtaskContainer${allTodos["id"]}" class="styleSubstaskSpan">
-                <ol id="subtaskListModal${allTodos["id"]}">
+                <span>Subtasks</span> 
+              <ol id="subtaskListModal${allTodos["id"]}">
                 </ol>
             </div>
             <div class="buttonContainer">
@@ -81,54 +83,14 @@ function generateAssigneeComntacts(assigneeAbbreviation, assingeeColor, assignee
                 </li>`;
 }
 
-function generateSubtasks(allTodos, subtask) {
-  return `        <span>Subtasks</span> 
-                  <li>
-                    <label class="customCheckboxContainer">
-                      <input class="marginLR_8" type="checkbox" id="${allTodos["id"]}" name="" value="">
-                      <span class="customCheckbox"></span>
-                      <span class="subtasksUnit">${subtask}</span>
-                    </label>
-                  </li>`;
+function generateSubtasks(allTodos, subtask, index, isChecked = false) {
+  return `
+    <li>
+      <label class="customCheckboxContainer">
+        <input class="marginLR_8" type="checkbox" id="${allTodos.id}${index}" name="${allTodos["id"]}" value="" data-index="${index}" ${isChecked ? "checked" : ""}>
+        <span class="customCheckbox"></span>
+        <span class="subtasksUnit">${subtask}</span>
+      </label>
+    </li>`;
 }
 
-function generateAddTask(allTodos, priorityIcon) {
-  return ` <div id="modalTaskSummary" class="summaryTaskContainer">
-            <div class="ModalheaderContainer">
-              <div class="category" style="background-color:red;">
-              <span>${allTodos["category"]}</span>
-              </div>
-              <button onclick="closeModal(event)" type="button" class="ModalCloseButton"></button>
-            </div>
-            <div class="listDiscription">
-              <h1 class="mobileHeadline" >${allTodos["title"]}</h1> 
-              <span class="descriptionCopy">${allTodos["description"]}</span>
-            </div>
-            <table class="contentmodlaTask">
-              <tr>
-                <td>Due date:</td>
-                <td>${allTodos["date"]}</td>
-              </tr>
-              <tr>
-                <td>Priority:</td>
-                <td>${allTodos["priority"]}<img class="iconSummaryModal" src="${priorityIcon}" alt=""></td>
-              </tr>
-            </table>
-            <div class="margin_8">
-              <span class="spanBlue">Assinged To:</span>
-              <ol id="assigneeListModal${allTodos["id"]}">
-              </ol>
-            </div>
-            <div>
-              <div id="subtaskContainer${allTodos["id"]}" class="styleSubstaskSpan">
-                <ol id="subtaskListModal${allTodos["id"]}">
-                </ol>
-            </div>
-            <div class="buttonContainer">
-              <div class="editContainer">
-                <button onclick="openEditModal${allTodos["id"]}(" class="editIcon">Edit</button>
-                <button onclick="deleteTask('${allTodos["id"]}')" class="deleteIcon">Delete</button>
-              </div>
-            </div>
-          </div>`;
-}

@@ -15,7 +15,16 @@ async function renderTopBar() {
   let contactAbbreviation = logedInUser.contactAbbreviation.join("");
   if (!contactAbbreviation) {
     contactAbbreviation = "G";
+<<<<<<< HEAD
   }   
+=======
+  }  
+  topBarRef.innerHTML += templateTopBar(contactAbbreviation);
+}
+
+function renderTopBarContact(contactAbbreviation) {
+  let topBarRef = document.getElementById("topbar_contact");
+>>>>>>> 1a339d7271eb6585cdf41610f9cb92fc4b5b07c4
   topBarRef.innerHTML += templateTopBar(contactAbbreviation);
 }
 
@@ -58,7 +67,10 @@ async function postSignedInUserToDatabase(data = {}) {
 async function getSigneInUserData() {
   let response = await fetch(BASE_URL + "signedIn/" + ".json");
   let logedInUsers = await response.json();
+<<<<<<< HEAD
   
 
+=======
+>>>>>>> 1a339d7271eb6585cdf41610f9cb92fc4b5b07c4
   return logedInUsers;
 }

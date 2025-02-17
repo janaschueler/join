@@ -1,7 +1,11 @@
 body {
   margin: 0;
   background: rgb(246, 247, 248) !important;
-  overflow: visible;
+}
+
+main {
+  overflow-y: auto;
+  max-height: 100vh;
 }
 
 h1 {
@@ -12,12 +16,14 @@ h1 {
 }
 
 .addTaskSection {
-  margin-top: 64px;
+  margin-top: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   margin-left: 5%;
+
+
 }
 
 .task-form {
@@ -54,12 +60,17 @@ h1 {
   font-family: "Inter 18pt";
   font-weight: bold;
   margin: 12px;
-  border-radius: 5px;
-  gap: 10px;
+  border-radius: 10px;
+  gap: 4px;
 }
 
 .taskButton img {
   width: 20px;
+}
+
+.taskButton:hover {
+  border-color: rgba(41, 171, 226, 1) !important;
+  color: rgba(41, 171, 226, 1) !important;
 }
 
 .taskButton:nth-child(2) {
@@ -75,15 +86,14 @@ h1 {
 }
 
 .addTaskButton {
-  margin-top: 3rem;
   display: flex;
-  justify-content: space-between;
-  flex: 1;
-  margin-left: 25%;
+  justify-content: flex-end;
+  margin-left: 10%;
 }
 
 .addTaskButton .taskButton {
   flex: 1;
+  border-radius: 10px;
 }
 
 .priority {
@@ -126,7 +136,57 @@ h1 {
 .priority button.selected.urgent {
   background-color: #ff3d00;
   border-color: #ff3d00;
+  color: white !important;
+}
+
+.priority button.selected.urgent img {
+  content: url(assets/icons/urgent-white.svg);
+}
+
+.selected-contacts-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.selected-contact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: bold;
   color: white;
+  position: relative;
+}
+
+.selected-contact-initials {
+  display: block;
+  text-align: center;
+}
+
+.remove-contact-btn {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: black;
+  color: white;
+  border: none;
+  font-size: 10px;
+  line-height: 10px;
+  cursor: pointer;
+}
+
+.priority button.selected.urgent {
+  background-color: #ff3d00;
+  border-color: #ff3d00;
+  color: white !important;
 }
 
 .priority button.selected.urgent img {
@@ -136,7 +196,7 @@ h1 {
 .priority button.selected.medium {
   background-color: #ffa800;
   border-color: #ffa800;
-  color: white;
+  color: white !important;
 }
 
 .priority button.selected.medium img {
@@ -146,11 +206,72 @@ h1 {
 .priority button.selected.low {
   background-color: #7ae229;
   border-color: #7ae229;
-  color: white;
+  color: white !important;
 }
 
 .priority button.selected.low img {
   content: url(assets/icons/low-white.svg);
+}
+
+.priority button.selected {
+  color: white !important;
+}
+
+.priority button.selected img {
+  filter: brightness(0) invert(1); /* Falls du das SVG weiß färben willst */
+}
+
+.custom-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.dropdown-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  background: white;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: white;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 5px;
+  z-index: 1000;
+}
+
+.dropdown-content.visible {
+  display: block;
+}
+
+/* Entfernt die Trennlinie */
+.dropdown-option:hover {
+  background-color: #f0f0f0;
+  border: none;
+}
+
+.option-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.dropdown-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.contact-name {
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .add-subtask {
@@ -215,7 +336,7 @@ h1 {
   height: 20px;
   border-radius: 50%;
   background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
-  z-index: 4;
+  z-index: 0;
 }
 
 .formateList {
@@ -264,20 +385,31 @@ h1 {
   height: 25px;
   border-radius: 4px;
   background-color: rgba(128, 128, 128, 0.1); /* Grauer, halbtransparenter Hintergrund */
-  z-index: 4;
+  z-index: 0;
 }
 
-.lineSubtask {
-  display: none;
+.editSubtaskContainer {
+  width: 40px;
+}
+
+.inputSubtaskEdit {
+  height: 32px;
+  margin-top: 8px;
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+  border-bottom: 1px solid rgba(41, 171, 226, 1) !important;
+  border-radius: 0px !important;
+}
+
+.lineSubtaskEdit {
   position: absolute;
   background-image: url(../assets/icons/verticalLine.svg);
   background-repeat: no-repeat;
-  background-position: center;
-  background-size: 20px;
   width: 1px;
   height: 16px;
-  margin-right: -8px;
-  align-self: center;
+  right: 25px !important;
+  margin-top: 14px;
 }
 
 #subtasks-container .input-wrapper .deleteSubtask {
@@ -298,13 +430,73 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
   top: 0;
   right: 0;
   z-index: 5;
 }
 
+.acceptBtn {
+  position: absolute;
+  background-image: url(../assets/icons/check_blue.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px;
+  width: 32px;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 4px !important;
+  z-index: 5;
+}
 
+.acceptBtn:hover::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
+  z-index: 4;
+}
+
+.deleteSubtaskEdit {
+  position: absolute;
+  background-image: url(../assets/icons/delete.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px;
+  width: 32px;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 4px !important;
+  right: 20px !important;
+  z-index: 5;
+}
+
+.deleteSubtaskEdit:hover::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
+  z-index: 4;
+}
 
 .side1,
 .side2 {
@@ -324,6 +516,34 @@ label {
   height: 60%;
   position: absolute;
   transform: translateX(-50%);
+}
+
+#assigned-select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: white;
+  cursor: pointer;
+  appearance: auto; /* Stellt sicher, dass der Standard-Pfeil sichtbar ist */
+}
+
+.dropdown-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.contact-svg {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.contact-checkbox {
+  margin-left: auto;
+  cursor: pointer;
 }
 
 #assigned option {
@@ -348,17 +568,17 @@ label {
 
 @media (max-width: 1024px) {
   .task-form {
-    width: 80%;
+    width: 90%;
     flex-direction: column;
     gap: 20px;
   }
 
-  .divider {
-    display: none;
+  .priority {
+    flex-direction: row;
+    justify-content: space-around;
   }
 
   .addTaskButton {
-    margin-left: 0;
     justify-content: center;
     gap: 15px;
   }
@@ -371,14 +591,14 @@ label {
 }
 
 @media (max-width: 768px) {
-  body {
-    background: white !important;
-  }
-
   .task-form {
     width: 95%;
     padding: 15px;
     gap: 15px;
+  }
+
+  .divider {
+    display: none;
   }
 
   .side1,
@@ -387,22 +607,24 @@ label {
     gap: 10px;
   }
 
+  .priority {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .priority button {
     width: 100%;
     justify-content: center;
   }
 
-  .add-subtask input {
-    width: 70%;
-  }
-
-  .add-subtask button {
-    padding: 8px;
-  }
-
   .addTaskButton {
-    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000px;
     gap: 10px;
+    margin-bottom: 3rem;
     align-items: center;
   }
 
@@ -416,13 +638,19 @@ label {
   .taskButton {
     font-size: 14px;
     padding: 10px;
+    width: 100%;
   }
 
-  .priority button img {
-    width: 16px;
+  .priority button {
+    padding: 10px;
+    font-size: 0.9rem;
   }
 
   h1 {
     font-size: 2rem !important;
+  }
+
+  .task-form {
+    width: 100%;
   }
 }
