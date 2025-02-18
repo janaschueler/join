@@ -1,4 +1,8 @@
-logedInUser = { contactEmail: [], contactPassword: [], contactId: [], contactName: [], contactAbbreviation: [] };
+/**
+ * This function is used to greet someone on the comand line
+ *
+ * @param {string} name - this is the dame of the person that you want ot greet
+ */
 
 function greet(name) {
   console("hallo" + name);
@@ -9,18 +13,13 @@ function showDesktopMenu() {
   deskMenuRef.classList.toggle("d_none");
 }
 
-async function renderTopBarSummary() {
+async function renderTopBar() {
   logedInUser = await getSigneInUserData();
   let topBarRef = document.getElementById("topbar_summary");
   let contactAbbreviation = logedInUser.contactAbbreviation.join("");
   if (!contactAbbreviation) {
     contactAbbreviation = "G";
-  }  
-  topBarRef.innerHTML += templateTopBar(contactAbbreviation);
-}
-
-function renderTopBarContact(contactAbbreviation) {
-  let topBarRef = document.getElementById("topbar_contact");
+  }   
   topBarRef.innerHTML += templateTopBar(contactAbbreviation);
 }
 
@@ -34,9 +33,8 @@ async function guestLogIn() {
     contactEmail: [""],
     contactId: "",
     contactName: ["Guest"],
-    contactPassword: [""],
-  };
-
+    contactPassword: [""],  
+  }; 
   await postSignedInUserToDatabase(guest);
   window.location.href = "./index.html";
 }
@@ -64,5 +62,10 @@ async function postSignedInUserToDatabase(data = {}) {
 async function getSigneInUserData() {
   let response = await fetch(BASE_URL + "signedIn/" + ".json");
   let logedInUsers = await response.json();
+  
+
   return logedInUsers;
+  let deskMenuRef = document.getElementById('deskMenu_content');
+  deskMenuRef.classList.toggle('d_none');
+  event.preventDefault();
 }

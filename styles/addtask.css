@@ -171,7 +171,7 @@ border-color: #091931 !important;
 }
 
 .priority button:hover {
-  background-color: #ddd;
+  background-color: red;
 }
 
 .priority button.selected {
