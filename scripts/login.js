@@ -52,9 +52,8 @@ function showMobileLoadingMessage() {
 
   setTimeout(() => {
     document.getElementById("loadingMessageMobile").classList.add("show");
-  }, 100);
+  }, 0);
   setTimeout(() => {
-    loadingMessageMobile.style.display = "flex";
     loadingMessageMobile.style.width = "200px";
     loadingMessageMobile.style.height = "50px";
     loadingMessageMobile.style.transform = "scale(0.375) translate(100px, -150px)";

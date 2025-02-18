@@ -3,7 +3,7 @@ function templateTopBar(AB) {
           <img class="top_bar_logo" src="./assets/icons/join_logo_desktop.svg" alt="">
           <span class="top_bar_span">Kanban Project Management Tool</span>
           <div class="user_main">
-            <a class="help_info">
+            <a class="help_info" href="./help.html">
               <img src="./assets/icons/help.svg" alt="">
             </a>
             <button onclick="showDesktopMenu()" class="user_profil" href="">
