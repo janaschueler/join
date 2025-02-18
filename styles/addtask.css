@@ -56,16 +56,39 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px;
+  padding: 16px;
   font-family: "Inter 18pt";
   font-weight: bold;
   margin: 12px;
   border-radius: 10px;
+  margin-top: 7rem;
+  width: 110px;
+  height: 56px;
+border: 10px !;
+border-color: #091931 !important;
   gap: 4px;
+  
 }
 
 .taskButton img {
   width: 20px;
+}
+
+.taskButton-clear {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  font-family: "Inter 18pt";
+  font-weight: bold;
+  margin: 12px;
+  border-radius: 10px;
+  margin-top: 7rem;
+  width: 110px;
+  height: 56px;
+border: 10px !;
+border-color: #091931 !important;
+  gap: 4px;
 }
 
 .taskButton:hover {
@@ -78,16 +101,39 @@ h1 {
   color: rgba(255, 255, 255, 1) !important;
   border: none;
   outline: none;
-  padding: 15px 16px;
+  width: 10rem !important;
 }
 
 .taskButton:nth-child(2):hover {
   background-color: rgba(41, 171, 226, 1) !important;
 }
 
+/* Container für Fehlermeldung + Buttons */
+.form-footer {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 100%; 
+}
+
+
+.error-message {
+  font-size: 14px;
+ margin-top: 6rem;
+  white-space: nowrap; 
+}
+
+/* Rotes Sternchen */
+.required {
+  color: #E74C3C;
+  font-weight: bold;
+}
+
+
+
 .addTaskButton {
   display: flex;
   justify-content: flex-end;
+  width: 100%;
   margin-left: 10%;
 }
 
@@ -182,51 +228,67 @@ h1 {
   line-height: 10px;
   cursor: pointer;
 }
+/* Standardfarbe für Buttons */
+.priority button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  cursor: pointer;
+  color: black; /* Standard Textfarbe */
+  transition: background-color 0.3s ease, color 0.3s ease, fill 0.3s ease;
+}
 
+/* Standardfarbe für SVGs */
+.priority button svg {
+  width: 20px;
+  height: 20px;
+  fill: black; /* Standardfarbe */
+  transition: fill 0.3s ease;
+}
+
+/* Urgent Button */
 .priority button.selected.urgent {
   background-color: #ff3d00;
-  border-color: #ff3d00;
-  color: white !important;
+  color: white;
 }
 
-.priority button.selected.urgent img {
-  content: url(assets/icons/urgent-white.svg);
+.priority button.selected.urgent svg {
+  fill: white;
 }
 
+/* Medium Button */
 .priority button.selected.medium {
   background-color: #ffa800;
-  border-color: #ffa800;
-  color: white !important;
+  color: white;
 }
 
-.priority button.selected.medium img {
-  content: url(assets/icons/medium-white.svg);
+.priority button.selected.medium svg {
+  fill: white;
 }
 
+/* Low Button */
 .priority button.selected.low {
   background-color: #7ae229;
-  border-color: #7ae229;
-  color: white !important;
+  color: white;
 }
 
-.priority button.selected.low img {
-  content: url(assets/icons/low-white.svg);
+.priority button.selected.low svg {
+  fill: white;
 }
-
-.priority button.selected {
-  color: white !important;
-}
-
-.priority button.selected img {
-  filter: brightness(0) invert(1); /* Falls du das SVG weiß färben willst */
-}
-
+/* Container für das Dropdown */
 .custom-dropdown {
   position: relative;
   width: 100%;
 }
 
+/* Eingabefeld mit Dropdown-Icon */
 .dropdown-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 10px;
   border: 1px solid #ccc;
   cursor: pointer;
@@ -235,14 +297,23 @@ h1 {
   text-align: left;
 }
 
+#dropdown-icon {
+  transition: transform 0.3s ease;
+}
+
+.dropdown-content.visible ~ .dropdown-input #dropdown-icon {
+  transform: rotate(180deg);
+}
+
 .dropdown-content {
   display: none;
   position: absolute;
   background: white;
   width: 100%;
-  max-height: 200px;
+  max-height: 250px;
   overflow-y: auto;
   border-radius: 5px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
 }
 
@@ -250,69 +321,150 @@ h1 {
   display: block;
 }
 
-/* Entfernt die Trennlinie */
-.dropdown-option:hover {
-  background-color: #f0f0f0;
-  border: none;
-}
-
-.option-content {
+.customCheckboxContainer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+  transition: background 0.3s ease;
+  border-radius: 5px;
+  stroke: white !important;
 }
 
-.dropdown-left {
+.customCheckboxContainer:last-child {
+  border-bottom: none;
+}
+
+.contact-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  width: 100%;
+  justify-content: space-between; 
 }
 
-.contact-name {
+/* **SVG-Profilbild links** */
+.svg-container {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.subtasksUnit {
+  flex-grow: 1;
   font-size: 16px;
   font-weight: 500;
+  margin-left: 10px;
+  white-space: nowrap;
 }
 
-.add-subtask {
+.customCheckbox {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  background-image: url("../assets/icons/checkbox_empty.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  margin-left: auto; /* Abstand nach links */
+  position: relative;
+}
+
+/* Versteckte Standard-Checkbox */
+.customCheckboxContainer input[type="checkbox"] {
+  display: none;
+}
+
+/* Checkbox-Check aktivieren */
+.customCheckboxContainer input[type="checkbox"]:checked + .customCheckbox {
+  background-image: none;
+}
+
+/* Eigene Checkbox als SVG-Icon */
+.customCheckboxContainer input[type="checkbox"]:checked + .customCheckbox::after {
+  content: "";
+  width: 18px;
+  height: 18px;
+  background-image: url("../assets/icons/check_withBox.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Hintergrund & Textfarbe ändern, wenn Checkbox ausgewählt ist */
+.customCheckboxContainer.checked {
+  background-color: #091931;
+  color: white;
+  border-radius: 10px;
+}
+
+/* Weißes SVG-Farben-Fix */
+.customCheckboxContainer.checked .subtasksUnit {
+  color: white;
+}
+
+.customCheckboxContainer.checked .svg-container svg path {
+  fill: white !important;
+  stroke: white !important;
+}
+
+.customCheckboxContainer.checked .customCheckbox {
+  background-image: url("../assets/icons/check_withBox.svg") !important;
+  filter: invert(1) brightness(2);
+}
+
+
+
+/* Container für Subtasks */
+.subtasks-container {
   display: flex;
-  gap: 5px;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
 }
 
+/* Subtask-Eingabebereich */
 .input-wrapper {
   position: relative;
   display: flex;
+  align-items: center;
   width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  
 }
 
 .input-wrapper input {
-  padding-right: 40px;
+  flex-grow: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  font-size: 14px;
 }
 
 .input-wrapper button {
-  position: absolute;
-  top: 0;
-  right: 0;
   border: none;
   background-color: transparent;
   cursor: pointer;
 }
 
-#searchInput::-webkit-search-cancel-button {
-  display: none;
-}
-
-#searchInput:focus {
-  border: 1px solid rgba(41, 171, 226, 1);
-  box-shadow: none;
-}
-
+/* Subtask-Button */
 .iconAdd {
   background-image: url(../assets/icons/addthin.svg);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 12px;
-  width: 32px;
+  background-size: 14px;
+  width: 40px;
   height: 40px;
   border: none;
   background-color: transparent;
@@ -320,10 +472,7 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 5;
+  position: relative;
 }
 
 .iconAdd:hover::before {
@@ -332,23 +481,42 @@ h1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
-  z-index: 0;
+  background-color: rgba(128, 128, 128, 0.2);
+  pointer-events: none;
 }
 
-.formateList {
-  margin-left: 24px;
-  margin-top: 8px;
+/* Einzelne Subtask */
+.subtask-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f8f8f8;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  transition: background 0.3s ease;
 }
 
-.editSubtask {
-  width: 64px;
-  height: 40px;
+.subtask-item:hover {
+  background-color: #eee;
+}
+
+/* Subtask-Buttons */
+.subtask-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+/* Bearbeiten- & Löschen-Buttons */
+.editSubtask,
+.deleteSubtask {
+  width: 32px;
+  height: 32px;
+  background: transparent;
   border: none;
-  background-color: transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -356,146 +524,76 @@ h1 {
   position: relative;
 }
 
-#subtasks-container .input-wrapper:hover .editIconSubtask,
-#subtasks-container .input-wrapper:hover .lineSubtask,
-#subtasks-container .input-wrapper:hover .deleteSubtask {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.editIconSubtask {
-  display: none;
-  position: absolute;
+/* Bearbeiten-Button */
+.editSubtask {
   background-image: url(../assets/icons/edit.svg);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 12px;
-  width: 56px;
-  height: 12px;
-  margin-right: 12px;
+  background-size: 16px;
 }
 
-#subtasks-container .input-wrapper:hover::before {
-  content: "";
-  position: absolute;
-  top: 8px;
-  left: 0;
-  width: 100%;
-  height: 25px;
-  border-radius: 4px;
-  background-color: rgba(128, 128, 128, 0.1); /* Grauer, halbtransparenter Hintergrund */
-  z-index: 0;
-}
-
-.editSubtaskContainer {
-  width: 40px;
-}
-
-.inputSubtaskEdit {
-  height: 32px;
-  margin-top: 8px;
-  border-left: none !important;
-  border-right: none !important;
-  border-top: none !important;
-  border-bottom: 1px solid rgba(41, 171, 226, 1) !important;
-  border-radius: 0px !important;
-}
-
-.lineSubtaskEdit {
-  position: absolute;
-  background-image: url(../assets/icons/verticalLine.svg);
-  background-repeat: no-repeat;
-  width: 1px;
-  height: 16px;
-  right: 25px !important;
-  margin-top: 14px;
-}
-
-#subtasks-container .input-wrapper .deleteSubtask {
-  display: none;
-}
-
+/* Löschen-Button */
 .deleteSubtask {
-  position: absolute;
   background-image: url(../assets/icons/delete.svg);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 10px;
-  width: 32px;
-  height: 40px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 0;
-  right: 0;
-  z-index: 5;
+  background-size: 16px;
 }
 
+/* Button-Hover-Effekt */
+.editSubtask:hover,
+.deleteSubtask:hover {
+  filter: brightness(0.8);
+}
+
+/* Subtask-Bearbeitungsmodus */
+.inputSubtaskEdit {
+  width: 100%;
+  height: 32px;
+  border: none;
+  border-bottom: 2px solid rgba(41, 171, 226, 1);
+  outline: none;
+  font-size: 14px;
+  padding: 5px;
+  background-color: #fff;
+}
+
+/* Bearbeitung bestätigen */
 .acceptBtn {
-  position: absolute;
   background-image: url(../assets/icons/check_blue.svg);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 10px;
+  background-size: 16px;
   width: 32px;
-  height: 40px;
+  height: 32px;
   border: none;
   background-color: transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  top: 4px !important;
-  z-index: 5;
 }
 
-.acceptBtn:hover::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
-  z-index: 4;
-}
-
+/* Bearbeitung abbrechen */
 .deleteSubtaskEdit {
-  position: absolute;
   background-image: url(../assets/icons/delete.svg);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 10px;
+  background-size: 16px;
   width: 32px;
-  height: 40px;
+  height: 32px;
   border: none;
   background-color: transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  top: 4px !important;
-  right: 20px !important;
-  z-index: 5;
 }
 
-.deleteSubtaskEdit:hover::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
-  z-index: 4;
+/* Hover-Effekt für Bestätigen- und Löschen-Buttons */
+.acceptBtn:hover,
+.deleteSubtaskEdit:hover {
+  filter: brightness(0.8);
 }
 
 .side1,
@@ -513,7 +611,7 @@ label {
 .divider {
   width: 1px;
   background-color: #ccc;
-  height: 60%;
+  height: 35%;
   position: absolute;
   transform: translateX(-50%);
 }
