@@ -9,7 +9,7 @@ function templateSummary(signedInName) {
           </div>
           <div class="info_main">
             <div class="check_pencil">
-              <a class="check_pencil_area" href="add_task.html">
+              <a class="check_pencil_area" href="board.html">
                 <div class="circle_pencil_check">
                   <svg class="side_img_p" width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -21,7 +21,7 @@ function templateSummary(signedInName) {
                   <span class="under_task_word">To-do</span>
                 </div>
               </a>
-              <a class="check_pencil_area" href="add_task.html">
+              <a class="check_pencil_area" href="board.html">
                 <div class="circle_pencil_check">
                   <svg class="side_img_c" width="38" height="30" viewBox="0 0 38 30" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
@@ -35,7 +35,7 @@ function templateSummary(signedInName) {
                 </div>
               </a>
             </div>
-            <a class="date" href="add_task.html">
+            <a class="date" href="board.html">
               <div class="date_area">
                 <img class="side_img" src="./assets/icons/orange_arrow.svg" alt="">
                 <div class="side_info">
@@ -54,19 +54,19 @@ function templateSummary(signedInName) {
               </div>
             </a>
             <div class="under_task">
-              <a class="under_task_area" href="add_task.html">
+              <a class="under_task_area" href="board.html">
                 <div class="side_info">
                   <span class="side_number" id="toDoBoard_content"></span>
                   <span class="under_task_word">Tasks in <br> board</span>
                 </div>
               </a>
-              <a class="under_task_area" href="add_task.html">
+              <a class="under_task_area" href="board.html">
                 <div class="side_info">
                   <span class="side_number" id="toDoTwo_content"></span>
                   <span class="under_task_word">Tasks in <br> Progress</span>
                 </div>
               </a>
-              <a class="under_task_area" href="add_task.html">
+              <a class="under_task_area" href="board.html">
                 <div class="side_info">
                   <span class="side_number" id="toDoThree_content"></span>
                   <span class="under_task_word">Tasks in <br> Feedback</span>

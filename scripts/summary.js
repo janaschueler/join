@@ -92,8 +92,10 @@ function findUrgent () {
 
 function findDeadline() {
     let deadlineRef = document.getElementById('deadline_content');
-    let farthestDate = allTasks
-        .map(task => task.dueDate) 
-        .sort((a, b) => new Date(b) - new Date(a))[0]; 
-    deadlineRef.textContent = farthestDate || "No deadlines found.";
+    let today = new Date().toISOString().split('T')[0];
+    let nextDate = allTasks
+        .filter(task => task.dueDate >= today)
+        .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
+        .map(task => task.dueDate)[0];
+    deadlineRef.textContent = nextDate || "No upcoming deadlines.";
 }

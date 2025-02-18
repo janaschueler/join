@@ -560,6 +560,16 @@ h2 {
   display: none;
 }
 
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Für Firefox */
+}
+
 @media (max-width: 768px) {
   .option_main {
     display: block;
