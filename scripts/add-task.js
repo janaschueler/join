@@ -231,115 +231,44 @@ function getInitials(name) {
 }
 
 function addSubtask() {
-  const subTaskInputRef = document.getElementById("new-subtask-input");
-  const subTaskText = subTaskInputRef.value.trim();
-  const subTaskContainer = document.getElementById("subtasks-container");
+  let subTaskInputRef = document.getElementById("new-subtask-input");
+  let subTaskInput = subTaskInputRef.value.trim();
+  let subTaskContainer = document.getElementById("subtasks-container");
 
-  if (!subTaskInputRef || !subTaskContainer) {
-    console.error("❌ Fehler: Subtask-Input oder Subtask-Container nicht gefunden.");
+  if (!subTaskInput) {
     return;
   }
 
-  if (!subTaskText) {
-    alert("Bitte eine Subtask-Beschreibung eingeben!");
-    return;
+  if (!subTaskCount) {
+    subTaskCount = 0;
   }
 
-  subTaskCount++;
+  subTaskCount += 1;
 
-  // Subtask in Firebase speichern
-  saveSubtask(subTaskText);
-
-  // Subtask-Element erstellen
-  const subTaskItem = document.createElement("div");
-  subTaskItem.classList.add("subtask-item");
-  subTaskItem.id = `subTaskUnit${subTaskCount}`;
-
-  subTaskItem.innerHTML = `
-    <span class="subtask-text">${subTaskText}</span>
-    <div class="subtask-buttons">
-        <button class="editSubtask" onclick="editSubtask(${subTaskCount}, '${subTaskText}')"></button>
-        <button class="deleteSubtask" onclick="deleteSubtask(${subTaskCount})"></button>
-    </div>
-  `;
-
-  subTaskContainer.appendChild(subTaskItem);
+  subTaskContainer.innerHTML += addSubtaskTemplate(subTaskInput, subTaskCount);
   subTaskInputRef.value = "";
 }
 
-// ** Subtask speichern **
-async function saveSubtask(subtaskText) {
-  try {
-    const response = await fetch(`${BASE_URL}/subtasks.json`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: subtaskText }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Fehler beim Speichern des Subtasks: ${response.status}`);
-    }
-
-    console.log("✅ Subtask gespeichert:", await response.json());
-  } catch (error) {
-    console.error("❌ Fehler beim Speichern des Subtasks:", error);
-  }
-}
-
-// ** Subtask löschen **
 function deleteSubtask(id) {
   const removeSubtask = document.getElementById(`subTaskUnit${id}`);
-  if (removeSubtask) {
-    removeSubtask.remove();
-  }
+  removeSubtask.remove();
 }
 
-// ** Subtask bearbeiten **
-function editSubtask(id, subTaskText) {
-  const editSubtask = document.getElementById(`subTaskUnit${id}`);
-  if (!editSubtask) return;
-
-  editSubtask.innerHTML = `
-    <input type="text" id="edit-subtask-${id}" value="${subTaskText}" class="inputSubtaskEdit">
-    <button class="acceptBtn" onclick="acceptEdit(${id})"></button>
-    <button class="deleteSubtaskEdit" onclick="cancelEdit(${id}, '${subTaskText}')"></button>
-  `;
+function editSubtask(id, subTaskInput) {
+  let editSubtask = document.getElementById(`subTaskUnit${id}`);
+  editSubtask.innerHTML = "";
+  editSubtask.classList.add("editing");
+  editSubtask.innerHTML = addInputField(id, subTaskInput);
 }
 
-// ** Subtask-Bearbeitung bestätigen **
-function acceptEdit(id) {
-  const editInput = document.getElementById(`edit-subtask-${id}`);
-  if (!editInput) return;
+function accept(id, subTaskInput) {
+  let subTaskContainer = document.getElementById("subtasks-container");
 
-  const newText = editInput.value.trim();
-  if (!newText) return;
+  const removeSubtask = document.getElementById(`subTaskUnit${id}`);
+  removeSubtask.remove();
 
-  const editSubtask = document.getElementById(`subTaskUnit${id}`);
-  if (!editSubtask) return;
-
-  editSubtask.innerHTML = `
-    <span class="subtask-text">${newText}</span>
-    <div class="subtask-buttons">
-        <button class="editSubtask" onclick="editSubtask(${id}, '${newText}')"></button>
-        <button class="deleteSubtask" onclick="deleteSubtask(${id})"></button>
-    </div>
-  `;
+  subTaskContainer.innerHTML += addSubtaskTemplate(subTaskInput, id);
 }
-
-// ** Subtask-Bearbeitung abbrechen **
-function cancelEdit(id, originalText) {
-  const editSubtask = document.getElementById(`subTaskUnit${id}`);
-  if (!editSubtask) return;
-
-  editSubtask.innerHTML = `
-    <span class="subtask-text">${originalText}</span>
-    <div class="subtask-buttons">
-        <button class="editSubtask" onclick="editSubtask(${id}, '${originalText}')"></button>
-        <button class="deleteSubtask" onclick="deleteSubtask(${id})"></button>
-    </div>
-  `;
-}
-
 function clearForm() {
     document.getElementById("inputField").value = "";
     document.getElementById("description").value = "";

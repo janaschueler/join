@@ -22,8 +22,10 @@ h1 {
   align-items: center;
   flex-direction: column;
   margin-left: 5%;
+}
 
-
+input:focus {
+  outline: 1px solid rgba(41, 171, 226, 1) !important;
 }
 
 .task-form {
@@ -47,6 +49,10 @@ h1 {
   position: relative;
 }
 
+.customInput {
+  border: none !important;
+}
+
 .red {
   color: red;
   font-weight: 200;
@@ -64,10 +70,9 @@ h1 {
   margin-top: 7rem;
   width: 110px;
   height: 56px;
-border: 10px !;
-border-color: #091931 !important;
+  border: 10px !;
+  border-color: #091931 !important;
   gap: 4px;
-  
 }
 
 .taskButton img {
@@ -86,8 +91,8 @@ border-color: #091931 !important;
   margin-top: 7rem;
   width: 110px;
   height: 56px;
-border: 10px !;
-border-color: #091931 !important;
+  border: 10px !;
+  border-color: #091931 !important;
   gap: 4px;
 }
 
@@ -111,24 +116,21 @@ border-color: #091931 !important;
 /* Container für Fehlermeldung + Buttons */
 .form-footer {
   display: flex;
-  justify-content: flex-end; 
-  gap: 100%; 
+  justify-content: flex-end;
+  gap: 100%;
 }
-
 
 .error-message {
   font-size: 14px;
- margin-top: 6rem;
-  white-space: nowrap; 
+  margin-top: 6rem;
+  white-space: nowrap;
 }
 
 /* Rotes Sternchen */
 .required {
-  color: #E74C3C;
+  color: #e74c3c;
   font-weight: bold;
 }
-
-
 
 .addTaskButton {
   display: flex;
@@ -284,6 +286,10 @@ border-color: #091931 !important;
   width: 100%;
 }
 
+.dropDown-up {
+  display: none;
+}
+
 /* Eingabefeld mit Dropdown-Icon */
 .dropdown-input {
   display: flex;
@@ -295,6 +301,10 @@ border-color: #091931 !important;
   background: white;
   border-radius: 5px;
   text-align: left;
+}
+
+.dropdown-input {
+  padding: 0px 10px !important;
 }
 
 #dropdown-icon {
@@ -310,27 +320,34 @@ border-color: #091931 !important;
   position: absolute;
   background: white;
   width: 100%;
-  max-height: 250px;
+  max-height: 150px;
   overflow-y: auto;
   border-radius: 5px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  overflow-y: scroll;
+  font-weight: 100;
 }
 
 .dropdown-content.visible {
   display: block;
 }
 
+.dropdown-content label {
+  margin-top: 0px !important;
+  margin-bottom: 1px !important;
+}
+
 .customCheckboxContainer {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 10px 12px;
+  padding: 0px 12px;
   cursor: pointer;
-  border-bottom: 1px solid #ddd;
   transition: background 0.3s ease;
   border-radius: 5px;
-  stroke: white !important;
+  font-weight: 100;
+  height: 40px;
 }
 
 .customCheckboxContainer:last-child {
@@ -341,7 +358,7 @@ border-color: #091931 !important;
   display: flex;
   align-items: center;
   width: 100%;
-  justify-content: space-between; 
+  justify-content: space-between;
 }
 
 /* **SVG-Profilbild links** */
@@ -365,8 +382,8 @@ border-color: #091931 !important;
 }
 
 .customCheckbox {
-  width: 18px;
-  height: 18px;
+  width: 12px;
+  height: 12px;
   display: inline-block;
   background-image: url("../assets/icons/checkbox_empty.svg");
   background-size: contain;
@@ -402,9 +419,15 @@ border-color: #091931 !important;
 
 /* Hintergrund & Textfarbe ändern, wenn Checkbox ausgewählt ist */
 .customCheckboxContainer.checked {
-  background-color: #091931;
+  background-color: rgba(42, 54, 71, 1);
   color: white;
-  border-radius: 10px;
+  border-radius: 6px;
+}
+
+/* Hintergrund & Textfarbe ändern, wenn Checkbox ausgewählt ist */
+.customCheckboxContainer.checked:hover {
+  background-color: rgba(9, 25, 49, 1)
+
 }
 
 /* Weißes SVG-Farben-Fix */
@@ -422,49 +445,78 @@ border-color: #091931 !important;
   filter: invert(1) brightness(2);
 }
 
-
-
-/* Container für Subtasks */
-.subtasks-container {
+.add-subtask {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 10px;
+  gap: 5px;
 }
 
-/* Subtask-Eingabebereich */
 .input-wrapper {
   position: relative;
   display: flex;
-  align-items: center;
   width: 100%;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  
 }
 
 .input-wrapper input {
-  flex-grow: 1;
-  padding: 10px;
-  border: none;
-  outline: none;
-  font-size: 14px;
+  padding-right: 40px;
 }
 
 .input-wrapper button {
+  position: absolute;
+  top: 0;
+  right: 0;
   border: none;
   background-color: transparent;
   cursor: pointer;
 }
 
-/* Subtask-Button */
+#searchInput::-webkit-search-cancel-button {
+  display: none;
+}
+
+#searchInput:focus {
+  border: 1px solid rgba(41, 171, 226, 1);
+  box-shadow: none;
+}
+
 .iconAdd {
   background-image: url(../assets/icons/addthin.svg);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 14px;
-  width: 40px;
+  background-size: 12px;
+  width: 32px;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+}
+
+.iconAdd:hover::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
+  z-index: 0;
+}
+
+.formateList {
+  margin-left: 24px;
+  margin-top: 8px;
+}
+
+.editSubtask {
+  width: 64px;
   height: 40px;
   border: none;
   background-color: transparent;
@@ -475,125 +527,159 @@ border-color: #091931 !important;
   position: relative;
 }
 
-.iconAdd:hover::before {
+#subtasks-container .input-wrapper:hover .editIconSubtask,
+#subtasks-container .input-wrapper:hover .lineSubtask,
+#subtasks-container .input-wrapper:hover .deleteSubtask {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editIconSubtask {
+  display: none;
+  position: absolute;
+  background-image: url(../assets/icons/edit.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px;
+  width: 56px;
+  height: 12px;
+  margin-right: 12px;
+}
+
+#subtasks-container .input-wrapper:hover::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 0;
+  width: 100%;
+  height: 25px;
+  border-radius: 4px;
+  background-color: rgba(128, 128, 128, 0.1); /* Grauer, halbtransparenter Hintergrund */
+  z-index: 0;
+}
+
+.editSubtaskContainer {
+  width: 40px;
+}
+
+.inputSubtaskEdit {
+  height: 32px;
+  margin-top: 8px;
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+  border-bottom: 1px solid rgba(41, 171, 226, 1) !important;
+  border-radius: 0px !important;
+}
+
+.lineSubtask {
+  display: none;
+  position: absolute;
+  background-image: url(../assets/icons/verticalLine.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+  width: 1px;
+  height: 16px;
+  margin-right: -8px;
+  align-self: center;
+}
+
+.lineSubtaskEdit {
+  position: absolute;
+  background-image: url(../assets/icons/verticalLine.svg);
+  background-repeat: no-repeat;
+  width: 1px;
+  height: 16px;
+  right: 25px !important;
+  margin-top: 14px;
+}
+
+#subtasks-container .input-wrapper .deleteSubtask {
+  display: none;
+}
+
+.deleteSubtask {
+  position: absolute;
+  background-image: url(../assets/icons/delete.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px;
+  width: 32px;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  right: 0;
+  z-index: 5;
+}
+
+.acceptBtn {
+  position: absolute;
+  background-image: url(../assets/icons/check_blue.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px;
+  width: 32px;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 4px !important;
+  z-index: 5;
+}
+
+.acceptBtn:hover::before {
   content: "";
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  background-color: rgba(128, 128, 128, 0.2);
-  pointer-events: none;
+  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
+  z-index: 4;
 }
 
-/* Einzelne Subtask */
-.subtask-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #f8f8f8;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  transition: background 0.3s ease;
-}
-
-.subtask-item:hover {
-  background-color: #eee;
-}
-
-/* Subtask-Buttons */
-.subtask-buttons {
-  display: flex;
-  gap: 5px;
-}
-
-/* Bearbeiten- & Löschen-Buttons */
-.editSubtask,
-.deleteSubtask {
-  width: 32px;
-  height: 32px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-/* Bearbeiten-Button */
-.editSubtask {
-  background-image: url(../assets/icons/edit.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 16px;
-}
-
-/* Löschen-Button */
-.deleteSubtask {
-  background-image: url(../assets/icons/delete.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 16px;
-}
-
-/* Button-Hover-Effekt */
-.editSubtask:hover,
-.deleteSubtask:hover {
-  filter: brightness(0.8);
-}
-
-/* Subtask-Bearbeitungsmodus */
-.inputSubtaskEdit {
-  width: 100%;
-  height: 32px;
-  border: none;
-  border-bottom: 2px solid rgba(41, 171, 226, 1);
-  outline: none;
-  font-size: 14px;
-  padding: 5px;
-  background-color: #fff;
-}
-
-/* Bearbeitung bestätigen */
-.acceptBtn {
-  background-image: url(../assets/icons/check_blue.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 16px;
-  width: 32px;
-  height: 32px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Bearbeitung abbrechen */
 .deleteSubtaskEdit {
+  position: absolute;
   background-image: url(../assets/icons/delete.svg);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 16px;
+  background-size: 10px;
   width: 32px;
-  height: 32px;
+  height: 40px;
   border: none;
   background-color: transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  top: 4px !important;
+  right: 20px !important;
+  z-index: 5;
 }
 
-/* Hover-Effekt für Bestätigen- und Löschen-Buttons */
-.acceptBtn:hover,
-.deleteSubtaskEdit:hover {
-  filter: brightness(0.8);
+.deleteSubtaskEdit:hover::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
+  z-index: 4;
 }
 
 .side1,

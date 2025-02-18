@@ -24,25 +24,25 @@
             <img src="./assets/icons/Join_Logo_Bar.svg" alt="">
           </div>
           <div class="task_bar">
-            <a class="nav_bar" href="">
+            <a class="nav_bar" href="./index.html">
               <div class="nav_stripe">
                 <img src="./assets/icons/Summary_Icon.svg" alt="">
                 <span class="nav_link">Summary</span>
               </div>
             </a>
-            <a class="nav_bar" href="">
+            <a class="nav_bar" href="./add_task.html">
               <div class="nav_stripe">
                 <img src="./assets/icons/AddTask_Icon.svg" alt="">
                 <span class="nav_link">Add Task</span>
               </div>
             </a>
-            <a class="nav_bar" href="">
+            <a class="nav_bar" href="./board.html">
               <div class="nav_stripe">
                 <img src="./assets/icons/Board_Icon.svg" alt="">
                 <span class="nav_link">Board</span>
               </div>
             </a>
-            <a class="nav_bar" href="">
+            <a class="nav_bar" href="./contacts.html">
               <div class="nav_stripe">
                 <img src="./assets/icons/Contacts_Icon.svg" alt="">
                 <span class="nav_link">Contacts</span>
@@ -50,10 +50,10 @@
             </a>
           </div>
           <div class="privacy">
-            <a class="privacy_a" href="">
+            <a class="privacy_a" href="./privacy-policy.html">
               <span class="privacy_info">Privacy Policy</span>
             </a>
-            <a class="privacy_a" href="">
+            <a class="privacy_a" href="./legal-notice.html">
               <span class="privacy_info">Legal notice</span>
             </a>
           </div>
@@ -86,16 +86,22 @@
                         
                         <label for="assigned">Assigned to</label>
                         <div id="assigned" class="custom-dropdown">
-                            <div id="assigned-input" class="dropdown-input" onclick="toggleDropdown()">
-                                <span>Select contacts to assign</span>
-                                <svg id="dropdown-icon" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M3.29998 4.3L0.699975 1.7C0.383309 1.38333 0.312475 1.02083 0.487475 0.6125C0.662475 0.204167 0.974975 0 1.42498 0H6.57498C7.02498 0 7.33747 0.204167 7.51248 0.6125C7.68748 1.02083 7.61664 1.38333 7.29997 1.7L4.69998 4.3C4.59998 4.4 4.49164 4.475 4.37498 4.525C4.25831 4.575 4.13331 4.6 3.99998 4.6C3.86664 4.6 3.74164 4.575 3.62498 4.525C3.50831 4.475 3.39998 4.4 3.29998 4.3Z" fill="#2A3647"/>
-                                </svg>
-                            </div>
-                            <div id="assigned-dropdown" class="dropdown-content">
-                                <!-- Hier werden die Kontakte dynamisch eingefügt -->
-                            </div>
-                        </div>
+                          <div id="assigned-input" class="dropdown-input custom" onclick="toggleDropdown()">
+                              <input class="customInput" id="search-contacts" type="text" placeholder="Select contacts to assign" oninput="filterContacts()" />
+                              <svg id="dropdown-icon" class="dropDown" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M3.29998 4.3L0.699975 1.7C0.383309 1.38333 0.312475 1.02083 0.487475 0.6125C0.662475 0.204167 0.974975 0 1.42498 0H6.57498C7.02498 0 7.33747 0.204167 7.51248 0.6125C7.68748 1.02083 7.61664 1.38333 7.29997 1.7L4.69998 4.3C4.59998 4.4 4.49164 4.475 4.37498 4.525C4.25831 4.575 4.13331 4.6 3.99998 4.6C3.86664 4.6 3.74164 4.575 3.62498 4.525C3.50831 4.475 3.39998 4.4 3.29998 4.3Z" fill="#2A3647"/>
+                              </svg>
+                              <svg class="dropDown-up" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M4.70002 0.299975L7.30002 2.89998C7.61669 3.21664 7.68752 3.57914 7.51252 3.98748C7.33752 4.39581 7.02502 4.59998 6.57502 4.59998L1.42502 4.59998C0.975025 4.59998 0.662525 4.39581 0.487525 3.98748C0.312525 3.57914 0.383358 3.21664 0.700025 2.89998L3.30002 0.299975C3.40002 0.199975 3.50836 0.124976 3.62502 0.0749755C3.74169 0.0249753 3.86669 -2.43187e-05 4.00002 -2.43187e-05C4.13336 -2.43187e-05 4.25836 0.0249753 4.37502 0.0749755C4.49169 0.124976 4.60002 0.199975 4.70002 0.299975Z" fill="#2A3647"/>
+                              </svg>                                  
+                          </div>
+                          <div id="assigned-dropdown" class="dropdown-content">
+                              <!-- Dynamisch eingefügte Kontakte -->
+                              <div class="contact-item">Alice</div>
+                              <div class="contact-item">Bob</div>
+                              <div class="contact-item">Charlie</div>
+                          </div>
+                      </div>
                         <div id="selected-contacts" class="selected-contacts-container"></div>
                         
                         
