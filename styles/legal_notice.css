@@ -29,6 +29,19 @@ h1 {
   margin-bottom: 16px;
 }
 
+h2 {
+  margin-top: 32px !important;
+  font-weight: 700 !important;
+  font-size: 27px !important;
+}
+
+h3 {
+  margin-top: 20px !important;
+  font-weight: 700 !important;
+  font-size: 27px !important;
+  margin-bottom: 0px !important;
+}
+
 .legalPageContainer {
   text-align: left;
   margin-left: 5%;
@@ -42,8 +55,18 @@ h1 {
   color: rgba(41, 171, 226, 1);
 }
 
-h2 {
-  margin-top: 24px !important;
-  font-weight: 700 !important;
-  font-size: 27px !important;
+ol li::marker {
+  font-size: 27px;
+  font-weight: bold;
+  padding-right: 32px;
+}
+
+li {
+  padding-left: 30px;
+}
+
+.bold {
+  font-weight: 700;
+  font-size: 27px;
+  padding-top: 32px;
 }
