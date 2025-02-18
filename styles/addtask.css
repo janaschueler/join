@@ -125,7 +125,7 @@ h1 {
 }
 
 .priority button:hover {
-  background-color: #ddd;
+  background-color: red;
 }
 
 .priority button.selected {

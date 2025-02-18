@@ -1,3 +1,12 @@
+main {
+  overflow-y: scroll !important;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 .privacy {
   margin-top: 340px;
   display: flex;
@@ -45,10 +54,17 @@ h3 {
 .legalPageContainer {
   text-align: left;
   margin-left: 5%;
+  overflow-y: auto;
 }
 
 .spanLegalCopy {
   margin-top: 20px;
+}
+
+.spanLegalCopyBold {
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .lightblue {
@@ -69,4 +85,24 @@ li {
   font-weight: 700;
   font-size: 27px;
   padding-top: 32px;
+}
+
+ul li {
+  padding-left: 2px;
+  margin-left: 0;
+}
+
+.noBulletPoints {
+  list-style-type: none; /* Entfernt die Bullet Points */
+}
+
+.privacy {
+  margin-top: 16px !important
+
+}
+
+a {
+  text-decoration: none !important;
+color: black !important;
+cursor: pointer;
 }

@@ -3,6 +3,7 @@ body {
   font-family: "inter 18pt";
 }
 
+
 .left-main-bar.collapsed {
   width: 80px; /* Die Breite, wenn die Sidebar eingeklappt ist */
 }
