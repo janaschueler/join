@@ -40,10 +40,11 @@ document.addEventListener("click", function (event) {
   const dropdown = document.getElementById("category-dropdown");
   const inputField = document.getElementById("category-input");
 
-  if (!inputField.contains(event.target) && !dropdown.contains(event.target)) {
-    dropdown.classList.remove("visible");
+  if (!inputField?.contains(event.target) && !dropdown?.contains(event.target)) {
+    dropdown?.classList.remove("visible");
   }
 });
+
 
 function selectCategory(label, value) {
   document.getElementById("category-input").textContent = label; // Zeigt die gewählte Kategorie an
@@ -76,6 +77,52 @@ async function fetchContacts() {
     console.error("Fehler beim Abrufen der Kontakte:", error);
   }
 }
+
+async function addTask() {
+  const title = document.getElementById("inputField").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const dueDate = document.getElementById("due-date").value;
+  const category = document.getElementById("category").value;
+  const assignedContacts = selectedContacts;
+  const priority = selectedPriority;
+
+  // Logische ODER-Operatoren verwenden
+  if (!title || !description || !dueDate || !category || !priority) {
+    alert("Bitte fülle alle Felder aus!");
+    return;
+  }
+
+  const taskData = {
+    title,
+    description,
+    dueDate,
+    category,
+    assignedContacts,
+    priority,
+    status: "todo", 
+    createdAt: new Date().toISOString(),
+  };
+
+  try {
+    const response = await fetch(`${BASE_URL}/tasks.json`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(taskData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
+    }
+
+    console.log("Aufgabe gespeichert:", await response.json());
+    alert("Aufgabe erfolgreich erstellt!");
+    clearForm();
+
+  } catch (error) {
+    console.error("Fehler beim Speichern der Aufgabe:", error);
+  }
+}
+
 
 async function saveSubtask(subtaskText) {
   try {
@@ -390,7 +437,7 @@ function highlightButton(button) {
   });
 }
 
-function init() {
+function start() {
   fetchContacts();
   initPriorityButtons();
 }

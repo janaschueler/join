@@ -15,6 +15,9 @@ h1 {
   align-self: flex-start;
 }
 
+.user_profil {
+font-weight: 500;
+}
 .addTaskSection {
   margin-top: 40px;
   display: flex;
