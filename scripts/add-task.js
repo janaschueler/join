@@ -12,21 +12,25 @@ function init() {
     fetchSubtasks();
 }
 
-// **Dropdown auf- & zuklappen**
-function toggleDropdown() {
-    const dropdown = document.getElementById("assigned-dropdown");
-    dropdown.classList.toggle("visible");
+
+
+function toggleDropdown(event) {
+  event.stopPropagation(); 
+
+  const dropdown = document.getElementById("assigned-dropdown");
+  const iconDown = document.querySelector(".dropDown");
+  const iconUp = document.querySelector(".dropDown-up");
+
+  dropdown.classList.toggle("visible");
+
+  if (dropdown.classList.contains("visible")) {
+      iconDown.style.display = "none";
+      iconUp.style.display = "block";
+  } else {
+      iconDown.style.display = "block";
+      iconUp.style.display = "none";
+  }
 }
-
-document.addEventListener("click", function(event) {
-    const dropdown = document.getElementById("assigned-dropdown");
-    const inputField = document.getElementById("assigned-input");
-
-    if (!inputField.contains(event.target) && !dropdown.contains(event.target)) {
-        dropdown.classList.remove("visible");
-    }
-});
-
 
 function toggleCategoryDropdown() {
   const dropdown = document.getElementById("category-dropdown");
@@ -94,10 +98,13 @@ async function saveSubtask(subtaskText) {
   }
 }
 
-
-
 function populateAssignedToSelect() {
   const dropdown = document.getElementById("assigned-dropdown");
+  if (!dropdown) {
+      console.error("Dropdown nicht gefunden!");
+      return;
+  }
+
   dropdown.innerHTML = ""; // Zurücksetzen
 
   contacts.forEach((contact) => {
@@ -111,28 +118,16 @@ function populateAssignedToSelect() {
       checkbox.id = `contact-${contact.id}`;
       checkbox.name = `contact-${contact.id}`;
       checkbox.value = contact.id;
-      checkbox.dataset.index = "0";
-      checkbox.dataset.status = "1";
 
       // Benutzerdefinierte Checkbox
       const customCheckbox = document.createElement("span");
       customCheckbox.classList.add("customCheckbox");
 
-      // Event: Wenn die Checkbox geändert wird
-      checkbox.addEventListener("change", function () {
-          if (this.checked) {
-              label.classList.add("checked"); // Klasse für aktivierten Zustand hinzufügen
-              customCheckbox.style.backgroundImage = "url('../assets/icons/check_withBox.svg')"; // Icon setzen
-          } else {
-              label.classList.remove("checked");
-              customCheckbox.style.backgroundImage = "url('../assets/icons/checkbox_empty.svg')"; 
-          }
-      });
-
-      // SVG des Kontakts
+      // SVG-Profilbild
       const svgContainer = document.createElement("div");
       svgContainer.classList.add("svg-container");
-      svgContainer.appendChild(createContactSVG(contact));
+      svgContainer.style.backgroundColor = contact.color;
+      svgContainer.innerHTML = `<span class="contact-initials">${getInitials(contact.name)}</span>`;
 
       // Name des Kontakts
       const contactName = document.createElement("span");
@@ -146,89 +141,139 @@ function populateAssignedToSelect() {
       contactRow.appendChild(contactName);
       contactRow.appendChild(customCheckbox);
 
-      // Alles zusammenfügen
-      label.appendChild(checkbox); // Die unsichtbare Checkbox kommt vor die Zeile
+      // Falls der Kontakt bereits ausgewählt wurde, Checkbox aktivieren
+      if (selectedContacts.some(c => c.id === contact.id)) {
+          checkbox.checked = true;
+          label.classList.add("checked");
+      }
+
+      // Event-Listener für Checkbox
+      checkbox.addEventListener("change", function () {
+          toggleContactSelection(contact.id, contact.name, contact.color);
+      });
+
+      // Zusammenbauen
+      label.appendChild(checkbox);
       label.appendChild(contactRow);
       dropdown.appendChild(label);
   });
 }
 
-
-// **SVG für Kontakte erstellen**
 function createContactSVG(contact) {
-    const initials = getInitials(contact.name);
+  const initials = getInitials(contact.name);
 
-    const svgNS = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(svgNS, "svg");
-    svg.setAttribute("width", "50");
-    svg.setAttribute("height", "50");
-    svg.setAttribute("viewBox", "0 0 32 32");
-    svg.setAttribute("fill", "none");
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("width", "32");
+  svg.setAttribute("height", "32");
+  svg.setAttribute("viewBox", "0 0 32 32");
+  svg.setAttribute("fill", "none");
 
-    const circle = document.createElementNS(svgNS, "circle");
-    circle.setAttribute("cx", "16");
-    circle.setAttribute("cy", "16");
-    circle.setAttribute("r", "15");
-    circle.setAttribute("fill", contact.color || "#ccc");
-    circle.setAttribute("stroke", "white");
+  const circle = document.createElementNS(svgNS, "circle");
+  circle.setAttribute("cx", "16");
+  circle.setAttribute("cy", "16");
+  circle.setAttribute("r", "15");
+  circle.setAttribute("fill", contact.color || "#ccc");
+  circle.setAttribute("stroke", "white");
 
-    const text = document.createElementNS(svgNS, "text");
-    text.setAttribute("x", "50%");
-    text.setAttribute("y", "55%");
-    text.setAttribute("font-family", "Arial, sans-serif");
-    text.setAttribute("font-size", "10");
-    text.setAttribute("fill", "white");
-    text.setAttribute("text-anchor", "middle");
-    text.setAttribute("alignment-baseline", "middle");
-    text.textContent = initials;
+  const text = document.createElementNS(svgNS, "text");
+  text.setAttribute("x", "50%");
+  text.setAttribute("y", "55%");
+  text.setAttribute("font-family", "Arial, sans-serif");
+  text.setAttribute("font-size", "12");  // Etwas größer für bessere Sichtbarkeit
+  text.setAttribute("fill", "white"); // Farbe der Initialen auf Weiß setzen
+  text.setAttribute("text-anchor", "middle");
+  text.setAttribute("alignment-baseline", "middle");
+  text.textContent = initials;
 
-    svg.appendChild(circle);
-    svg.appendChild(text);
-    return svg;
+  svg.appendChild(circle);
+  svg.appendChild(text);
+  return svg;
 }
 
-// **Kontakte in der Auswahl anzeigen**
-function updateSelectedContacts(contact, isChecked) {
-    const selectedContactsContainer = document.getElementById("selected-contacts");
 
-    if (isChecked) {
-        if (!selectedContacts.some(c => c.id === contact.id)) {
-            selectedContacts.push(contact);
-        }
-    } else {
-        selectedContacts = selectedContacts.filter(c => c.id !== contact.id);
-    }
+function renderContacts() {
+  const dropdown = document.getElementById("assigned-dropdown");
+  dropdown.innerHTML = contacts.map(contact => `
+      <label class="customCheckboxContainer" onclick="toggleContactSelection('${contact.id}', '${contact.name}', '${contact.color}')">
+          <input type="checkbox" id="contact-${contact.id}" class="contact-checkbox" value="${contact.id}">
+          <span class="customCheckbox"></span>
+          <div class="contact-row">
+              <div class="svg-container" style="background-color: ${contact.color};">
+                  <span class="contact-initials">${getInitials(contact.name)}</span>
+              </div>
+              <span class="subtasksUnit">${contact.name}</span>
+          </div>
+      </label>
+  `).join('');
+}
+function toggleContactSelection(contactId, contactName, contactColor) {
+  const checkbox = document.getElementById(`contact-${contactId}`);
+  
+  if (!checkbox) return;
 
-    selectedContactsContainer.innerHTML = "";
-    selectedContacts.forEach(contact => {
-        const contactElement = document.createElement("div");
-        contactElement.classList.add("selected-contact");
-        contactElement.style.backgroundColor = contact.color;
-        contactElement.innerHTML = `
-            <span class="selected-contact-initials">${getInitials(contact.name)}</span>
-            <button class="remove-contact-btn" onclick="removeSelectedContact('${contact.id}')">X</button>
-        `;
-        selectedContactsContainer.appendChild(contactElement);
-    });
+  if (checkbox.checked) {
+      if (!selectedContacts.some(c => c.id === contactId)) {
+          selectedContacts.push({ id: contactId, name: contactName, color: contactColor });
+      }
+  } else {
+      selectedContacts = selectedContacts.filter(c => c.id !== contactId);
+  }
+
+  updateSelectedContacts();
 }
 
-// **Kontakte aus der Auswahl entfernen**
+function updateSelectedContacts() {
+  const selectedContactsContainer = document.getElementById("selected-contacts");
+  selectedContactsContainer.innerHTML = ""; 
+
+  selectedContacts.forEach(contact => {
+      const contactElement = document.createElement("div");
+      contactElement.classList.add("selected-contact");
+      contactElement.style.backgroundColor = contact.color; 
+
+     
+      contactElement.innerHTML = `
+          <span class="selected-contact-initials">${getInitials(contact.name)}</span>
+          <button class="remove-contact-btn" onclick="removeSelectedContact('${contact.id}')">X</button>
+      `;
+
+      selectedContactsContainer.appendChild(contactElement);
+  });
+}
+
 function removeSelectedContact(contactId) {
-    selectedContacts = selectedContacts.filter(contact => contact.id !== contactId);
-    updateSelectedContacts(null, false);
+  selectedContacts = selectedContacts.filter(contact => contact.id !== contactId);
+  
+  const checkbox = document.getElementById(`contact-${contactId}`);
+  if (checkbox) {
+      checkbox.checked = false;
+  }
 
-    const checkbox = document.querySelector(`input[data-contact-id="${contactId}"]`);
-    if (checkbox) {
-        checkbox.checked = false;
-    }
+  updateSelectedContacts();
 }
 
+/* **Kontakte filtern** */
+function filterContacts() {
+  const searchTerm = document.getElementById("search-contacts").value.toLowerCase();
+  document.querySelectorAll(".customCheckboxContainer").forEach(label => {
+      const name = label.querySelector(".subtasksUnit").textContent.toLowerCase();
+      label.style.display = name.includes(searchTerm) ? "flex" : "none";
+  });
+}
+// ** Initialen aus Namen generieren **
 function getInitials(name) {
-    return name.split(" ")
-        .map(word => word[0])
-        .join("")
-        .toUpperCase();
+  if (!name) return "??";
+  
+  const initials = name.split(" ")
+      .filter(word => word.length > 0)
+      .map(word => word[0])
+      .join("")
+      .toUpperCase();
+
+  return initials.length > 0 ? initials : name[0].toUpperCase();
 }
+
 
 function addSubtask() {
   let subTaskInputRef = document.getElementById("new-subtask-input");
@@ -300,7 +345,7 @@ function initPriorityButtons() {
       });
   });
 
-  // Medium-Priorität standardmäßig auswählen
+
   const defaultMediumButton = document.querySelector(".priority .medium");
   if (defaultMediumButton) {
       handlePriorityClick(defaultMediumButton);
@@ -308,9 +353,9 @@ function initPriorityButtons() {
 }
 
 
-// **Prioritätsbutton klicken**
+
 function handlePriorityClick(clickedButton) {
-  const priorityValue = clickedButton.classList[0]; // "urgent", "medium" oder "low"
+  const priorityValue = clickedButton.classList[0]; 
   const priorityButtons = document.querySelectorAll(".priority button");
 
   if (selectedPriority === priorityValue) {
@@ -346,7 +391,7 @@ function resetButtonState(button) {
 
   const svgPaths = button.querySelectorAll("svg path");
   svgPaths.forEach(path => {
-      path.style.fill = priorityColors[button.classList[0]]; // Setzt die Originalfarbe zurück
+      path.style.fill = priorityColors[button.classList[0]]; 
   });
 }
 
@@ -363,7 +408,7 @@ function highlightButton(button) {
 
   const svgPaths = button.querySelectorAll("svg path");
   svgPaths.forEach(path => {
-      path.style.fill = "white"; // Setzt das Icon auf Weiß, wenn ausgewählt
+      path.style.fill = "white"; 
   });
 }
 
