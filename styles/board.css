@@ -3,7 +3,6 @@ body {
   font-family: "inter 18pt";
 }
 
-
 .left-main-bar.collapsed {
   width: 80px; /* Die Breite, wenn die Sidebar eingeklappt ist */
 }
@@ -645,15 +644,52 @@ table td:first-child {
   cursor: pointer;
 }
 
-@media (max-width: 1500px) {
-  .headerBoard {
-    justify-content: flex-start;
-  }
+.addTaskSectionModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+  /* visibility: hidden; */
+  /* opacity: 0; */
+  transition: opacity 0.3sease;
+  margin-top: 0px;
+  margin-left: 0px !important;
+}
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+#modalAddTask {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  height: 800px;
+  width: 1000px;
+  background-color: white;
+  border-radius: 20px;
+  padding: 24px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  word-wrap: break-word;
+  /* visibility: hidden; */
+  /* opacity: 0; */
+  transition: opacity 0.3sease, transform 0.3sease;
+  overflow: auto;
 }
 
 @media (max-width: 998px) {
   .headerBoard {
     justify-content: flex-start;
+  }
+
+  .searchContainer {
+    display: none;
   }
 
   form {
