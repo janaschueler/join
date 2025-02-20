@@ -131,17 +131,14 @@ document.querySelector("#LoginButton").addEventListener("click", function (event
 function checkLogin() {
   let loginEmail = document.getElementById("inputEmail").value;
   let loginPassword = document.getElementById("inputPassword1").value;
-
   let user = allUser.find((user) => {
     return user.contactEmail.includes(loginEmail) && user.contactPassword.includes(loginPassword);
   });
-
   if (user) {
     transfereLoginData(user);
     setTimeout(() => {
       window.location.assign("./index.html");
-    }, 1000);
-    
+    }, 1000);    
   } else {
     document.getElementById("wrongPassword").classList.remove("d-none");
   }

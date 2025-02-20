@@ -76,7 +76,14 @@ function templateSummary(signedInName) {
           </div>
         </div>
         <div class="greetings">
-          <span class="morning" id="greeting_content">Good morning,</span>
+          <span class="morning" id="greeting_content"></span>
           <span class="user_name">${signedInName}</span>
-        </div>`
+        </div>
+          <div id="spinner_content" class="mobile_overlay">
+            <div class="mobile_overlay_area">
+              <span class="morning" id="greeting_Mobile_content"></span>
+              <span class="user_name">${signedInName}</span>
+            </div>
+          </div>
+        `        
 }

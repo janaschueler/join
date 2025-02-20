@@ -32,6 +32,31 @@
     justify-content: center;
     margin-top: 64px;
   }
+
+  .privacy {
+    margin-top: 340px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 30px;
+  }
+  
+  .privacy_a {
+    text-decoration: none;
+  }
+  
+  .privacy_info {
+    color: #a8a8a8;
+    font-weight: 400;
+    font-size: 16px;
+  }
+  
+  .privacy_info:hover {
+    color: #29abe2;
+    font-weight: 700;
+  }
   
   .top_bar_main {
     min-height: 80px;

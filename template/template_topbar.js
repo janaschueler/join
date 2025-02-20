@@ -14,13 +14,13 @@ function templateTopBar(AB) {
         <div id="deskMenu_content" class="dialog_main d_none">
           <div class="dialog_area">
             <div class="dialog_nav_help">
-              <a class="dialog_links" href="">Help</a>
+              <a class="dialog_links" href="help.html">Help</a>
             </div>
             <div class="dialog_nav">
-              <a class="dialog_links" href="">Legal Notice</a>
+              <a class="dialog_links" href="legal-notice.html">Legal Notice</a>
             </div>
             <div class="dialog_nav">
-              <a class="dialog_links" href="">Privacy Policy</a>
+              <a class="dialog_links" href="privacy-policy.html">Privacy Policy</a>
             </div>
             <div class="dialog_nav">
               <a class="dialog_links" href="login.html">Log out</a>

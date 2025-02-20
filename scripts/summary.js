@@ -3,12 +3,13 @@ const BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.
 let allTasks = [];
 let signedInName;
 
-async function init() {
-    await fetchData();
+async function init() {   
+    await fetchData();    
     renderTopBar();
-    renderSummary();
+    renderSummary();    
     renderAllStatus(); 
-    greetings()   
+    greetings();
+    disableLoadingSpinner();   
 }
 
 async function fetchData(path = "") {
@@ -23,25 +24,36 @@ async function fetchData(path = "") {
 
 function renderSummary() {
     let summaryRef = document.getElementById('summary_content');   
-    for (let i = 0; i < allTasks.length; i++) {
-        const currentData = allTasks[i];
-        summaryRef.innerHTML = templateSummary(signedInName); 
-              
-    }        
+    for (let i = 0; i < allTasks.length; i++) {       
+        summaryRef.innerHTML = templateSummary(signedInName);               
+    }       
+}
+
+function disableLoadingSpinner() {
+    let loadingSpinnerRef = document.getElementById('spinner_content');
+    setTimeout(() => {
+        if (window.innerWidth < 768) {
+            loadingSpinnerRef.classList.add('d_none');            
+        } else {
+            loadingSpinnerRef.classList.remove('d_none');
+        }
+    }, 1500);
 }
 
 function greetings() {
     let greetingsRef = document.getElementById('greeting_content');
+    let greetingsMobileRef = document.getElementById('greeting_Mobile_content');   
     let currentHour = new Date().getHours();
     let greeting;
     if (currentHour >= 5 && currentHour < 12) {
-        greeting = "Good Morning,";
+        greeting = "Good Morning";
     } else if (currentHour >= 12 && currentHour < 18) {
-        greeting = "Good Afternoon,";
+        greeting = "Good Afternoon";
     } else {
-        greeting = "Good Evening,";
+        greeting = "Good Evening";
     }
-    greetingsRef.textContent = greeting;
+    greetingsRef.textContent = greeting; 
+    greetingsMobileRef.textContent = greeting;  
 }
 
 function renderAllStatus() {
