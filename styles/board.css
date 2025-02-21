@@ -11,6 +11,27 @@ body {
   display: flex;
 }
 
+.primaryButton {
+  background-color: rgba(42, 54, 71, 1) !important;
+  color: rgba(255, 255, 255, 1) !important;
+  border: none;
+  outline: none;
+  padding: 8px 20px !important;
+  border-radius: 8px;
+  gap: 10px;
+}
+
+.secondaryButton {
+  background-color: transparent;
+  color: rgba(42, 54, 71, 1) !important;
+  border: solid rgba(42, 54, 71, 1) !important;
+  border-width: 1px !important;
+  outline: none;
+  padding: 15px 16px;
+  border-radius: 8px;
+  gap: 10px;
+}
+
 .headerBoard {
   display: flex;
   justify-content: space-between;

@@ -323,7 +323,7 @@ input:focus {
 #description:focus, 
 #assigned-input:focus-within, 
 #due-date:focus,
-#category-input:focus {
+#custom-category:focus {
   border: 2px solid rgba(41, 171, 226, 1);
   outline: none;
 }
