@@ -1,3 +1,6 @@
+BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
+
+
 let allTasks = { id: [], assignedTo: [], category: [], createdAt: [], description: [], dueDate: [], priority: [], subtasks: [], title: [], status: [], subtasksStatus: [], categoryColor: [] };
 let allContacts = { idContact: [], contactName: [], contactAbbreviation: [], color: [] };
 
@@ -580,22 +583,58 @@ function openEditModal(categoryTask, title, description, dateTask, priorityTask,
   }
 
   showModal.innerHTML = addEditTask(title, description, id);
+  addSubtaskinEditModal(id);
+  addDueDate(dateTask)
 
-  if (categoryTask) {
-    console.log("Category Task:", categoryTask); // Prüfen, ob gesetzt
-    console.log("Start setTimeout...");
+}
 
-    setTimeout(() => {
-      console.log("Executing selectCategory...");
-      selectCategory(categoryTask, categoryTask.toLowerCase().replace(" ", "-"));
-    }, 100);
 
-    console.log("setTimeout gesetzt!");
+function addSubtaskinEditModal(id) {
+  let subTaskContainer = document.getElementById("editSubtasks-container");
+
+  let tasks = allTasks.filter((t) => t["id"] === id);
+  let subTaskInput = tasks[0].subtasks;
+
+  if (!subTaskInput) {
+    return;
   }
 
-  // let date = dateTask;
-  // let priority = priorityTask;
-  // closeModal();
+  subTaskInput.forEach((subTask, index) => {
+    subTaskCount = index + 1;
+    subTaskContainer.innerHTML += addSubtaskTemplateinModal(subTask, subTaskCount);
+  });
+}
+
+function addAdditionalSubtaskinEditModal(id) {
+  let subTaskInputRef = document.getElementById("new-subtask-input-Edit");
+  let subTaskInput = subTaskInputRef.value.trim();
+  let subTaskContainer = document.getElementById("editSubtasks-container");
+
+  let tasks = allTasks.filter((t) => t["id"] === id);
+  let numberOfSubTaskInput = tasks[0].subtasks.length;
+
+  subTaskCount = numberOfSubTaskInput + 1;
+
+    subTaskContainer.innerHTML += addSubtaskTemplateinModal( subTaskInput, subTaskCount);
+    subTaskInputRef.value = "";
+}
+
+
+function acceptEdit(id) {
+  let subTaskContainer = document.getElementById("editSubtasks-container");
+  let newSubTask = document.getElementById(`inputSubtask${id}`).value;
+
+  const removeSubtask = document.getElementById(`editSubTaskUnit${id}`);
+  removeSubtask.remove();
+
+  subTaskContainer.innerHTML += addSubtaskTemplateinModal(newSubTask, id);
+}
+
+function editSubtaskinModal(id, subTaskInput) {
+  let editSubtask = document.getElementById(`editSubTaskUnit${id}`);
+  editSubtask.innerHTML = "";
+  editSubtask.classList.add("editing");
+  editSubtask.innerHTML = addInputFieldinModal(id, subTaskInput);
 }
 
 async function saveEditTask(id) {
@@ -641,3 +680,13 @@ async function saveEditTask(id) {
     console.error("Fehler beim Speichern der Aufgabe:", error);
   }
 }
+
+function addDueDate(dateTask) {
+
+    let parts = dateTask.split("/"); 
+    let formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; 
+
+    let dueDateContainer = document.getElementById("due-date-edit");
+    dueDateContainer.value = formattedDate;
+  }
+  

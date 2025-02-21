@@ -751,6 +751,30 @@ table td:first-child {
   margin-top: 0px;
 }
 
+#editSubtasks-container .input-wrapper .deleteSubtask {
+  display: none;
+}
+
+#editSubtasks-container .input-wrapper:hover .editIconSubtask,
+#editSubtasks-container.input-wrapper:hover .lineSubtask,
+#editSubtasks-container .input-wrapper:hover .deleteSubtask {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#editSubtasks-container .input-wrapper:hover::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 0;
+  width: 100%;
+  height: 25px;
+  border-radius: 4px;
+  background-color: rgba(128, 128, 128, 0.1); /* Grauer, halbtransparenter Hintergrund */
+  z-index: 0;
+}
+
 @media (max-width: 1115px) {
   .headerAddTaskModal {
     margin-left: 0px;

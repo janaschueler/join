@@ -1,4 +1,5 @@
-const BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
+let BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
+
 let tasks = [];
 let selectedPriority = null;
 let contacts = [];
@@ -322,25 +323,6 @@ function getInitials(name) {
   return initials.length > 0 ? initials : name[0].toUpperCase();
 }
 
-function addSubtask() {
-  let subTaskInputRef = document.getElementById("new-subtask-input");
-  let subTaskInput = subTaskInputRef.value.trim();
-  let subTaskContainer = document.getElementById("subtasks-container");
-
-  if (!subTaskInput) {
-    return;
-  }
-
-  if (!subTaskCount) {
-    subTaskCount = 0;
-  }
-
-  subTaskCount += 1;
-
-  subTaskContainer.innerHTML += addSubtaskTemplate(subTaskInput, subTaskCount);
-  subTaskInputRef.value = "";
-}
-
 function deleteSubtask(id) {
   const removeSubtask = document.getElementById(`subTaskUnit${id}`);
   removeSubtask.remove();
@@ -353,14 +335,16 @@ function editSubtask(id, subTaskInput) {
   editSubtask.innerHTML = addInputField(id, subTaskInput);
 }
 
-function accept(id, subTaskInput) {
+function accept(id) {
   let subTaskContainer = document.getElementById("subtasks-container");
+  let newSubTask = document.getElementById(`inputSubtask${id}`).value;
 
   const removeSubtask = document.getElementById(`subTaskUnit${id}`);
   removeSubtask.remove();
 
-  subTaskContainer.innerHTML += addSubtaskTemplate(subTaskInput, id);
+  subTaskContainer.innerHTML += addSubtaskTemplate(newSubTask, id);
 }
+
 function clearForm() {
   document.getElementById("inputField").value = "";
   document.getElementById("description").value = "";
@@ -467,4 +451,23 @@ function openEditTask(category, title, description, DueDate, priority, id) {
   const editTaskContainer = document.getElementById("modalAddTask");
   editTaskContainer.innerHTML = "";
   editTaskContainer.innerHTML = addEditTask(category, title, description, DueDate, priority, id);
+}
+
+function addSubtask() {
+  let subTaskInputRef = document.getElementById("new-subtask-input");
+  let subTaskInput = subTaskInputRef.value.trim();
+  let subTaskContainer = document.getElementById("subtasks-container");
+
+  if (!subTaskInput) {
+    return;
+  }
+
+  if (!subTaskCount) {
+    subTaskCount = 0;
+  }
+
+  subTaskCount += 1;
+
+  subTaskContainer.innerHTML += addSubtaskTemplate(subTaskInput, subTaskCount);
+  subTaskInputRef.value = "";
 }

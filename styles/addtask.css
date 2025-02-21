@@ -290,6 +290,7 @@ input:focus {
 
 .dropDown-up {
   display: none;
+  margin-right: 16px;
 }
 
 /* Eingabefeld mit Dropdown-Icon */
@@ -297,7 +298,7 @@ input:focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0px 10px;
+  
   border: 1px solid #ccc;
   cursor: pointer;
   background: white;
@@ -311,12 +312,22 @@ input:focus {
 
 #dropdown-icon {
   transition: transform 0.3s ease;
-  margin-right: 8px;
+  margin-right: 16px;
 }
 
 .dropdown-content.visible ~ .dropdown-input #dropdown-icon {
   transform: rotate(180deg);
 }
+
+#inputField:focus, 
+#description:focus, 
+#assigned-input:focus-within, 
+#due-date:focus,
+#category-input:focus {
+  border: 2px solid rgba(41, 171, 226, 1);
+  outline: none;
+}
+
 
 .dropdown-content {
   display: none;
@@ -524,24 +535,16 @@ input:focus {
   position: relative;
 }
 
+#subtasks-container .input-wrapper .deleteSubtask {
+  display: none;
+}
+
 #subtasks-container .input-wrapper:hover .editIconSubtask,
 #subtasks-container .input-wrapper:hover .lineSubtask,
 #subtasks-container .input-wrapper:hover .deleteSubtask {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.editIconSubtask {
-  display: none;
-  position: absolute;
-  background-image: url(../assets/icons/edit.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 12px;
-  width: 56px;
-  height: 12px;
-  margin-right: 12px;
 }
 
 #subtasks-container .input-wrapper:hover::before {
@@ -554,6 +557,18 @@ input:focus {
   border-radius: 4px;
   background-color: rgba(128, 128, 128, 0.1); /* Grauer, halbtransparenter Hintergrund */
   z-index: 0;
+}
+
+.editIconSubtask {
+  display: none;
+  position: absolute;
+  background-image: url(../assets/icons/edit.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px;
+  width: 56px;
+  height: 12px;
+  margin-right: 12px;
 }
 
 .editSubtaskContainer {
@@ -591,10 +606,6 @@ input:focus {
   height: 16px;
   right: 25px !important;
   margin-top: 14px;
-}
-
-#subtasks-container .input-wrapper .deleteSubtask {
-  display: none;
 }
 
 .deleteSubtask {
