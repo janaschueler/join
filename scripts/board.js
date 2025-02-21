@@ -21,7 +21,8 @@ async function getDataTasks(path = "") {
 
     tasks.push({
       id: key,
-      assignedTo: task.assignedTo,
+      assignedTo: determineAssignedTo(task.assignedContacts),
+      color: determineColor(task.assignedContacts),
       category: task.category,
       createdAt: task.createdAt,
       description: task.description,
@@ -75,6 +76,18 @@ function determinStatus(key, status) {
   } else {
     return status;
   }
+}
+
+function determineAssignedTo(arryAssignedTo) {
+  let assignedTo = arryAssignedTo.map((contact) => contact.name);
+  console.log(assignedTo);
+  return assignedTo;
+}
+
+function determineColor(arryAssignedColor) {
+  let assignedTo = arryAssignedColor.map((contact) => contact.color);
+  console.log(assignedTo);
+  return assignedTo;
 }
 
 async function addStatus(key, status) {
@@ -140,8 +153,9 @@ function renderTask(task, container) {
   let numberOfSubtasks = Array.isArray(task.subtasks) ? task.subtasks.length : 0;
   let progressOfProgressbar = determineProgress(numberOfSubtasks, task.subtasksStatus);
   let numberCompletetSubtasks = determineNumberCompletetSubtasks(task.subtasksStatus);
+  let categoryColor = determineCategoryColor(task.category);
 
-  container.innerHTML += generateToDoHTML(task, priorityIcon, numberOfSubtasks, progressOfProgressbar, numberCompletetSubtasks);
+  container.innerHTML += generateToDoHTML(task, priorityIcon, numberOfSubtasks, progressOfProgressbar, numberCompletetSubtasks, categoryColor);
 
   if (!numberOfSubtasks) {
     document.getElementById(`progressContainer${task.id}`).style.display = "none";
@@ -188,15 +202,25 @@ async function injectAssignees(task) {
   const assigneeContainer = document.getElementById(`assigneeContainer${task["id"]}`);
   assigneeContainer.innerHTML = "";
 
-  if (Array.isArray(task.assignedTo)) {
-    task.assignedTo.forEach((assignee) => {
-      const assigneeAbbreviation = getAssigneeAbbreviation(assignee.name);
-      const assigneeColor = assignee.color || "defaultColor";
+  if (Array.isArray(task.assignedTo) && Array.isArray(task.color)) {
+    task.assignedTo.forEach((assignee, index) => {
+      const assigneeAbbreviation = getAssigneeAbbreviation(assignee);
+      const assigneeColor = task.color[index] || "rgba(0, 0, 0, 1)"; // Fallback-Farbe falls nicht vorhanden
+
       assigneeContainer.innerHTML += generateAssigneeCircle(assigneeAbbreviation, assigneeColor);
     });
-  } else {
-    return;
   }
+}
+
+function determineCategoryColor(category) {
+  let categoryColor;
+  if (category == "Technical Task") {
+    categoryColor = "background-color:rgba(31, 215, 193, 1);";
+    return categoryColor;
+  } else {
+    categoryColor = "background-color:rgba(0, 56, 255, 1);";
+  }
+  return categoryColor;
 }
 
 function getAssigneeAbbreviation(assignee) {
@@ -319,7 +343,8 @@ function loadTaskSummaryModal(id) {
     let task = tasks[0];
     let formatedDueDate = convertTask(task.dueDate);
     let priorityIcon = determinePriotiry(task.priority);
-    summaryModal.innerHTML += generateTaskSummaryModal(task, priorityIcon, formatedDueDate);
+    let categoryColor = determineCategoryColor(task.category);
+    summaryModal.innerHTML += generateTaskSummaryModal(task, priorityIcon, formatedDueDate, categoryColor);
 
     // Überprüfen, ob "assignedTo" vorhanden ist und ggf. unsichtbar machen, wenn nicht
     if (task.assignedTo && task.assignedTo.length > 0) {
@@ -487,4 +512,124 @@ function convertTask(dueDate) {
   let formatedDueDate = new Intl.DateTimeFormat("en-Gb").format(new Date(dueDate));
 
   return formatedDueDate;
+}
+
+window.addEventListener("DOMContentLoaded", checkSreenSize);
+window.addEventListener("resize", checkSreenSize);
+
+function checkSreenSize(params) {
+  const modalEdit = document.getElementById("addTaskSectionModal");
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+  if (isMobile) {
+    modalEdit.style.display = "none";
+    window.location.href = "./add_Task.html";
+  } else {
+    modalEdit.style.display = "flex";
+  }
+}
+
+function openAddTask(statusTask) {
+  const showModalBackground = document.getElementById("addTaskSectionModal");
+  const showModal = document.getElementById("modalAddTask");
+
+  if (showModalBackground && showModal) {
+    showModalBackground.classList.add("show");
+    showModal.classList.add("show");
+    window.currentStatusTask = statusTask;
+  } else {
+    console.log("no modal found");
+  }
+}
+
+function closeModalAddTask(event) {
+  var modal = document.getElementById("modalAddTask");
+  var backdrop = document.getElementById("addTaskSectionModal");
+
+  if (!event || event.target === backdrop || event.target.classList.contains("ModalCloseButtonAddTask")) {
+    modal.classList.add("hide");
+    backdrop.classList.add("hide");
+
+    setTimeout(function () {
+      modal.style.visibility = "hidden";
+      backdrop.style.visibility = "hidden";
+      modal.classList.remove("show");
+    }, 500);
+    location.reload();
+  }
+}
+
+function openEditModal(categoryTask, title, description, dateTask, priorityTask, id) {
+  const showModalBackground = document.getElementById("editTaskSectionModal");
+  const showModal = document.getElementById("modalEditTask");
+  showModal.innerHTML = "";
+
+  if (showModalBackground && showModal) {
+    showModalBackground.classList.add("show");
+    showModal.classList.add("show");
+  } else {
+    console.log("no modal found");
+  }
+
+  showModal.innerHTML = addEditTask(title, description, id);
+
+  if (categoryTask) {
+    console.log("Category Task:", categoryTask); // Prüfen, ob gesetzt
+    console.log("Start setTimeout...");
+
+    setTimeout(() => {
+      console.log("Executing selectCategory...");
+      selectCategory(categoryTask, categoryTask.toLowerCase().replace(" ", "-"));
+    }, 100);
+
+    console.log("setTimeout gesetzt!");
+  }
+
+  // let date = dateTask;
+  // let priority = priorityTask;
+  // closeModal();
+}
+
+async function saveEditTask(id) {
+  const title = document.getElementById("inputField").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const dueDate = document.getElementById("due-date").value;
+  const category = document.getElementById("category").value;
+  const assignedContacts = selectedContacts;
+  const priority = selectedPriority;
+  const status = determineStatusAddTask();
+
+  if (!title || !description || !dueDate || !category || !priority) {
+    alert("Bitte fülle alle Felder aus!");
+    return;
+  }
+
+  const taskData = {
+    title,
+    description,
+    dueDate,
+    category,
+    assignedContacts,
+    priority,
+    status,
+    createdAt: new Date().toISOString(),
+  };
+
+  try {
+    const response = await fetch(`${BASE_URL}/tasks/${id}.json`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(taskData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
+    }
+
+    console.log("Aufgabe gespeichert:", await response.json());
+    alert("Aufgabe erfolgreich erstellt!");
+    clearForm();
+  } catch (error) {
+    console.error("Fehler beim Speichern der Aufgabe:", error);
+  }
 }

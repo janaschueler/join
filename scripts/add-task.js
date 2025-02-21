@@ -45,17 +45,19 @@ document.addEventListener("click", function (event) {
   }
 });
 
-
 function selectCategory(label, value) {
-  document.getElementById("category-input").textContent = label; // Zeigt die gewählte Kategorie an
-  document.getElementById("category").value = value; // Speichert den Wert im versteckten Input
-  document.getElementById("category-dropdown").classList.remove("visible");
+  document.getElementById("category-input").textContent = label;
+  const categoryInput = document.getElementById("category");
 
-  // Entferne alte Markierung und markiere die gewählte Option
+  categoryInput.value = value;
+  categoryInput.setAttribute("data-label", label);
+
   document.querySelectorAll("#category-dropdown .dropdown-option").forEach((option) => {
     option.classList.remove("selected");
+    if (option.textContent.trim() === label) {
+      option.classList.add("selected");
+    }
   });
-  event.target.classList.add("selected");
 }
 
 // **Kontakte aus Firebase abrufen**
@@ -82,9 +84,10 @@ async function addTask() {
   const title = document.getElementById("inputField").value.trim();
   const description = document.getElementById("description").value.trim();
   const dueDate = document.getElementById("due-date").value;
-  const category = document.getElementById("category").value;
+  const category = document.getElementById("category").getAttribute("data-label");
   const assignedContacts = selectedContacts;
   const priority = selectedPriority;
+  const status = determineStatusAddTask();
 
   // Logische ODER-Operatoren verwenden
   if (!title || !description || !dueDate || !category || !priority) {
@@ -99,7 +102,7 @@ async function addTask() {
     category,
     assignedContacts,
     priority,
-    status: "todo", 
+    status,
     createdAt: new Date().toISOString(),
   };
 
@@ -117,12 +120,21 @@ async function addTask() {
     console.log("Aufgabe gespeichert:", await response.json());
     alert("Aufgabe erfolgreich erstellt!");
     clearForm();
-
   } catch (error) {
     console.error("Fehler beim Speichern der Aufgabe:", error);
   }
 }
 
+function determineStatusAddTask() {
+  const statusTask = window.currentStatusTask;
+  let status;
+  if (!statusTask) {
+    status = 1;
+  } else {
+    status = statusTask;
+  }
+  return status;
+}
 
 async function saveSubtask(subtaskText) {
   try {
@@ -247,7 +259,7 @@ window.toggleContactSelection = function (contactId, contactName, contactColor) 
       container.classList.add("checked");
       selectedContacts.push({ id: contactId, name: contactName, color: contactColor });
       input.value = "";
-      filterContacts()
+      filterContacts();
     }
   } else {
     container.classList.remove("checked");
@@ -443,6 +455,12 @@ function start() {
 }
 
 function openDatePicker() {
-  let dateInput = document.getElementById('due-date');
+  let dateInput = document.getElementById("due-date");
   dateInput.showPicker(); // Funktioniert in modernen Browsern wie Chrome
+}
+
+function openEditTask(category, title, description, DueDate, priority, id) {
+  const editTaskContainer = document.getElementById("modalAddTask");
+  editTaskContainer.innerHTML = "";
+  editTaskContainer.innerHTML = addEditTask(category, title, description, DueDate, priority, id);
 }

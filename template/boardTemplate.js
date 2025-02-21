@@ -1,6 +1,6 @@
-function generateToDoHTML(allTodos, priorityIcon, numberOfSubtasks, progressOfProgressbar, numberCompletetSubtasks) {
+function generateToDoHTML(allTodos, priorityIcon, numberOfSubtasks, progressOfProgressbar, numberCompletetSubtasks,  categoryColor) {
   return `          <div onclick="openModal('${allTodos["id"]}')" draggable ="true" ondragstart="startDragging('${allTodos["id"]}')" class="listContainerContent">
-                        <div class="category" style="background-color:red;">
+                        <div class="category" style="${categoryColor}">
                           <span>${allTodos["category"]}</span>
                         </div>
                         <div class="listDiscription">
@@ -29,10 +29,10 @@ function generateAssigneeCircle(assigneeAbbreviation, assingeeColor) {
                             </svg>`;
 }
 
-function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate) {
+function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate, categoryColor) {
   return ` <div id="modalTaskSummary" class="summaryTaskContainer modal">
             <div class="ModalheaderContainer">
-              <div class="category" style="background-color:red;">
+              <div class="category" style="${categoryColor}">
               <span>${allTodos["category"]}</span>
               </div>
               <button onclick="closeModal()"  type="button" class="ModalCloseButton"></button>
@@ -64,7 +64,7 @@ function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate) {
             </div>
             <div class="buttonContainer">
               <div class="editContainer">
-                <button onclick="openEditModal${allTodos["id"]}(" class="editIcon">Edit</button>
+                <button onclick="openEditModal('${allTodos["category"]}', '${allTodos["title"]}', '${allTodos["description"]}', '${formatedDueDate}', '${allTodos["priority"]}', '${allTodos["id"]}')" class="editIcon">Edit</button>
                 <button onclick="deleteTask('${allTodos["id"]}')" class="deleteIcon">Delete</button>
               </div>
             </div>
@@ -93,4 +93,3 @@ function generateSubtasks(allTodos, subtask, index, isChecked = false) {
       </label>
     </li>`;
 }
-

@@ -443,7 +443,7 @@ input {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9998;
+  z-index: 100;
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -469,6 +469,23 @@ input {
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
+}
+
+.ModalCloseButtonAddTask {
+  top: 24px;
+  right: 24px;
+  width: 12px;
+  height: 16px;
+  background-image: url("../assets/icons/close.svg");
+  border: none !important;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.headerAddTaskModal .ModalCloseButtonAddTask {
+margin-top: 32px;
+margin-right: 32px;
 }
 
 li {
@@ -645,31 +662,37 @@ table td:first-child {
 }
 
 .addTaskSectionModal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 9998;
-  /* visibility: hidden; */
-  /* opacity: 0; */
+  visibility: hidden;
+  opacity: 0;
   transition: opacity 0.3sease;
   margin-top: 0px;
   margin-left: 0px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Dunkler Hintergrund */
 }
 
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.3) !important;
+  --bs-backdrop-zindex: unset !important;
+  --bs-backdrop-bg: unset !important;
+  --bs-backdrop-opacity: unset !important;
+  z-index: 200 !important;
 }
 
-#modalAddTask {
+.modalAddTask {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: block;
-  height: 800px;
+  height: 750px;
   width: 1000px;
   background-color: white;
   border-radius: 20px;
@@ -677,13 +700,62 @@ table td:first-child {
   overflow-x: hidden;
   overflow-y: auto;
   word-wrap: break-word;
-  /* visibility: hidden; */
-  /* opacity: 0; */
+  visibility: hidden;
+  opacity: 0;
   transition: opacity 0.3sease, transform 0.3sease;
   overflow: auto;
 }
 
-@media (max-width: 998px) {
+.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+.headerAddTaskModal {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-left: 50px;
+}
+
+.taskButton {
+  margin-top: 64px !important;
+  margin-bottom: 24px;
+}
+
+.taskButton-clear {
+  margin-top: 64px !important;
+  margin-bottom: 24px;
+}
+
+.error-message {
+  margin-top: 64px !important;
+  margin-bottom: 24px;
+}
+
+.input-wrapper button {
+  top: 4px;
+}
+
+.priority button {
+  border: solid 1px #d1d1d1;
+}
+
+.ModalHeadline {
+  font-size: 61px;
+  font-weight: 700;
+  margin-top: 16px;
+}
+
+.task-form {
+  margin-top: 0px;
+}
+
+@media (max-width: 1115px) {
+  .headerAddTaskModal {
+    margin-left: 0px;
+  }
+
   .headerBoard {
     justify-content: flex-start;
   }
@@ -721,6 +793,16 @@ table td:first-child {
   .headerBoardButton {
     margin-top: 6px;
     width: 220px;
+  }
+
+  .modalAddTask {
+    width: 700px;
+  }
+
+  .task-form {
+    margin-top: 24px;
+    width: 100%;
+    margin-top: 0px !important;
   }
 }
 

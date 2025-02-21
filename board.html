@@ -68,7 +68,7 @@
           <div class="headerBoard">
             <div class="headerBoardTitle">
               <h1>Board</h1>
-              <button class="primaryAddButton headerBoardButton"></button>
+              <button class="primaryAddButton headerBoardButton" onclick="openAddTask(0)"></button>
             </div>
 
           <div class="searchContainer">
@@ -78,7 +78,7 @@
                 <button  class="iconSearch searchButton" type="submit"></button>
               </div>
               </form>
-                <button class="primaryButton headerBoardButton" type="submit">Add task<img class="iconAdd" src="./assets/icons/add.svg" alt="add button" /></button>            </form>
+                <button class="primaryButton headerBoardButton" onclick="openAddTask(0)" type="submit">Add task<img class="iconAdd" src="./assets/icons/add.svg" alt="add button" /></button>            </form>
           </div>
 
           </div>
@@ -91,7 +91,7 @@
                   <div class="list-header">
                     <div class="listHeader">
                       <h2 class="list-title">To do</h2>
-                      <button class="secondaryAddButton">
+                      <button class="secondaryAddButton" onclick="openAddTask(1)">
                         <svg class="icon" width="15" height="15" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M5 1.5V9.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                           <path d="M9 5.57544L1 5.57544" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
@@ -111,7 +111,7 @@
                   <div class="list-header">
                     <div class="listHeader">
                       <h2 class="list-title">In progress</h2>
-                      <button class="secondaryAddButton">
+                      <button class="secondaryAddButton" onclick="openAddTask(2)">
                         <svg class="icon" width="15" height="15" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M5 1.5V9.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                           <path d="M9 5.57544L1 5.57544" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
@@ -130,7 +130,7 @@
                   <div class="list-header">
                     <div class="listHeader">
                       <h2 class="list-title">Testing</h2>
-                      <button class="secondaryAddButton">
+                      <button class="secondaryAddButton" onclick="openAddTask(3)">
                         <svg class="icon" width="15" height="15" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M5 1.5V9.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                           <path d="M9 5.57544L1 5.57544" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
@@ -149,7 +149,7 @@
                   <div class="list-header">
                     <div class="listHeader">
                       <h2 class="list-title">Done</h2>
-                      <button class="secondaryAddButton">
+                      <button class="secondaryAddButton" onclick="openAddTask(4)">
                         <svg class="icon" width="15" height="15" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M5 1.5V9.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                           <path d="M9 5.57544L1 5.57544" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
@@ -172,8 +172,11 @@
       </main>
 
       <section id ="addTaskSectionModal" class="addTaskSectionModal modal-backdrop">
-        <div id="modalAddTask"class="">
-        <h1>Add Task</h1>
+        <div id="modalAddTask"class="modalAddTask">
+          <div class="headerAddTaskModal">
+            <p class="ModalHeadline">Add Task</p>
+            <button onclick="closeModalAddTask()" type="button" class="ModalCloseButtonAddTask"></button>
+        </div>
         <form class="task-form">
             <div class="side1">
               <label for="inputField">Title<span class="red">*</span></label>
@@ -251,7 +254,7 @@
                 <label for="category">Subtasks</label>
                 <div class="input-wrapper">
                   <input type="text" id="new-subtask-input" placeholder="add new sub task">
-                  <button class="iconAdd" type="button" onclick="addSubtask()">
+                  <button class="iconAdd center" type="button" onclick="addSubtask()">
                   </button>
                 </div>
                 <div id="subtasks-container">
@@ -275,6 +278,11 @@
       </form>
     </div>
     </section>
+
+    <section id ="editTaskSectionModal" class="addTaskSectionModal modal-backdrop">
+      <div id="modalEditTask"class="modalAddTask">
+  </div>
+  </section>
 
       <section class="mobile_main">
         <div class="task_bar_mobile">
