@@ -79,15 +79,23 @@ function determinStatus(key, status) {
 }
 
 function determineAssignedTo(arryAssignedTo) {
-  let assignedTo = arryAssignedTo.map((contact) => contact.name);
-  console.log(assignedTo);
-  return assignedTo;
+  if (!arryAssignedTo) {
+    return;
+  } else {
+    let assignedTo = arryAssignedTo.map((contact) => contact.name);
+    console.log(assignedTo);
+    return assignedTo;
+  }
 }
 
 function determineColor(arryAssignedColor) {
-  let assignedTo = arryAssignedColor.map((contact) => contact.color);
-  console.log(assignedTo);
-  return assignedTo;
+  if (!arryAssignedColor) {
+    return;
+  } else {
+    let assignedTo = arryAssignedColor.map((contact) => contact.color);
+    console.log(assignedTo);
+    return assignedTo;
+  }
 }
 
 async function addStatus(key, status) {
@@ -191,7 +199,7 @@ function determineProgress(numberOfSubtasks, subtasksStatus) {
 
 function determineNumberCompletetSubtasks(subtasksStatus) {
   if (!subtasksStatus) {
-    return;
+    return 0;
   }
   const completedSubtasks = subtasksStatus.filter((status) => status === 1).length;
 
@@ -425,7 +433,7 @@ async function injectAssigneeContacts(tasks) {
   for (let indexAssingee = 0; indexAssingee < assigneeList.length; indexAssingee++) {
     const assignee = assigneeList[indexAssingee];
 
-    const assigneeName = assignee.name ? assignee.name : "Unknown";
+    const assigneeName = assignee ? assignee : "Unknown";
 
     const assigneeAbbreviation =
       typeof assigneeName === "string"
@@ -435,7 +443,7 @@ async function injectAssigneeContacts(tasks) {
             .join("")
         : "";
 
-    const assingeeColor = assignee.color;
+    const assingeeColor = tasks.color[indexAssingee];
 
     assigneeContainer.innerHTML += generateAssigneeComntacts(assigneeAbbreviation, assingeeColor, assigneeName);
   }

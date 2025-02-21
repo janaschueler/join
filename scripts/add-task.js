@@ -13,7 +13,7 @@ function init() {
 }
 
 function toggleDropdown(event) {
-  event.stopPropagation();
+  event.stopPropagation(); 
 
   const dropdown = document.getElementById("assigned-dropdown");
   const iconDown = document.querySelector(".dropDown");
@@ -22,11 +22,11 @@ function toggleDropdown(event) {
   dropdown.classList.toggle("visible");
 
   if (dropdown.classList.contains("visible")) {
-    iconDown.style.display = "none";
-    iconUp.style.display = "block";
+      iconDown.style.display = "none";
+      iconUp.style.display = "block";
   } else {
-    iconDown.style.display = "block";
-    iconUp.style.display = "none";
+      iconDown.style.display = "block";
+      iconUp.style.display = "none";
   }
 }
 
@@ -36,29 +36,27 @@ function toggleCategoryDropdown() {
 }
 
 // Schließt das Dropdown, wenn außerhalb geklickt wird
-document.addEventListener("click", function (event) {
+document.addEventListener("click", function(event) {
   const dropdown = document.getElementById("category-dropdown");
   const inputField = document.getElementById("category-input");
 
-  if (!inputField?.contains(event.target) && !dropdown?.contains(event.target)) {
-    dropdown?.classList.remove("visible");
+  if (!inputField.contains(event.target) && !dropdown.contains(event.target)) {
+      dropdown.classList.remove("visible");
   }
 });
 
 function selectCategory(label, value) {
-  document.getElementById("category-input").textContent = label;
-  const categoryInput = document.getElementById("category");
+  document.getElementById("category-input").textContent = label; // Zeigt die gewählte Kategorie an
+  document.getElementById("category").value = value; // Speichert den Wert im versteckten Input
+  document.getElementById("category-dropdown").classList.remove("visible");
 
-  categoryInput.value = value;
-  categoryInput.setAttribute("data-label", label);
-
-  document.querySelectorAll("#category-dropdown .dropdown-option").forEach((option) => {
-    option.classList.remove("selected");
-    if (option.textContent.trim() === label) {
-      option.classList.add("selected");
-    }
+  // Entferne alte Markierung und markiere die gewählte Option
+  document.querySelectorAll("#category-dropdown .dropdown-option").forEach(option => {
+      option.classList.remove("selected");
   });
+  event.target.classList.add("selected");
 }
+
 
 // **Kontakte aus Firebase abrufen**
 async function fetchContacts() {
@@ -83,45 +81,51 @@ async function fetchContacts() {
 async function addTask() {
   const title = document.getElementById("inputField").value.trim();
   const description = document.getElementById("description").value.trim();
-  const dueDate = document.getElementById("due-date").value;
-  const category = document.getElementById("category").getAttribute("data-label");
-  const assignedContacts = selectedContacts;
-  const priority = selectedPriority;
-  const status = determineStatusAddTask();
+  const dueDate = document.getElementById("due-date").value.trim();
+  const category = document.getElementById("category").value;
 
-  // Logische ODER-Operatoren verwenden
-  if (!title || !description || !dueDate || !category || !priority) {
-    alert("Bitte fülle alle Felder aus!");
-    return;
+  const selectedCheckboxes = document.querySelectorAll('#assigned-select option:checked');
+  const selectedContactIds = Array.from(selectedCheckboxes).map(option => option.value);
+  const assignedContacts = contacts.filter(contact => selectedContactIds.includes(contact.id));
+
+  if (!title || !dueDate || !category || !selectedPriority) {
+      alert("Bitte alle Pflichtfelder ausfüllen und eine Priorität auswählen.");
+      return;
   }
 
+  const subtaskItems = document.querySelectorAll(".subtask-text");
+  const subtasks = Array.from(subtaskItems).map(item => item.textContent.trim());
+
   const taskData = {
-    title,
-    description,
-    dueDate,
-    category,
-    assignedContacts,
-    priority,
-    status,
-    createdAt: new Date().toISOString(),
+      title,
+      description,
+      assignedTo: assignedContacts,
+      dueDate,
+      category,
+      priority: selectedPriority,
+      subtasks,
+      createdAt: new Date().toISOString(),
   };
 
   try {
-    const response = await fetch(`${BASE_URL}/tasks.json`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(taskData),
-    });
+      const response = await fetch(`${BASE_URL}/tasks.json`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(taskData)
+      });
 
-    if (!response.ok) {
-      throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
-    }
+      if (!response.ok) {
+          throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
+      }
 
-    console.log("Aufgabe gespeichert:", await response.json());
-    alert("Aufgabe erfolgreich erstellt!");
-    clearForm();
+      console.log("✅ Aufgabe erfolgreich gespeichert:", await response.json());
+      
+      
+      window.location.href = "board.html";
+
   } catch (error) {
-    console.error("Fehler beim Speichern der Aufgabe:", error);
+      console.error("Fehler beim Speichern der Aufgabe:", error);
+      alert("Es gab einen Fehler beim Speichern der Aufgabe. Bitte prüfe die Konsole.");
   }
 }
 
