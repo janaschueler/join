@@ -62,8 +62,6 @@ async function postSignedInUserToDatabase(data = {}) {
 async function getSigneInUserData() {
   let response = await fetch(BASE_URL + "signedIn/" + ".json");
   let logedInUsers = await response.json();
-  
-
   return logedInUsers;
   let deskMenuRef = document.getElementById('deskMenu_content');
   deskMenuRef.classList.toggle('d_none');

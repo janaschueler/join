@@ -81,8 +81,8 @@ function templateSummary(signedInName) {
         </div>
           <div id="spinner_content" class="mobile_overlay">
             <div class="mobile_overlay_area">
-              <span class="morning" id="greeting_Mobile_content"></span>
-              <span class="user_name">${signedInName}</span>
+              <span class="morning mobile_fonts" id="greeting_Mobile_content"></span>
+              <span class="user_name mobile_fonts">${signedInName}</span>
             </div>
           </div>
         `        

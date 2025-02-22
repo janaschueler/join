@@ -31,12 +31,16 @@ function renderSummary() {
 
 function disableLoadingSpinner() {
     let loadingSpinnerRef = document.getElementById('spinner_content');
-    setTimeout(() => {
-        if (window.innerWidth < 768) {
-            loadingSpinnerRef.classList.add('d_none');            
+    function updateSpinnerVisibility() {
+        if (window.matchMedia("(max-width: 768px)").matches) {
+            loadingSpinnerRef.classList.add('d_none');  
         } else {
-            loadingSpinnerRef.classList.remove('d_none');
+            loadingSpinnerRef.classList.remove('d_none');  
         }
+    }
+    setTimeout(() => {
+        updateSpinnerVisibility();        
+        window.addEventListener("resize", updateSpinnerVisibility);
     }, 1500);
 }
 
