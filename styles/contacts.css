@@ -567,7 +567,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 input[type="number"] {
-  -moz-appearance: textfield; /* Für Firefox */
+  appearance: textfield; /* Für Firefox */
 }
 
 @media (max-width: 768px) {
