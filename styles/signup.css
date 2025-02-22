@@ -44,11 +44,18 @@ body {
 .footerNav a {
   text-decoration: none;
   color: rgba(168, 168, 168, 1);
-  font-size: 12px;
+  font-size: 20px;
   font-weight: 400;
   text-align: left;
   padding-right: 16px;
 }
+
+.footerNav a:hover {
+  color: #29abe2;
+  transform: scale(5); 
+
+}
+
 
 .signupButtonContainer {
   display: flex;
@@ -160,6 +167,10 @@ a {
   text-decoration: none !important;
 }
 
+.form-check-input:hover {
+  cursor: pointer;
+}
+
 footer {
   position: relative;
   bottom: 0;
@@ -170,6 +181,10 @@ footer {
 
 .primaryButton {
   margin-top: 32px;
+}
+
+.primaryButton:hover {
+  background-color: #29abe2 !important;
 }
 
 .buttonBack {

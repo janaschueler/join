@@ -30,8 +30,9 @@ body {
 }
 
 .atfNav button {
-  font-size: 12px;
-  padding: 8px 16px !important;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 15px 16px !important;
 }
 
 .atfNav a {
@@ -41,6 +42,7 @@ body {
   font-weight: 400;
   text-align: left;
   padding-right: 16px;
+
 }
 
 .primaryButton {
@@ -48,10 +50,16 @@ body {
   color: rgba(255, 255, 255, 1) !important;
   border: none;
   outline: none;
-  padding: 15px 16px;
+  padding: 16px 16px;
   border-radius: 8px;
   gap: 10px;
   text-align: center;
+
+
+}
+
+.primaryButton:hover {
+  background-color: #29abe2 !important;
 }
 
 .secondaryButton {
@@ -63,6 +71,11 @@ body {
   padding: 15px 16px;
   border-radius: 8px;
   gap: 10px;
+}
+
+.secondaryButton:hover {
+  border-color: #29abe2 !important;
+
 }
 
 .footerNav {

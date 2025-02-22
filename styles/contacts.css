@@ -13,7 +13,6 @@ main {
 
 .primaryButton {
   padding: 8px 12px !important;
-  gap: 10px;
   background-image: url(../assets/icons/person_add.svg);
   background-size: 24px;
   background-repeat: no-repeat;
@@ -21,6 +20,12 @@ main {
   background-position-y: center !important;
   background-position-x: 90% !important;
   width: 100%;
+  background-color: rgba(42, 54, 71, 1) !important;
+  color: rgba(255, 255, 255, 1) !important;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+
 }
 
 .primaryButton:hover {
@@ -53,6 +58,27 @@ main {
   outline: none;
   padding: 8px 12px;
   border-radius: 8px;
+}
+
+.primaryButton {
+  background-color: rgba(42, 54, 71, 1) !important;
+  color: rgba(255, 255, 255, 1) !important;
+  border: none;
+  outline: none;
+  padding: 8px 20px !important;
+  border-radius: 8px;
+  gap: 10px;
+}
+
+.secondaryButton {
+  background-color: transparent;
+  color: rgba(42, 54, 71, 1) !important;
+  border: solid rgba(42, 54, 71, 1) !important;
+  border-width: 1px !important;
+  outline: none;
+  padding: 15px 16px;
+  border-radius: 8px;
+  gap: 10px;
 }
 
 .modal-content {
