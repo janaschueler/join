@@ -596,6 +596,7 @@ input[type="number"] {
   appearance: textfield; /* Für Firefox */
 }
 
+
 @media (max-width: 768px) {
   .option_main {
     display: block;
