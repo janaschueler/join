@@ -612,7 +612,15 @@ function addAdditionalSubtaskinEditModal(id) {
   let subTaskContainer = document.getElementById("editSubtasks-container");
 
   let tasks = allTasks.filter((t) => t["id"] === id);
-  let numberOfSubTaskInput = tasks[0].subtasks.length;
+  let numberOfSubTaskInput;
+
+  if (!tasks.length) {
+    numberOfSubTaskInput = 0;
+  }
+
+  else {
+    numberOfSubTaskInput = tasks[0].subtasks.length;
+  }
 
   subTaskCount = numberOfSubTaskInput + 1;
 

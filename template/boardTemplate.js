@@ -71,6 +71,8 @@ function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate, categ
           </div>`;
 }
 
+
+
 function generateAssigneeComntacts(assigneeAbbreviation, assingeeColor, assignee) {
   return `      <li>
                   <div class="groupAssignee">

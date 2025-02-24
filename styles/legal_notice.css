@@ -73,7 +73,9 @@ ul li {
   list-style-type: none; /* Entfernt die Bullet Points */
 }
 
-
+.privacy {
+  margin-top: 16px !important
+}
 
 a {
   text-decoration: none !important;

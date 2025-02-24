@@ -264,6 +264,10 @@ body {
     justify-content: center;
 }
 
+.mobile_fonts {
+   font-size: 40px !important; 
+}
+
 #spinner_content {
     display: none;
 }

@@ -593,9 +593,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 input[type="number"] {
-  -moz-appearance: textfield; 
-  -webkit-appearance: none;    
-  appearance: none;            
+  appearance: textfield; /* Für Firefox */
 }
 
 

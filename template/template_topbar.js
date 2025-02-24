@@ -13,9 +13,9 @@ function templateTopBar(AB) {
         </div>
         <div id="deskMenu_content" class="dialog_main d_none">
           <div class="dialog_area">
-            <div class="dialog_nav_help">
-              <a class="dialog_links" href="help.html">Help</a>
-            </div>
+            <a href="help.html" class="dialog_nav_help">
+              <div class="dialog_links" >Help</div>
+            </a>
             <div class="dialog_nav">
               <a class="dialog_links" href="legal-notice.html">Legal Notice</a>
             </div>
