@@ -84,10 +84,9 @@ async function addTask() {
   const description = document.getElementById("description").value.trim();
   const dueDate = document.getElementById("due-date").value.trim();
   const category = document.getElementById("category").value;
+  const assignedContacts = selectedContacts;
 
-  const selectedCheckboxes = document.querySelectorAll('#assigned-select option:checked');
-  const selectedContactIds = Array.from(selectedCheckboxes).map(option => option.value);
-  const assignedContacts = contacts.filter(contact => selectedContactIds.includes(contact.id));
+
 
   if (!title || !dueDate || !category || !selectedPriority) {
       alert("Bitte alle Pflichtfelder ausfüllen und eine Priorität auswählen.");

@@ -50,11 +50,10 @@ body {
   display: flex;
   align-items: center;
   height: 40px;
-  justify-content: center;
+  justify-content: space-between;
   border-color: rgb(7, 36, 46);
   margin-right: 5%;
 }
-
 .headerBoardButton:hover {
   background-color: rgba(41, 171, 226, 1) !important;
   border-color: rgba(41, 171, 226, 1) !important;

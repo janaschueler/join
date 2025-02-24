@@ -30,46 +30,49 @@ function generateAssigneeCircle(assigneeAbbreviation, assingeeColor) {
 }
 
 function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate, categoryColor) {
-  return ` <div id="modalTaskSummary" class="summaryTaskContainer modal">
-            <div class="ModalheaderContainer">
-              <div class="category" style="${categoryColor}">
-              <span>${allTodos["category"]}</span>
-              </div>
-              <button onclick="closeModal()"  type="button" class="ModalCloseButton"></button>
-            </div>
-            <div class="listDiscription">
-              <h1 class="mobileHeadline" >${allTodos["title"]}</h1> 
-              <span class="descriptionCopyModal">${allTodos["description"]}</span>
-            </div>
-            <table class="contentmodlaTask">
-              <tr>
-                <td>Due date:</td>
-                <td>${formatedDueDate}</td>
-              </tr>
-              <tr>
-                <td>Priority:</td>
-                <td>${allTodos["priority"]}<img class="iconSummaryModal" src="${priorityIcon}" alt=""></td>
-              </tr>
-            </table>
-            <div id="assignedToContainer${allTodos["id"]}" class="margin_8">
-              <span class="spanBlue">Assinged To:</span>
-              <ol id="assigneeListModal${allTodos["id"]}">
-              </ol>
-            </div>
-            <div>
-              <div id="subtaskContainer${allTodos["id"]}" class="styleSubstaskSpan">
-                <span>Subtasks</span> 
-              <ol id="subtaskListModal${allTodos["id"]}">
-                </ol>
-            </div>
-            <div class="buttonContainer">
-              <div class="editContainer">
-                <button onclick="openEditModal('${allTodos["category"]}', '${allTodos["title"]}', '${allTodos["description"]}', '${formatedDueDate}', '${allTodos["priority"]}', '${allTodos["id"]}')" class="editIcon">Edit</button>
-                <button onclick="deleteTask('${allTodos["id"]}')" class="deleteIcon">Delete</button>
-              </div>
-            </div>
-          </div>`;
+  return `
+    <div id="modalTaskSummary" class="summaryTaskContainer modal">
+      <div class="ModalheaderContainer">
+        <div class="category" style="${categoryColor}">
+          <span>${allTodos["category"]}</span>
+        </div>
+        <button onclick="closeModal()" type="button" class="ModalCloseButton"></button>
+      </div>
+      <div class="listDiscription">
+        <h1 class="mobileHeadline">${allTodos["title"]}</h1>
+        <span class="descriptionCopyModal">${allTodos["description"]}</span>
+      </div>
+      <table class="contentmodlaTask">
+        <tr>
+          <td>Due date:</td>
+          <td>${formatedDueDate}</td>
+        </tr>
+        <tr>
+          <td>Priority:</td>
+          <td>${allTodos["priority"]}<img class="iconSummaryModal" src="${priorityIcon}" alt=""></td>
+        </tr>
+      </table>
+      <div id="assignedToContainer${allTodos["id"]}" class="margin_8">
+        <span class="spanBlue">Assinged To:</span>
+        <ol id="assigneeListModal${allTodos["id"]}"></ol>
+      </div>
+      <div>
+        <div id="subtaskContainer${allTodos["id"]}" class="styleSubstaskSpan">
+          <span>Subtasks</span>
+          <ol id="subtaskListModal${allTodos["id"]}"></ol>
+        </div>
+      </div>
+      <div class="buttonContainer">
+        <div class="editContainer">
+          <button onclick="openEditModal('${allTodos["category"]}', '${allTodos["title"]}', '${allTodos["description"]}', '${formatedDueDate}', '${allTodos["priority"]}', '${allTodos["id"]}')" class="editIcon">Edit</button>
+          <button onclick="deleteTask('${allTodos["id"]}')" class="deleteIcon">Delete</button>
+        </div>
+      </div>
+    </div>
+  `;
 }
+
+
 
 function generateAssigneeComntacts(assigneeAbbreviation, assingeeColor, assignee) {
   return `      <li>
@@ -178,8 +181,7 @@ function addEditTask(title, description, id) {
                 <label for="category">Subtasks</label>
                 <div class="input-wrapper">
                   <input type="text" id="new-subtask-input-Edit" placeholder="add new sub task">
-                  <button class="iconAdd center" type="button" onclick="addAdditionalSubtaskinEditModal('${id})">
-                  </button>
+              <button class="iconAdd center" type="button" onclick="addAdditionalSubtaskinEditModal('${id}')"></button>
                 </div>
                 <div id="editSubtasks-container">
                 </div>
