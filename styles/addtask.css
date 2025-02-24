@@ -315,6 +315,11 @@ input:focus {
   margin-right: 16px;
 }
 
+#dropdown-icon-Edit {
+  transition: transform 0.3s ease;
+  margin-right: 16px;
+}
+
 .dropdown-content.visible ~ .dropdown-input #dropdown-icon {
   transform: rotate(180deg);
 }

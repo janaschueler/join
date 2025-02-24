@@ -1,6 +1,5 @@
 BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
 
-
 let allTasks = { id: [], assignedTo: [], category: [], createdAt: [], description: [], dueDate: [], priority: [], subtasks: [], title: [], status: [], subtasksStatus: [], categoryColor: [] };
 let allContacts = { idContact: [], contactName: [], contactAbbreviation: [], color: [] };
 
@@ -179,13 +178,13 @@ function determinePriotiry(priority) {
   priority = priority.trim();
 
   if (priority === "low") {
-    priority = "../assets/icons/priority_low.svg";
+    priority = ".././assets/icons/priority_low.svg";
   }
   if (priority === "medium") {
-    priority = "../assets/icons/priority_medium.svg";
+    priority = ".././assets/icons/priority_medium.svg";
   }
   if (priority === "urgent") {
-    priority = "../assets/icons/priority_high.svg";
+    priority = ".././assets/icons/priority_high.svg";
   }
   return priority;
 }
@@ -570,7 +569,7 @@ function closeModalAddTask(event) {
   }
 }
 
-function openEditModal(categoryTask, title, description, dateTask, priorityTask, id) {
+function openEditModal(categoryTask, title, description, dateTask, priorityTask, id, allTodos) {
   const showModalBackground = document.getElementById("editTaskSectionModal");
   const showModal = document.getElementById("modalEditTask");
   showModal.innerHTML = "";
@@ -584,10 +583,12 @@ function openEditModal(categoryTask, title, description, dateTask, priorityTask,
 
   showModal.innerHTML = addEditTask(title, description, id);
   addSubtaskinEditModal(id);
-  addDueDate(dateTask)
+  addDueDate(dateTask);
+  populateAssignedToSelectEdit();
 
+  // toggleContactSelectionEdit(contact.id, contact.name, contact.color);
+  determineAssignedToEditModal(id);
 }
-
 
 function addSubtaskinEditModal(id) {
   let subTaskContainer = document.getElementById("editSubtasks-container");
@@ -615,10 +616,9 @@ function addAdditionalSubtaskinEditModal(id) {
 
   subTaskCount = numberOfSubTaskInput + 1;
 
-    subTaskContainer.innerHTML += addSubtaskTemplateinModal( subTaskInput, subTaskCount);
-    subTaskInputRef.value = "";
+  subTaskContainer.innerHTML += addSubtaskTemplateinModal(subTaskInput, subTaskCount);
+  subTaskInputRef.value = "";
 }
-
 
 function acceptEdit(id) {
   let subTaskContainer = document.getElementById("editSubtasks-container");
@@ -682,11 +682,180 @@ async function saveEditTask(id) {
 }
 
 function addDueDate(dateTask) {
+  let parts = dateTask.split("/");
+  let formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
 
-    let parts = dateTask.split("/"); 
-    let formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; 
+  let dueDateContainer = document.getElementById("due-date-edit");
+  dueDateContainer.value = formattedDate;
+}
 
-    let dueDateContainer = document.getElementById("due-date-edit");
-    dueDateContainer.value = formattedDate;
+function populateAssignedToSelectEdit() {
+  const dropdown = document.getElementById("assigned-dropdown-Edit");
+  if (!dropdown) {
+    console.error("Dropdown nicht gefunden!");
+    return;
   }
-  
+
+  dropdown.innerHTML = ""; // Zurücksetzen
+
+  contacts.forEach((contact) => {
+    const label = document.createElement("label");
+    label.classList.add("customCheckboxContainer");
+
+    // Standard Checkbox (versteckt)
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.classList.add("contact-checkbox");
+    checkbox.id = `edit-contact-${contact.id}`;
+    checkbox.name = `edit-contact-${contact.id}`;
+    checkbox.value = contact.id;
+
+    // Benutzerdefinierte Checkbox
+    const customCheckbox = document.createElement("span");
+    customCheckbox.classList.add("customCheckbox");
+
+    // SVG-Profilbild
+    const svgContainer = document.createElement("div");
+    svgContainer.classList.add("svg-container");
+    svgContainer.style.backgroundColor = contact.color;
+    svgContainer.innerHTML = `<span class="contact-initials">${getInitials(contact.name)}</span>`;
+
+    // Name des Kontakts
+    const contactName = document.createElement("span");
+    contactName.classList.add("subtasksUnit");
+    contactName.textContent = contact.name;
+
+    // Flex-Container für Name + Checkbox
+    const contactRow = document.createElement("div");
+    contactRow.classList.add("contact-row");
+    contactRow.appendChild(svgContainer);
+    contactRow.appendChild(contactName);
+    contactRow.appendChild(customCheckbox);
+
+    // Falls der Kontakt bereits ausgewählt wurde, Checkbox aktivieren
+    if (selectedContacts.some((c) => c.id === contact.id)) {
+      checkbox.checked = true;
+      label.classList.add("checked");
+    }
+
+    // Event-Listener für Checkbox
+    checkbox.addEventListener("change", function () {
+      toggleContactSelectionEdit(contact.id, contact.name, contact.color);
+    });
+
+    // Zusammenbauen
+    label.appendChild(checkbox);
+    label.appendChild(contactRow);
+    dropdown.appendChild(label);
+  });
+}
+
+window.toggleContactSelectionEdit = function (contactId, contactName, contactColor) {
+  const checkbox = document.getElementById(`edit-contact-${contactId}`);
+  if (!checkbox) return;
+
+  setTimeout(() => {
+    const container = checkbox.closest(".customCheckboxContainer");
+    const input = document.getElementById("search-contacts-edit");
+
+    if (checkbox.checked) {
+      if (!selectedContacts.some((c) => c.id === contactId)) {
+        container.classList.add("checked");
+        selectedContacts.push({ id: contactId, name: contactName, color: contactColor });
+        input.value = "";
+        filterContacts();
+      }
+    } else {
+      container.classList.remove("checked");
+      selectedContacts = selectedContacts.filter((c) => c.id !== contactId);
+    }
+
+    updateSelectedContactsEdit();
+  }, 0);
+};
+
+window.toggleContactSelectionEditPreselected = function (contactId, contactName, contactColor) {
+  const checkbox = document.getElementById(`edit-contact-${contactId}`);
+  if (!checkbox) return;
+
+  setTimeout(() => {
+    const container = checkbox.closest(".customCheckboxContainer");
+    const input = document.getElementById("search-contacts-edit");
+
+
+    if (!checkbox.checked) {
+      checkbox.checked = true;
+      container.classList.add("checked");
+
+      if (!selectedContacts.some((c) => c.id === contactId)) {
+        selectedContacts.push({ id: contactId, name: contactName, color: contactColor });
+      }
+
+      input.value = "";
+      filterContacts();
+    }
+
+    updateSelectedContactsEdit();
+  }, 0);
+};
+
+
+function updateSelectedContactsEdit() {
+  const selectedContactsContainer = document.getElementById("selected-contacts-Edit");
+  selectedContactsContainer.innerHTML = "";
+
+  selectedContacts.forEach((contact) => {
+    const contactElement = document.createElement("div");
+    contactElement.classList.add("selected-contact");
+    contactElement.style.backgroundColor = contact.color;
+
+    contactElement.innerHTML = `
+            <span class="selected-contact-initials">${getInitials(contact.name)}</span>`;
+
+    selectedContactsContainer.appendChild(contactElement);
+  });
+}
+
+function filterContactsEdit() {
+  const searchTerm = document.getElementById("search-contacts-edit").value.toLowerCase();
+  document.querySelectorAll(".customCheckboxContainer").forEach((label) => {
+    const name = label.querySelector(".subtasksUnit").textContent.toLowerCase();
+    label.style.display = name.includes(searchTerm) ? "flex" : "none";
+  });
+}
+
+function toggleDropdownEdit(event) {
+  event.stopPropagation();
+
+  const dropdown = document.getElementById("assigned-dropdown-Edit");
+  const iconDown = document.querySelector(".dropDown");
+  const iconUp = document.querySelector(".dropDown-up");
+
+  dropdown.classList.toggle("visible");
+
+  if (dropdown.classList.contains("visible")) {
+    iconDown.style.display = "none";
+    iconUp.style.display = "block";
+  } else {
+    iconDown.style.display = "block";
+    iconUp.style.display = "none";
+  }
+}
+
+function determineAssignedToEditModal(id) {
+  let tasks = allTasks.filter((t) => t["id"] === id);
+
+  tasks.forEach((task) => {
+    let assignedTo = task.assignedTo[0]; // Name der zugewiesenen Person
+    let color = task.color[0];
+
+    // Finde den Kontakt in allContacts anhand des Namens
+    let foundContact = allContacts.find((contact) => contact.contactName === assignedTo);
+
+    if (foundContact) {
+      let contactId = foundContact.idContact; // Hier ist die gesuchte ID
+
+      toggleContactSelectionEditPreselected(contactId, assignedTo, color);
+    }
+  });
+}

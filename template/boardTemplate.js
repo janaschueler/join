@@ -1,4 +1,4 @@
-function generateToDoHTML(allTodos, priorityIcon, numberOfSubtasks, progressOfProgressbar, numberCompletetSubtasks,  categoryColor) {
+function generateToDoHTML(allTodos, priorityIcon, numberOfSubtasks, progressOfProgressbar, numberCompletetSubtasks, categoryColor) {
   return `          <div onclick="openModal('${allTodos["id"]}')" draggable ="true" ondragstart="startDragging('${allTodos["id"]}')" class="listContainerContent">
                         <div class="category" style="${categoryColor}">
                           <span>${allTodos["category"]}</span>
@@ -64,7 +64,7 @@ function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate, categ
             </div>
             <div class="buttonContainer">
               <div class="editContainer">
-                <button onclick="openEditModal('${allTodos["category"]}', '${allTodos["title"]}', '${allTodos["description"]}', '${formatedDueDate}', '${allTodos["priority"]}', '${allTodos["id"]}')" class="editIcon">Edit</button>
+                <button onclick="openEditModal('${allTodos["category"]}', '${allTodos["title"]}', '${allTodos["description"]}', '${formatedDueDate}', '${allTodos["priority"]}', '${allTodos["id"]}', '${allTodos}')" class="editIcon">Edit</button>
                 <button onclick="deleteTask('${allTodos["id"]}')" class="deleteIcon">Delete</button>
               </div>
             </div>
@@ -94,8 +94,6 @@ function generateSubtasks(allTodos, subtask, index, isChecked = false) {
     </li>`;
 }
 
-
-
 function addEditTask(title, description, id) {
   return `          <div class="headerAddTaskModal">
             <p class="ModalHeadline">Add Task</p>
@@ -109,20 +107,20 @@ function addEditTask(title, description, id) {
                 <textarea id="description" placeholder="Enter a Description">${description}</textarea>
                 
                 <label for="assigned">Assigned to</label>
-                <div id="assigned" class="custom-dropdown">
-                  <div id="assigned-input" class="dropdown-input custom" onclick="toggleDropdown(event)">
-                      <input class="customInput" id="search-contacts" type="text" placeholder="Select contacts to assign" oninput="filterContacts()" />
-                      <svg id="dropdown-icon" class="dropDown" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <div id="assigned-Edit" class="custom-dropdown">
+                  <div id="assigned-input-Edit" class="dropdown-input custom" onclick="toggleDropdownEdit(event)">
+                      <input class="customInput" id="search-contacts-edit" type="text" placeholder="Select contacts to assign" oninput="filterContactsEdit()" />
+                      <svg id="dropdown-icon-Edit" class="dropDown" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M3.29998 4.3L0.699975 1.7C0.383309 1.38333 0.312475 1.02083 0.487475 0.6125C0.662475 0.204167 0.974975 0 1.42498 0H6.57498C7.02498 0 7.33747 0.204167 7.51248 0.6125C7.68748 1.02083 7.61664 1.38333 7.29997 1.7L4.69998 4.3C4.59998 4.4 4.49164 4.475 4.37498 4.525C4.25831 4.575 4.13331 4.6 3.99998 4.6C3.86664 4.6 3.74164 4.575 3.62498 4.525C3.50831 4.475 3.39998 4.4 3.29998 4.3Z" fill="#2A3647"/>
                       </svg>
                       <svg class="dropDown-up" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M4.70002 0.299975L7.30002 2.89998C7.61669 3.21664 7.68752 3.57914 7.51252 3.98748C7.33752 4.39581 7.02502 4.59998 6.57502 4.59998L1.42502 4.59998C0.975025 4.59998 0.662525 4.39581 0.487525 3.98748C0.312525 3.57914 0.383358 3.21664 0.700025 2.89998L3.30002 0.299975C3.40002 0.199975 3.50836 0.124976 3.62502 0.0749755C3.74169 0.0249753 3.86669 -2.43187e-05 4.00002 -2.43187e-05C4.13336 -2.43187e-05 4.25836 0.0249753 4.37502 0.0749755C4.49169 0.124976 4.60002 0.199975 4.70002 0.299975Z" fill="#2A3647"/>
                       </svg>                                  
                   </div>
-                  <div id="assigned-dropdown" class="dropdown-content">
+                  <div id="assigned-dropdown-Edit" class="dropdown-content">
                   </div>
               </div>
-                <div id="selected-contacts" class="selected-contacts-container"></div>
+                <div id="selected-contacts-Edit" class="selected-contacts-container"></div>
                 
             </div>
             <div class="divider"></div>
@@ -178,7 +176,7 @@ function addEditTask(title, description, id) {
                 <label for="category">Subtasks</label>
                 <div class="input-wrapper">
                   <input type="text" id="new-subtask-input-Edit" placeholder="add new sub task">
-                  <button class="iconAdd center" type="button" onclick="addAdditionalSubtaskinEditModal('${id})">
+                  <button class="iconAdd center" type="button" onclick="addAdditionalSubtaskinEditModal('${id}')">
                   </button>
                 </div>
                 <div id="editSubtasks-container">
@@ -202,7 +200,6 @@ function addEditTask(title, description, id) {
       </form>`;
 }
 
-
 function addSubtaskTemplateinModal(subTaskInput, id) {
   return `                <div id="editSubTaskUnit${id}" class="input-wrapper">
                               <li id="edit${id}" class="formateList subtask-text">${subTaskInput}</li>
@@ -213,7 +210,6 @@ function addSubtaskTemplateinModal(subTaskInput, id) {
                               <button id="deleteBtn${id}" onclick="deleteSubtask('${id}')" class="deleteSubtask"></button>
                             </div>`;
 }
-
 
 function addInputFieldinModal(id, subTaskInput) {
   return `                  <div id="editSubTaskUnit${id}" class="input-wrapper">
