@@ -10,7 +10,6 @@ let subtaskClickCount = 0;
 function init() {
   fetchContacts();
   initPriorityButtons();
-  fetchSubtasks();
 }
 
 function toggleDropdown(event) {
@@ -40,6 +39,8 @@ function toggleCategoryDropdown() {
 document.addEventListener("click", function (event) {
   const dropdown = document.getElementById("category-dropdown");
   const inputField = document.getElementById("category-input");
+
+  if (!dropdown || !inputField) return; // Falls eins der Elemente nicht existiert, Funktion abbrechen
 
   if (!inputField.contains(event.target) && !dropdown.contains(event.target)) {
     dropdown.classList.remove("visible");
@@ -78,12 +79,13 @@ async function fetchContacts() {
   }
 }
 
-async function addTask() {
+async function addTask(statusTask) {
   const title = document.getElementById("inputField").value.trim();
   const description = document.getElementById("description").value.trim();
   const dueDate = document.getElementById("due-date").value.trim();
   const category = document.getElementById("category").value;
   const assignedContacts = selectedContacts;
+  const status = determineStatusAddTask(statusTask);
 
   if (!title || !dueDate || !category || !selectedPriority) {
     alert("Bitte alle Pflichtfelder ausfüllen und eine Priorität auswählen.");
@@ -102,6 +104,7 @@ async function addTask() {
     priority: selectedPriority,
     subtasks,
     createdAt: new Date().toISOString(),
+    status,
   };
 
   try {
@@ -124,13 +127,13 @@ async function addTask() {
   }
 }
 
-function determineStatusAddTask() {
-  const statusTask = window.currentStatusTask;
+function determineStatusAddTask(statusTask) {
+
   let status;
   if (!statusTask) {
     status = 1;
   } else {
-    status = statusTask;
+   status = statusTask;
   }
   return status;
 }
@@ -156,7 +159,6 @@ async function saveSubtask(subtaskText) {
 function populateAssignedToSelect() {
   const dropdown = document.getElementById("assigned-dropdown");
   if (!dropdown) {
-    console.error("Dropdown nicht gefunden!");
     return;
   }
 
@@ -360,8 +362,24 @@ function getRandomColor() {
 }
 
 // **Prioritäts-Buttons initialisieren**
-function initPriorityButtons() {
+// function initPriorityButtons() {
+//   const priorityButtons = document.querySelectorAll(".priority button");
+//   priorityButtons.forEach((button) => {
+//     button.addEventListener("click", (event) => {
+//       event.preventDefault();
+//       handlePriorityClick(button);
+//     });
+//   });
+
+//   const defaultMediumButton = document.querySelector(".priority .medium");
+//   if (defaultMediumButton) {
+//     handlePriorityClick(defaultMediumButton);
+//   }
+// }
+
+function initPriorityButtons(priority) {
   const priorityButtons = document.querySelectorAll(".priority button");
+
   priorityButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       event.preventDefault();
@@ -370,8 +388,17 @@ function initPriorityButtons() {
   });
 
   const defaultMediumButton = document.querySelector(".priority .medium");
-  if (defaultMediumButton) {
+
+  if (!priority) {
     handlePriorityClick(defaultMediumButton);
+  } else {
+    const priorityButton = document.querySelector(`.priority .${priority}`);
+    if (priorityButton) {
+      handlePriorityClick(priorityButton);
+    } else {
+      console.warn("Invalid priority, falling back to default.");
+      handlePriorityClick(defaultMediumButton);
+    }
   }
 }
 
@@ -431,10 +458,10 @@ function highlightButton(button) {
   });
 }
 
-function start() {
-  fetchContacts();
-  initPriorityButtons();
-}
+// function start() {
+//   fetchContacts();
+//   initPriorityButtons();
+// }
 
 function openDatePicker() {
   let dateInput = document.getElementById("due-date");

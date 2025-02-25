@@ -139,6 +139,7 @@ async function postToDatabase(path1 = "", path2 = "", data = {}) {
 }
 
 function loadBoardContent() {
+  loadBordContentByStatus(0, "ToDoTaskContainer");
   loadBordContentByStatus(1, "ToDoTaskContainer");
   loadBordContentByStatus(2, "inProgressContainer");
   loadBordContentByStatus(3, "TestingContainer");
@@ -174,6 +175,9 @@ function renderTask(task, container) {
 }
 
 function determinePriotiry(priority) {
+  if (!priority) {
+    priority = "medium";
+  }
   priority = priority.toLowerCase();
   priority = priority.trim();
 
@@ -524,37 +528,39 @@ function convertTask(dueDate) {
   return formatedDueDate;
 }
 
-window.addEventListener("DOMContentLoaded", checkSreenSize);
-window.addEventListener("resize", checkSreenSize);
+// window.addEventListener("DOMContentLoaded", checkSreenSize);
+// window.addEventListener("resize", checkSreenSize);
 
-function checkSreenSize(params) {
-  const modalEdit = document.getElementById("addTaskSectionModal");
-  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+// function checkSreenSize(params) {
+//   const modalEdit = document.getElementById("modalEditTask");
+//   const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-  if (isMobile) {
-    modalEdit.style.display = "none";
-    window.location.href = "./add_Task.html";
-  } else {
-    modalEdit.style.display = "flex";
-  }
-}
+//   const isModalOpen = modalEdit.classList.contains("show");
 
-function openAddTask(statusTask) {
-  const showModalBackground = document.getElementById("addTaskSectionModal");
-  const showModal = document.getElementById("modalAddTask");
+//   if (isMobile && isModalOpen) {
+//     modalEdit.style.display = "none";
+//     window.location.href = "./add_Task.html";
+//   } else if (!isMobile) {
+//     modalEdit.style.display = "";
+//   }
+// }
 
-  if (showModalBackground && showModal) {
-    showModalBackground.classList.add("show");
-    showModal.classList.add("show");
-    window.currentStatusTask = statusTask;
-  } else {
-    console.log("no modal found");
-  }
-}
+// function openAddTask(statusTask) {
+//   const showModalBackground = document.getElementById("addTaskSectionModal");
+//   const showModal = document.getElementById("modalAddTask");
+
+//   if (showModalBackground && showModal) {
+//     showModalBackground.classList.add("show");
+//     showModal.classList.add("show");
+//     window.currentStatusTask = statusTask;
+//   } else {
+//     console.log("no modal found");
+//   }
+// }
 
 function closeModalAddTask(event) {
-  var modal = document.getElementById("modalAddTask");
-  var backdrop = document.getElementById("addTaskSectionModal");
+  var modal = document.getElementById("modalEditTask");
+  var backdrop = document.getElementById("editTaskSectionModal");
 
   if (!event || event.target === backdrop || event.target.classList.contains("ModalCloseButtonAddTask")) {
     modal.classList.add("hide");
@@ -569,7 +575,7 @@ function closeModalAddTask(event) {
   }
 }
 
-function openEditModal(categoryTask, title, description, dateTask, priorityTask, id, allTodos) {
+function openEditModal(categoryTask, title, description, dateTask, priorityTask, id, status) {
   const showModalBackground = document.getElementById("editTaskSectionModal");
   const showModal = document.getElementById("modalEditTask");
   showModal.innerHTML = "";
@@ -581,12 +587,16 @@ function openEditModal(categoryTask, title, description, dateTask, priorityTask,
     console.log("no modal found");
   }
 
-  showModal.innerHTML = addEditTask(title, description, id);
+  if (!status) {
+    status = 1;
+  }
+
+  showModal.innerHTML = addEditTask(title, description, id, status);
   addSubtaskinEditModal(id);
   addDueDate(dateTask);
   populateAssignedToSelectEdit();
-
-  // toggleContactSelectionEdit(contact.id, contact.name, contact.color);
+  initPriorityButtons(priorityTask);
+  selectCategory(categoryTask, 0);
   determineAssignedToEditModal(id);
 }
 
@@ -594,6 +604,9 @@ function addSubtaskinEditModal(id) {
   let subTaskContainer = document.getElementById("editSubtasks-container");
 
   let tasks = allTasks.filter((t) => t["id"] === id);
+  if (tasks.length === 0) {
+    return;
+  }
   let subTaskInput = tasks[0].subtasks;
 
   if (!subTaskInput) {
@@ -614,11 +627,9 @@ function addAdditionalSubtaskinEditModal(id) {
   let tasks = allTasks.filter((t) => t["id"] === id);
   let numberOfSubTaskInput;
 
-  if (!tasks.length) {
+  if (!tasks[0]?.subtasks?.length) {
     numberOfSubTaskInput = 0;
-  }
-
-  else {
+  } else {
     numberOfSubTaskInput = tasks[0].subtasks.length;
   }
 
@@ -699,63 +710,61 @@ function addDueDate(dateTask) {
 
 function populateAssignedToSelectEdit() {
   const dropdown = document.getElementById("assigned-dropdown-Edit");
-  if (!dropdown) {
-    console.error("Dropdown nicht gefunden!");
-    return;
-  }
+  if (!dropdown) return;
 
   dropdown.innerHTML = ""; // Zurücksetzen
 
-  contacts.forEach((contact) => {
+  if (!allContacts || !Array.isArray(allContacts) || allContacts.length === 0) {
+    console.warn("Contacts ist leer oder nicht definiert.");
+    return;
+  }
+
+  allContacts.forEach((contact) => {
+    console.log("Verarbeite Kontakt:", contact); // Debugging
+
     const label = document.createElement("label");
     label.classList.add("customCheckboxContainer");
 
-    // Standard Checkbox (versteckt)
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.classList.add("contact-checkbox");
-    checkbox.id = `edit-contact-${contact.id}`;
-    checkbox.name = `edit-contact-${contact.id}`;
+    checkbox.id = `edit-contact-${contact.idContact}`;
+    checkbox.name = `edit-contact-${contact.idContact}`;
     checkbox.value = contact.id;
 
-    // Benutzerdefinierte Checkbox
     const customCheckbox = document.createElement("span");
     customCheckbox.classList.add("customCheckbox");
 
-    // SVG-Profilbild
     const svgContainer = document.createElement("div");
     svgContainer.classList.add("svg-container");
     svgContainer.style.backgroundColor = contact.color;
-    svgContainer.innerHTML = `<span class="contact-initials">${getInitials(contact.name)}</span>`;
+    svgContainer.innerHTML = `<span class="contact-initials">${contact.contactAbbreviation}</span>`;
 
-    // Name des Kontakts
     const contactName = document.createElement("span");
     contactName.classList.add("subtasksUnit");
-    contactName.textContent = contact.name;
+    contactName.textContent = contact.contactName;
 
-    // Flex-Container für Name + Checkbox
     const contactRow = document.createElement("div");
     contactRow.classList.add("contact-row");
     contactRow.appendChild(svgContainer);
     contactRow.appendChild(contactName);
     contactRow.appendChild(customCheckbox);
 
-    // Falls der Kontakt bereits ausgewählt wurde, Checkbox aktivieren
-    if (selectedContacts.some((c) => c.id === contact.id)) {
+    if (selectedContacts.some((c) => c.id === contact.idContact)) {
       checkbox.checked = true;
       label.classList.add("checked");
     }
 
-    // Event-Listener für Checkbox
     checkbox.addEventListener("change", function () {
-      toggleContactSelectionEdit(contact.id, contact.name, contact.color);
+      toggleContactSelectionEdit(contact.idContact, contact.contactName, contact.color);
     });
 
-    // Zusammenbauen
     label.appendChild(checkbox);
     label.appendChild(contactRow);
     dropdown.appendChild(label);
   });
+
+  console.log("Funktion erfolgreich abgeschlossen!");
 }
 
 window.toggleContactSelectionEdit = function (contactId, contactName, contactColor) {
@@ -771,7 +780,7 @@ window.toggleContactSelectionEdit = function (contactId, contactName, contactCol
         container.classList.add("checked");
         selectedContacts.push({ id: contactId, name: contactName, color: contactColor });
         input.value = "";
-        filterContacts();
+        filterContactsEdit();
       }
     } else {
       container.classList.remove("checked");
@@ -790,7 +799,6 @@ window.toggleContactSelectionEditPreselected = function (contactId, contactName,
     const container = checkbox.closest(".customCheckboxContainer");
     const input = document.getElementById("search-contacts-edit");
 
-
     if (!checkbox.checked) {
       checkbox.checked = true;
       container.classList.add("checked");
@@ -800,13 +808,12 @@ window.toggleContactSelectionEditPreselected = function (contactId, contactName,
       }
 
       input.value = "";
-      filterContacts();
+      filterContactsEdit();
     }
 
     updateSelectedContactsEdit();
   }, 0);
 };
-
 
 function updateSelectedContactsEdit() {
   const selectedContactsContainer = document.getElementById("selected-contacts-Edit");
@@ -851,19 +858,127 @@ function toggleDropdownEdit(event) {
 }
 
 function determineAssignedToEditModal(id) {
-  let tasks = allTasks.filter((t) => t["id"] === id);
+  let task = allTasks.find((t) => t["id"] === id); // Gibt das erste gefundene Element zurück
+  if (!task) return; // Falls keine Aufgabe gefunden wird, abbrechen
 
-  tasks.forEach((task) => {
-    let assignedTo = task.assignedTo[0]; // Name der zugewiesenen Person
-    let color = task.color[0];
-
-    // Finde den Kontakt in allContacts anhand des Namens
-    let foundContact = allContacts.find((contact) => contact.contactName === assignedTo);
-
+  task.assignedTo.forEach((assignedPerson, index) => {
+    let color = task.color[index] || "#000000"; // Falls keine Farbe vorhanden, Standardfarbe setzen
+    let foundContact = allContacts.find((contact) => contact.contactName === assignedPerson);
     if (foundContact) {
-      let contactId = foundContact.idContact; // Hier ist die gesuchte ID
-
-      toggleContactSelectionEditPreselected(contactId, assignedTo, color);
+      toggleContactSelectionEditPreselected(foundContact.idContact, assignedPerson, color);
     }
   });
+}
+
+
+
+async function addTaskModal(id, status) {
+
+  if (!id) {
+    addTaskModalNewTask(status);
+    return
+  }
+  const title = document.getElementById("inputField").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const dueDate = document.getElementById("due-date-edit").value.trim();
+  const category = document.getElementById("category").value;
+  const assignedContacts = selectedContacts;
+
+  if (!title || !dueDate || !category || !selectedPriority) {
+    alert("Bitte alle Pflichtfelder ausfüllen und eine Priorität auswählen.");
+    return;
+  }
+
+  const subtaskItems = document.querySelectorAll(".subtask-text");
+  const subtasks = Array.from(subtaskItems).map((item) => item.textContent.trim());
+
+  const taskData = {
+    title,
+    description,
+    assignedContacts: assignedContacts,
+    dueDate,
+    category,
+    priority: selectedPriority,
+    subtasks,
+    createdAt: new Date().toISOString(),
+    status: status,
+  };
+
+  try {
+    const response = await fetch(`${BASE_URL}/tasks/${id}.json`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(taskData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
+    }
+
+    console.log("✅ Aufgabe erfolgreich gespeichert:", await response.json());
+
+    window.location.href = "board.html";
+  } catch (error) {
+    console.error("Fehler beim Speichern der Aufgabe:", error);
+    alert("Es gab einen Fehler beim Speichern der Aufgabe. Bitte prüfe die Konsole.");
+  }
+}
+
+function openDatePickerModal() {
+  let dateInput = document.getElementById("due-date-edit");
+  dateInput.showPicker();
+}
+
+
+async function addTaskModalNewTask(status) {
+
+  const title = document.getElementById("inputField").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const dueDate = document.getElementById("due-date-edit").value.trim();
+  const category = document.getElementById("category").value;
+  const assignedContacts = selectedContacts;
+
+  if (!title || !dueDate || !category || !selectedPriority) {
+    alert("Bitte alle Pflichtfelder ausfüllen und eine Priorität auswählen.");
+    return;
+  }
+
+  const subtaskItems = document.querySelectorAll(".subtask-text");
+  const subtasks = Array.from(subtaskItems).map((item) => item.textContent.trim());
+
+  const taskData = {
+    title,
+    description,
+    assignedContacts: assignedContacts,
+    dueDate,
+    category,
+    priority: selectedPriority,
+    subtasks,
+    createdAt: new Date().toISOString(),
+    status: status,
+  };
+
+  try {
+    const response = await fetch(`${BASE_URL}/tasks.json`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(taskData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
+    }
+
+    console.log("✅ Aufgabe erfolgreich gespeichert:", await response.json());
+
+    window.location.href = "board.html";
+  } catch (error) {
+    console.error("Fehler beim Speichern der Aufgabe:", error);
+    alert("Es gab einen Fehler beim Speichern der Aufgabe. Bitte prüfe die Konsole.");
+  }
+}
+
+function openDatePickerModal() {
+  let dateInput = document.getElementById("due-date-edit");
+  dateInput.showPicker();
 }

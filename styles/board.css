@@ -369,10 +369,6 @@ ol {
   z-index: 5;
 }
 
-input {
-  border-radius: 8px !important;
-}
-
 .left_bar_main {
   min-width: 232px;
 }
@@ -504,8 +500,8 @@ input {
 }
 
 .headerAddTaskModal .ModalCloseButtonAddTask {
-margin-top: 32px;
-margin-right: 32px;
+  margin-top: 32px;
+  margin-right: 32px;
 }
 
 li {
@@ -604,6 +600,12 @@ table td:first-child {
   display: flex;
   align-items: center;
   margin-top: 4px;
+}
+
+.customInput {
+  border: none !important;
+  position: relative;
+  z-index: 10;
 }
 
 .customCheckboxContainer input[type="checkbox"] {

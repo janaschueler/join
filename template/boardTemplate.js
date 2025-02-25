@@ -64,14 +64,12 @@ function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate, categ
             </div>
             <div class="buttonContainer">
               <div class="editContainer">
-                <button onclick="openEditModal('${allTodos["category"]}', '${allTodos["title"]}', '${allTodos["description"]}', '${formatedDueDate}', '${allTodos["priority"]}', '${allTodos["id"]}', '${allTodos}')" class="editIcon">Edit</button>
+                <button onclick="openEditModal('${allTodos["category"]}', '${allTodos["title"]}', '${allTodos["description"]}', '${formatedDueDate}', '${allTodos["priority"]}', '${allTodos["id"]}', '')" class="editIcon">Edit</button>
                 <button onclick="deleteTask('${allTodos["id"]}')" class="deleteIcon">Delete</button>
               </div>
             </div>
           </div>`;
 }
-
-
 
 function generateAssigneeComntacts(assigneeAbbreviation, assingeeColor, assignee) {
   return `      <li>
@@ -96,7 +94,7 @@ function generateSubtasks(allTodos, subtask, index, isChecked = false) {
     </li>`;
 }
 
-function addEditTask(title, description, id) {
+function addEditTask(title, description, id, status) {
   return `          <div class="headerAddTaskModal">
             <p class="ModalHeadline">Add Task</p>
             <button onclick="closeModalAddTask()" type="button" class="ModalCloseButtonAddTask"></button>
@@ -131,7 +129,7 @@ function addEditTask(title, description, id) {
               <div class="custom-date-picker">
                 <input type="date" id="due-date-edit" name="due-date"  required>
                 <!-- Dein benutzerdefiniertes Kalender-Icon -->
-                <button type="button" class="calendar-icon" onclick="openDatePicker()">
+                <button type="button" class="calendar-icon" onclick="openDatePickerModal()">
                   <img src="./assets/icons/calender.svg" alt="Calendar Icon"> <!-- Dein eigenes Icon -->
                 </button>
               </div>
@@ -193,7 +191,7 @@ function addEditTask(title, description, id) {
                         <button onclick="clearForm()" class="taskButton-clear ">
                             Clear <img src="assets/icons/close.svg" alt="">
                         </button> 
-                        <button type="button" onclick="openEditTask(${id})" class="taskButton create">
+                        <button type="button" onclick="addTaskModal('${id}', ${status})" class="taskButton create">
                             Create Task <img src="assets/icons/check.svg" alt="">
                         </button>
                     </div>
