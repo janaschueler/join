@@ -65,7 +65,7 @@ main {
 
 .searchButton {
   width: 50px;
-  height: 40px;
+  height: 32px;
   position: relative;
   background-color: transparent;
   border: none;
@@ -499,6 +499,19 @@ ol {
   background-position: center;
 }
 
+.ModalCloseButtonAddTask:hover::before {
+  content: "";
+  position: absolute;
+  top: 64px;
+  right: 32px;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
+  z-index: 4;
+}
+
 .headerAddTaskModal .ModalCloseButtonAddTask {
   margin-top: 32px;
   margin-right: 32px;
@@ -508,10 +521,15 @@ li {
   list-style-type: none;
 }
 
+.formateList {
+  list-style-type: disc;
+}
+
 .summaryTaskContainer h1 {
   text-align: left;
   margin-bottom: 0px;
-  margin-top: 6px;
+  margin-top: 16px;
+  margin-left: 0px;
 }
 
 .listDiscription span {
@@ -599,7 +617,8 @@ table td:first-child {
 .customCheckboxContainer {
   display: flex;
   align-items: center;
-  margin-top: 4px;
+  margin-top: 2px;
+  margin-bottom: 0px !important;
 }
 
 .customInput {
@@ -653,6 +672,64 @@ table td:first-child {
   border-color: #555;
 }
 
+.customCheckboxContainerModal {
+  display: flex;
+  align-items: center;
+  margin-top: 2px;
+  margin-bottom: 0px !important;
+}
+
+.customInput {
+  border: none !important;
+  position: relative;
+  z-index: 10;
+}
+
+.customCheckboxContainerModal input[type="checkbox"] {
+  display: none;
+}
+
+.customCheckboxContainerModal .customCheckbox {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-image: url("../assets/icons/checkbox_empty.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+  cursor: pointer;
+  margin-right: 8px;
+  margin-left: 16px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.customCheckboxContainerModal input[type="checkbox"]:checked + .customCheckbox {
+  background-image: none;
+}
+
+.customCheckboxContainerModal input[type="checkbox"]:checked + .customCheckbox::after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-image: url("../assets/icons/check_withBox.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  margin-right: 8px;
+  top: 0;
+  left: 0;
+}
+
+.customCheckboxContainerModal .subtasksUnit {
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+
+.customCheckboxContainerModal:hover .customCheckbox {
+  border-color: #555;
+}
+
 .groupAssignee {
   display: flex;
   align-items: center;
@@ -680,6 +757,7 @@ table td:first-child {
   right: 0;
   border: none;
   background-color: transparent;
+  top: 4.5px;
   cursor: pointer;
 }
 
@@ -714,7 +792,7 @@ table td:first-child {
   left: 50%;
   transform: translate(-50%, -50%);
   display: block;
-  height: 750px;
+  height: 850px;
   width: 1000px;
   background-color: white;
   border-radius: 20px;
@@ -755,10 +833,6 @@ table td:first-child {
   margin-bottom: 24px;
 }
 
-.input-wrapper button {
-  top: 4px;
-}
-
 .priority button {
   border: solid 1px #d1d1d1;
 }
@@ -795,6 +869,33 @@ table td:first-child {
   border-radius: 4px;
   background-color: rgba(128, 128, 128, 0.1); /* Grauer, halbtransparenter Hintergrund */
   z-index: 0;
+}
+
+.addTaskButtonPrimary {
+  background-color: rgba(42, 54, 71, 1) !important;
+  color: rgba(255, 255, 255, 1) !important;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  font-family: "Inter 18pt";
+  font-weight: bold;
+  border-radius: 10px;
+  height: 56px;
+  margin-top: 64px;
+  white-space: nowrap;
+}
+
+.addTaskButtonPrimary img {
+  margin-left: 16px;
+}
+
+.form-footer-modal {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 118%;
 }
 
 @media (max-width: 1115px) {
@@ -866,15 +967,17 @@ table td:first-child {
     min-width: 100vw;
     width: 100% !important;
   }
-}
 
-@media (max-width: 500px) {
-  .mobileHeadline {
-    font-size: 36px !important;
+  .modalAddTask {
+    width: 400px;
   }
 }
 
 @media (max-width: 480px) {
+  .ModalHeadline {
+    font-size: 40px !important;
+  }
+
   #board {
     display: flex !important;
     flex-wrap: wrap !important;
@@ -938,5 +1041,11 @@ table td:first-child {
 
   #doneContainer {
     min-height: 20px;
+  }
+
+  .modalAddTask {
+    width: 320px;
+    max-height: 700px;
+    height: none;
   }
 }

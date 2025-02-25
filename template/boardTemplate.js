@@ -64,7 +64,7 @@ function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate, categ
             </div>
             <div class="buttonContainer">
               <div class="editContainer">
-                <button onclick="openEditModal('${allTodos["category"]}', '${allTodos["title"]}', '${allTodos["description"]}', '${formatedDueDate}', '${allTodos["priority"]}', '${allTodos["id"]}', '')" class="editIcon">Edit</button>
+                <button onclick="openEditModal('${allTodos["category"]}', '${allTodos["title"]}', '${allTodos["description"]}', '${formatedDueDate}', '${allTodos["priority"]}', '${allTodos["id"]}', '${allTodos["status"]}')" class="editIcon">Edit</button>
                 <button onclick="deleteTask('${allTodos["id"]}')" class="deleteIcon">Delete</button>
               </div>
             </div>
@@ -86,7 +86,7 @@ function generateAssigneeComntacts(assigneeAbbreviation, assingeeColor, assignee
 function generateSubtasks(allTodos, subtask, index, isChecked = false) {
   return `
     <li>
-      <label class="customCheckboxContainer">
+      <label class="customCheckboxContainerModal">
         <input class="marginLR_8" type="checkbox" id="${allTodos.id}${index}" name="${allTodos["id"]}" value="" data-index="${index}" ${isChecked ? "checked" : ""}>
         <span class="customCheckbox"></span>
         <span class="subtasksUnit">${subtask}</span>
@@ -94,9 +94,9 @@ function generateSubtasks(allTodos, subtask, index, isChecked = false) {
     </li>`;
 }
 
-function addEditTask(title, description, id, status) {
+function addEditTask(title, description, id, status, buttonCopy, headline) {
   return `          <div class="headerAddTaskModal">
-            <p class="ModalHeadline">Add Task</p>
+            <p class="ModalHeadline">${headline}</p>
             <button onclick="closeModalAddTask()" type="button" class="ModalCloseButtonAddTask"></button>
         </div>
         <form class="task-form">
@@ -185,14 +185,14 @@ function addEditTask(title, description, id, status) {
     
                 
              
-                  <div class="form-footer">
+                  <div class="form-footer-modal">
                     <p class="error-message"><span class="required">*</span> This field is required</p>
                     <div class="addTaskButton">
-                        <button onclick="clearForm()" class="taskButton-clear ">
-                            Clear <img src="assets/icons/close.svg" alt="">
+                        <button onclick=closeModalAddTask()" class="taskButton-clear ">
+                            Cancel <img src="assets/icons/close.svg" alt="">
                         </button> 
-                        <button type="button" onclick="addTaskModal('${id}', ${status})" class="taskButton create">
-                            Create Task <img src="assets/icons/check.svg" alt="">
+                        <button type="button" onclick="addTaskModal('${id}', ${status})" class="addTaskButtonPrimary create">
+                            ${buttonCopy} <img src="assets/icons/check.svg" alt="">
                         </button>
                     </div>
                 </div>

@@ -575,6 +575,14 @@ function closeModalAddTask(event) {
   }
 }
 
+function handleButtonClick(status) {
+  if (window.innerWidth <= 768) {
+    window.location.href = "./add_Task.html";
+  } else {
+    openEditModal('', '', '', '', '', '', status);
+}
+}
+
 function openEditModal(categoryTask, title, description, dateTask, priorityTask, id, status) {
   const showModalBackground = document.getElementById("editTaskSectionModal");
   const showModal = document.getElementById("modalEditTask");
@@ -591,12 +599,22 @@ function openEditModal(categoryTask, title, description, dateTask, priorityTask,
     status = 1;
   }
 
-  showModal.innerHTML = addEditTask(title, description, id, status);
+  if (!id) {
+    buttonCopy = "Creat Task";
+    headline = "Add Task";
+  } else {
+    buttonCopy = "Ok"
+    headline = "Edit Task";
+  }
+
+  showModal.innerHTML = addEditTask(title, description, id, status, buttonCopy, headline);
   addSubtaskinEditModal(id);
   addDueDate(dateTask);
   populateAssignedToSelectEdit();
   initPriorityButtons(priorityTask);
-  selectCategory(categoryTask, 0);
+  if (categoryTask) {
+    selectCategory(categoryTask, 0);
+  }
   determineAssignedToEditModal(id);
 }
 
