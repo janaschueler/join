@@ -182,13 +182,13 @@ function determinePriotiry(priority) {
   priority = priority.trim();
 
   if (priority === "low") {
-    priority = ".././assets/icons/priority_low.svg";
+    priority = "assets/icons/priority_low.svg";
   }
   if (priority === "medium") {
-    priority = ".././assets/icons/priority_medium.svg";
+    priority = "assets/icons/priority_medium.svg";
   }
   if (priority === "urgent") {
-    priority = ".././assets/icons/priority_high.svg";
+    priority = "assets/icons/priority_high.svg";
   }
   return priority;
 }
@@ -413,14 +413,16 @@ function closeModal(event) {
     modal.classList.add("hide");
     backdrop.classList.add("hide");
 
+    
     setTimeout(function () {
       modal.style.visibility = "hidden";
       backdrop.style.visibility = "hidden";
       modal.classList.remove("show");
-    }, 500);
-    location.reload();
+      backdrop.classList.remove("show");
+    }, 500); 
   }
 }
+
 
 async function injectAssigneeContacts(tasks) {
   const assigneeContainer = document.getElementById(`assigneeListModal${tasks["id"]}`);
@@ -579,8 +581,8 @@ function handleButtonClick(status) {
   if (window.innerWidth <= 768) {
     window.location.href = "./add_Task.html";
   } else {
-    openEditModal('', '', '', '', '', '', status);
-}
+    openEditModal("", "", "", "", "", "", status);
+  }
 }
 
 function openEditModal(categoryTask, title, description, dateTask, priorityTask, id, status) {
@@ -589,8 +591,11 @@ function openEditModal(categoryTask, title, description, dateTask, priorityTask,
   showModal.innerHTML = "";
 
   if (showModalBackground && showModal) {
-    showModalBackground.classList.add("show");
-    showModal.classList.add("show");
+    showModalBackground.style.visibility = "visible";
+    showModalBackground.classList.add("show"); 
+
+    showModal.style.visibility = "visible";
+    showModal.classList.add("show");  
   } else {
     console.log("no modal found");
   }
@@ -600,13 +605,14 @@ function openEditModal(categoryTask, title, description, dateTask, priorityTask,
   }
 
   if (!id) {
-    buttonCopy = "Creat Task";
+    buttonCopy = "Create Task";
     headline = "Add Task";
   } else {
-    buttonCopy = "Ok"
+    buttonCopy = "Ok";
     headline = "Edit Task";
   }
 
+  // Inhalt des Modals setzen
   showModal.innerHTML = addEditTask(title, description, id, status, buttonCopy, headline);
   addSubtaskinEditModal(id);
   addDueDate(dateTask);
@@ -617,6 +623,7 @@ function openEditModal(categoryTask, title, description, dateTask, priorityTask,
   }
   determineAssignedToEditModal(id);
 }
+
 
 function addSubtaskinEditModal(id) {
   let subTaskContainer = document.getElementById("editSubtasks-container");
@@ -888,13 +895,10 @@ function determineAssignedToEditModal(id) {
   });
 }
 
-
-
 async function addTaskModal(id, status) {
-
   if (!id) {
     addTaskModalNewTask(status);
-    return
+    return;
   }
   const title = document.getElementById("inputField").value.trim();
   const description = document.getElementById("description").value.trim();
@@ -947,9 +951,7 @@ function openDatePickerModal() {
   dateInput.showPicker();
 }
 
-
 async function addTaskModalNewTask(status) {
-
   const title = document.getElementById("inputField").value.trim();
   const description = document.getElementById("description").value.trim();
   const dueDate = document.getElementById("due-date-edit").value.trim();

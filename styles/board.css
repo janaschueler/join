@@ -465,10 +465,6 @@ ol {
   transition: opacity 0.3s ease;
 }
 
-#taskSummaryModal.show {
-  visibility: visible;
-  opacity: 1;
-}
 
 #taskSummaryModal.hide {
   visibility: hidden;
@@ -790,7 +786,7 @@ table td:first-child {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) translateX(100%);
   display: block;
   height: 850px;
   width: 1000px;
@@ -802,8 +798,21 @@ table td:first-child {
   word-wrap: break-word;
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.3sease, transform 0.3sease;
   overflow: auto;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modalAddTask.show {
+  visibility: visible;
+  opacity: 1;
+  transform: translate(-50%, -50%) translateX(0);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.modalAddTask.hide {
+  opacity: 0;
+  transform: translate(-50%, -50%) translateX(100%);
+  transition: opacity 0.5s ease, transform 0.5s ease; 
 }
 
 .show {
