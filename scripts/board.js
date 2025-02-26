@@ -85,7 +85,6 @@ function determineAssignedTo(arryAssignedTo) {
     return;
   } else {
     let assignedTo = arryAssignedTo.map((contact) => contact.name);
-    console.log(assignedTo);
     return assignedTo;
   }
 }
@@ -95,7 +94,6 @@ function determineColor(arryAssignedColor) {
     return;
   } else {
     let assignedTo = arryAssignedColor.map((contact) => contact.color);
-    console.log(assignedTo);
     return assignedTo;
   }
 }
@@ -245,7 +243,6 @@ function findContactColor(name) {
   if (index !== -1) {
     return allContacts[index].color;
   } else {
-    console.log("Kontaktname nicht gefunden");
     return null;
   }
 }
@@ -289,9 +286,7 @@ function searchTasks(searchInput) {
   const filteredTasks = allTasks.filter((task) => task.title && task.title.toLowerCase().includes(searchInput.toLowerCase()));
   if (filteredTasks.length > 0) {
     filteredTasks.forEach((task) => renderTaskByStatus(task));
-  } else {
-    console.log("Keine Ergebnisse für die Suche gefunden.");
-  }
+  } 
 }
 
 function renderTaskByStatus(task) {
@@ -441,7 +436,6 @@ function handleCheckboxChange(event) {
 
   subtasks.forEach((subtask, idx) => {
     const status = subtask.checked ? 1 : 0;
-    console.log(`Subtask ${idx}: ${status}`);
     subtask.setAttribute("data-status", status);
     subtasksStatus.push(status);
   });
@@ -514,10 +508,7 @@ function showModalVisibility() {
     showModalBackground.classList.add("show");
     showModal.style.visibility = "visible";
     showModal.classList.add("show");
-  } else {
-    console.log("no modal found");
-  }
-}
+  } }
 
 function setModalContent(title, description, id, status, buttonCopy, headline) {
   const showModal = document.getElementById("modalEditTask");
@@ -654,8 +645,6 @@ async function saveTaskData(id, taskData) {
   if (!response.ok) {
     throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
   }
-
-  console.log("Aufgabe gespeichert:", await response.json());
 }
 
 function addDueDate(dateTask) {
@@ -670,7 +659,7 @@ function populateAssignedToSelectEdit() {
   const dropdown = document.getElementById("assigned-dropdown-Edit");
   if (!dropdown) return;
 
-  dropdown.innerHTML = ""; // Zurücksetzen
+  dropdown.innerHTML = ""; 
 
   if (!allContacts || !Array.isArray(allContacts) || allContacts.length === 0) {
     console.warn("Contacts ist leer oder nicht definiert.");
@@ -678,8 +667,6 @@ function populateAssignedToSelectEdit() {
   }
 
   allContacts.forEach((contact) => {
-    console.log("Verarbeite Kontakt:", contact); // Debugging
-
     const label = document.createElement("label");
     label.classList.add("customCheckboxContainer");
 
@@ -721,8 +708,6 @@ function populateAssignedToSelectEdit() {
     label.appendChild(contactRow);
     dropdown.appendChild(label);
   });
-
-  console.log("Funktion erfolgreich abgeschlossen!");
 }
 
 window.toggleContactSelectionEdit = function (contactId, contactName, contactColor) {
@@ -816,11 +801,11 @@ function toggleDropdownEdit(event) {
 }
 
 function determineAssignedToEditModal(id) {
-  let task = allTasks.find((t) => t["id"] === id); // Gibt das erste gefundene Element zurück
-  if (!task) return; // Falls keine Aufgabe gefunden wird, abbrechen
+  let task = allTasks.find((t) => t["id"] === id); 
+  if (!task) return; 
 
   task.assignedTo.forEach((assignedPerson, index) => {
-    let color = task.color[index] || "#000000"; // Falls keine Farbe vorhanden, Standardfarbe setzen
+    let color = task.color[index] || "#000000"; 
     let foundContact = allContacts.find((contact) => contact.contactName === assignedPerson);
     if (foundContact) {
       toggleContactSelectionEditPreselected(foundContact.idContact, assignedPerson, color);
@@ -865,13 +850,9 @@ async function addTaskModal(id, status) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(taskData),
     });
-
     if (!response.ok) {
       throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
     }
-
-    console.log("✅ Aufgabe erfolgreich gespeichert:", await response.json());
-
     window.location.href = "board.html";
   } catch (error) {
     console.error("Fehler beim Speichern der Aufgabe:", error);
@@ -921,8 +902,6 @@ async function addTaskModalNewTask(status) {
     if (!response.ok) {
       throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
     }
-
-    console.log("✅ Aufgabe erfolgreich gespeichert:", await response.json());
 
     window.location.href = "board.html";
   } catch (error) {
