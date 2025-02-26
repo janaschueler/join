@@ -1,4 +1,11 @@
-function generateToDoHTML(allTodos, priorityIcon, numberOfSubtasks, progressOfProgressbar, numberCompletetSubtasks, categoryColor) {
+function generateToDoHTML(
+  allTodos,
+  priorityIcon,
+  numberOfSubtasks,
+  progressOfProgressbar,
+  numberCompletetSubtasks,
+  categoryColor
+) {
   return `          <div onclick="openModal('${allTodos["id"]}')" draggable ="true" ondragstart="startDragging('${allTodos["id"]}')" class="listContainerContent">
                         <div class="category" style="${categoryColor}">
                           <span>${allTodos["category"]}</span>
@@ -29,7 +36,12 @@ function generateAssigneeCircle(assigneeAbbreviation, assingeeColor) {
                             </svg>`;
 }
 
-function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate, categoryColor) {
+function generateTaskSummaryModal(
+  allTodos,
+  priorityIcon,
+  formatedDueDate,
+  categoryColor
+) {
   return ` <div id="modalTaskSummary" class="summaryTaskContainer modal">
             <div class="ModalheaderContainer">
               <div class="category" style="${categoryColor}">
@@ -71,23 +83,30 @@ function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate, categ
           </div>`;
 }
 
-function generateAssigneeComntacts(assigneeAbbreviation, assingeeColor, assignee) {
-  return `      <li>
-                  <div class="groupAssignee">
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <circle cx="16" cy="16" r="15.5" fill="${assingeeColor}" stroke="white"/>
-                      <text x="50%" y="50%" font-family="Arial" font-size="12" fill="white" text-anchor="middle" alignment-baseline="central">${assigneeAbbreviation}</text>
-                  </svg>
-                  <span>${assignee}</span>
-                </div>
-                </li>`;
+function generateAssigneeComntacts(
+  assigneeAbbreviation,
+  assingeeColor,
+  assignee
+) {
+  return `<li>
+              <div class="groupAssignee">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="16" cy="16" r="15.5" fill="${assingeeColor}" stroke="white"/>
+              <text x="50%" y="50%" font-family="Arial" font-size="12" fill="white" text-anchor="middle" alignment-baseline="central">${assigneeAbbreviation}</text>
+            </svg>
+           <span>${assignee}</span>
+          </div>
+          </li>`;
 }
 
 function generateSubtasks(allTodos, subtask, index, isChecked = false) {
   return `
     <li>
       <label class="customCheckboxContainerModal">
-        <input class="marginLR_8" type="checkbox" id="${allTodos.id}${index}" name="${allTodos["id"]}" value="" data-index="${index}" ${isChecked ? "checked" : ""}>
+        <input class="marginLR_8" type="checkbox" id="${
+          allTodos.id
+        }${index}" name="${allTodos["id"]}" value="" data-index="${index}" ${
+    isChecked ? "checked" : ""}>
         <span class="customCheckbox"></span>
         <span class="subtasksUnit">${subtask}</span>
       </label>
@@ -119,9 +138,8 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                   </div>
                   <div id="assigned-dropdown-Edit" class="dropdown-content">
                   </div>
-              </div>
+                  </div>
                 <div id="selected-contacts-Edit" class="selected-contacts-container"></div>
-                
             </div>
             <div class="divider"></div>
             <div class="side2">
@@ -182,9 +200,6 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                 <div id="editSubtasks-container">
                 </div>
                 <p class="error-message-mobile"><span class="required">*</span> This field is required</p>
-    
-                
-             
                   <div class="form-footer-modal">
                     <p class="error-message"><span class="required">*</span> This field is required</p>
                     <div class="addTaskButton">
@@ -196,7 +211,6 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                         </button>
                     </div>
                 </div>
-                
       </form>`;
 }
 

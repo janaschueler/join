@@ -298,7 +298,6 @@ input:focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
   border: 1px solid #ccc;
   cursor: pointer;
   background: white;
@@ -332,7 +331,6 @@ input:focus {
   border: 2px solid rgba(41, 171, 226, 1);
   outline: none;
 }
-
 
 .dropdown-content {
   display: none;
@@ -703,9 +701,8 @@ input:focus {
 }
 
 .side2 {
-  display: flex
-  ;
-      flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 label {
