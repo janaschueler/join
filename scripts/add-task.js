@@ -10,11 +10,10 @@ let subtaskClickCount = 0;
 function init() {
   fetchContacts();
   initPriorityButtons();
-  fetchSubtasks();
 }
 
 function toggleDropdown(event) {
-  event.stopPropagation(); 
+  event.stopPropagation();
 
   const dropdown = document.getElementById("assigned-dropdown");
   const iconDown = document.querySelector(".dropDown");
@@ -23,11 +22,11 @@ function toggleDropdown(event) {
   dropdown.classList.toggle("visible");
 
   if (dropdown.classList.contains("visible")) {
-      iconDown.style.display = "none";
-      iconUp.style.display = "block";
+    iconDown.style.display = "none";
+    iconUp.style.display = "block";
   } else {
-      iconDown.style.display = "block";
-      iconUp.style.display = "none";
+    iconDown.style.display = "block";
+    iconUp.style.display = "none";
   }
 }
 
@@ -37,27 +36,28 @@ function toggleCategoryDropdown() {
 }
 
 // Schließt das Dropdown, wenn außerhalb geklickt wird
-document.addEventListener("click", function(event) {
+document.addEventListener("click", function (event) {
   const dropdown = document.getElementById("category-dropdown");
   const inputField = document.getElementById("category-input");
 
+  if (!dropdown || !inputField) return; // Falls eins der Elemente nicht existiert, Funktion abbrechen
+
   if (!inputField.contains(event.target) && !dropdown.contains(event.target)) {
-      dropdown.classList.remove("visible");
+    dropdown.classList.remove("visible");
   }
 });
 
 function selectCategory(label, value) {
   document.getElementById("category-input").textContent = label; // Zeigt die gewählte Kategorie an
-  document.getElementById("category").value = value; // Speichert den Wert im versteckten Input
+  document.getElementById("category").value = label; // Speichert den Wert im versteckten Input
   document.getElementById("category-dropdown").classList.remove("visible");
 
   // Entferne alte Markierung und markiere die gewählte Option
-  document.querySelectorAll("#category-dropdown .dropdown-option").forEach(option => {
-      option.classList.remove("selected");
+  document.querySelectorAll("#category-dropdown .dropdown-option").forEach((option) => {
+    option.classList.remove("selected");
   });
   event.target.classList.add("selected");
 }
-
 
 // **Kontakte aus Firebase abrufen**
 async function fetchContacts() {
@@ -79,64 +79,61 @@ async function fetchContacts() {
   }
 }
 
-async function addTask() {
+async function addTask(statusTask) {
   const title = document.getElementById("inputField").value.trim();
   const description = document.getElementById("description").value.trim();
   const dueDate = document.getElementById("due-date").value.trim();
   const category = document.getElementById("category").value;
-
-  const selectedCheckboxes = document.querySelectorAll('#assigned-select option:checked');
-  const selectedContactIds = Array.from(selectedCheckboxes).map(option => option.value);
-  const assignedContacts = contacts.filter(contact => selectedContactIds.includes(contact.id));
+  const assignedContacts = selectedContacts;
+  const status = determineStatusAddTask(statusTask);
 
   if (!title || !dueDate || !category || !selectedPriority) {
-      alert("Bitte alle Pflichtfelder ausfüllen und eine Priorität auswählen.");
-      return;
+    alert("Bitte alle Pflichtfelder ausfüllen und eine Priorität auswählen.");
+    return;
   }
 
   const subtaskItems = document.querySelectorAll(".subtask-text");
-  const subtasks = Array.from(subtaskItems).map(item => item.textContent.trim());
+  const subtasks = Array.from(subtaskItems).map((item) => item.textContent.trim());
 
   const taskData = {
-      title,
-      description,
-      assignedTo: assignedContacts,
-      dueDate,
-      category,
-      priority: selectedPriority,
-      subtasks,
-      createdAt: new Date().toISOString(),
+    title,
+    description,
+    assignedContacts: assignedContacts,
+    dueDate,
+    category,
+    priority: selectedPriority,
+    subtasks,
+    createdAt: new Date().toISOString(),
+    status,
   };
 
   try {
-      const response = await fetch(`${BASE_URL}/tasks.json`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(taskData)
-      });
+    const response = await fetch(`${BASE_URL}/tasks.json`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(taskData),
+    });
 
-      if (!response.ok) {
-          throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
-      }
+    if (!response.ok) {
+      throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
+    }
 
-      console.log("✅ Aufgabe erfolgreich gespeichert:", await response.json());
-      
-      
-      window.location.href = "board.html";
+    console.log("✅ Aufgabe erfolgreich gespeichert:", await response.json());
 
+    window.location.href = "board.html";
   } catch (error) {
-      console.error("Fehler beim Speichern der Aufgabe:", error);
-      alert("Es gab einen Fehler beim Speichern der Aufgabe. Bitte prüfe die Konsole.");
+    console.error("Fehler beim Speichern der Aufgabe:", error);
+    alert("Es gab einen Fehler beim Speichern der Aufgabe. Bitte prüfe die Konsole.");
   }
 }
 
-function determineStatusAddTask() {
-  const statusTask = window.currentStatusTask;
+function determineStatusAddTask(statusTask) {
+
   let status;
   if (!statusTask) {
     status = 1;
   } else {
-    status = statusTask;
+   status = statusTask;
   }
   return status;
 }
@@ -162,7 +159,6 @@ async function saveSubtask(subtaskText) {
 function populateAssignedToSelect() {
   const dropdown = document.getElementById("assigned-dropdown");
   if (!dropdown) {
-    console.error("Dropdown nicht gefunden!");
     return;
   }
 
@@ -366,8 +362,24 @@ function getRandomColor() {
 }
 
 // **Prioritäts-Buttons initialisieren**
-function initPriorityButtons() {
+// function initPriorityButtons() {
+//   const priorityButtons = document.querySelectorAll(".priority button");
+//   priorityButtons.forEach((button) => {
+//     button.addEventListener("click", (event) => {
+//       event.preventDefault();
+//       handlePriorityClick(button);
+//     });
+//   });
+
+//   const defaultMediumButton = document.querySelector(".priority .medium");
+//   if (defaultMediumButton) {
+//     handlePriorityClick(defaultMediumButton);
+//   }
+// }
+
+function initPriorityButtons(priority) {
   const priorityButtons = document.querySelectorAll(".priority button");
+
   priorityButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       event.preventDefault();
@@ -376,8 +388,17 @@ function initPriorityButtons() {
   });
 
   const defaultMediumButton = document.querySelector(".priority .medium");
-  if (defaultMediumButton) {
+
+  if (!priority) {
     handlePriorityClick(defaultMediumButton);
+  } else {
+    const priorityButton = document.querySelector(`.priority .${priority}`);
+    if (priorityButton) {
+      handlePriorityClick(priorityButton);
+    } else {
+      console.warn("Invalid priority, falling back to default.");
+      handlePriorityClick(defaultMediumButton);
+    }
   }
 }
 
@@ -437,11 +458,18 @@ function highlightButton(button) {
   });
 }
 
+<<<<<<< HEAD
 function start() {
   fetchContacts();
   initPriorityButtons();
   renderTopBar();
 }
+=======
+// function start() {
+//   fetchContacts();
+//   initPriorityButtons();
+// }
+>>>>>>> c031c3a8b12414db67186060c26d432048e9ca72
 
 function openDatePicker() {
   let dateInput = document.getElementById("due-date");

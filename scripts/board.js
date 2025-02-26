@@ -1,6 +1,5 @@
 BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
 
-
 let allTasks = { id: [], assignedTo: [], category: [], createdAt: [], description: [], dueDate: [], priority: [], subtasks: [], title: [], status: [], subtasksStatus: [], categoryColor: [] };
 let allContacts = { idContact: [], contactName: [], contactAbbreviation: [], color: [] };
 
@@ -139,6 +138,7 @@ async function postToDatabase(path1 = "", path2 = "", data = {}) {
 }
 
 function loadBoardContent() {
+  loadBordContentByStatus(0, "ToDoTaskContainer");
   loadBordContentByStatus(1, "ToDoTaskContainer");
   loadBordContentByStatus(2, "inProgressContainer");
   loadBordContentByStatus(3, "TestingContainer");
@@ -174,17 +174,20 @@ function renderTask(task, container) {
 }
 
 function determinePriotiry(priority) {
+  if (!priority) {
+    priority = "medium";
+  }
   priority = priority.toLowerCase();
   priority = priority.trim();
 
   if (priority === "low") {
-    priority = "../assets/icons/priority_low.svg";
+    priority = "assets/icons/priority_low.svg";
   }
   if (priority === "medium") {
-    priority = "../assets/icons/priority_medium.svg";
+    priority = "assets/icons/priority_medium.svg";
   }
   if (priority === "urgent") {
-    priority = "../assets/icons/priority_high.svg";
+    priority = "assets/icons/priority_high.svg";
   }
   return priority;
 }
@@ -409,14 +412,16 @@ function closeModal(event) {
     modal.classList.add("hide");
     backdrop.classList.add("hide");
 
+    
     setTimeout(function () {
       modal.style.visibility = "hidden";
       backdrop.style.visibility = "hidden";
       modal.classList.remove("show");
-    }, 500);
-    location.reload();
+      backdrop.classList.remove("show");
+    }, 500); 
   }
 }
+
 
 async function injectAssigneeContacts(tasks) {
   const assigneeContainer = document.getElementById(`assigneeListModal${tasks["id"]}`);
@@ -524,37 +529,39 @@ function convertTask(dueDate) {
   return formatedDueDate;
 }
 
-window.addEventListener("DOMContentLoaded", checkSreenSize);
-window.addEventListener("resize", checkSreenSize);
+// window.addEventListener("DOMContentLoaded", checkSreenSize);
+// window.addEventListener("resize", checkSreenSize);
 
-function checkSreenSize(params) {
-  const modalEdit = document.getElementById("addTaskSectionModal");
-  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+// function checkSreenSize(params) {
+//   const modalEdit = document.getElementById("modalEditTask");
+//   const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-  if (isMobile) {
-    modalEdit.style.display = "none";
-    window.location.href = "./add_Task.html";
-  } else {
-    modalEdit.style.display = "flex";
-  }
-}
+//   const isModalOpen = modalEdit.classList.contains("show");
 
-function openAddTask(statusTask) {
-  const showModalBackground = document.getElementById("addTaskSectionModal");
-  const showModal = document.getElementById("modalAddTask");
+//   if (isMobile && isModalOpen) {
+//     modalEdit.style.display = "none";
+//     window.location.href = "./add_Task.html";
+//   } else if (!isMobile) {
+//     modalEdit.style.display = "";
+//   }
+// }
 
-  if (showModalBackground && showModal) {
-    showModalBackground.classList.add("show");
-    showModal.classList.add("show");
-    window.currentStatusTask = statusTask;
-  } else {
-    console.log("no modal found");
-  }
-}
+// function openAddTask(statusTask) {
+//   const showModalBackground = document.getElementById("addTaskSectionModal");
+//   const showModal = document.getElementById("modalAddTask");
+
+//   if (showModalBackground && showModal) {
+//     showModalBackground.classList.add("show");
+//     showModal.classList.add("show");
+//     window.currentStatusTask = statusTask;
+//   } else {
+//     console.log("no modal found");
+//   }
+// }
 
 function closeModalAddTask(event) {
-  var modal = document.getElementById("modalAddTask");
-  var backdrop = document.getElementById("addTaskSectionModal");
+  var modal = document.getElementById("modalEditTask");
+  var backdrop = document.getElementById("editTaskSectionModal");
 
   if (!event || event.target === backdrop || event.target.classList.contains("ModalCloseButtonAddTask")) {
     modal.classList.add("hide");
@@ -569,22 +576,51 @@ function closeModalAddTask(event) {
   }
 }
 
-function openEditModal(categoryTask, title, description, dateTask, priorityTask, id) {
+function handleButtonClick(status) {
+  if (window.innerWidth <= 768) {
+    window.location.href = "./add_Task.html";
+  } else {
+    openEditModal("", "", "", "", "", "", status);
+  }
+}
+
+function openEditModal(categoryTask, title, description, dateTask, priorityTask, id, status) {
   const showModalBackground = document.getElementById("editTaskSectionModal");
   const showModal = document.getElementById("modalEditTask");
   showModal.innerHTML = "";
 
   if (showModalBackground && showModal) {
-    showModalBackground.classList.add("show");
-    showModal.classList.add("show");
+    showModalBackground.style.visibility = "visible";
+    showModalBackground.classList.add("show"); 
+
+    showModal.style.visibility = "visible";
+    showModal.classList.add("show");  
   } else {
     console.log("no modal found");
   }
 
-  showModal.innerHTML = addEditTask(title, description, id);
-  addSubtaskinEditModal(id);
-  addDueDate(dateTask)
+  if (!status) {
+    status = 1;
+  }
 
+  if (!id) {
+    buttonCopy = "Create Task";
+    headline = "Add Task";
+  } else {
+    buttonCopy = "Ok";
+    headline = "Edit Task";
+  }
+
+  // Inhalt des Modals setzen
+  showModal.innerHTML = addEditTask(title, description, id, status, buttonCopy, headline);
+  addSubtaskinEditModal(id);
+  addDueDate(dateTask);
+  populateAssignedToSelectEdit();
+  initPriorityButtons(priorityTask);
+  if (categoryTask) {
+    selectCategory(categoryTask, 0);
+  }
+  determineAssignedToEditModal(id);
 }
 
 
@@ -592,6 +628,9 @@ function addSubtaskinEditModal(id) {
   let subTaskContainer = document.getElementById("editSubtasks-container");
 
   let tasks = allTasks.filter((t) => t["id"] === id);
+  if (tasks.length === 0) {
+    return;
+  }
   let subTaskInput = tasks[0].subtasks;
 
   if (!subTaskInput) {
@@ -610,14 +649,19 @@ function addAdditionalSubtaskinEditModal(id) {
   let subTaskContainer = document.getElementById("editSubtasks-container");
 
   let tasks = allTasks.filter((t) => t["id"] === id);
-  let numberOfSubTaskInput = tasks[0].subtasks.length;
+  let numberOfSubTaskInput;
+
+  if (!tasks[0]?.subtasks?.length) {
+    numberOfSubTaskInput = 0;
+  } else {
+    numberOfSubTaskInput = tasks[0].subtasks.length;
+  }
 
   subTaskCount = numberOfSubTaskInput + 1;
 
-    subTaskContainer.innerHTML += addSubtaskTemplateinModal( subTaskInput, subTaskCount);
-    subTaskInputRef.value = "";
+  subTaskContainer.innerHTML += addSubtaskTemplateinModal(subTaskInput, subTaskCount);
+  subTaskInputRef.value = "";
 }
-
 
 function acceptEdit(id) {
   let subTaskContainer = document.getElementById("editSubtasks-container");
@@ -681,11 +725,279 @@ async function saveEditTask(id) {
 }
 
 function addDueDate(dateTask) {
+  let parts = dateTask.split("/");
+  let formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
 
-    let parts = dateTask.split("/"); 
-    let formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`; 
+  let dueDateContainer = document.getElementById("due-date-edit");
+  dueDateContainer.value = formattedDate;
+}
 
-    let dueDateContainer = document.getElementById("due-date-edit");
-    dueDateContainer.value = formattedDate;
+function populateAssignedToSelectEdit() {
+  const dropdown = document.getElementById("assigned-dropdown-Edit");
+  if (!dropdown) return;
+
+  dropdown.innerHTML = ""; // Zurücksetzen
+
+  if (!allContacts || !Array.isArray(allContacts) || allContacts.length === 0) {
+    console.warn("Contacts ist leer oder nicht definiert.");
+    return;
   }
-  
+
+  allContacts.forEach((contact) => {
+    console.log("Verarbeite Kontakt:", contact); // Debugging
+
+    const label = document.createElement("label");
+    label.classList.add("customCheckboxContainer");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.classList.add("contact-checkbox");
+    checkbox.id = `edit-contact-${contact.idContact}`;
+    checkbox.name = `edit-contact-${contact.idContact}`;
+    checkbox.value = contact.id;
+
+    const customCheckbox = document.createElement("span");
+    customCheckbox.classList.add("customCheckbox");
+
+    const svgContainer = document.createElement("div");
+    svgContainer.classList.add("svg-container");
+    svgContainer.style.backgroundColor = contact.color;
+    svgContainer.innerHTML = `<span class="contact-initials">${contact.contactAbbreviation}</span>`;
+
+    const contactName = document.createElement("span");
+    contactName.classList.add("subtasksUnit");
+    contactName.textContent = contact.contactName;
+
+    const contactRow = document.createElement("div");
+    contactRow.classList.add("contact-row");
+    contactRow.appendChild(svgContainer);
+    contactRow.appendChild(contactName);
+    contactRow.appendChild(customCheckbox);
+
+    if (selectedContacts.some((c) => c.id === contact.idContact)) {
+      checkbox.checked = true;
+      label.classList.add("checked");
+    }
+
+    checkbox.addEventListener("change", function () {
+      toggleContactSelectionEdit(contact.idContact, contact.contactName, contact.color);
+    });
+
+    label.appendChild(checkbox);
+    label.appendChild(contactRow);
+    dropdown.appendChild(label);
+  });
+
+  console.log("Funktion erfolgreich abgeschlossen!");
+}
+
+window.toggleContactSelectionEdit = function (contactId, contactName, contactColor) {
+  const checkbox = document.getElementById(`edit-contact-${contactId}`);
+  if (!checkbox) return;
+
+  setTimeout(() => {
+    const container = checkbox.closest(".customCheckboxContainer");
+    const input = document.getElementById("search-contacts-edit");
+
+    if (checkbox.checked) {
+      if (!selectedContacts.some((c) => c.id === contactId)) {
+        container.classList.add("checked");
+        selectedContacts.push({ id: contactId, name: contactName, color: contactColor });
+        input.value = "";
+        filterContactsEdit();
+      }
+    } else {
+      container.classList.remove("checked");
+      selectedContacts = selectedContacts.filter((c) => c.id !== contactId);
+    }
+
+    updateSelectedContactsEdit();
+  }, 0);
+};
+
+window.toggleContactSelectionEditPreselected = function (contactId, contactName, contactColor) {
+  const checkbox = document.getElementById(`edit-contact-${contactId}`);
+  if (!checkbox) return;
+
+  setTimeout(() => {
+    const container = checkbox.closest(".customCheckboxContainer");
+    const input = document.getElementById("search-contacts-edit");
+
+    if (!checkbox.checked) {
+      checkbox.checked = true;
+      container.classList.add("checked");
+
+      if (!selectedContacts.some((c) => c.id === contactId)) {
+        selectedContacts.push({ id: contactId, name: contactName, color: contactColor });
+      }
+
+      input.value = "";
+      filterContactsEdit();
+    }
+
+    updateSelectedContactsEdit();
+  }, 0);
+};
+
+function updateSelectedContactsEdit() {
+  const selectedContactsContainer = document.getElementById("selected-contacts-Edit");
+  selectedContactsContainer.innerHTML = "";
+
+  selectedContacts.forEach((contact) => {
+    const contactElement = document.createElement("div");
+    contactElement.classList.add("selected-contact");
+    contactElement.style.backgroundColor = contact.color;
+
+    contactElement.innerHTML = `
+            <span class="selected-contact-initials">${getInitials(contact.name)}</span>`;
+
+    selectedContactsContainer.appendChild(contactElement);
+  });
+}
+
+function filterContactsEdit() {
+  const searchTerm = document.getElementById("search-contacts-edit").value.toLowerCase();
+  document.querySelectorAll(".customCheckboxContainer").forEach((label) => {
+    const name = label.querySelector(".subtasksUnit").textContent.toLowerCase();
+    label.style.display = name.includes(searchTerm) ? "flex" : "none";
+  });
+}
+
+function toggleDropdownEdit(event) {
+  event.stopPropagation();
+
+  const dropdown = document.getElementById("assigned-dropdown-Edit");
+  const iconDown = document.querySelector(".dropDown");
+  const iconUp = document.querySelector(".dropDown-up");
+
+  dropdown.classList.toggle("visible");
+
+  if (dropdown.classList.contains("visible")) {
+    iconDown.style.display = "none";
+    iconUp.style.display = "block";
+  } else {
+    iconDown.style.display = "block";
+    iconUp.style.display = "none";
+  }
+}
+
+function determineAssignedToEditModal(id) {
+  let task = allTasks.find((t) => t["id"] === id); // Gibt das erste gefundene Element zurück
+  if (!task) return; // Falls keine Aufgabe gefunden wird, abbrechen
+
+  task.assignedTo.forEach((assignedPerson, index) => {
+    let color = task.color[index] || "#000000"; // Falls keine Farbe vorhanden, Standardfarbe setzen
+    let foundContact = allContacts.find((contact) => contact.contactName === assignedPerson);
+    if (foundContact) {
+      toggleContactSelectionEditPreselected(foundContact.idContact, assignedPerson, color);
+    }
+  });
+}
+
+async function addTaskModal(id, status) {
+  if (!id) {
+    addTaskModalNewTask(status);
+    return;
+  }
+  const title = document.getElementById("inputField").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const dueDate = document.getElementById("due-date-edit").value.trim();
+  const category = document.getElementById("category").value;
+  const assignedContacts = selectedContacts;
+
+  if (!title || !dueDate || !category || !selectedPriority) {
+    alert("Bitte alle Pflichtfelder ausfüllen und eine Priorität auswählen.");
+    return;
+  }
+
+  const subtaskItems = document.querySelectorAll(".subtask-text");
+  const subtasks = Array.from(subtaskItems).map((item) => item.textContent.trim());
+
+  const taskData = {
+    title,
+    description,
+    assignedContacts: assignedContacts,
+    dueDate,
+    category,
+    priority: selectedPriority,
+    subtasks,
+    createdAt: new Date().toISOString(),
+    status: status,
+  };
+
+  try {
+    const response = await fetch(`${BASE_URL}/tasks/${id}.json`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(taskData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
+    }
+
+    console.log("✅ Aufgabe erfolgreich gespeichert:", await response.json());
+
+    window.location.href = "board.html";
+  } catch (error) {
+    console.error("Fehler beim Speichern der Aufgabe:", error);
+    alert("Es gab einen Fehler beim Speichern der Aufgabe. Bitte prüfe die Konsole.");
+  }
+}
+
+function openDatePickerModal() {
+  let dateInput = document.getElementById("due-date-edit");
+  dateInput.showPicker();
+}
+
+async function addTaskModalNewTask(status) {
+  const title = document.getElementById("inputField").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const dueDate = document.getElementById("due-date-edit").value.trim();
+  const category = document.getElementById("category").value;
+  const assignedContacts = selectedContacts;
+
+  if (!title || !dueDate || !category || !selectedPriority) {
+    alert("Bitte alle Pflichtfelder ausfüllen und eine Priorität auswählen.");
+    return;
+  }
+
+  const subtaskItems = document.querySelectorAll(".subtask-text");
+  const subtasks = Array.from(subtaskItems).map((item) => item.textContent.trim());
+
+  const taskData = {
+    title,
+    description,
+    assignedContacts: assignedContacts,
+    dueDate,
+    category,
+    priority: selectedPriority,
+    subtasks,
+    createdAt: new Date().toISOString(),
+    status: status,
+  };
+
+  try {
+    const response = await fetch(`${BASE_URL}/tasks.json`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(taskData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
+    }
+
+    console.log("✅ Aufgabe erfolgreich gespeichert:", await response.json());
+
+    window.location.href = "board.html";
+  } catch (error) {
+    console.error("Fehler beim Speichern der Aufgabe:", error);
+    alert("Es gab einen Fehler beim Speichern der Aufgabe. Bitte prüfe die Konsole.");
+  }
+}
+
+function openDatePickerModal() {
+  let dateInput = document.getElementById("due-date-edit");
+  dateInput.showPicker();
+}

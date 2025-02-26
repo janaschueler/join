@@ -315,6 +315,11 @@ input:focus {
   margin-right: 16px;
 }
 
+#dropdown-icon-Edit {
+  transition: transform 0.3s ease;
+  margin-right: 16px;
+}
+
 .dropdown-content.visible ~ .dropdown-input #dropdown-icon {
   transform: rotate(180deg);
 }
@@ -902,7 +907,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     right: 0;
     z-index: 1000;
     margin-bottom: 0;
-    padding-top: 8px;
+    padding-top: 0px;
   }
 
   .taskButton {
