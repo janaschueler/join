@@ -171,17 +171,21 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                         </div>
                         <div id="editSubtasks-container"></div>
                       <p class="error-message-mobile"><span class="required">*</span> This field is required</p>
-                      <div class="form-footer-modal">
+                      <div class="form-footer-modal space">
                         <p class="error-message"><span class="required">*</span> This field is required</p>
                         <div class="addTaskButtonModal desktop">
-                          <button onclick="closeModalAddTask()" class="taskButton-clear">Cancel <img src="assets/icons/close.svg" alt=""></button> 
+                         <button onclick="closeModalAddTask()" class="secondaryButton-clear">Cancel 
+                          <svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.00005 8.40005L2.10005 13.3C1.91672 13.4834 1.68338 13.575 1.40005 13.575C1.11672 13.575 0.883382 13.4834 0.700049 13.3C0.516715 13.1167 0.425049 12.8834 0.425049 12.6C0.425049 12.3167 0.516715 12.0834 0.700049 11.9L5.60005 7.00005L0.700049 2.10005C0.516715 1.91672 0.425049 1.68338 0.425049 1.40005C0.425049 1.11672 0.516715 0.883382 0.700049 0.700049C0.883382 0.516715 1.11672 0.425049 1.40005 0.425049C1.68338 0.425049 1.91672 0.516715 2.10005 0.700049L7.00005 5.60005L11.9 0.700049C12.0834 0.516715 12.3167 0.425049 12.6 0.425049C12.8834 0.425049 13.1167 0.516715 13.3 0.700049C13.4834 0.883382 13.575 1.11672 13.575 1.40005C13.575 1.68338 13.4834 1.91672 13.3 2.10005L8.40005 7.00005L13.3 11.9C13.4834 12.0834 13.575 12.3167 13.575 12.6C13.575 12.8834 13.4834 13.1167 13.3 13.3C13.1167 13.4834 12.8834 13.575 12.6 13.575C12.3167 13.575 12.0834 13.4834 11.9 13.3L7.00005 8.40005Z"></path>
+                          </svg>
+                        </button>
                           <button type="button" onclick="addTaskModal('${id}', ${status})" class="addTaskButtonPrimary create">${buttonCopy} <img src="assets/icons/check.svg" alt=""></button>
                         </div>
                       </div>
                     </div>
                     </form>
                     <div class="addTaskButtonModal mobile">
-                      <button onclick=closeModalAddTask()" class="taskButton-clear ">Cancel <img src="assets/icons/close.svg" alt=""></button> 
+                      <button onclick=closeModalAddTask()" class="secondaryButton-clear">Cancel <img src="assets/icons/close.svg" alt=""></button> 
                       <button type="button" onclick="addTaskModal('${id}', ${status})" class="addTaskButtonPrimary create">${buttonCopy} <img src="assets/icons/check.svg" alt=""></button>
                    </div>`;
 }
@@ -193,14 +197,14 @@ function addSubtaskTemplateinModal(subTaskInput, id) {
                                 <span class="editIconSubtask"></span>
                                 <span class="lineSubtask"></span>
                               </button>
-                              <button id="deleteBtn${id}" onclick="deleteSubtask('${id}')" class="deleteSubtask"></button>
+                              <button id="deleteBtn${id}" onclick="deleteSubtaskModal('${id}')" class="deleteSubtask"></button>
                             </div>`;
 }
 
 function addInputFieldinModal(id, subTaskInput) {
   return `                  <div id="editSubTaskUnit${id}" class="input-wrapper">
                                 <input id="inputSubtask${id}" class="inputSubtaskEdit" type="text" id="myInput" value="${subTaskInput}">
-                                  <button onclick="deleteSubtask('${id}')" class=""> 
+                                  <button onclick="deleteSubtaskModal('${id}')" class=""> 
                                     <span class="deleteSubtaskEdit"></span>
                                     <span class="lineSubtaskEdit"></span>
                                   </button>

@@ -331,7 +331,15 @@ input:focus {
 #due-date-edit:focus, 
 #category-input:focus,
 #new-subtask-input:focus,
+.focus:focus,
 #new-subtask-input-Edit:focus {
+  border: 2px solid rgba(41, 171, 226, 1);
+  outline: none;
+}
+
+
+.focusable:focus,
+.focusable:focus-within {  
   border: 2px solid rgba(41, 171, 226, 1);
   outline: none;
 }
@@ -565,7 +573,7 @@ input:focus {
   top: 8px;
   left: 0;
   width: 100%;
-  height: 25px;
+  height: 32px;
   border-radius: 4px;
   background-color: rgba(128, 128, 128, 0.1); /* Grauer, halbtransparenter Hintergrund */
   z-index: 0;

@@ -148,14 +148,11 @@ function loadBoardContent() {
 
 function loadBordContentByStatus(status, containerId) {
   let tasks = allTasks.filter((t) => t["status"] === status);
-
   if (tasks.length === 0) {
     return;
   }
-
   let container = document.getElementById(containerId);
   container.innerHTML = "";
-
   tasks.forEach((task) => renderTask(task, container));
 }
 
@@ -165,9 +162,7 @@ function renderTask(task, container) {
   let progressOfProgressbar = determineProgress(numberOfSubtasks, task.subtasksStatus);
   let numberCompletetSubtasks = determineNumberCompletetSubtasks(task.subtasksStatus);
   let categoryColor = determineCategoryColor(task.category);
-
   container.innerHTML += generateToDoHTML(task, priorityIcon, numberOfSubtasks, progressOfProgressbar, numberCompletetSubtasks, categoryColor);
-
   if (!numberOfSubtasks) {
     document.getElementById(`progressContainer${task.id}`).style.display = "none";
   }
@@ -199,7 +194,6 @@ function determineProgress(numberOfSubtasks, subtasksStatus) {
   }
   const completedSubtasks = subtasksStatus.filter((status) => status === 1).length;
   const progressPercentage = (completedSubtasks / numberOfSubtasks) * 100;
-
   return Math.round(progressPercentage);
 }
 
@@ -208,19 +202,16 @@ function determineNumberCompletetSubtasks(subtasksStatus) {
     return 0;
   }
   const completedSubtasks = subtasksStatus.filter((status) => status === 1).length;
-
   return completedSubtasks;
 }
 
 async function injectAssignees(task) {
   const assigneeContainer = document.getElementById(`assigneeContainer${task["id"]}`);
   assigneeContainer.innerHTML = "";
-
   if (Array.isArray(task.assignedTo) && Array.isArray(task.color)) {
     task.assignedTo.forEach((assignee, index) => {
       const assigneeAbbreviation = getAssigneeAbbreviation(assignee);
       const assigneeColor = task.color[index] || "rgba(0, 0, 0, 1)"; // Fallback-Farbe falls nicht vorhanden
-
       assigneeContainer.innerHTML += generateAssigneeCircle(assigneeAbbreviation, assigneeColor);
     });
   }
@@ -295,9 +286,7 @@ function searchTasks(searchInput) {
   ["ToDoTaskContainer", "inProgressContainer", "TestingContainer", "doneContainer"].forEach((id) => {
     document.getElementById(id).innerHTML = "";
   });
-
   const filteredTasks = allTasks.filter((task) => task.title && task.title.toLowerCase().includes(searchInput.toLowerCase()));
-
   if (filteredTasks.length > 0) {
     filteredTasks.forEach((task) => renderTaskByStatus(task));
   } else {
@@ -311,20 +300,14 @@ function renderTaskByStatus(task) {
     console.error("Ungültiger Status:", task.status);
     return;
   }
-
   const container = document.getElementById(containerId);
   const priority = task.priority;
   const priorityIcon = determinePriotiry(priority);
   const numberOfSubtasks = task.subtasks ? task.subtasks.length : 0;
   const progressOfProgressbar = 50;
-
   container.innerHTML += generateToDoHTML(task, priorityIcon, numberOfSubtasks, progressOfProgressbar);
   injectAssignees(task);
-
-  if (!numberOfSubtasks) {
-    const progressElement = document.getElementById(progressContainer(task.id));
-    progressElement.style.display = "none";
-  }
+  if (!task.subtasks?.length) document.getElementById(progressContainer(task.id)).style.display = "none";
 }
 
 function getContainerIdByStatus(status) {
@@ -347,44 +330,30 @@ function loadTaskSummaryModal(id) {
     let summaryModal = document.getElementById("taskSummaryModal");
     summaryModal.innerHTML = "";
 
-    let tasks = allTasks.filter((t) => t["id"] === id);
+    let task = allTasks.find((t) => t.id === id);
+    if (!task) return reject("Task not found");
 
-    if (tasks.length === 0) {
-      reject("Task not found");
-      return;
-    }
-
-    let task = tasks[0];
-    let formatedDueDate = convertTask(task.dueDate);
-    let priorityIcon = determinePriotiry(task.priority);
-    let categoryColor = determineCategoryColor(task.category);
-    summaryModal.innerHTML += generateTaskSummaryModal(task, priorityIcon, formatedDueDate, categoryColor);
-
-    // Überprüfen, ob "assignedTo" vorhanden ist und ggf. unsichtbar machen, wenn nicht
-    if (task.assignedTo && task.assignedTo.length > 0) {
-      injectAssigneeContacts(task);
-    } else {
-      let assignedToContainer = document.getElementById(`assignedToContainer${task.id}`);
-      if (assignedToContainer) {
-        assignedToContainer.style.display = "none"; // Setzt den Container auf unsichtbar
-      }
-    }
-
-    // Überprüfen, ob "subtask" vorhanden ist und ggf. unsichtbar machen, wenn nicht
-    if (task.subtasks && task.subtasks.length > 0) {
-      injectSubtasks(task);
-    } else {
-      let subtaskContainer = document.getElementById(`subtaskContainer${task.id}`);
-      if (subtaskContainer) {
-        subtaskContainer.style.display = "none"; // Setzt den Container auf unsichtbar
-      }
-    }
-
-    // Promise nach einer kurzen Verzögerung auflösen
-    setTimeout(() => {
-      resolve();
-    }, 0);
+    renderTaskSummaryContent(summaryModal, task);
+    handleTaskVisibility(task);
+    setTimeout(resolve, 0);
   });
+}
+
+function renderTaskSummaryContent(summaryModal, task) {
+  let formattedDate = convertTask(task.dueDate);
+  let priorityIcon = determinePriotiry(task.priority);
+  let categoryColor = determineCategoryColor(task.category);
+  summaryModal.innerHTML += generateTaskSummaryModal(task, priorityIcon, formattedDate, categoryColor);
+}
+
+function handleTaskVisibility(task) {
+  task.assignedTo?.length ? injectAssigneeContacts(task) : hideElement(`assignedToContainer${task.id}`);
+  task.subtasks?.length ? injectSubtasks(task) : hideElement(`subtaskContainer${task.id}`);
+}
+
+function hideElement(id) {
+  let element = document.getElementById(id);
+  if (element) element.style.display = "none";
 }
 
 function openModal(id) {
@@ -423,65 +392,41 @@ function closeModal(event) {
   }
 }
 
-async function injectAssigneeContacts(tasks) {
-  const assigneeContainer = document.getElementById(`assigneeListModal${tasks["id"]}`);
+async function injectAssigneeContacts(task) {
+  const assigneeContainer = document.getElementById(`assigneeListModal${task.id}`);
   assigneeContainer.innerHTML = "";
 
-  let assigneeList = [];
-
-  if (Array.isArray(tasks.assignedTo)) {
-    assigneeList = tasks.assignedTo;
-  } else if (typeof tasks.assignedTo === "string") {
-    assigneeList = [tasks.assignedTo];
-  } else if (typeof tasks.assignedTo === "object") {
-    assigneeList = Object.keys(tasks.assignedTo);
-  }
-
-  for (let indexAssingee = 0; indexAssingee < assigneeList.length; indexAssingee++) {
-    const assignee = assigneeList[indexAssingee];
-
-    const assigneeName = assignee ? assignee : "Unknown";
-
-    const assigneeAbbreviation =
-      typeof assigneeName === "string"
-        ? assigneeName
-            .split(" ")
-            .map((word) => word.charAt(0))
-            .join("")
-        : "";
-
-    const assingeeColor = tasks.color[indexAssingee];
-
-    assigneeContainer.innerHTML += generateAssigneeComntacts(assigneeAbbreviation, assingeeColor, assigneeName);
-  }
+  let assigneeList = extractAssigneeList(task.assignedTo);
+  assigneeList.forEach((assignee, index) => renderAssignee(assignee, task.color[index], assigneeContainer));
 }
 
-async function injectSubtasks(tasks) {
-  const subtaskContainer = document.getElementById(`subtaskListModal${tasks["id"]}`);
+function extractAssigneeList(assignedTo) {
+  if (Array.isArray(assignedTo)) return assignedTo;
+  if (typeof assignedTo === "string") return [assignedTo];
+  if (typeof assignedTo === "object") return Object.keys(assignedTo);
+  return [];
+}
+
+function renderAssignee(assignee, color, container) {
+  let name = assignee || "Unknown";
+  let abbreviation = name
+    .split(" ")
+    .map((word) => word.charAt(0))
+    .join("");
+  container.innerHTML += generateAssigneeComntacts(abbreviation, color, name);
+}
+
+async function injectSubtasks(task) {
+  const subtaskContainer = document.getElementById(`subtaskListModal${task.id}`);
   subtaskContainer.innerHTML = "";
+  const subtasks = Array.isArray(task.subtasks) ? task.subtasks : [task.subtasks || []];
+  const statuses = Array.isArray(task.subtasksStatus) ? task.subtasksStatus : new Array(subtasks.length).fill(0);
 
-  if (typeof tasks.subtasks === "string") {
-    tasks.subtasks = [tasks.subtasks];
-  } else if (!Array.isArray(tasks.subtasks)) {
-    tasks.subtasks = [];
-  }
-
-  if (!Array.isArray(tasks.subtasksStatus)) {
-    tasks.subtasksStatus = new Array(tasks.subtasks.length).fill(0);
-  }
-
-  for (let indexSubtask = 0; indexSubtask < tasks.subtasks.length; indexSubtask++) {
-    const subtask = tasks.subtasks[indexSubtask];
-
-    let statusCheckbox = tasks.subtasksStatus[indexSubtask] === 1;
-
-    subtaskContainer.innerHTML += generateSubtasks(tasks, subtask, indexSubtask, statusCheckbox);
-  }
-
-  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-  checkboxes.forEach((checkbox) => {
-    checkbox.addEventListener("change", handleCheckboxChange);
+  subtasks.forEach((subtask, index) => {
+    subtaskContainer.innerHTML += generateSubtasks(task, subtask, index, statuses[index] === 1);
   });
+
+  document.querySelectorAll('input[type="checkbox"]').forEach((cb) => cb.addEventListener("change", handleCheckboxChange));
 }
 
 function handleCheckboxChange(event) {
@@ -489,38 +434,35 @@ function handleCheckboxChange(event) {
   const isChecked = checkbox.checked;
   const taskId = checkbox.id;
   const index = checkbox.getAttribute("data-index");
-  const containerId = taskId.slice(0, taskId.length - index.length);
-
-  console.log(`Task ID: ${taskId}`);
-  console.log(`Subtask Index: ${index}`);
+  const containerId = taskId.slice(0, -index.length);
 
   const subtasks = document.querySelectorAll(`#subtaskContainer${containerId} input[type="checkbox"]`);
-  console.log("Subtasks:", subtasks);
-
   let subtasksStatus = [];
 
-  subtasks.forEach((subtaskCheckbox, idx) => {
-    const status = subtaskCheckbox.checked ? 1 : 0;
+  subtasks.forEach((subtask, idx) => {
+    const status = subtask.checked ? 1 : 0;
     console.log(`Subtask ${idx}: ${status}`);
-    subtaskCheckbox.setAttribute("data-status", status);
+    subtask.setAttribute("data-status", status);
     subtasksStatus.push(status);
   });
 
-  console.log("Subtasks Status:", subtasksStatus);
   addSubtasksStatus(containerId, subtasksStatus);
 }
 
 function deleteTask(taskId) {
   let taskToDelete = allTasks.find((t) => t.id === taskId);
-
   if (taskToDelete) {
     const index = allTasks.indexOf(taskToDelete);
     allTasks.splice(index, 1);
   }
-
   postToDatabase("", "", allTasks);
   loadBoardContent();
   closeModal();
+}
+
+function deleteSubtaskModal(id) {
+  const removeSubtask = document.getElementById(`editSubTaskUnit${id}`);
+  removeSubtask.remove();
 }
 
 function convertTask(dueDate) {
@@ -528,36 +470,6 @@ function convertTask(dueDate) {
 
   return formatedDueDate;
 }
-
-// window.addEventListener("DOMContentLoaded", checkSreenSize);
-// window.addEventListener("resize", checkSreenSize);
-
-// function checkSreenSize(params) {
-//   const modalEdit = document.getElementById("modalEditTask");
-//   const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
-//   const isModalOpen = modalEdit.classList.contains("show");
-
-//   if (isMobile && isModalOpen) {
-//     modalEdit.style.display = "none";
-//     window.location.href = "./add_Task.html";
-//   } else if (!isMobile) {
-//     modalEdit.style.display = "";
-//   }
-// }
-
-// function openAddTask(statusTask) {
-//   const showModalBackground = document.getElementById("addTaskSectionModal");
-//   const showModal = document.getElementById("modalAddTask");
-
-//   if (showModalBackground && showModal) {
-//     showModalBackground.classList.add("show");
-//     showModal.classList.add("show");
-//     window.currentStatusTask = statusTask;
-//   } else {
-//     console.log("no modal found");
-//   }
-// }
 
 function closeModalAddTask(event) {
   var modal = document.getElementById("modalEditTask");
@@ -585,43 +497,61 @@ function handleButtonClick(status) {
 }
 
 function openEditModal(categoryTask, title, description, dateTask, priorityTask, id, status) {
+  closeSummaryModal();
+  showModalVisibility();
+  const buttonCopy = id ? "Ok" : "Create Task";
+  const headline = id ? "Edit Task" : "Add Task";
+  setModalContent(title, description, id, status || 1, buttonCopy, headline);
+  initEditModal(id, dateTask, priorityTask, categoryTask);
+}
+
+function showModalVisibility() {
   const showModalBackground = document.getElementById("editTaskSectionModal");
   const showModal = document.getElementById("modalEditTask");
   showModal.innerHTML = "";
-
   if (showModalBackground && showModal) {
     showModalBackground.style.visibility = "visible";
     showModalBackground.classList.add("show");
-
     showModal.style.visibility = "visible";
     showModal.classList.add("show");
   } else {
     console.log("no modal found");
   }
+}
 
-  if (!status) {
-    status = 1;
-  }
-
-  if (!id) {
-    buttonCopy = "Create Task";
-    headline = "Add Task";
-  } else {
-    buttonCopy = "Ok";
-    headline = "Edit Task";
-  }
-
-  // Inhalt des Modals setzen
+function setModalContent(title, description, id, status, buttonCopy, headline) {
+  const showModal = document.getElementById("modalEditTask");
   showModal.innerHTML = addEditTask(title, description, id, status, buttonCopy, headline);
+}
+
+function initEditModal(id, dateTask, priorityTask, categoryTask) {
   addSubtaskinEditModal(id);
   addDueDate(dateTask);
   populateAssignedToSelectEdit();
   initPriorityButtons(priorityTask);
-  if (categoryTask) {
-    selectCategory(categoryTask, 0);
-  }
+  if (categoryTask) selectCategory(categoryTask, 0);
   determineAssignedToEditModal(id);
 }
+
+function closeSummaryModal() {
+  var modal = document.getElementById("modalTaskSummary");
+  var backdrop = document.getElementById("taskSummaryModal");
+
+  if (modal && backdrop) {
+      modal.classList.add("hide");
+      backdrop.classList.add("hide");
+
+      setTimeout(function () {
+        modal.style.visibility = "hidden";
+        backdrop.style.visibility = "hidden";
+        modal.classList.remove("show");
+        backdrop.classList.remove("show");
+      }, 500);
+    } else {
+    console.warn("Modal oder Backdrop nicht gefunden.");
+  }
+}
+
 
 function addSubtaskinEditModal(id) {
   let subTaskContainer = document.getElementById("editSubtasks-container");
@@ -647,6 +577,10 @@ function addAdditionalSubtaskinEditModal(id) {
   let subTaskInput = subTaskInputRef.value.trim();
   let subTaskContainer = document.getElementById("editSubtasks-container");
 
+  if (!subTaskInput) {
+    return;
+  }
+
   let tasks = allTasks.filter((t) => t["id"] === id);
   let numberOfSubTaskInput;
 
@@ -655,7 +589,6 @@ function addAdditionalSubtaskinEditModal(id) {
   } else {
     numberOfSubTaskInput = tasks[0].subtasks.length;
   }
-
   subTaskCount = numberOfSubTaskInput + 1;
 
   subTaskContainer.innerHTML += addSubtaskTemplateinModal(subTaskInput, subTaskCount);
@@ -665,10 +598,8 @@ function addAdditionalSubtaskinEditModal(id) {
 function acceptEdit(id) {
   let subTaskContainer = document.getElementById("editSubtasks-container");
   let newSubTask = document.getElementById(`inputSubtask${id}`).value;
-
   const removeSubtask = document.getElementById(`editSubTaskUnit${id}`);
   removeSubtask.remove();
-
   subTaskContainer.innerHTML += addSubtaskTemplateinModal(newSubTask, id);
 }
 
@@ -680,47 +611,51 @@ function editSubtaskinModal(id, subTaskInput) {
 }
 
 async function saveEditTask(id) {
-  const title = document.getElementById("inputField").value.trim();
-  const description = document.getElementById("description").value.trim();
-  const dueDate = document.getElementById("due-date").value;
-  const category = document.getElementById("category").value;
-  const assignedContacts = selectedContacts;
-  const priority = selectedPriority;
-  const status = determineStatusAddTask();
-
-  if (!title || !description || !dueDate || !category || !priority) {
-    alert("Bitte fülle alle Felder aus!");
-    return;
-  }
-
-  const taskData = {
-    title,
-    description,
-    dueDate,
-    category,
-    assignedContacts,
-    priority,
-    status,
-    createdAt: new Date().toISOString(),
-  };
+  const taskData = gatherTaskData();
+  if (!validateTaskData(taskData)) return;
 
   try {
-    const response = await fetch(`${BASE_URL}/tasks/${id}.json`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(taskData),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
-    }
-
-    console.log("Aufgabe gespeichert:", await response.json());
+    await saveTaskData(id, taskData);
     alert("Aufgabe erfolgreich erstellt!");
     clearForm();
   } catch (error) {
     console.error("Fehler beim Speichern der Aufgabe:", error);
   }
+}
+
+function gatherTaskData() {
+  return {
+    title: document.getElementById("inputField").value.trim(),
+    description: document.getElementById("description").value.trim(),
+    dueDate: document.getElementById("due-date").value,
+    category: document.getElementById("category").value,
+    assignedContacts: selectedContacts,
+    priority: selectedPriority,
+    status: determineStatusAddTask(),
+    createdAt: new Date().toISOString(),
+  };
+}
+
+function validateTaskData({ title, description, dueDate, category, priority }) {
+  if (!title || !description || !dueDate || !category || !priority) {
+    alert("Bitte fülle alle Felder aus!");
+    return false;
+  }
+  return true;
+}
+
+async function saveTaskData(id, taskData) {
+  const response = await fetch(`${BASE_URL}/tasks/${id}.json`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(taskData),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
+  }
+
+  console.log("Aufgabe gespeichert:", await response.json());
 }
 
 function addDueDate(dateTask) {
