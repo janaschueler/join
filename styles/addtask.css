@@ -16,7 +16,7 @@ h1 {
 }
 
 .user_profil {
-font-weight: 500;
+  font-weight: 500;
 }
 .addTaskSection {
   margin-top: 40px;
@@ -325,9 +325,13 @@ input:focus {
 
 #inputField:focus, 
 #description:focus, 
-#assigned-input:focus-within, 
+#assigned-input:focus-within,  /* Hier verwenden wir focus-within für das Parent-Element */
 #due-date:focus,
-#custom-category:focus {
+#assigned-input-Edit:focus-within, /* focus-within für das Elternelement */
+#due-date-edit:focus, 
+#category-input:focus,
+#new-subtask-input:focus,
+#new-subtask-input-Edit:focus {
   border: 2px solid rgba(41, 171, 226, 1);
   outline: none;
 }
@@ -337,6 +341,7 @@ input:focus {
   position: absolute;
   background: white;
   width: 100%;
+  top: 100%;
   max-height: 150px;
   overflow-y: auto;
   border-radius: 5px;
@@ -347,6 +352,10 @@ input:focus {
 }
 
 .dropdown-content.visible {
+  display: block;
+}
+
+.custom-dropdown.open .dropdown-content {
   display: block;
 }
 
@@ -505,7 +514,7 @@ input:focus {
   top: 0;
   right: 0;
   z-index: 5;
-  margin-right: 8px
+  margin-right: 8px;
 }
 
 .iconAdd:hover::before {
@@ -616,7 +625,7 @@ input:focus {
   background-image: url(../assets/icons/delete.svg);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 10px;
+  background-size: 12px;
   width: 32px;
   height: 40px;
   border: none;
@@ -636,8 +645,8 @@ input:focus {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 10px;
-  width: 32px;
-  height: 40px;
+  width: 28px;
+  height: 48px;
   border: none;
   background-color: transparent;
   cursor: pointer;
@@ -666,7 +675,7 @@ input:focus {
   background-image: url(../assets/icons/delete.svg);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 10px;
+  background-size: 12px;
   width: 32px;
   height: 40px;
   border: none;
@@ -703,6 +712,7 @@ input:focus {
 .side2 {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 label {
@@ -732,6 +742,7 @@ label {
 .dropdown-option {
   display: flex;
   align-items: center;
+  cursor: pointer;
   gap: 10px;
   padding: 10px;
 }
@@ -773,13 +784,13 @@ label {
 }
 
 .custom-date-picker input[type="date"] {
-  padding-right: 40px;  /* Platz für das Icon */
+  padding-right: 40px; /* Platz für das Icon */
   font-size: 16px;
 }
 
 .custom-date-picker .calendar-icon {
   position: absolute;
-  top: 50%;
+  top: 48%;
   right: 10px;
   transform: translateY(-50%);
   background: none;
@@ -802,7 +813,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
   -webkit-appearance: none;
 }
-
 
 @media (max-width: 1115px) {
   .task-form {

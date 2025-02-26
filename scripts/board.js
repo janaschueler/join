@@ -413,16 +413,15 @@ function closeModal(event) {
     modal.classList.add("hide");
     backdrop.classList.add("hide");
 
-    
     setTimeout(function () {
       modal.style.visibility = "hidden";
       backdrop.style.visibility = "hidden";
       modal.classList.remove("show");
       backdrop.classList.remove("show");
-    }, 500); 
+    }, 500);
+    window.location.reload();
   }
 }
-
 
 async function injectAssigneeContacts(tasks) {
   const assigneeContainer = document.getElementById(`assigneeListModal${tasks["id"]}`);
@@ -592,10 +591,10 @@ function openEditModal(categoryTask, title, description, dateTask, priorityTask,
 
   if (showModalBackground && showModal) {
     showModalBackground.style.visibility = "visible";
-    showModalBackground.classList.add("show"); 
+    showModalBackground.classList.add("show");
 
     showModal.style.visibility = "visible";
-    showModal.classList.add("show");  
+    showModal.classList.add("show");
   } else {
     console.log("no modal found");
   }
@@ -623,7 +622,6 @@ function openEditModal(categoryTask, title, description, dateTask, priorityTask,
   }
   determineAssignedToEditModal(id);
 }
-
 
 function addSubtaskinEditModal(id) {
   let subTaskContainer = document.getElementById("editSubtasks-container");

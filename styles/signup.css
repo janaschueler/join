@@ -52,10 +52,18 @@ body {
 
 .footerNav a:hover {
   color: #29abe2;
-  transform: scale(5); 
-
+  transform: scale(5);
 }
 
+.primaryButton {
+  background-color: rgba(42, 54, 71, 1) !important;
+  color: rgba(255, 255, 255, 1) !important;
+  border: none;
+  outline: none;
+  padding: 8px 20px !important;
+  border-radius: 8px;
+  gap: 10px;
+}
 
 .signupButtonContainer {
   display: flex;
