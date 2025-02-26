@@ -940,6 +940,7 @@ table td:first-child {
     flex-direction: column;
     justify-content: center;
     align-items: stretch;
+ 
   }
 
   .searchContainer {
@@ -949,10 +950,11 @@ table td:first-child {
   .headerBoardButton {
     margin-top: 6px;
     width: 220px;
+
   }
 
   .modalAddTask {
-    width: 700px;
+    width: 100%;
   }
 
   .task-form {
@@ -971,6 +973,7 @@ table td:first-child {
     width: 95%;
     max-width: 500px;
   }
+
 
   .searchContainer {
     min-width: 100vw;
