@@ -9,8 +9,7 @@ let currentDraggedElement;
 async function inti() {
   allTasks = await getDataTasks();
   allContacts = await getDataContacts();
-  loadBoardContent();
-  renderTopBar();
+  loadBoardContent();  
 }
 
 async function getDataTasks(path = "") {

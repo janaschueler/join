@@ -440,6 +440,7 @@ function highlightButton(button) {
 function start() {
   fetchContacts();
   initPriorityButtons();
+  renderTopBar();
 }
 
 function openDatePicker() {
