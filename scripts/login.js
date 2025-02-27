@@ -83,6 +83,7 @@ function switchMobileLogo() {
 function showMobileContent() {
   const loginContainer = document.getElementById("loginContainer");
   const mobileNav = document.getElementById("mobileNav");
+  const footer = document.getElementById("footer");
 
   setTimeout(() => {
     document.body.style.setProperty("background", "rgb(246, 247, 248)", "important");
@@ -90,6 +91,7 @@ function showMobileContent() {
     mobileNav.style.display = "flex";
     loginContainer.classList.add("show");
     mobileNav.classList.add("show");
+    footer.classList.add("show");
   }, 1500);
 }
 

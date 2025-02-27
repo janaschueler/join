@@ -1,3 +1,7 @@
+main {
+  display: flex;
+}
+
 body {
   margin: 0 !important;
   display: flex;
@@ -111,9 +115,7 @@ body {
   border-radius: 30px !important;
   background: white;
   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.1);
-  margin-bottom: 80px;
   border-color: white !important;
-  margin-top: 32px;
 }
 
 .formInputContainer {
@@ -125,7 +127,6 @@ body {
   justify-content: center;
   align-items: center;
   height: auto;
-  padding: 0 16px;
 }
 
 .iconEmail {
@@ -274,19 +275,22 @@ input {
 
 @media (max-width: 480px) {
   main {
-    flex: 0 1 auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    margin-top: 120px;
+  }
+
+  .card-body {
+   padding: 0px !important; 
   }
 
   header {
     display: none;
-  }
-
-  .card {
-    padding: 0px 0px !important;
-    margin-top: 180px !important;
-    width: 300px;
-    height: 380px !important;
-    margin-top: 300px !important;
   }
 
   .card h1 {
@@ -314,11 +318,14 @@ input {
     color: rgba(42, 54, 71, 1);
   }
 
+
   .LoginButtonContainer {
+    display: flex;
     justify-content: center;
     flex-direction: column;
-    margin-left: 75px;
-    width: 120px;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
   }
 
   body {
@@ -330,31 +337,9 @@ input {
     align-items: stretch;
   }
 
-  #loginContainer {
-    margin-bottom: 32px;
-  }
-
   #mobileNav {
     width: 100%;
     position: relative;
-    margin-top: 180px;
-    margin-bottom: 24px;
-  }
-
-  #footer {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 8px;
-  }
-
-  #footer a {
-    font-size: 14px;
-    padding-right: 0;
-  }
-
-  .LoginContainer {
-    height: 300px;
   }
 
   .formInputContainer {
@@ -362,6 +347,13 @@ input {
     width: 280px;
     height: 200px;
   }
+
+  .primaryButton {
+    width: 120px;
+  }
+
+  .mb-3 {
+    margin-top:20px;
 }
 
 @media (max-width: 350px) {
@@ -370,4 +362,5 @@ input {
     margin-left: 0px !important;
     width: 290px;
   }
+}
 }
