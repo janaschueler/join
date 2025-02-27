@@ -42,7 +42,6 @@ body {
   font-weight: 400;
   text-align: left;
   padding-right: 16px;
-
 }
 
 .primaryButton {
@@ -54,12 +53,17 @@ body {
   border-radius: 8px;
   gap: 10px;
   text-align: center;
-
-
 }
 
 .primaryButton:hover {
   background-color: #29abe2 !important;
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.25);
+}
+
+.secondaryButton:hover {
+  border-color: #29abe2 !important;
+  color: #29abe2 !important;
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.25);
 }
 
 .secondaryButton {
@@ -75,7 +79,6 @@ body {
 
 .secondaryButton:hover {
   border-color: #29abe2 !important;
-
 }
 
 .footerNav {
@@ -110,9 +113,8 @@ body {
   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.1);
   margin-bottom: 80px;
   border-color: white !important;
-  margin-top: 120px;
+  margin-top: 32px;
 }
-
 
 .formInputContainer {
   width: 422px;
@@ -167,8 +169,8 @@ body {
 }
 
 #loadingMessage {
-  display: flex;
   position: fixed;
+  display: flex;
   top: 50%;
   left: 50%;
   transform: translate(-25%, -50%);
@@ -193,9 +195,9 @@ body {
 }
 
 #loadingMessageMobile {
-  position: fixed;
+  display: flex;
   top: 30%;
-  left: 20%;
+  left: 30%;
   width: 50px;
   height: 200px;
   z-index: 9999;
@@ -208,7 +210,7 @@ body {
 }
 
 #mobileLogoChangeDark {
-  display: none; 
+  display: none;
 }
 
 .show {
@@ -219,13 +221,17 @@ body {
 .fade-in {
   opacity: 0;
   visibility: hidden;
-  transition: opacity 1s ease-in-out, visibility 0s linear 1s; 
+  transition: opacity 1s ease-in-out, visibility 0s linear 1s;
 }
 
 .fade-in.show {
   opacity: 1;
   visibility: visible;
-  transition: opacity 1s ease-in-out, visibility 0s; 
+  transition: opacity 1s ease-in-out, visibility 0s;
+}
+
+input {
+  cursor: pointer;
 }
 
 @media (max-width: 1000px) {
@@ -260,8 +266,6 @@ body {
   }
 }
 
-
-
 @media (max-width: 500px) {
   .formInputContainer {
     width: 322px;
@@ -269,16 +273,24 @@ body {
 }
 
 @media (max-width: 480px) {
+  main {
+    flex: 0 1 auto;
+  }
+
+  header {
+    display: none;
+  }
+
   .card {
     padding: 0px 0px !important;
     margin-top: 180px !important;
     width: 300px;
-    height: 350px !important;  
+    height: 380px !important;
+    margin-top: 300px !important;
   }
 
   .card h1 {
     font-size: 40px !important;
-    margin-top: 0px;
   }
 
   .atfLogo img {
@@ -325,7 +337,7 @@ body {
   #mobileNav {
     width: 100%;
     position: relative;
-    margin-top: 140px;
+    margin-top: 180px;
     margin-bottom: 24px;
   }
 

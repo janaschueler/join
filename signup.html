@@ -53,12 +53,15 @@
                             <div id="nonMatchingPassword" class="form-text alertMessage d-none">Your Passwords do not match. Please try again</div>                 
                           </div>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required>
-                        <label class="form-check-label" for="flexCheckDefault">
-                          I accept the <a href="./privacy-policy.html">Privacy Policy </a>
-                        </label>
-                      </div>
+                    <div class="form-check customCheckboxContainer">
+                      <label class="formatCheckbox">
+                        <input class="form-check-input" type="checkbox" id="flexCheckDefault" required>
+                        <span class="customCheckbox"></span>
+                        <span class="subtasksUnit">
+                          I accept the <a class="linkHover" href="./privacy-policy.html">Privacy Policy</a>
+                        </span>
+                      </label>
+                    </div>
                       <div class="center">
                       <button type="submit" id="submitSignup" class="btn primaryButton">
                         Sign up

@@ -4,7 +4,7 @@ body {
 }
 
 .left-main-bar.collapsed {
-  width: 80px; /* Die Breite, wenn die Sidebar eingeklappt ist */
+  width: 80px; 
 }
 
 .headerContaine {
@@ -93,10 +93,10 @@ main {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 30px;
-  height: 30px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
+  background-color: rgba(128, 128, 128, 0.2); 
   z-index: 4;
 }
 
@@ -174,7 +174,7 @@ h2 {
   outline: none;
   padding: 8px 12px !important;
   width: 24px !important;
-  height: 24px !important;
+  height: 28px !important;
   border-radius: 8px;
   gap: 10px;
   background-image: url(../assets/icons/add.svg);
@@ -204,6 +204,7 @@ h2 {
 
 .secondaryAddButton:hover {
   border-color: rgba(41, 171, 226, 1);
+
 }
 
 .listHeader {
@@ -508,22 +509,22 @@ ol {
   position: absolute;
   top: 0;
   left: 0;
-  border-radius: 50%; /* Runde Form für den Kreis */
+  border-radius: 50%;
   background-color: rgba(128, 128, 128, 0.2);
   z-index: -1;
 }
 
 .ModalCloseButton:hover::before {
-  width: 200%; /* Vergrößern des grauen Hintergrunds */
+  width: 200%; 
   height: 200%;
-  top: -50%; /* Damit der Kreis zentriert bleibt */
-  left: -50%; /* Damit der Kreis zentriert bleibt */
+  top: -50%; 
+  left: -50%; 
 }
 
 .ModalCloseButton:hover {
   width: 12px;
   height: 12px;
-  background-color: transparent; /* Hintergrund des Buttons bleibt transparent */
+  background-color: transparent; 
 }
 
 .ModalCloseButtonAddTask {
@@ -548,7 +549,7 @@ ol {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
+  background-color: rgba(128, 128, 128, 0.2); 
   z-index: 4;
 }
 
@@ -781,7 +782,7 @@ table td:first-child {
   height: 32px;
   border-radius: 4px;
   background-color: rgba(128, 128, 128, 0.1);
-  z-index: -1; /* Pseudoelement hinter die Checkbox setzen */
+  z-index: -1; 
 }
 
 .groupAssignee {
@@ -829,7 +830,7 @@ table td:first-child {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Dunkler Hintergrund */
+  background: rgba(0, 0, 0, 0.5); 
 }
 
 .modal-backdrop {
@@ -940,7 +941,7 @@ table td:first-child {
   width: 100%;
   height: 32px;
   border-radius: 8px;
-  background-color: rgba(128, 128, 128, 0.1); /* Grauer, halbtransparenter Hintergrund */
+  background-color: rgba(128, 128, 128, 0.1);
   z-index: 0;
 }
 

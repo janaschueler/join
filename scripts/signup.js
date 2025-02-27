@@ -147,3 +147,9 @@ function signupSuccessfullMessage() {
     overlay.style.display = "none";
   });
 }
+
+// window.addEventListener("resize", function () {
+//   if (window.innerWidth >= 480) {
+//     location.reload();
+//   }
+// });
