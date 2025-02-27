@@ -101,6 +101,12 @@ body {
   padding-right: 16px;
 }
 
+.navHover:hover {
+  color: #29abe2 !important;
+  font-weight: 700;
+}
+
+
 .LoginButtonContainer {
   display: flex;
   justify-content: center;
