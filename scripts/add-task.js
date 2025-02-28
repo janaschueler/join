@@ -48,7 +48,7 @@ document.addEventListener("click", function (event) {
 });
 
 function selectCategory(label, value) {
-  document.getElementById("category-input").textContent = label; // Zeigt die gewählte Kategorie an
+  document.querySelector("#category-input span").textContent = label;
   document.getElementById("category").value = label; // Speichert den Wert im versteckten Input
   document.getElementById("category-dropdown").classList.remove("visible");
 
@@ -128,12 +128,11 @@ async function addTask(statusTask) {
 }
 
 function determineStatusAddTask(statusTask) {
-
   let status;
   if (!statusTask) {
     status = 1;
   } else {
-   status = statusTask;
+    status = statusTask;
   }
   return status;
 }

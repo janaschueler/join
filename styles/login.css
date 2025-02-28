@@ -1,3 +1,7 @@
+main {
+  display: flex;
+}
+
 body {
   margin: 0 !important;
   display: flex;
@@ -42,7 +46,6 @@ body {
   font-weight: 400;
   text-align: left;
   padding-right: 16px;
-
 }
 
 .primaryButton {
@@ -54,12 +57,17 @@ body {
   border-radius: 8px;
   gap: 10px;
   text-align: center;
-
-
 }
 
 .primaryButton:hover {
   background-color: #29abe2 !important;
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.25);
+}
+
+.secondaryButton:hover {
+  border-color: #29abe2 !important;
+  color: #29abe2 !important;
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.25);
 }
 
 .secondaryButton {
@@ -75,7 +83,6 @@ body {
 
 .secondaryButton:hover {
   border-color: #29abe2 !important;
-
 }
 
 .footerNav {
@@ -94,6 +101,12 @@ body {
   padding-right: 16px;
 }
 
+.navHover:hover {
+  color: #29abe2 !important;
+  font-weight: 700;
+}
+
+
 .LoginButtonContainer {
   display: flex;
   justify-content: center;
@@ -108,11 +121,8 @@ body {
   border-radius: 30px !important;
   background: white;
   box-shadow: 0px 0px 16px 1px rgba(0, 0, 0, 0.1);
-  margin-bottom: 80px;
   border-color: white !important;
-  margin-top: 120px;
 }
-
 
 .formInputContainer {
   width: 422px;
@@ -123,7 +133,6 @@ body {
   justify-content: center;
   align-items: center;
   height: auto;
-  padding: 0 16px;
 }
 
 .iconEmail {
@@ -167,8 +176,8 @@ body {
 }
 
 #loadingMessage {
-  display: flex;
   position: fixed;
+  display: flex;
   top: 50%;
   left: 50%;
   transform: translate(-25%, -50%);
@@ -193,9 +202,9 @@ body {
 }
 
 #loadingMessageMobile {
-  position: fixed;
+  display: flex;
   top: 30%;
-  left: 20%;
+  left: 30%;
   width: 50px;
   height: 200px;
   z-index: 9999;
@@ -208,7 +217,7 @@ body {
 }
 
 #mobileLogoChangeDark {
-  display: none; 
+  display: none;
 }
 
 .show {
@@ -219,13 +228,17 @@ body {
 .fade-in {
   opacity: 0;
   visibility: hidden;
-  transition: opacity 1s ease-in-out, visibility 0s linear 1s; 
+  transition: opacity 1s ease-in-out, visibility 0s linear 1s;
 }
 
 .fade-in.show {
   opacity: 1;
   visibility: visible;
-  transition: opacity 1s ease-in-out, visibility 0s; 
+  transition: opacity 1s ease-in-out, visibility 0s;
+}
+
+input {
+  cursor: pointer;
 }
 
 @media (max-width: 1000px) {
@@ -260,8 +273,6 @@ body {
   }
 }
 
-
-
 @media (max-width: 500px) {
   .formInputContainer {
     width: 322px;
@@ -269,16 +280,27 @@ body {
 }
 
 @media (max-width: 480px) {
+  main {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .card {
-    padding: 0px 0px !important;
-    margin-top: 180px !important;
-    width: 300px;
-    height: 350px !important;  
+    margin-top: 120px;
+  }
+
+  .card-body {
+   padding: 0px !important; 
+  }
+
+  header {
+    display: none;
   }
 
   .card h1 {
     font-size: 40px !important;
-    margin-top: 0px;
   }
 
   .atfLogo img {
@@ -302,11 +324,14 @@ body {
     color: rgba(42, 54, 71, 1);
   }
 
+
   .LoginButtonContainer {
+    display: flex;
     justify-content: center;
     flex-direction: column;
-    margin-left: 75px;
-    width: 120px;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
   }
 
   body {
@@ -318,31 +343,9 @@ body {
     align-items: stretch;
   }
 
-  #loginContainer {
-    margin-bottom: 32px;
-  }
-
   #mobileNav {
     width: 100%;
     position: relative;
-    margin-top: 140px;
-    margin-bottom: 24px;
-  }
-
-  #footer {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 8px;
-  }
-
-  #footer a {
-    font-size: 14px;
-    padding-right: 0;
-  }
-
-  .LoginContainer {
-    height: 300px;
   }
 
   .formInputContainer {
@@ -350,6 +353,13 @@ body {
     width: 280px;
     height: 200px;
   }
+
+  .primaryButton {
+    width: 120px;
+  }
+
+  .mb-3 {
+    margin-top:20px;
 }
 
 @media (max-width: 350px) {
@@ -358,4 +368,5 @@ body {
     margin-left: 0px !important;
     width: 290px;
   }
+}
 }

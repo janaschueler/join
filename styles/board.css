@@ -4,7 +4,7 @@ body {
 }
 
 .left-main-bar.collapsed {
-  width: 80px; /* Die Breite, wenn die Sidebar eingeklappt ist */
+  width: 80px; 
 }
 
 .headerContaine {
@@ -19,6 +19,12 @@ body {
   padding: 8px 20px !important;
   border-radius: 8px;
   gap: 10px;
+}
+
+.addTaskButtonModal {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 }
 
 .secondaryButton {
@@ -87,10 +93,10 @@ main {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 30px;
-  height: 30px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
+  background-color: rgba(128, 128, 128, 0.2); 
   z-index: 4;
 }
 
@@ -109,6 +115,7 @@ main {
 
 .primaryButton:hover {
   border-color: rgba(41, 171, 226, 1);
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.25);
 }
 
 form {
@@ -167,7 +174,7 @@ h2 {
   outline: none;
   padding: 8px 12px !important;
   width: 24px !important;
-  height: 24px !important;
+  height: 28px !important;
   border-radius: 8px;
   gap: 10px;
   background-image: url(../assets/icons/add.svg);
@@ -183,10 +190,11 @@ h2 {
   border-radius: 8px;
   padding: 0px 4px 0px 4px;
   height: 32px;
+  width: 32px;
 }
 
 .secondaryAddButton .icon {
-  width: px;
+  width: 12px;
   height: 12px;
 }
 
@@ -196,6 +204,7 @@ h2 {
 
 .secondaryAddButton:hover {
   border-color: rgba(41, 171, 226, 1);
+
 }
 
 .listHeader {
@@ -408,6 +417,11 @@ ol {
   background-position-x: 0%;
 }
 
+.editIcon:hover {
+  color: rgba(41, 171, 226, 1) !important;
+  background-image: url(../assets/icons/edit_lightblue.png) !important;
+}
+
 .deleteIcon {
   border: none;
   background-color: transparent;
@@ -418,6 +432,11 @@ ol {
   background-repeat: no-repeat;
   background-position-y: center;
   background-position-x: 0%;
+}
+
+.deleteIcon:hover {
+  color: rgba(41, 171, 226, 1) !important;
+  background-image: url(../assets/icons/delete_lightblue.png) !important;
 }
 
 #modalTaskSummary {
@@ -465,22 +484,47 @@ ol {
   transition: opacity 0.3s ease;
 }
 
-
 #taskSummaryModal.hide {
   visibility: hidden;
   opacity: 0;
 }
 
 .ModalCloseButton {
+  position: absolute;
+  cursor: pointer;
   top: 24px;
   right: 24px;
   width: 12px;
-  height: 16px;
+  height: 12px;
   background-image: url("../assets/icons/close.svg");
   border: none !important;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
+  background-color: white;
+}
+
+.ModalCloseButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  background-color: rgba(128, 128, 128, 0.2);
+  z-index: -1;
+}
+
+.ModalCloseButton:hover::before {
+  width: 200%; 
+  height: 200%;
+  top: -50%; 
+  left: -50%; 
+}
+
+.ModalCloseButton:hover {
+  width: 12px;
+  height: 12px;
+  background-color: transparent; 
 }
 
 .ModalCloseButtonAddTask {
@@ -493,6 +537,7 @@ ol {
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
+  background-color: white;
 }
 
 .ModalCloseButtonAddTask:hover::before {
@@ -504,7 +549,7 @@ ol {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
+  background-color: rgba(128, 128, 128, 0.2); 
   z-index: 4;
 }
 
@@ -540,6 +585,7 @@ li {
   align-items: center;
   justify-content: space-between;
   margin-top: 12px;
+  position: relative;
 }
 
 .contentmodlaTask body {
@@ -562,7 +608,6 @@ table td:first-child {
 
 .styleSubstaskSpan span {
   color: rgba(66, 82, 110, 1);
-  padding-bottom: 8px;
 }
 
 .iconSummaryModal {
@@ -673,6 +718,9 @@ table td:first-child {
   align-items: center;
   margin-top: 2px;
   margin-bottom: 0px !important;
+  z-index: 1;
+  position: relative;
+  height: 32px;
 }
 
 .customInput {
@@ -726,6 +774,17 @@ table td:first-child {
   border-color: #555;
 }
 
+.customCheckboxContainerModal:hover::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 32px;
+  border-radius: 4px;
+  background-color: rgba(128, 128, 128, 0.1);
+  z-index: -1; 
+}
+
 .groupAssignee {
   display: flex;
   align-items: center;
@@ -771,7 +830,7 @@ table td:first-child {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Dunkler Hintergrund */
+  background: rgba(0, 0, 0, 0.5); 
 }
 
 .modal-backdrop {
@@ -812,7 +871,7 @@ table td:first-child {
 .modalAddTask.hide {
   opacity: 0;
   transform: translate(-50%, -50%) translateX(100%);
-  transition: opacity 0.5s ease, transform 0.5s ease; 
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .show {
@@ -835,6 +894,12 @@ table td:first-child {
 .taskButton-clear {
   margin-top: 64px !important;
   margin-bottom: 24px;
+}
+
+.taskButton-clear:hover {
+  border-color: rgba(41, 171, 226, 1) !important;
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.25);
+  color: rgba(41, 171, 226, 1) !important;
 }
 
 .error-message {
@@ -861,7 +926,7 @@ table td:first-child {
 }
 
 #editSubtasks-container .input-wrapper:hover .editIconSubtask,
-#editSubtasks-container.input-wrapper:hover .lineSubtask,
+#editSubtasks-container .input-wrapper:hover .lineSubtask,
 #editSubtasks-container .input-wrapper:hover .deleteSubtask {
   display: flex;
   align-items: center;
@@ -874,9 +939,9 @@ table td:first-child {
   top: 8px;
   left: 0;
   width: 100%;
-  height: 25px;
-  border-radius: 4px;
-  background-color: rgba(128, 128, 128, 0.1); /* Grauer, halbtransparenter Hintergrund */
+  height: 32px;
+  border-radius: 8px;
+  background-color: rgba(128, 128, 128, 0.1);
   z-index: 0;
 }
 
@@ -900,11 +965,70 @@ table td:first-child {
   margin-left: 16px;
 }
 
+.addTaskButtonPrimary:hover {
+  border-color: rgba(41, 171, 226, 1) !important;
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.25);
+  background-color: rgba(41, 171, 226, 1) !important;
+}
+
 .form-footer-modal {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 118%;
+  gap: 100%;
+}
+
+.mobile {
+  display: none;
+}
+
+.positoinCategory {
+  top: 325px !important;
+}
+
+.space {
+  gap: 100%;
+}
+
+.secondaryButton-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Inter 18pt";
+  font-weight: bold;
+  margin: 12px;
+  margin-top: 64px;
+  border-color: #091931 !important;
+  background-color: transparent;
+  color: rgba(42, 54, 71, 1) !important;
+  border: solid rgba(42, 54, 71, 1) !important;
+  border-width: 1px !important;
+  outline: none;
+  padding: 15px 16px;
+  border-radius: 8px;
+  gap: 10px;
+  height: 56px;
+  font-weight: 300 !important;
+}
+
+.secondaryButton-clear svg {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+}
+
+.secondaryButton-clear svg path {
+  fill: #2a3647;
+}
+
+.secondaryButton-clear:hover {
+  border-color: rgba(41, 171, 226, 1) !important;
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.25);
+  color: rgba(41, 171, 226, 1) !important;
+}
+
+.secondaryButton-clear:hover svg path {
+  fill: rgba(41, 171, 226, 1);
 }
 
 @media (max-width: 1115px) {
@@ -940,7 +1064,6 @@ table td:first-child {
     flex-direction: column;
     justify-content: center;
     align-items: stretch;
- 
   }
 
   .searchContainer {
@@ -950,11 +1073,10 @@ table td:first-child {
   .headerBoardButton {
     margin-top: 6px;
     width: 220px;
-
   }
 
   .modalAddTask {
-    width: 100%;
+    width: 90%;
   }
 
   .task-form {
@@ -962,9 +1084,37 @@ table td:first-child {
     width: 100%;
     margin-top: 0px !important;
   }
+
+  .addTaskButtonModal {
+    display: flex;
+    gap: 10px;
+    background-color: white;
+    position: sticky;
+    bottom: 0; 
+    left: 0;
+    right: 0;
+    z-index: 1000; 
+    padding-top: 10px; 
+    justify-content: center; 
+  }
+
+  .addTaskButtonPrimary,
+  .secondaryButton-clear,
+  .taskButton-clear {
+    margin-top: 16px !important;
+  }
+  
+  .desktop {
+    display: none !important;
+  }
 }
 
 @media (max-width: 768px) {
+  .mobile {
+    display: bock;
+  }
+  
+
   .primaryButton {
     display: none !important;
   }
@@ -974,20 +1124,39 @@ table td:first-child {
     max-width: 500px;
   }
 
-
   .searchContainer {
     min-width: 100vw;
     width: 100% !important;
   }
 
-  .modalAddTask {
-    width: 400px;
+  #editSubtasks-container .input-wrapper:hover .editIconSubtask,
+  #editSubtasks-container.input-wrapper:hover .lineSubtask,
+  #editSubtasks-container .input-wrapper .deleteSubtask {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #editSubtasks-container .input-wrapper .editIconSubtask,
+  #editSubtasks-container.input-wrapper:hover .lineSubtask,
+  #editSubtasks-container .input-wrapper .deleteSubtask {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .positoinCategory {
+    top: 370px !important;
   }
 }
 
 @media (max-width: 480px) {
   .ModalHeadline {
     font-size: 40px !important;
+  }
+
+  .priority {
+    flex-direction: column;
   }
 
   #board {
@@ -1056,7 +1225,7 @@ table td:first-child {
   }
 
   .modalAddTask {
-    width: 320px;
+    width: 100%;
     max-height: 700px;
     height: none;
   }

@@ -19,9 +19,11 @@ function showLoadingMessage() {
 
 function showDesktopLoadingMessage() {
   const loadingMessage = document.getElementById("loadingMessage");
+
   setTimeout(() => {
-    document.getElementById("loadingMessage").classList.add("show");
+    loadingMessage.classList.add("show");
   }, 100);
+
   setTimeout(() => {
     loadingMessage.style.display = "flex";
     loadingMessage.style.width = "100px";
@@ -30,6 +32,10 @@ function showDesktopLoadingMessage() {
     loadingMessage.style.top = "133px";
     loadingMessage.style.left = "68px";
   }, 1000);
+
+  setTimeout(() => {
+    loadingMessage.style.position = "none";
+  }, 2000);
 }
 
 function showDesktopContent() {
@@ -77,6 +83,7 @@ function switchMobileLogo() {
 function showMobileContent() {
   const loginContainer = document.getElementById("loginContainer");
   const mobileNav = document.getElementById("mobileNav");
+  const footer = document.getElementById("footer");
 
   setTimeout(() => {
     document.body.style.setProperty("background", "rgb(246, 247, 248)", "important");
@@ -84,6 +91,7 @@ function showMobileContent() {
     mobileNav.style.display = "flex";
     loginContainer.classList.add("show");
     mobileNav.classList.add("show");
+    footer.classList.add("show");
   }, 1500);
 }
 
@@ -101,7 +109,6 @@ async function getData(path = "") {
   let responseToJson = await response.json();
 
   let users = [];
-  
 
   for (let key in responseToJson) {
     let user = responseToJson[key];
@@ -112,15 +119,15 @@ async function getData(path = "") {
       contactId: key,
       contactName: user.contactName,
       contactAbbreviation: user.contactAbbreviation,
-    });    
+    });
   }
 
   return users;
 }
 
 async function initializeCheck() {
-  allUser = await getData();   
- checkLogin();
+  allUser = await getData();
+  checkLogin();
 }
 
 document.querySelector("#LoginButton").addEventListener("click", function (event) {
@@ -138,7 +145,7 @@ function checkLogin() {
     transfereLoginData(user);
     setTimeout(() => {
       window.location.assign("./index.html");
-    }, 1000);    
+    }, 1000);
   } else {
     document.getElementById("wrongPassword").classList.remove("d-none");
   }
@@ -147,3 +154,23 @@ function checkLogin() {
 document.querySelector(".formInputContainer").addEventListener("click", function (event) {
   document.getElementById("wrongPassword").classList.add("d-none");
 });
+
+function handleResize() {
+  const loadingMessageMobile = document.getElementById("loadingMessageMobile");
+  const loadingMessage = document.getElementById("loadingMessage");
+
+  if (window.innerWidth <= 480) {
+    if (loadingMessageMobile) {
+      loadingMessageMobile.style.position = "fixed";
+      loadingMessage.style.position = "relative";
+    }
+  } else if (window.innerWidth > 480) {
+    if (loadingMessageMobile) {
+      loadingMessageMobile.style.position = "relative";
+      loadingMessage.style.position = "fiexed";
+    }
+  }
+}
+
+window.addEventListener("load", handleResize);
+window.addEventListener("resize", handleResize);
