@@ -4,7 +4,8 @@ let allUser = { contactEmail: [], contactPassword: [], contactId: [], contactNam
 
 function init() {
   showLoadingMessage();
-}
+} 
+
 
 function showLoadingMessage() {
   if (window.innerWidth > 480) {
@@ -17,13 +18,12 @@ function showLoadingMessage() {
   }
 }
 
+
 function showDesktopLoadingMessage() {
   const loadingMessage = document.getElementById("loadingMessage");
-
   setTimeout(() => {
     loadingMessage.classList.add("show");
   }, 100);
-
   setTimeout(() => {
     loadingMessage.style.display = "flex";
     loadingMessage.style.width = "100px";
@@ -32,17 +32,16 @@ function showDesktopLoadingMessage() {
     loadingMessage.style.top = "133px";
     loadingMessage.style.left = "68px";
   }, 1000);
-
   setTimeout(() => {
     loadingMessage.style.position = "none";
   }, 2000);
 }
 
+
 function showDesktopContent() {
   const loginContainer = document.getElementById("loginContainer");
   const footer = document.getElementById("footer");
   const header = document.getElementById("header");
-
   setTimeout(() => {
     loginContainer.style.display = "flex";
     footer.style.display = "block";
@@ -53,9 +52,9 @@ function showDesktopContent() {
   }, 1500);
 }
 
+
 function showMobileLoadingMessage() {
   const loadingMessageMobile = document.getElementById("loadingMessageMobile");
-
   setTimeout(() => {
     document.getElementById("loadingMessageMobile").classList.add("show");
   }, 0);
@@ -68,10 +67,10 @@ function showMobileLoadingMessage() {
   }, 1000);
 }
 
+
 function switchMobileLogo() {
   const mobileLogoChange = document.getElementById("mobileLogoChange");
   const mobileLogoChangeDark = document.getElementById("mobileLogoChangeDark");
-
   setTimeout(() => {
     mobileLogoChange.style.display = "none";
     mobileLogoChangeDark.style.display = "block";
@@ -80,11 +79,11 @@ function switchMobileLogo() {
   }, 1500);
 }
 
+
 function showMobileContent() {
   const loginContainer = document.getElementById("loginContainer");
   const mobileNav = document.getElementById("mobileNav");
   const footer = document.getElementById("footer");
-
   setTimeout(() => {
     document.body.style.setProperty("background", "rgb(246, 247, 248)", "important");
     loginContainer.style.display = "flex";
@@ -95,24 +94,22 @@ function showMobileContent() {
   }, 1500);
 }
 
+
 function hideLoadingBackground() {
   const loadingBackground = document.getElementById("loadingBackground");
   loadingBackground.style.opacity = "0";
-
   setTimeout(() => {
     loadingBackground.style.display = "none";
   }, 1000);
 }
 
+
 async function getData(path = "") {
   let response = await fetch(BASE_URL + "signup/" + "user/" + path + ".json");
   let responseToJson = await response.json();
-
   let users = [];
-
   for (let key in responseToJson) {
     let user = responseToJson[key];
-
     users.push({
       contactEmail: user.contactEmail,
       contactPassword: user.contactPassword,
@@ -125,21 +122,24 @@ async function getData(path = "") {
   return users;
 }
 
+
 async function initializeCheck() {
   allUser = await getData();
   checkLogin();
 }
+
 
 document.querySelector("#LoginButton").addEventListener("click", function (event) {
   event.preventDefault();
   initializeCheck();
 });
 
+
 function checkLogin() {
   let loginEmail = document.getElementById("inputEmail").value;
   let loginPassword = document.getElementById("inputPassword1").value;
   let user = allUser.find((user) => {
-    return user.contactEmail.includes(loginEmail) && user.contactPassword.includes(loginPassword);
+    return user.contactEmail === loginEmail && user.contactPassword === loginPassword;
   });
   if (user) {
     transfereLoginData(user);
@@ -148,6 +148,9 @@ function checkLogin() {
     }, 1000);
   } else {
     document.getElementById("wrongPassword").classList.remove("d-none");
+    let passwordField = document.getElementById("inputPassword1");
+    passwordField.style.border = "1px solid red";
+    passwordField.focus();
   }
 }
 
@@ -155,10 +158,10 @@ document.querySelector(".formInputContainer").addEventListener("click", function
   document.getElementById("wrongPassword").classList.add("d-none");
 });
 
+
 function handleResize() {
   const loadingMessageMobile = document.getElementById("loadingMessageMobile");
   const loadingMessage = document.getElementById("loadingMessage");
-
   if (window.innerWidth <= 480) {
     if (loadingMessageMobile) {
       loadingMessageMobile.style.position = "fixed";
@@ -171,6 +174,7 @@ function handleResize() {
     }
   }
 }
+
 
 window.addEventListener("load", handleResize);
 window.addEventListener("resize", handleResize);

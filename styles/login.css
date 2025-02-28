@@ -36,7 +36,8 @@ body {
 .atfNav button {
   font-size: 16px;
   font-weight: 700;
-  padding: 15px 16px !important;
+  padding: 10px 16px !important;
+  cursor: pointer;
 }
 
 .atfNav a {
@@ -49,6 +50,7 @@ body {
 }
 
 .primaryButton {
+  cursor: pointer;
   background-color: rgba(42, 54, 71, 1) !important;
   color: rgba(255, 255, 255, 1) !important;
   border: none;
@@ -57,6 +59,20 @@ body {
   border-radius: 8px;
   gap: 10px;
   text-align: center;
+  font-weight: 700 !important;
+}
+
+.formInputContainer input::placeholder {
+  color: rgba(209, 209, 209, 1);
+  opacity: 1;
+}
+
+#inputEmail:focus,
+#inputPassword1:focus {
+  border: 1px solid rgba(41, 171, 226, 1);
+  outline: none;
+  box-shadow: none !important;
+  filter: none !important;
 }
 
 .primaryButton:hover {
@@ -71,6 +87,7 @@ body {
 }
 
 .secondaryButton {
+  cursor: pointer;
   background-color: transparent;
   color: rgba(42, 54, 71, 1) !important;
   border: solid rgba(42, 54, 71, 1) !important;
@@ -79,6 +96,7 @@ body {
   padding: 15px 16px;
   border-radius: 8px;
   gap: 10px;
+  font-weight: 700 !important;
 }
 
 .secondaryButton:hover {
@@ -105,7 +123,6 @@ body {
   color: #29abe2 !important;
   font-weight: 700;
 }
-
 
 .LoginButtonContainer {
   display: flex;
@@ -187,7 +204,7 @@ body {
   justify-content: center;
   font-size: 20px;
   z-index: 9999;
-  transition: all 1s ease-in-out;
+  transition: all 75ms ease-in-out;
   background-color: rgb(246, 247, 248);
 }
 
@@ -208,7 +225,7 @@ body {
   width: 50px;
   height: 200px;
   z-index: 9999;
-  transition: all 1s ease-in-out;
+  transition: all 75ms ease-in-out;
 }
 
 #loadingMessageMobile img {
@@ -228,13 +245,13 @@ body {
 .fade-in {
   opacity: 0;
   visibility: hidden;
-  transition: opacity 1s ease-in-out, visibility 0s linear 1s;
+  transition: opacity 75ms ease-in-out, visibility 0s linear 1s;
 }
 
 .fade-in.show {
   opacity: 1;
   visibility: visible;
-  transition: opacity 1s ease-in-out, visibility 0s;
+  transition: opacity 75ms ease-in-out, visibility 0s;
 }
 
 input {
@@ -292,7 +309,7 @@ input {
   }
 
   .card-body {
-   padding: 0px !important; 
+    padding: 0px !important;
   }
 
   header {
@@ -323,7 +340,6 @@ input {
     text-decoration: none;
     color: rgba(42, 54, 71, 1);
   }
-
 
   .LoginButtonContainer {
     display: flex;
@@ -356,17 +372,18 @@ input {
 
   .primaryButton {
     width: 120px;
+    padding: 8px 0px;
   }
 
   .mb-3 {
-    margin-top:20px;
-}
-
-@media (max-width: 350px) {
-  .mb-3 {
-    padding-left: 0px !important;
-    margin-left: 0px !important;
-    width: 290px;
+    margin-top: 20px;
   }
-}
+
+  @media (max-width: 350px) {
+    .mb-3 {
+      padding-left: 0px !important;
+      margin-left: 0px !important;
+      width: 290px;
+    }
+  }
 }

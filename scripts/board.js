@@ -247,9 +247,24 @@ function findContactColor(name) {
   }
 }
 
-function allowDrop(ev) {
-  ev.preventDefault();
+function allowDrop(event) {
+  event.preventDefault(); 
+  const containerIds = ["ToDoTaskContainer", "inProgressContainer", "TestingContainer", "doneContainer"];
+  containerIds.forEach(containerId => {
+    const container = document.getElementById(containerId);
+    if (container) {
+      const dashedBox = container.querySelector('.dashed-box');
+      if (dashedBox) {
+        const lastCard = container.querySelector(".listContainerContent:last-child");
+        if (lastCard) {
+          lastCard.insertAdjacentElement('afterend', dashedBox);
+        }
+        dashedBox.style.display = "block";
+      }
+    }
+  });
 }
+
 
 function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
@@ -258,14 +273,20 @@ function drag(ev) {
 async function drop(status) {
   const task = Object.values(allTasks).find((t) => t.id === currentDraggedElement);
   task.status = status;
-
+  const container = document.getElementById(getContainerIdByStatus(status));
+  const dashedBox = container.querySelector('.dashed-box');  
   try {
     await addStatus(currentDraggedElement, status);
+    if (dashedBox) {
+      dashedBox.style.display = "none";  
+    }
   } catch (error) {
+    console.error("Fehler beim Aktualisieren des Status:", error);
     return;
   }
   location.reload(true);
 }
+
 
 function startDragging(id) {
   currentDraggedElement = id;
@@ -283,10 +304,16 @@ function searchTasks(searchInput) {
   ["ToDoTaskContainer", "inProgressContainer", "TestingContainer", "doneContainer"].forEach((id) => {
     document.getElementById(id).innerHTML = "";
   });
+
+  if (!searchInput.trim()) {
+    allTasks.forEach((task) => renderTaskByStatus(task));
+    return;
+  }
+
   const filteredTasks = allTasks.filter((task) => task.title && task.title.toLowerCase().includes(searchInput.toLowerCase()));
   if (filteredTasks.length > 0) {
     filteredTasks.forEach((task) => renderTaskByStatus(task));
-  } 
+  }
 }
 
 function renderTaskByStatus(task) {
@@ -300,9 +327,19 @@ function renderTaskByStatus(task) {
   const priorityIcon = determinePriotiry(priority);
   const numberOfSubtasks = task.subtasks ? task.subtasks.length : 0;
   const progressOfProgressbar = 50;
-  container.innerHTML += generateToDoHTML(task, priorityIcon, numberOfSubtasks, progressOfProgressbar);
+  let numberCompletetSubtasks = determineNumberCompletetSubtasks(task.subtasksStatus);
+  let categoryColor = determineCategoryColor(task.category);
+  container.innerHTML += generateToDoHTML(task, priorityIcon, numberOfSubtasks, progressOfProgressbar, numberCompletetSubtasks, categoryColor);
   injectAssignees(task);
-  if (!task.subtasks?.length) document.getElementById(progressContainer(task.id)).style.display = "none";
+  const progressContainerId = `progressContainer${task.id}`;
+  if (!task.subtasks?.length) {
+    const progressContainerElement = document.getElementById(progressContainerId);
+    if (progressContainerElement) {
+      progressContainerElement.style.display = "none";
+    } else {
+      console.warn(`Element mit ID ${progressContainerId} nicht gefunden.`);
+    }
+  }
 }
 
 function getContainerIdByStatus(status) {
@@ -508,7 +545,8 @@ function showModalVisibility() {
     showModalBackground.classList.add("show");
     showModal.style.visibility = "visible";
     showModal.classList.add("show");
-  } }
+  }
+}
 
 function setModalContent(title, description, id, status, buttonCopy, headline) {
   const showModal = document.getElementById("modalEditTask");
@@ -520,7 +558,15 @@ function initEditModal(id, dateTask, priorityTask, categoryTask) {
   addDueDate(dateTask);
   populateAssignedToSelectEdit();
   initPriorityButtons(priorityTask);
-  if (categoryTask) selectCategory(categoryTask, 0);
+  if (categoryTask) {
+    document.getElementById("labelCategory").style.display = "none";
+    document.getElementById("custom-category").style.display = "none";
+    document.getElementById("buttonContainerEdit").style.marginTop = "32px";
+    document.getElementById("modalEditTask").style.height = "750px";
+    document.getElementById("divider").style.height = "350px";
+  } else {
+    selectCategory(categoryTask, 0);
+  }
   determineAssignedToEditModal(id);
 }
 
@@ -529,20 +575,19 @@ function closeSummaryModal() {
   var backdrop = document.getElementById("taskSummaryModal");
 
   if (modal && backdrop) {
-      modal.classList.add("hide");
-      backdrop.classList.add("hide");
+    modal.classList.add("hide");
+    backdrop.classList.add("hide");
 
-      setTimeout(function () {
-        modal.style.visibility = "hidden";
-        backdrop.style.visibility = "hidden";
-        modal.classList.remove("show");
-        backdrop.classList.remove("show");
-      }, 500);
-    } else {
+    setTimeout(function () {
+      modal.style.visibility = "hidden";
+      backdrop.style.visibility = "hidden";
+      modal.classList.remove("show");
+      backdrop.classList.remove("show");
+    }, 500);
+  } else {
     console.warn("Modal oder Backdrop nicht gefunden.");
   }
 }
-
 
 function addSubtaskinEditModal(id) {
   let subTaskContainer = document.getElementById("editSubtasks-container");
@@ -659,7 +704,7 @@ function populateAssignedToSelectEdit() {
   const dropdown = document.getElementById("assigned-dropdown-Edit");
   if (!dropdown) return;
 
-  dropdown.innerHTML = ""; 
+  dropdown.innerHTML = "";
 
   if (!allContacts || !Array.isArray(allContacts) || allContacts.length === 0) {
     console.warn("Contacts ist leer oder nicht definiert.");
@@ -801,11 +846,11 @@ function toggleDropdownEdit(event) {
 }
 
 function determineAssignedToEditModal(id) {
-  let task = allTasks.find((t) => t["id"] === id); 
-  if (!task) return; 
+  let task = allTasks.find((t) => t["id"] === id);
+  if (!task) return;
 
   task.assignedTo.forEach((assignedPerson, index) => {
-    let color = task.color[index] || "#000000"; 
+    let color = task.color[index] || "#000000";
     let foundContact = allContacts.find((contact) => contact.contactName === assignedPerson);
     if (foundContact) {
       toggleContactSelectionEditPreselected(foundContact.idContact, assignedPerson, color);

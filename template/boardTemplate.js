@@ -1,26 +1,28 @@
 function generateToDoHTML(allTodos, priorityIcon, numberOfSubtasks, progressOfProgressbar, numberCompletetSubtasks, categoryColor) {
-  return `          <div onclick="openModal('${allTodos["id"]}')" draggable ="true" ondragstart="startDragging('${allTodos["id"]}')" class="listContainerContent">
-                        <div class="category" style="${categoryColor}">
-                          <span>${allTodos["category"]}</span>
-                        </div>
-                        <div class="listDiscription">
-                          <span class="titleCopy">${allTodos["title"]}</span> <br>
-                          <span class="descriptionCopy">${allTodos["description"]} </span>
-                        </div>
-                        <div id="progressContainer${allTodos["id"]}" class="progressContainer">
-                          <div class="limitProgressBar">
-                            <div class="progress-bar" role="progressbar" style="width: ${progressOfProgressbar}%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                          <span class="sr-only">${numberCompletetSubtasks}/${numberOfSubtasks} Subtasks</span>
-                        </div>
-                        <div class="priorityContainer">
-                          <div id="assigneeContainer${allTodos["id"]}" class="assigneeContainer">
-                          </div>
-                          <img src="${priorityIcon}" alt="${allTodos["priority"]} Icon">
-                        </div>
-
-                    </div>`;
+  return `
+    <div onclick="openModal('${allTodos["id"]}')" draggable="true" ondragstart="startDragging('${allTodos["id"]}')" class="listContainerContent">
+      <div class="category" style="${categoryColor}">
+        <span>${allTodos["category"]}</span>
+      </div>
+      <div class="listDiscription">
+        <span class="titleCopy">${allTodos["title"]}</span> <br>
+        <span class="descriptionCopy">${allTodos["description"]}</span>
+      </div>
+      <div id="progressContainer${allTodos["id"]}" class="progressContainer">
+        <div class="limitProgressBar">
+          <div class="progress-bar" role="progressbar" style="width: ${progressOfProgressbar}%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <span class="sr-only subTaskHover">${numberCompletetSubtasks}/${numberOfSubtasks} Subtasks</span>
+      </div>
+      <div class="priorityContainer">
+        <div id="assigneeContainer${allTodos["id"]}" class="assigneeContainer"></div>
+        <img src="${priorityIcon}" alt="${allTodos["priority"]} Icon">
+      </div>
+    </div>
+    <div id="dashedBox${allTodos["id"]}" class="dashed-box" style="display: none;"></div>
+  `;
 }
+
 
 function generateAssigneeCircle(assigneeAbbreviation, assingeeColor) {
   return `                  <svg class="circle" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -120,7 +122,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                         </div>
                         <div id="selected-contacts-Edit" class="selected-contacts-container"></div>
                       </div>
-                      <div class="divider"></div>
+                      <div id="divider" class="divider"></div>
                       <div class="side2">
                         <label for="due-date">Due date <span class="red">*</span></label>
                         <div class="custom-date-picker">
@@ -150,7 +152,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                             </svg>
                           </button>
                         </div>
-                        <label for="custom-category">Category<span class="red">*</span></label>
+                        <label id="labelCategory" for="custom-category">Category<span class="red">*</span></label>
                         <div id="custom-category" class="custom-dropdown" onclick="toggleCategoryDropdown()">
                           <div id="category-input" tabindex="0" class="dropdown-input paddingTop">
                             <span>Select task category</span>
@@ -171,7 +173,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                         </div>
                         <div id="editSubtasks-container"></div>
                       <p class="error-message-mobile"><span class="required">*</span> This field is required</p>
-                      <div class="form-footer-modal space">
+                      <div id="buttonContainerEdit" class="form-footer-modal space">
                         <p class="error-message"><span class="required">*</span> This field is required</p>
                         <div class="addTaskButtonModal desktop">
                          <button onclick="closeModalAddTask()" class="secondaryButton-clear">Cancel 

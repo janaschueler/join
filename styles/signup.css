@@ -21,6 +21,7 @@ body {
 }
 
 .atfNav button {
+  cursor: pointer;
   font-size: 12px;
   padding: 8px 16px !important;
 }
@@ -56,6 +57,7 @@ body {
 }
 
 .primaryButton {
+  cursor: pointer;
   background-color: rgba(42, 54, 71, 1) !important;
   color: rgba(255, 255, 255, 1) !important;
   border: none;
@@ -171,6 +173,17 @@ body {
   color: rgba(41, 171, 226, 1);
 }
 
+#inputNameSignin:focus,
+#inputPassword1Signin:focus,
+#inputPassword2Signin:focus,
+#inputEmailSignin:focus
+ {
+  border: 1px solid rgba(41, 171, 226, 1);
+  outline: none;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
 a {
   text-decoration: none !important;
 }
@@ -189,6 +202,7 @@ footer {
 
 .primaryButton {
   margin-top: 32px;
+  cursor: pointer;
 }
 
 .primaryButton:hover {
@@ -200,6 +214,7 @@ footer {
   border: transparent;
   background-color: transparent;
   position: relative;
+  cursor: pointer;
 }
 
 .buttonBack:hover::before {
@@ -261,7 +276,7 @@ footer {
   position: relative;
 }
 
-.customCheckbox:hover::before  {
+.customCheckbox:hover::before {
   content: "";
   position: absolute;
   top: 50%;
@@ -316,7 +331,7 @@ footer {
   cursor: pointer;
   margin-right: 8px;
   margin-left: 16px;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 75ms ease, border-color 75ms ease;
 }
 
 .customCheckboxContainer input[type="checkbox"]:checked + .customCheckbox {
@@ -352,6 +367,11 @@ input {
 
 .subtasksUnit {
   color: rgba(168, 168, 168, 1) !important;
+}
+
+.formInputContainer input::placeholder {
+  color: rgba(209, 209, 209, 1) !important;
+  opacity: 1;
 }
 
 @media (max-width: 1000px) {

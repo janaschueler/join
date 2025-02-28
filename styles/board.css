@@ -4,7 +4,7 @@ body {
 }
 
 .left-main-bar.collapsed {
-  width: 80px; 
+  width: 80px;
 }
 
 .headerContaine {
@@ -96,7 +96,7 @@ main {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: rgba(128, 128, 128, 0.2); 
+  background-color: rgba(128, 128, 128, 0.2);
   z-index: 4;
 }
 
@@ -204,7 +204,6 @@ h2 {
 
 .secondaryAddButton:hover {
   border-color: rgba(41, 171, 226, 1);
-
 }
 
 .listHeader {
@@ -515,16 +514,16 @@ ol {
 }
 
 .ModalCloseButton:hover::before {
-  width: 200%; 
+  width: 200%;
   height: 200%;
-  top: -50%; 
-  left: -50%; 
+  top: -50%;
+  left: -50%;
 }
 
 .ModalCloseButton:hover {
   width: 12px;
   height: 12px;
-  background-color: transparent; 
+  background-color: transparent;
 }
 
 .ModalCloseButtonAddTask {
@@ -549,7 +548,7 @@ ol {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-color: rgba(128, 128, 128, 0.2); 
+  background-color: rgba(128, 128, 128, 0.2);
   z-index: 4;
 }
 
@@ -782,7 +781,7 @@ table td:first-child {
   height: 32px;
   border-radius: 4px;
   background-color: rgba(128, 128, 128, 0.1);
-  z-index: -1; 
+  z-index: -1;
 }
 
 .groupAssignee {
@@ -830,7 +829,7 @@ table td:first-child {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); 
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .modal-backdrop {
@@ -1031,6 +1030,31 @@ table td:first-child {
   fill: rgba(41, 171, 226, 1);
 }
 
+.subTaskHover {
+  color: white;
+  transition: color 75ms ease;
+}
+
+[id^="progressContainer-"]:hover .subTaskHover {
+  color: rgba(0, 0, 0, 1);
+}
+
+.dashed-box {
+  border: 2px dashed rgba(168, 168, 168, 1);
+  margin: 10px 0;
+  border-radius: 8px;
+  height: 100px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.listContainerContent {
+  transition: transform 75ms ease;
+}
+
+.listContainerContent.dragging {
+  transform: rotate(20deg);
+}
+
 @media (max-width: 1115px) {
   .headerAddTaskModal {
     margin-left: 0px;
@@ -1090,12 +1114,12 @@ table td:first-child {
     gap: 10px;
     background-color: white;
     position: sticky;
-    bottom: 0; 
+    bottom: 0;
     left: 0;
     right: 0;
-    z-index: 1000; 
-    padding-top: 10px; 
-    justify-content: center; 
+    z-index: 1000;
+    padding-top: 10px;
+    justify-content: center;
   }
 
   .addTaskButtonPrimary,
@@ -1103,7 +1127,7 @@ table td:first-child {
   .taskButton-clear {
     margin-top: 16px !important;
   }
-  
+
   .desktop {
     display: none !important;
   }
@@ -1113,7 +1137,6 @@ table td:first-child {
   .mobile {
     display: bock;
   }
-  
 
   .primaryButton {
     display: none !important;

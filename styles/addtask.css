@@ -319,10 +319,6 @@ input:focus {
   margin-right: 16px;
 }
 
-.dropdown-content.visible ~ .dropdown-input #dropdown-icon {
-  transform: rotate(180deg);
-}
-
 #inputField:focus, 
 #description:focus, 
 #assigned-input:focus-within,  /* Hier verwenden wir focus-within für das Parent-Element */
@@ -337,6 +333,9 @@ input:focus {
   outline: none;
 }
 
+.dropdown-content.visible ~ .dropdown-input #dropdown-icon {
+  transform: rotate(180deg);
+}
 
 .focusable:focus,
 .focusable:focus-within {  
