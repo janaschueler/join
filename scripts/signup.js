@@ -101,7 +101,6 @@ async function postToDatabase(path = "", data = {}) {
 
 document.querySelector(".formInputContainer").addEventListener("submit", function (event) {
   event.preventDefault();
-  comparePassword(event);
 });
 
 function signupSuccessfullMessage() {

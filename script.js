@@ -39,6 +39,18 @@ async function guestLogIn() {
   window.location.href = "./index.html";
 }
 
+async function logOut() {
+  let logoutUser = {
+    contactAbbreviation: [""],
+    contactEmail: [""],
+    contactId: "",
+    contactName: [""],
+    contactPassword: [""],  
+  }; 
+  await postSignedInUserToDatabase(logoutUser);
+  window.location.href = "./index.html";
+}
+
 async function postSignedInUserToDatabase(data = {}) {
   const url = `${BASE_URL}signedIn/.json`;
   try {

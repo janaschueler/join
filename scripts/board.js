@@ -5,10 +5,11 @@ let allContacts = { idContact: [], contactName: [], contactAbbreviation: [], col
 
 let currentDraggedElement;
 
-async function inti() {
+async function initi() {
   allTasks = await getDataTasks();
   allContacts = await getDataContacts();
-  loadBoardContent();  
+  loadBoardContent();
+  renderTopBar();
 }
 
 async function getDataTasks(path = "") {
@@ -247,23 +248,22 @@ function findContactColor(name) {
 }
 
 function allowDrop(event) {
-  event.preventDefault(); 
+  event.preventDefault();
   const containerIds = ["ToDoTaskContainer", "inProgressContainer", "TestingContainer", "doneContainer"];
-  containerIds.forEach(containerId => {
+  containerIds.forEach((containerId) => {
     const container = document.getElementById(containerId);
     if (container) {
-      const dashedBox = container.querySelector('.dashed-box');
+      const dashedBox = container.querySelector(".dashed-box");
       if (dashedBox) {
         const lastCard = container.querySelector(".listContainerContent:last-child");
         if (lastCard) {
-          lastCard.insertAdjacentElement('afterend', dashedBox);
+          lastCard.insertAdjacentElement("afterend", dashedBox);
         }
         dashedBox.style.display = "block";
       }
     }
   });
 }
-
 
 function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
@@ -273,11 +273,11 @@ async function drop(status) {
   const task = Object.values(allTasks).find((t) => t.id === currentDraggedElement);
   task.status = status;
   const container = document.getElementById(getContainerIdByStatus(status));
-  const dashedBox = container.querySelector('.dashed-box');  
+  const dashedBox = container.querySelector(".dashed-box");
   try {
     await addStatus(currentDraggedElement, status);
     if (dashedBox) {
-      dashedBox.style.display = "none";  
+      dashedBox.style.display = "none";
     }
   } catch (error) {
     console.error("Fehler beim Aktualisieren des Status:", error);
@@ -285,7 +285,6 @@ async function drop(status) {
   }
   location.reload(true);
 }
-
 
 function startDragging(id) {
   currentDraggedElement = id;
