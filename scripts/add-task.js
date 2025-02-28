@@ -458,18 +458,11 @@ function highlightButton(button) {
   });
 }
 
-<<<<<<< HEAD
 function start() {
   fetchContacts();
   initPriorityButtons();
   renderTopBar();
 }
-=======
-// function start() {
-//   fetchContacts();
-//   initPriorityButtons();
-// }
->>>>>>> c031c3a8b12414db67186060c26d432048e9ca72
 
 function openDatePicker() {
   let dateInput = document.getElementById("due-date");

@@ -7,7 +7,7 @@ async function init() {
     await fetchData();    
     renderTopBar();
     renderSummary();    
-    renderAllStatus(); 
+    await renderAllStatus();
     greetings();
     disableLoadingSpinner();   
 }
@@ -60,7 +60,7 @@ function greetings() {
     greetingsMobileRef.textContent = greeting;  
 }
 
-function renderAllStatus() {
+async function renderAllStatus() {
     findTasksBoard();
     findStatusOne();
     findStatusFour();
@@ -72,37 +72,37 @@ function renderAllStatus() {
 
 function findTasksBoard() {
     let toDoRef = document.getElementById('toDoBoard_content');
-    let foundTasks = allTasks.length;      
+    let foundTasks = allTasks.length || 0;    
     toDoRef.innerHTML = `<div>${foundTasks}</div>`;
 }
 
 function findStatusOne() {
     let toDoRef = document.getElementById('toDoOne_content');
-    let foundTasks = allTasks.filter(element => element.status === 1).length;    
+    let foundTasks = allTasks.filter(element => element.status === 1).length || 0;    
     toDoRef.innerHTML = `<div>${foundTasks}</div>`;
 }
 
 function findStatusTwo() {
     let toDoRef = document.getElementById('toDoTwo_content');
-    let foundTasks = allTasks.filter(element => element.status === 2).length;    
+    let foundTasks = allTasks.filter(element => element.status === 2).length || 0;    
     toDoRef.innerHTML = `<div>${foundTasks}</div>`;
 }
 
 function findStatusThree() {
     let toDoRef = document.getElementById('toDoThree_content');
-    let foundTasks = allTasks.filter(element => element.status === 3).length;    
+    let foundTasks = allTasks.filter(element => element.status === 3).length || 0;    
     toDoRef.innerHTML = `<div>${foundTasks}</div>`;
 }
 
 function findStatusFour() {
     let toDoRef = document.getElementById('toDoFour_content');
-    let foundTasks = allTasks.filter(element => element.status === 4).length;    
+    let foundTasks = allTasks.filter(element => element.status === 4).length || 0;    
     toDoRef.innerHTML = `<div>${foundTasks}</div>`;
 }
 
 function findUrgent () {
     let urgentRef = document.getElementById('urgent_content');    
-    let foundUrgent = allTasks.filter(element => element.priority === "urgent").length;    
+    let foundUrgent = allTasks.filter(element => element.priority === "urgent").length || 0;    
     urgentRef.innerHTML = `<div>${foundUrgent}</div>`;
 }
 
