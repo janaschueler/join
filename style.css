@@ -11,6 +11,10 @@ h1 {
   font-family: "Inter 18pt";
 }
 
+.active {
+  background-color: #007bff;
+}
+
 body {
   font-family: "Inter 18pt";
   font-weight: normal;

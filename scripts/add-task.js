@@ -457,10 +457,11 @@ function highlightButton(button) {
   });
 }
 
-// function start() {
-//   fetchContacts();
-//   initPriorityButtons();
-// }
+function start() {
+  fetchContacts();
+  initPriorityButtons();
+  renderTopBar();
+}
 
 function openDatePicker() {
   let dateInput = document.getElementById("due-date");
