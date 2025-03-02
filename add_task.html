@@ -165,13 +165,14 @@
             <input type="hidden" id="category" required>
 
             <label for="category">Subtasks</label>
-            <div class="input-wrapper">
-              <input type="text" id="new-subtask-input" placeholder="add new sub task">
-              <button class="iconAdd" type="button" onclick="addSubtask()">
-              </button>
-            </div>
+            <div class="input-wrapper" id="inputWrapper">
+              <input type="text" id="new-subtask-input" placeholder="add new sub task" onfocus="transformButton()"/>
+              <button id="iconAddButton" class="iconAdd" type="button" onclick="addSubtask()"></button>
+          </div>
+          
             <div id="subtasks-container">
             </div>
+
             <p class="error-message-mobile"><span class="required">*</span> This field is required</p>
 
 

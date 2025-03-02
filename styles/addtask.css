@@ -524,6 +524,21 @@ input:focus {
   margin-right: 8px;
 }
 
+.clearSubtask {
+  position: absolute;
+  cursor: pointer;
+  top:18px;
+  right: 34px;
+  width: 12px;
+  height: 12px;
+  background-image: url("../assets/icons/close.svg");
+  border: none !important;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-color: white;
+}
+
 .iconAdd:hover::before {
   content: "";
   position: absolute;
@@ -627,6 +642,19 @@ input:focus {
   margin-top: 14px;
 }
 
+.lineSubtaskAddnewSubtask {
+  background-image: url(../assets/icons/verticalLine.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  right:28px;
+  background-size: 20px;
+  position: relative;
+  width: 1px;
+  height: 16px;
+  margin-right: -8px;
+  align-self: center;
+}
+
 .deleteSubtask {
   position: absolute;
   background-image: url(../assets/icons/delete.svg);
@@ -662,6 +690,17 @@ input:focus {
   justify-content: center;
   top: 4px !important;
   z-index: 5;
+}
+
+.acceptBtnSubtask {
+  background-image: url(../assets/icons/check_blue.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 28px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 5;
+  background-size: 11px;
 }
 
 .acceptBtn:hover::before {

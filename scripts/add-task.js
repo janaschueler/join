@@ -1,4 +1,4 @@
-let BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
+let BASE_URL = "https://join2-72adb-default-rtdb.europe-west1.firebasedatabase.app/";
 
 let tasks = [];
 let selectedPriority = null;
@@ -491,4 +491,35 @@ function addSubtask() {
 
   subTaskContainer.innerHTML += addSubtaskTemplate(subTaskInput, subTaskCount);
   subTaskInputRef.value = "";
+  resetButton();
+}
+
+function clearForm() {
+  document.getElementById("new-subtask-input").value = "";
+  resetButton();
+}
+
+function transformButton() {
+  const buttonContainer = document.getElementById("iconAddButton");
+  buttonContainer.outerHTML = `
+      <button id="clearInput" onclick="clearInput()" class="editSubtask"></button>
+      <span class="clearSubtask"></span>
+      <span class="lineSubtaskAddnewSubtask"></span>
+      <button id="editBtnModal" onclick="addSubtask()" class="acceptBtnSubtask"></button>
+  `;
+}
+
+function resetButton() {
+  const inputWrapper = document.getElementById("inputWrapper");
+
+  inputWrapper.innerHTML = `
+      <input 
+          type="text" 
+          id="new-subtask-input" 
+          placeholder="add new sub task" 
+          onfocus="transformButton()" 
+          onblur="resetButton()" 
+      />
+      <button id="iconAddButton" class="iconAdd" type="button" onclick="addSubtask()"></button>
+  `;
 }

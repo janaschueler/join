@@ -1,4 +1,4 @@
-BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
+BASE_URL = "https://join2-72adb-default-rtdb.europe-west1.firebasedatabase.app/";
 
 let allTasks = { id: [], assignedTo: [], category: [], createdAt: [], description: [], dueDate: [], priority: [], subtasks: [], title: [], status: [], subtasksStatus: [], categoryColor: [] };
 let allContacts = { idContact: [], contactName: [], contactAbbreviation: [], color: [] };
@@ -274,6 +274,10 @@ async function drop(status) {
   task.status = status;
   const container = document.getElementById(getContainerIdByStatus(status));
   const dashedBox = container.querySelector(".dashed-box");
+  const rotatingElement = document.querySelector(`[onclick="openModal('${currentDraggedElement}')"]`);
+  if (rotatingElement) {
+    rotatingElement.classList.remove("rotating");
+  }
   try {
     await addStatus(currentDraggedElement, status);
     if (dashedBox) {
@@ -288,6 +292,11 @@ async function drop(status) {
 
 function startDragging(id) {
   currentDraggedElement = id;
+
+  const element = document.querySelector(`[onclick="openModal('${id}')"]`);
+  if (element) {
+    element.classList.add("rotating");
+  }
 }
 
 document.getElementById("searchForm").addEventListener("submit", function (e) {
@@ -396,6 +405,7 @@ function openModal(id) {
       backdrop.style.opacity = "1";
 
       modal.style.visibility = "visible";
+      type = "button";
       modal.classList.remove("hide");
       modal.classList.add("show");
     })
@@ -405,6 +415,9 @@ function openModal(id) {
 }
 
 function closeModal(event) {
+  if (!event) {
+    return;
+  }
   var modal = document.getElementById("modalTaskSummary");
   var backdrop = document.getElementById("taskSummaryModal");
 
@@ -501,10 +514,16 @@ function convertTask(dueDate) {
 }
 
 function closeModalAddTask(event) {
+  if (!event) {
+    return;
+  }
+
+  event.preventDefault();
+
   var modal = document.getElementById("modalEditTask");
   var backdrop = document.getElementById("editTaskSectionModal");
 
-  if (!event || event.target === backdrop || event.target.classList.contains("ModalCloseButtonAddTask")) {
+  if (!event || event.target === backdrop || event.target.classList.contains("secondaryButton-clear") || event.target.classList.contains("ModalCloseButtonAddTask")) {
     modal.classList.add("hide");
     backdrop.classList.add("hide");
 
@@ -562,8 +581,6 @@ function initEditModal(id, dateTask, priorityTask, categoryTask) {
     document.getElementById("buttonContainerEdit").style.marginTop = "32px";
     document.getElementById("modalEditTask").style.height = "750px";
     document.getElementById("divider").style.height = "350px";
-  } else {
-    selectCategory(categoryTask, 0);
   }
   determineAssignedToEditModal(id);
 }
@@ -606,7 +623,10 @@ function addSubtaskinEditModal(id) {
   });
 }
 
-function addAdditionalSubtaskinEditModal(id) {
+function addAdditionalSubtaskinEditModal(event, id) {
+  event.preventDefault();
+  event.stopPropagation();
+
   let subTaskInputRef = document.getElementById("new-subtask-input-Edit");
   let subTaskInput = subTaskInputRef.value.trim();
   let subTaskContainer = document.getElementById("editSubtasks-container");
@@ -616,14 +636,8 @@ function addAdditionalSubtaskinEditModal(id) {
   }
 
   let tasks = allTasks.filter((t) => t["id"] === id);
-  let numberOfSubTaskInput;
-
-  if (!tasks[0]?.subtasks?.length) {
-    numberOfSubTaskInput = 0;
-  } else {
-    numberOfSubTaskInput = tasks[0].subtasks.length;
-  }
-  subTaskCount = numberOfSubTaskInput + 1;
+  let numberOfSubTaskInput = tasks[0]?.subtasks?.length || 0;
+  let subTaskCount = numberOfSubTaskInput + 1;
 
   subTaskContainer.innerHTML += addSubtaskTemplateinModal(subTaskInput, subTaskCount);
   subTaskInputRef.value = "";
@@ -855,6 +869,30 @@ function determineAssignedToEditModal(id) {
     }
   });
 }
+
+window.toggleContactSelectionEditPreselected = function (contactId, contactName, contactColor) {
+  const checkbox = document.getElementById(`edit-contact-${contactId}`);
+  if (!checkbox) return;
+
+  setTimeout(() => {
+    const container = checkbox.closest(".customCheckboxContainer");
+    const input = document.getElementById("search-contacts-edit");
+
+    if (!checkbox.checked) {
+      checkbox.checked = true;
+      container.classList.add("checked");
+
+      if (!selectedContacts.some((c) => c.id === contactId)) {
+        selectedContacts.push({ id: contactId, name: contactName, color: contactColor });
+      }
+
+      input.value = "";
+      filterContactsEdit();
+    }
+
+    updateSelectedContactsEdit();
+  }, 0);
+};
 
 async function addTaskModal(id, status) {
   if (!id) {

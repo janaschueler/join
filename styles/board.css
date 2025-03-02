@@ -27,6 +27,11 @@ body {
   width: 100%;
 }
 
+.rotating {
+  transition: transform 75ms ease;
+  transform: rotate(3deg);
+}
+
 .secondaryButton {
   background-color: transparent;
   color: rgba(42, 54, 71, 1) !important;
