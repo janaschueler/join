@@ -6,11 +6,11 @@ function generateToDoHTML(allTodos, priorityIcon, numberOfSubtasks, progressOfPr
           <span>${allTodos["category"]}</span>
         </div>
         <div class="moveStatus">
-          <button id="arrowUp" onclick="openStatusNav(event)" class="iconArrowUp"></button>
-          <button id="arrowDown" onclick="closeStatusNav(event)" class="iconArrowDown"></button>
+          <button id="arrowUp${allTodos["id"]}" onclick="openStatusNav(event, '${allTodos["id"]}')" class="iconArrowUp"></button>
+          <button id="arrowDown${allTodos["id"]}" onclick="closeStatusNav(event, '${allTodos["id"]}')" class="iconArrowDown"></button>
         </div>
       </div>
-      <div id="statusMenu" class="statusDialogMain">
+      <div id="statusMenu${allTodos["id"]}" class="statusDialogMain">
         <div class="statusDialogArea">
           <div class="statusDialogNav">
             <a class="dialogLinks" onclick="addStatusBoard('${allTodos["id"]}', 1, event)">ToDo</a>
@@ -58,7 +58,7 @@ function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate, categ
               <div class="category" style="${categoryColor}">
               <span>${allTodos["category"]}</span>
               </div>
-              <button onclick="closeModal()"  type="button" class="ModalCloseButton"></button>
+              <button onclick="closeModal()"  type="button" class="modalCloseButton"></button>
             </div>
             <div class="listDiscription">
               <h1 class="mobileHeadline" >${allTodos["title"]}</h1> 
@@ -120,7 +120,7 @@ function generateSubtasks(allTodos, subtask, index, isChecked = false) {
 function addEditTask(title, description, id, status, buttonCopy, headline) {
   return `          <div class="headerAddTaskModal">
                       <p class="ModalHeadline">${headline}</p>
-                      <button onclick="closeModalAddTask(event)" type="button" class="ModalCloseButtonAddTask"></button>
+                      <button onclick="closeModalAddTask(event)" type="button" class="modalCloseButtonAddTask"></button>
                     </div>
                     <form class="task-form">
                       <div class="side1">
@@ -233,4 +233,20 @@ function addInputFieldinModal(id, subTaskInput) {
                                   </button>
                                   <button onclick="acceptEdit('${id}')" class="acceptBtn"></button>
                               </div>`;
+}
+
+function addtransformedButton(id) {
+  return `                  
+      <button id="resetButton" onclick="handleButtonClick(event, '${id}')" class="resetSubtaskInput"></button>
+      <span class="clearSubtask"></span>
+      <span class="lineSubtaskAddnewSubtaskEdit"></span>
+      <button id="editBtnModal" onclick="addAdditionalSubtaskinEditModal(event, '${id}')" class="acceptBtnSubtask"></button>
+  `;
+}
+
+function returnTransformedButton(id) {
+  return `
+       <input type="text" id="new-subtask-input-Edit" placeholder="add new sub task" onfocus="transformButtonEdit('${id}')"/>
+       <button id="iconAddButtonEdit" class="iconAdd center" type="button" onclick="addAdditionalSubtaskinEditModal(event, '${id}')"></button>
+  `;
 }

@@ -570,7 +570,7 @@ ol {
   word-wrap: break-word;
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.3s ease, transform 75ms ease;
 }
 
 #modalTaskSummary.show {
@@ -603,10 +603,9 @@ ol {
   opacity: 0;
 }
 
-.ModalCloseButton {
+.modalCloseButton {
   position: absolute;
   cursor: pointer;
-  top: 24px;
   right: 24px;
   width: 12px;
   height: 12px;
@@ -618,7 +617,7 @@ ol {
   background-color: white;
 }
 
-.ModalCloseButton::before {
+.modalCloseButton::before {
   content: "";
   position: absolute;
   top: 0;
@@ -628,20 +627,20 @@ ol {
   z-index: -1;
 }
 
-.ModalCloseButton:hover::before {
+.modalCloseButton:hover::before {
   width: 200%;
   height: 200%;
   top: -50%;
   left: -50%;
 }
 
-.ModalCloseButton:hover {
+.modalCloseButton:hover {
   width: 12px;
   height: 12px;
   background-color: transparent;
 }
 
-.ModalCloseButtonAddTask {
+.modalCloseButtonAddTask {
   top: 24px;
   right: 24px;
   width: 12px;
@@ -654,7 +653,7 @@ ol {
   background-color: white;
 }
 
-.ModalCloseButtonAddTask:hover::before {
+.modalCloseButtonAddTask:hover::before {
   content: "";
   position: absolute;
   top: 64px;
@@ -667,7 +666,7 @@ ol {
   z-index: 4;
 }
 
-.headerAddTaskModal .ModalCloseButtonAddTask {
+.headerAddTaskModal .modalCloseButtonAddTask {
   margin-top: 32px;
   margin-right: 32px;
 }
@@ -968,20 +967,20 @@ table td:first-child {
   visibility: hidden;
   opacity: 0;
   overflow: auto;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.3s ease, transform 75 ease;
 }
 
 .modalAddTask.show {
   visibility: visible;
   opacity: 1;
   transform: translate(-50%, -50%) translateX(0);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.5s ease, transform 100ms ease;
 }
 
 .modalAddTask.hide {
   opacity: 0;
   transform: translate(-50%, -50%) translateX(100%);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.5s ease, transform 100ms ease;
 }
 
 .show {
