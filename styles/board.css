@@ -27,6 +27,11 @@ body {
   width: 100%;
 }
 
+.rotating {
+  transition: transform 75ms ease;
+  transform: rotate(3deg);
+}
+
 .secondaryButton {
   background-color: transparent;
   color: rgba(42, 54, 71, 1) !important;
@@ -801,10 +806,6 @@ table td:first-child {
   display: inline-block;
 }
 
-.input-wrapper input {
-  padding-right: 40px;
-}
-
 .input-wrapper button {
   position: absolute;
   top: 0;
@@ -1053,6 +1054,20 @@ table td:first-child {
 
 .listContainerContent.dragging {
   transform: rotate(20deg);
+}
+
+.lineSubtaskAddnewSubtaskEdit {
+  background-image: url(../assets/icons/verticalLine.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  right: 34px;
+  background-size: 20px;
+  width: 1px;
+  height: 16px;
+  margin-right: -8px;
+  align-self: center;
+  top: 16px;
 }
 
 @media (max-width: 1115px) {

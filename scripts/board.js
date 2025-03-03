@@ -1,14 +1,15 @@
-BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
+BASE_URL = "https://join2-72adb-default-rtdb.europe-west1.firebasedatabase.app/";
 
 let allTasks = { id: [], assignedTo: [], category: [], createdAt: [], description: [], dueDate: [], priority: [], subtasks: [], title: [], status: [], subtasksStatus: [], categoryColor: [] };
 let allContacts = { idContact: [], contactName: [], contactAbbreviation: [], color: [] };
 
 let currentDraggedElement;
 
-async function inti() {
+async function initi() {
   allTasks = await getDataTasks();
   allContacts = await getDataContacts();
-  loadBoardContent();  
+  loadBoardContent();
+  renderTopBar();
 }
 
 async function getDataTasks(path = "") {
@@ -247,23 +248,22 @@ function findContactColor(name) {
 }
 
 function allowDrop(event) {
-  event.preventDefault(); 
+  event.preventDefault();
   const containerIds = ["ToDoTaskContainer", "inProgressContainer", "TestingContainer", "doneContainer"];
-  containerIds.forEach(containerId => {
+  containerIds.forEach((containerId) => {
     const container = document.getElementById(containerId);
     if (container) {
-      const dashedBox = container.querySelector('.dashed-box');
+      const dashedBox = container.querySelector(".dashed-box");
       if (dashedBox) {
         const lastCard = container.querySelector(".listContainerContent:last-child");
         if (lastCard) {
-          lastCard.insertAdjacentElement('afterend', dashedBox);
+          lastCard.insertAdjacentElement("afterend", dashedBox);
         }
         dashedBox.style.display = "block";
       }
     }
   });
 }
-
 
 function drag(ev) {
   ev.dataTransfer.setData("text", ev.target.id);
@@ -273,11 +273,15 @@ async function drop(status) {
   const task = Object.values(allTasks).find((t) => t.id === currentDraggedElement);
   task.status = status;
   const container = document.getElementById(getContainerIdByStatus(status));
-  const dashedBox = container.querySelector('.dashed-box');  
+  const dashedBox = container.querySelector(".dashed-box");
+  const rotatingElement = document.querySelector(`[onclick="openModal('${currentDraggedElement}')"]`);
+  if (rotatingElement) {
+    rotatingElement.classList.remove("rotating");
+  }
   try {
     await addStatus(currentDraggedElement, status);
     if (dashedBox) {
-      dashedBox.style.display = "none";  
+      dashedBox.style.display = "none";
     }
   } catch (error) {
     console.error("Fehler beim Aktualisieren des Status:", error);
@@ -286,9 +290,13 @@ async function drop(status) {
   location.reload(true);
 }
 
-
 function startDragging(id) {
   currentDraggedElement = id;
+
+  const element = document.querySelector(`[onclick="openModal('${id}')"]`);
+  if (element) {
+    element.classList.add("rotating");
+  }
 }
 
 document.getElementById("searchForm").addEventListener("submit", function (e) {
@@ -397,6 +405,7 @@ function openModal(id) {
       backdrop.style.opacity = "1";
 
       modal.style.visibility = "visible";
+      type = "button";
       modal.classList.remove("hide");
       modal.classList.add("show");
     })
@@ -406,6 +415,9 @@ function openModal(id) {
 }
 
 function closeModal(event) {
+  if (!event) {
+    return;
+  }
   var modal = document.getElementById("modalTaskSummary");
   var backdrop = document.getElementById("taskSummaryModal");
 
@@ -502,10 +514,16 @@ function convertTask(dueDate) {
 }
 
 function closeModalAddTask(event) {
+  if (!event) {
+    return;
+  }
+
+  event.preventDefault();
+
   var modal = document.getElementById("modalEditTask");
   var backdrop = document.getElementById("editTaskSectionModal");
 
-  if (!event || event.target === backdrop || event.target.classList.contains("ModalCloseButtonAddTask")) {
+  if (!event || event.target === backdrop || event.target.classList.contains("secondaryButton-clear") || event.target.classList.contains("ModalCloseButtonAddTask")) {
     modal.classList.add("hide");
     backdrop.classList.add("hide");
 
@@ -563,8 +581,6 @@ function initEditModal(id, dateTask, priorityTask, categoryTask) {
     document.getElementById("buttonContainerEdit").style.marginTop = "32px";
     document.getElementById("modalEditTask").style.height = "750px";
     document.getElementById("divider").style.height = "350px";
-  } else {
-    selectCategory(categoryTask, 0);
   }
   determineAssignedToEditModal(id);
 }
@@ -607,7 +623,10 @@ function addSubtaskinEditModal(id) {
   });
 }
 
-function addAdditionalSubtaskinEditModal(id) {
+function addAdditionalSubtaskinEditModal(event, id) {
+  event.preventDefault();
+  event.stopPropagation();
+
   let subTaskInputRef = document.getElementById("new-subtask-input-Edit");
   let subTaskInput = subTaskInputRef.value.trim();
   let subTaskContainer = document.getElementById("editSubtasks-container");
@@ -617,17 +636,12 @@ function addAdditionalSubtaskinEditModal(id) {
   }
 
   let tasks = allTasks.filter((t) => t["id"] === id);
-  let numberOfSubTaskInput;
-
-  if (!tasks[0]?.subtasks?.length) {
-    numberOfSubTaskInput = 0;
-  } else {
-    numberOfSubTaskInput = tasks[0].subtasks.length;
-  }
-  subTaskCount = numberOfSubTaskInput + 1;
+  let numberOfSubTaskInput = tasks[0]?.subtasks?.length || 0;
+  let subTaskCount = numberOfSubTaskInput + 1;
 
   subTaskContainer.innerHTML += addSubtaskTemplateinModal(subTaskInput, subTaskCount);
   subTaskInputRef.value = "";
+  resetButtonEdit(id);
 }
 
 function acceptEdit(id) {
@@ -857,6 +871,30 @@ function determineAssignedToEditModal(id) {
   });
 }
 
+window.toggleContactSelectionEditPreselected = function (contactId, contactName, contactColor) {
+  const checkbox = document.getElementById(`edit-contact-${contactId}`);
+  if (!checkbox) return;
+
+  setTimeout(() => {
+    const container = checkbox.closest(".customCheckboxContainer");
+    const input = document.getElementById("search-contacts-edit");
+
+    if (!checkbox.checked) {
+      checkbox.checked = true;
+      container.classList.add("checked");
+
+      if (!selectedContacts.some((c) => c.id === contactId)) {
+        selectedContacts.push({ id: contactId, name: contactName, color: contactColor });
+      }
+
+      input.value = "";
+      filterContactsEdit();
+    }
+
+    updateSelectedContactsEdit();
+  }, 0);
+};
+
 async function addTaskModal(id, status) {
   if (!id) {
     addTaskModalNewTask(status);
@@ -957,4 +995,33 @@ async function addTaskModalNewTask(status) {
 function openDatePickerModal() {
   let dateInput = document.getElementById("due-date-edit");
   dateInput.showPicker();
+}
+
+function transformButtonEdit(id) {
+  const buttonContainer = document.querySelector("#iconAddButtonEdit");
+  if (!buttonContainer) return;
+  buttonContainer.outerHTML = `
+      <button id="resetButton" onclick="handleButtonClick(event, '${id}')" class="editSubtask"></button>
+      <span class="clearSubtask"></span>
+      <span class="lineSubtaskAddnewSubtaskEdit"></span>
+      <button id="editBtnModal" onclick="addAdditionalSubtaskinEditModal(event, '${id}')" class="acceptBtnSubtask"></button>
+  `;
+}
+
+function resetButtonEdit(id) {
+  const inputWrapper = document.getElementById("inputWrapperEdit");
+
+  inputWrapper.innerHTML = `
+       <input type="text" id="new-subtask-input-Edit" placeholder="add new sub task" onfocus="transformButtonEdit('${id}')"/>
+       <button id="iconAddButtonEdit" class="iconAdd center" type="button" onclick="addAdditionalSubtaskinEditModal(event, '${id}')"></button>
+  `;
+}
+
+function handleButtonClick(event, id) {
+  if (["mouse", "touch", "pen"].includes(event.pointerType)) {
+    resetButtonEdit(id);
+    console.log("Button wurde per Mausklick oder Touch ausgelöst.");
+  } else {
+    addAdditionalSubtaskinEditModal(event, id);
+  }
 }

@@ -1,4 +1,4 @@
-const BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
+const BASE_URL = "https://join2-72adb-default-rtdb.europe-west1.firebasedatabase.app/";
 
 const allContacts = {
   contacKey: [],
@@ -101,7 +101,6 @@ async function postToDatabase(path = "", data = {}) {
 
 document.querySelector(".formInputContainer").addEventListener("submit", function (event) {
   event.preventDefault();
-  comparePassword(event);
 });
 
 function signupSuccessfullMessage() {

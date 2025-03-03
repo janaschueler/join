@@ -23,7 +23,7 @@ function templateTopBar(AB) {
               <a class="dialog_links" href="privacy-policy.html">Privacy Policy</a>
             </div>
             <div class="dialog_nav">
-              <a class="dialog_links" href="login.html">Log out</a>
+              <a class="dialog_links" onclick="logOut()" href="login.html">Log out</a>
             </div>
           </div>
         </div>`;

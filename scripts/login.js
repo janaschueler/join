@@ -1,11 +1,10 @@
-const BASE_URL = "https://join-ab0ac-default-rtdb.europe-west1.firebasedatabase.app/";
+const BASE_URL = "https://join2-72adb-default-rtdb.europe-west1.firebasedatabase.app/";
 
 let allUser = { contactEmail: [], contactPassword: [], contactId: [], contactName: [], contactAbbreviation: [] };
 
 function init() {
   showLoadingMessage();
-} 
-
+}
 
 function showLoadingMessage() {
   if (window.innerWidth > 480) {
@@ -17,7 +16,6 @@ function showLoadingMessage() {
     showMobileContent();
   }
 }
-
 
 function showDesktopLoadingMessage() {
   const loadingMessage = document.getElementById("loadingMessage");
@@ -37,7 +35,6 @@ function showDesktopLoadingMessage() {
   }, 2000);
 }
 
-
 function showDesktopContent() {
   const loginContainer = document.getElementById("loginContainer");
   const footer = document.getElementById("footer");
@@ -51,7 +48,6 @@ function showDesktopContent() {
     header.classList.add("show");
   }, 1500);
 }
-
 
 function showMobileLoadingMessage() {
   const loadingMessageMobile = document.getElementById("loadingMessageMobile");
@@ -67,7 +63,6 @@ function showMobileLoadingMessage() {
   }, 1000);
 }
 
-
 function switchMobileLogo() {
   const mobileLogoChange = document.getElementById("mobileLogoChange");
   const mobileLogoChangeDark = document.getElementById("mobileLogoChangeDark");
@@ -78,7 +73,6 @@ function switchMobileLogo() {
     mobileLogoChangeDark.style.visibility = "visible";
   }, 1500);
 }
-
 
 function showMobileContent() {
   const loginContainer = document.getElementById("loginContainer");
@@ -94,7 +88,6 @@ function showMobileContent() {
   }, 1500);
 }
 
-
 function hideLoadingBackground() {
   const loadingBackground = document.getElementById("loadingBackground");
   loadingBackground.style.opacity = "0";
@@ -102,7 +95,6 @@ function hideLoadingBackground() {
     loadingBackground.style.display = "none";
   }, 1000);
 }
-
 
 async function getData(path = "") {
   let response = await fetch(BASE_URL + "signup/" + "user/" + path + ".json");
@@ -122,25 +114,23 @@ async function getData(path = "") {
   return users;
 }
 
-
 async function initializeCheck() {
   allUser = await getData();
   checkLogin();
 }
-
 
 document.querySelector("#LoginButton").addEventListener("click", function (event) {
   event.preventDefault();
   initializeCheck();
 });
 
-
 function checkLogin() {
   let loginEmail = document.getElementById("inputEmail").value;
   let loginPassword = document.getElementById("inputPassword1").value;
   let user = allUser.find((user) => {
-    return user.contactEmail === loginEmail && user.contactPassword === loginPassword;
+    return user?.contactEmail?.[0]?.toLowerCase()?.trim() === loginEmail.toLowerCase().trim() && user?.contactPassword?.[0] === loginPassword;
   });
+
   if (user) {
     transfereLoginData(user);
     setTimeout(() => {
@@ -158,7 +148,6 @@ document.querySelector(".formInputContainer").addEventListener("click", function
   document.getElementById("wrongPassword").classList.add("d-none");
 });
 
-
 function handleResize() {
   const loadingMessageMobile = document.getElementById("loadingMessageMobile");
   const loadingMessage = document.getElementById("loadingMessage");
@@ -174,7 +163,6 @@ function handleResize() {
     }
   }
 }
-
 
 window.addEventListener("load", handleResize);
 window.addEventListener("resize", handleResize);
