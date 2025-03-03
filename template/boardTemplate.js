@@ -194,7 +194,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
 function addSubtaskTemplateinModal(subTaskInput, id) {
   return `                <div id="editSubTaskUnit${id}" class="input-wrapper">
                               <li id="edit${id}" class="formateList subtask-text">${subTaskInput}</li>
-                              <button id="editBtn${id}" onclick=" editSubtaskinModal('${id}', '${subTaskInput}')" class="editSubtask">
+                              <button id="editBtn${id}" onclick=" editSubtaskinModal('${id}', '${subTaskInput}')" class="resetSubtaskInput">
                                 <span class="editIconSubtask"></span>
                                 <span class="lineSubtask"></span>
                               </button>
