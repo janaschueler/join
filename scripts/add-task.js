@@ -502,7 +502,7 @@ function clearForm() {
 function transformButton() {
   const buttonContainer = document.getElementById("iconAddButton");
   buttonContainer.outerHTML = `
-      <button id="clearInput" onclick="clearInput()" class="editSubtask"></button>
+      <button id="clearInput" onclick="resetButton()" class="editSubtask"></button>
       <span class="clearSubtask"></span>
       <span class="lineSubtaskAddnewSubtask"></span>
       <button id="editBtnModal" onclick="addSubtask()" class="acceptBtnSubtask"></button>

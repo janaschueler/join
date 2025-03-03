@@ -166,9 +166,9 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                         </div>
                         <input type="hidden" id="category" required>                        
                         <label for="category">Subtasks</label>
-                        <div class="input-wrapper">
-                          <input type="text" id="new-subtask-input-Edit" placeholder="add new sub task">
-                          <button class="iconAdd center" type="button" onclick="addAdditionalSubtaskinEditModal(event, '${id}')"></button>
+                        <div class="input-wrapper"  id="inputWrapperEdit">
+                          <input type="text" id="new-subtask-input-Edit" placeholder="add new sub task" onfocus="transformButtonEdit('${id}')"/>
+                          <button id="iconAddButtonEdit" class="iconAdd center" type="button"></button>
                         </div>
                         <div id="editSubtasks-container"></div>
                       <p class="error-message-mobile"><span class="required">*</span> This field is required</p>

@@ -641,6 +641,7 @@ function addAdditionalSubtaskinEditModal(event, id) {
 
   subTaskContainer.innerHTML += addSubtaskTemplateinModal(subTaskInput, subTaskCount);
   subTaskInputRef.value = "";
+  resetButtonEdit(id);
 }
 
 function acceptEdit(id) {
@@ -994,4 +995,33 @@ async function addTaskModalNewTask(status) {
 function openDatePickerModal() {
   let dateInput = document.getElementById("due-date-edit");
   dateInput.showPicker();
+}
+
+function transformButtonEdit(id) {
+  const buttonContainer = document.querySelector("#iconAddButtonEdit");
+  if (!buttonContainer) return;
+  buttonContainer.outerHTML = `
+      <button id="resetButton" onclick="handleButtonClick(event, '${id}')" class="editSubtask"></button>
+      <span class="clearSubtask"></span>
+      <span class="lineSubtaskAddnewSubtaskEdit"></span>
+      <button id="editBtnModal" onclick="addAdditionalSubtaskinEditModal(event, '${id}')" class="acceptBtnSubtask"></button>
+  `;
+}
+
+function resetButtonEdit(id) {
+  const inputWrapper = document.getElementById("inputWrapperEdit");
+
+  inputWrapper.innerHTML = `
+       <input type="text" id="new-subtask-input-Edit" placeholder="add new sub task" onfocus="transformButtonEdit('${id}')"/>
+       <button id="iconAddButtonEdit" class="iconAdd center" type="button" onclick="addAdditionalSubtaskinEditModal(event, '${id}')"></button>
+  `;
+}
+
+function handleButtonClick(event, id) {
+  if (["mouse", "touch", "pen"].includes(event.pointerType)) {
+    resetButtonEdit(id);
+    console.log("Button wurde per Mausklick oder Touch ausgelöst.");
+  } else {
+    addAdditionalSubtaskinEditModal(event, id);
+  }
 }
