@@ -19,7 +19,7 @@ async function renderTopBar() {
   let contactAbbreviation = logedInUser.contactAbbreviation.join("");
   if (!contactAbbreviation) {
     contactAbbreviation = "G";
-  }   
+  }
   topBarRef.innerHTML += templateTopBar(contactAbbreviation);
 }
 
@@ -33,8 +33,8 @@ async function guestLogIn() {
     contactEmail: [""],
     contactId: "",
     contactName: ["Guest"],
-    contactPassword: [""],  
-  }; 
+    contactPassword: [""],
+  };
   await postSignedInUserToDatabase(guest);
   window.location.href = "./index.html";
 }
@@ -63,7 +63,40 @@ async function getSigneInUserData() {
   let response = await fetch(BASE_URL + "signedIn/" + ".json");
   let logedInUsers = await response.json();
   return logedInUsers;
-  let deskMenuRef = document.getElementById('deskMenu_content');
-  deskMenuRef.classList.toggle('d_none');
-  event.preventDefault();
 }
+
+// function getColorById(contactId) {
+//   let sum = 0;
+//   for (let i = 0; i < contactId.length; i++) {
+//     sum += contactId.charCodeAt(i);
+//   }
+//   let index = sum % coloursArray.length;
+//   return coloursArray[index];
+// }
+
+// async function postData(path = "", data = {}) {
+//   let response = await fetch(BASE_URL + path + ".json", {
+//       method: "POST",
+//       headers: {
+//           "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(data),
+//   });
+//   return responseToJson = await response.json();
+// }
+
+// async function addContactLogIn() {
+//   let signInUserData = getSigneInUserData();
+//   let contactName = signInUserData.contactName;
+//   let contactEmail = signInUserData.contactName;
+//   let firebaseId = await getFirebaseId(selectedContactId);
+//   let contactId = Date.now().toString();
+//   let newContact = {
+//     id: contactId,
+//     name: contactName,
+//     email: contactEmail,
+//     color: getColorById(contactId),
+//   };
+//   await postData("contacts", newContact);
+//   selectedContactId = newContact.id;
+// }
