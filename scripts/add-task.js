@@ -491,25 +491,28 @@ function addSubtask() {
 
   subTaskContainer.innerHTML += addSubtaskTemplate(subTaskInput, subTaskCount);
   subTaskInputRef.value = "";
-  resetButton();
+  resetButtonAddTask();
 }
 
 function clearForm() {
   document.getElementById("new-subtask-input").value = "";
-  resetButton();
+  resetButtonAddTask();
 }
 
-function transformButton() {
+function transformButtonAddTask() {
   const buttonContainer = document.getElementById("iconAddButton");
+  if (!buttonContainer) {
+    return;
+  }
   buttonContainer.outerHTML = `
-      <button id="clearInput" onclick="resetButton()" class="editSubtask"></button>
+      <button id="clearInput" onclick="esetButtonAddTask()" class="editSubtask"></button>
       <span class="clearSubtask"></span>
       <span class="lineSubtaskAddnewSubtask"></span>
       <button id="editBtnModal" onclick="addSubtask()" class="acceptBtnSubtask"></button>
   `;
 }
 
-function resetButton() {
+function resetButtonAddTask() {
   const inputWrapper = document.getElementById("inputWrapper");
 
   inputWrapper.innerHTML = `
@@ -517,9 +520,17 @@ function resetButton() {
           type="text" 
           id="new-subtask-input" 
           placeholder="add new sub task" 
-          onfocus="transformButton()" 
-          onblur="resetButton()" 
+          onfocus="transformButtonAddTask()" 
+          onblur="resetButtonAddTask()" 
       />
       <button id="iconAddButton" class="iconAdd" type="button" onclick="addSubtask()"></button>
   `;
+}
+
+function handleButtonClickAddTask() {
+  if (["mouse", "touch", "pen"].includes(event.pointerType)) {
+    resetButtonAddTask();
+  } else {
+    addSubtask();
+  }
 }

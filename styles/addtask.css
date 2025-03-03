@@ -570,6 +570,19 @@ input:focus {
   z-index: 10;
 }
 
+.editSubtask:hover:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 37.5%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
+  z-index: 4;
+}
+
 #subtasks-container .input-wrapper .deleteSubtask {
   display: none;
 }
@@ -702,6 +715,19 @@ input:focus {
   cursor: pointer;
   z-index: 15;
   background-size: 11px;
+}
+
+.acceptBtnSubtask:hover:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
+  z-index: 4;
 }
 
 .acceptBtn:hover::before {
