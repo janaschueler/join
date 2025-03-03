@@ -1,8 +1,30 @@
 function generateToDoHTML(allTodos, priorityIcon, numberOfSubtasks, progressOfProgressbar, numberCompletetSubtasks, categoryColor) {
   return `
     <div onclick="openModal('${allTodos["id"]}')" draggable="true" ondragstart="startDragging('${allTodos["id"]}')" class="listContainerContent">
-      <div class="category" style="${categoryColor}">
-        <span>${allTodos["category"]}</span>
+      <div class="cardContainer">  
+        <div class="category" style="${categoryColor}">
+          <span>${allTodos["category"]}</span>
+        </div>
+        <div class="moveStatus">
+          <button id="arrowUp" onclick="openStatusNav(event)" class="iconArrowUp"></button>
+          <button id="arrowDown" onclick="closeStatusNav(event)" class="iconArrowDown"></button>
+        </div>
+      </div>
+      <div id="statusMenu" class="statusDialogMain">
+        <div class="statusDialogArea">
+          <div class="statusDialogNav">
+            <a class="dialogLinks" onclick="addStatusBoard('${allTodos["id"]}', 1, event)">ToDo</a>
+          </div>
+          <div class="statusDialogNav">
+            <a class="dialogLinks" onclick="addStatusBoard('${allTodos["id"]}', 2, event)">In Progress</a>
+          </div>
+          <div class="statusDialogNav">
+            <a class="dialogLinks" onclick="addStatusBoard('${allTodos["id"]}', 3, event)">Awaiting Feedback</a>
+          </div>
+          <div class="statusDialogNav">
+            <a class="dialogLinks" onclick="addStatusBoard('${allTodos["id"]}', 4, event)" >Done</a>
+          </div>
+        </div>
       </div>
       <div class="listDiscription">
         <span class="titleCopy">${allTodos["title"]}</span> <br>
@@ -151,7 +173,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                             </svg>
                           </button>
                         </div>
-                        <label id="labelCategory" for="custom-category">Category<span class="red">*</span></label>
+                        <label id="labelCategory" for="custom-category">Category<span>*</span></label>
                         <div id="custom-category" class="custom-dropdown" onclick="toggleCategoryDropdown()">
                           <div id="category-input" tabindex="0" class="dropdown-input paddingTop">
                             <span>Select task category</span>
@@ -194,7 +216,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
 function addSubtaskTemplateinModal(subTaskInput, id) {
   return `                <div id="editSubTaskUnit${id}" class="input-wrapper">
                               <li id="edit${id}" class="formateList subtask-text">${subTaskInput}</li>
-                              <button id="editBtn${id}" onclick=" editSubtaskinModal('${id}', '${subTaskInput}')" class="resetSubtaskInput">
+                              <button id="editBtn${id}" onclick=" editSubtaskinModal('${id}', '${subTaskInput}')" class="editSubtask">
                                 <span class="editIconSubtask"></span>
                                 <span class="lineSubtask"></span>
                               </button>

@@ -1025,3 +1025,28 @@ function handleButtonClick(event, id) {
     addAdditionalSubtaskinEditModal(event, id);
   }
 }
+
+function openStatusNav(event) {
+  event.stopPropagation(event);
+  document.getElementById("statusMenu").style.display = "block";
+  document.getElementById("arrowUp").style.display = "none";
+  document.getElementById("arrowDown").style.display = "block";
+}
+
+function closeStatusNav(event) {
+  event.stopPropagation(event);
+  document.getElementById("statusMenu").style.display = "none";
+  document.getElementById("arrowUp").style.display = "block";
+  document.getElementById("arrowDown").style.display = "none";
+}
+
+async function addStatusBoard(key, status, event) {
+  event.stopPropagation(event);
+  try {
+    await postToDatabase(key, "/status", status);
+  } catch (error) {
+    console.error("Fehler beim Setzen des Status:", error);
+    throw error;
+  }
+  window.location.reload();
+}
