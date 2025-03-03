@@ -548,7 +548,7 @@ input:focus {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
+  background-color: rgba(128, 128, 128, 0.2);
   z-index: 0;
 }
 
@@ -557,6 +557,7 @@ input:focus {
   margin-top: 8px;
 }
 
+.resetSubtaskInput,
 .editSubtask {
   width: 64px;
   height: 40px;
@@ -570,7 +571,7 @@ input:focus {
   z-index: 10;
 }
 
-.editSubtask:hover:before {
+.resetSubtaskInput:hover:before {
   content: "";
   position: absolute;
   top: 50%;
@@ -579,7 +580,7 @@ input:focus {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: rgba(128, 128, 128, 0.2); /* Grauer, halbtransparenter Hintergrund */
+  background-color: rgba(128, 128, 128, 0.2);
   z-index: 4;
 }
 

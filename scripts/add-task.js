@@ -505,7 +505,7 @@ function transformButtonAddTask() {
     return;
   }
   buttonContainer.outerHTML = `
-      <button id="clearInput" onclick="esetButtonAddTask()" class="editSubtask"></button>
+      <button id="clearInput" onclick="esetButtonAddTask()" class="resetSubtaskInput"></button>
       <span class="clearSubtask"></span>
       <span class="lineSubtaskAddnewSubtask"></span>
       <button id="editBtnModal" onclick="addSubtask()" class="acceptBtnSubtask"></button>

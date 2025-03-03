@@ -1001,7 +1001,7 @@ function transformButtonEdit(id) {
   const buttonContainer = document.querySelector("#iconAddButtonEdit");
   if (!buttonContainer) return;
   buttonContainer.outerHTML = `
-      <button id="resetButton" onclick="handleButtonClick(event, '${id}')" class="editSubtask"></button>
+      <button id="resetButton" onclick="handleButtonClick(event, '${id}')" class="resetSubtaskInput"></button>
       <span class="clearSubtask"></span>
       <span class="lineSubtaskAddnewSubtaskEdit"></span>
       <button id="editBtnModal" onclick="addAdditionalSubtaskinEditModal(event, '${id}')" class="acceptBtnSubtask"></button>
