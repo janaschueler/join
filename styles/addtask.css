@@ -114,6 +114,27 @@ input:focus {
   width: 12px;
 }
 
+.taskButton-clear svg {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+}
+
+.taskButton-clear svg path {
+  fill: #2a3647;
+}
+
+.taskButton-clear:hover {
+  border-color: rgba(41, 171, 226, 1) !important;
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.25);
+  color: rgba(41, 171, 226, 1) !important;
+}
+
+.taskButton-clear:hover svg path {
+  fill: rgba(41, 171, 226, 1);
+}
+
+
 .taskButton:hover {
   border-color: rgba(41, 171, 226, 1) !important;
   color: rgba(41, 171, 226, 1) !important;
@@ -183,7 +204,7 @@ input:focus {
   border: 2px solid transparent;
   border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease, fill 0.3s ease;
+  transition: background-color 0.75ms ease, color 0.75ms ease, fill 0.75s ease;
 }
 
 .red {
@@ -282,7 +303,7 @@ input:focus {
 .priority button.selected.low svg {
   fill: white;
 }
-/* Container für das Dropdown */
+
 .custom-dropdown {
   position: relative;
   width: 100%;
@@ -293,7 +314,6 @@ input:focus {
   margin-right: 16px;
 }
 
-/* Eingabefeld mit Dropdown-Icon */
 .dropdown-input {
   display: flex;
   align-items: center;
@@ -304,6 +324,7 @@ input:focus {
   border-radius: 12px;
   text-align: left;
 }
+
 
 .paddingTop {
   padding: 8px 20px 10px 8px;
@@ -819,6 +840,10 @@ label {
   cursor: pointer;
   gap: 10px;
   padding: 10px;
+}
+
+.dropdown-option:hover {
+  background-color: rgba(128, 128, 128, 0.1); /* Grauer, halbtransparenter Hintergrund */
 }
 
 .contact-svg {
