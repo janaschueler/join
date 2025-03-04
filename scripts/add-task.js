@@ -49,17 +49,16 @@ document.addEventListener("click", function (event) {
 
 function selectCategory(label, value) {
   document.querySelector("#category-input span").textContent = label;
-  document.getElementById("category").value = label; // Speichert den Wert im versteckten Input
+  document.getElementById("category").value = label; 
   document.getElementById("category-dropdown").classList.remove("visible");
 
-  // Entferne alte Markierung und markiere die gewählte Option
+ 
   document.querySelectorAll("#category-dropdown .dropdown-option").forEach((option) => {
     option.classList.remove("selected");
   });
-  event.target.classList.add("selected");
 }
 
-// **Kontakte aus Firebase abrufen**
+
 async function fetchContacts() {
   try {
     const response = await fetch(`${BASE_URL}/contacts.json`);
@@ -72,10 +71,8 @@ async function fetchContacts() {
       email: contact.email || "",
       color: contact.color || getRandomColor(),
     }));
-
     populateAssignedToSelect();
   } catch (error) {
-    console.error("Fehler beim Abrufen der Kontakte:", error);
   }
 }
 
