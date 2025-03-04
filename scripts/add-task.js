@@ -24,9 +24,8 @@ function toggleCategoryDropdown(event) {
   }
 }
 
-
 function toggleAssignedDropdown(event) {
-  event.stopPropagation(); 
+  event.stopPropagation();
   let dropdown = document.getElementById("assigned-dropdown");
   let isOpen = dropdown.classList.contains("visible");
   closeAllDropdowns();
@@ -43,7 +42,6 @@ document.addEventListener("click", function (event) {
   closeDropdownOnOutsideClick(event, "category-dropdown", "custom-category", "category-dropdown-icon");
   closeDropdownOnOutsideClick(event, "assigned-dropdown", "assigned-input", null);
 });
-
 
 function closeDropdownOnOutsideClick(event, dropdownId, toggleId, iconId) {
   const dropdown = document.getElementById(dropdownId);
@@ -63,10 +61,12 @@ function closeDropdownOnOutsideClick(event, dropdownId, toggleId, iconId) {
   }
 }
 
-
 function closeAllDropdowns() {
   document.getElementById("category-dropdown").classList.remove("visible");
-  document.getElementById("assigned-dropdown").classList.remove("visible");
+  const assignedDropdowns = document.querySelectorAll('[id*="assigned-dropdown"]');
+  assignedDropdowns.forEach((dropdown) => {
+    dropdown.classList.remove("visible");
+  });
 
   document.getElementById("category-dropdown-icon").style.transform = "rotate(0deg)";
   document.querySelector(".dropDown").style.display = "block";
@@ -75,7 +75,7 @@ function closeAllDropdowns() {
 
 function selectCategory(label) {
   document.querySelector("#category-input span").textContent = label;
-  document.getElementById("category").value = label; 
+  document.getElementById("category").value = label;
   document.getElementById("category-dropdown").classList.remove("visible");
 
   document.querySelectorAll("#category-dropdown .dropdown-option").forEach((option) => {
@@ -96,8 +96,7 @@ async function fetchContacts() {
       color: contact.color || getRandomColor(),
     }));
     populateAssignedToSelect();
-  } catch (error) {
-  }
+  } catch (error) {}
 }
 
 async function addTask(statusTask) {

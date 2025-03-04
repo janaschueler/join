@@ -174,7 +174,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                           </button>
                         </div>
                         <label id="labelCategory" for="custom-category">Category<span>*</span></label>
-                        <div id="custom-category" class="custom-dropdown" onclick="toggleCategoryDropdown()">
+                        <div id="custom-category" class="custom-dropdown" onclick="toggleCategoryDropdown(event)">
                           <div id="category-input" tabindex="0" class="dropdown-input paddingTop">
                             <span>Select task category</span>
                             <svg id="category-dropdown-icon" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
