@@ -23,19 +23,21 @@ async function renderTopBar() {
   topBarRef.innerHTML += templateTopBar(contactAbbreviation);
 }
 
-function transfereLoginData(user) {
+async function transfereLoginData(user) {
   postSignedInUserToDatabase(user);
+  saveToLocalStorage(user);
 }
 
 async function guestLogIn() {
   let guest = {
     contactAbbreviation: ["G"],
-    contactEmail: [""],
+    contactEmail: ["guest@mail.com"],
     contactId: "",
     contactName: ["Guest"],
     contactPassword: [""],
   };
   await postSignedInUserToDatabase(guest);
+  saveToLocalStorage(guest)
   window.location.href = "./index.html";
 }
 
@@ -45,8 +47,8 @@ async function logOut() {
     contactEmail: [""],
     contactId: "",
     contactName: [""],
-    contactPassword: [""],  
-  }; 
+    contactPassword: [""],
+  };
   await postSignedInUserToDatabase(logoutUser);
   window.location.href = "./index.html";
 }
@@ -77,38 +79,25 @@ async function getSigneInUserData() {
   return logedInUsers;
 }
 
-// function getColorById(contactId) {
-//   let sum = 0;
-//   for (let i = 0; i < contactId.length; i++) {
-//     sum += contactId.charCodeAt(i);
-//   }
-//   let index = sum % coloursArray.length;
-//   return coloursArray[index];
-// }
+function saveToLocalStorage(user) {
+  let userEmail = user.contactEmail[0];
+  localStorage.setItem("user", JSON.stringify(userEmail));
+}
 
-// async function postData(path = "", data = {}) {
-//   let response = await fetch(BASE_URL + path + ".json", {
-//       method: "POST",
-//       headers: {
-//           "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(data),
-//   });
-//   return responseToJson = await response.json();
-// }
+async function checkAccessAuthorization() {
+  let userEmail = getFromLoclaStorage();
+  console.log(userEmail);
+  let signedInUserRef = await getSigneInUserData();
+  let signedInUser = signedInUserRef.contactEmail[0];
+  console.log(signedInUser);
+  if (userEmail == signedInUser) {
+    return; 
+  } else {
+    window.location.href = "login.html";
+  }
+}
 
-// async function addContactLogIn() {
-//   let signInUserData = getSigneInUserData();
-//   let contactName = signInUserData.contactName;
-//   let contactEmail = signInUserData.contactName;
-//   let firebaseId = await getFirebaseId(selectedContactId);
-//   let contactId = Date.now().toString();
-//   let newContact = {
-//     id: contactId,
-//     name: contactName,
-//     email: contactEmail,
-//     color: getColorById(contactId),
-//   };
-//   await postData("contacts", newContact);
-//   selectedContactId = newContact.id;
-// }
+function getFromLoclaStorage() {
+  let user = JSON.parse(localStorage.getItem("user"));
+  return user;
+}

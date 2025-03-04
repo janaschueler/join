@@ -28,7 +28,7 @@ body {
 }
 
 .rotating {
-  transition: transform 75ms ease;
+  transition: transform 125ms ease;
   transform: rotate(3deg);
 }
 
@@ -98,8 +98,8 @@ main {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 10px;
-  height: 10px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   background-color: rgba(128, 128, 128, 0.2);
   z-index: 4;
@@ -244,6 +244,12 @@ ol {
   padding-inline-start: 0px !important;
 }
 
+.statusContainer,
+.list,
+.listContainer {
+  overflow: visible;
+}
+
 .listContainerContent {
   background-color: white;
   border-radius: 20px;
@@ -254,6 +260,8 @@ ol {
   white-space: normal;
   word-wrap: break-word;
   margin: 16px 4px;
+  position: relative;
+  width: 100%;
 }
 
 .listContainerContent:hover {
@@ -291,6 +299,7 @@ ol {
 
 .iconArrowUp {
   position: relative;
+  display: none;
   width: 12px;
   height: 16px;
   background-image: url("../assets/icons/arrow_drop_down-up.svg");
@@ -317,7 +326,6 @@ ol {
 
 .iconArrowDown {
   position: relative;
-  display: none;
   width: 12px;
   height: 16px;
   background-image: url("../assets/icons/arrow_drop_down.svg");
@@ -397,12 +405,14 @@ ol {
   justify-content: space-between;
   align-items: center;
   margin-top: 16px;
+  margin-bottom: 8px;
 }
 
 .listDiscription {
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
+  margin-top: 8px;
 }
 
 .titleCopy {
@@ -415,7 +425,7 @@ ol {
 .descriptionCopy {
   color: rgba(168, 168, 168, 1) !important;
   text-align: left;
-  margin-top: -20px !important;
+  margin-top: 8px;
 }
 
 .descriptionCopyModal {
@@ -482,12 +492,12 @@ ol {
 }
 
 .circle:nth-child(4) {
-  left: 62px;
+  left: 72px;
   z-index: 4;
 }
 
 .circle:nth-child(5) {
-  left: 86px;
+  left: 96px;
   bottom: 0;
   z-index: 5;
 }
@@ -570,7 +580,7 @@ ol {
   word-wrap: break-word;
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.3s ease, transform 75ms ease;
+  transition: opacity 0.3s ease, transform 125ms ease;
 }
 
 #modalTaskSummary.show {
@@ -687,7 +697,6 @@ li {
 }
 
 .listDiscription span {
-  margin-top: 12px;
   font-weight: 400;
   color: rgba(0, 0, 0, 1);
 }
@@ -1084,7 +1093,7 @@ table td:first-child {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 100%;
+  gap: 95%;
 }
 
 .mobile {
@@ -1096,7 +1105,7 @@ table td:first-child {
 }
 
 .space {
-  gap: 100%;
+  gap: 117%;
 }
 
 .secondaryButton-clear {
@@ -1142,7 +1151,7 @@ table td:first-child {
 
 .subTaskHover {
   color: white;
-  transition: color 75ms ease;
+  transition: color 125ms ease;
 }
 
 [id^="progressContainer-"]:hover .subTaskHover {
@@ -1158,7 +1167,7 @@ table td:first-child {
 }
 
 .listContainerContent {
-  transition: transform 75ms ease;
+  transition: transform 125ms ease;
 }
 
 .listContainerContent.dragging {
@@ -1243,7 +1252,6 @@ table td:first-child {
     right: 0;
     z-index: 1000;
     padding-top: 10px;
-    justify-content: center;
   }
 
   .addTaskButtonPrimary,

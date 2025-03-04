@@ -6,3 +6,4 @@ styles/boardBreakpoints.css
 styles/boardClean.css
 styles/boardModal.css
 styles/boardPartTwo.css
+eslint.config.mjs

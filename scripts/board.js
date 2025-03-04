@@ -6,6 +6,7 @@ let allContacts = { idContact: [], contactName: [], contactAbbreviation: [], col
 let currentDraggedElement;
 
 async function initi() {
+  checkAccessAuthorization()
   allTasks = await getDataTasks();
   allContacts = await getDataContacts();
   loadBoardContent();
@@ -291,22 +292,23 @@ function startDragging(id) {
 
 document.getElementById("searchForm").addEventListener("submit", function (e) {
   e.preventDefault();
-  const searchInput = document.getElementById("searchInput");
-  const searchMessageContainer = document.getElementById("searchMessageContainer");
-  searchTasks(searchInput.value);
+  const searchInput = document.getElementById("searchInput").value.trim().toLowerCase();
+  searchTasks(searchInput);
 });
 
 function searchTasks(searchInput) {
   ["ToDoTaskContainer", "inProgressContainer", "TestingContainer", "doneContainer"].forEach((id) => {
     document.getElementById(id).innerHTML = "";
   });
-
-  if (!searchInput.trim()) {
+  if (!searchInput) {
     allTasks.forEach((task) => renderTaskByStatus(task));
     return;
   }
-
-  const filteredTasks = allTasks.filter((task) => task.title && task.title.toLowerCase().includes(searchInput.toLowerCase()));
+  const filteredTasks = allTasks.filter((task) => {
+    const titleMatches = task.title?.toLowerCase().includes(searchInput);
+    const descriptionMatches = task.description?.toLowerCase().includes(searchInput);
+    return titleMatches || descriptionMatches;
+  });
   if (filteredTasks.length > 0) {
     filteredTasks.forEach((task) => renderTaskByStatus(task));
   }

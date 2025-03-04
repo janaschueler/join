@@ -1,21 +1,21 @@
-function closeModal(event) {
-  if (!event) {
-    return;
-  }
+function closeModal(event = null) {
   var modal = document.getElementById("modalTaskSummary");
   var backdrop = document.getElementById("taskSummaryModal");
+  
   if (!event || event.target === backdrop || event.target.classList.contains("modalCloseButton")) {
-    modal.classList.add("hide");
-    backdrop.classList.add("hide");
-    setTimeout(function () {
-      modal.style.visibility = "hidden";
-      backdrop.style.visibility = "hidden";
-      modal.classList.remove("show");
-      backdrop.classList.remove("show");
-    }, 500);
-    window.location.reload();
+      modal.classList.add("hide");
+      backdrop.classList.add("hide");
+      setTimeout(function () {
+          modal.style.visibility = "hidden";
+          backdrop.style.visibility = "hidden";
+          modal.classList.remove("show");
+          backdrop.classList.remove("show");
+      }, 500);
+      
+      window.location.reload();
   }
 }
+
 
 async function injectAssigneeContacts(task) {
   const assigneeContainer = document.getElementById(`assigneeListModal${task.id}`);
@@ -67,13 +67,13 @@ function handleCheckboxChange(event) {
   addSubtasksStatus(containerId, subtasksStatus);
 }
 
-function deleteTask(taskId) {
+async function deleteTask(taskId) {
   let taskToDelete = allTasks.find((t) => t.id === taskId);
   if (taskToDelete) {
     const index = allTasks.indexOf(taskToDelete);
     allTasks.splice(index, 1);
   }
-  postToDatabase("", "", allTasks);
+  await postToDatabase("", "", allTasks);
   loadBoardContent();
   closeModal();
 }
@@ -107,7 +107,7 @@ function closeModalAddTask(event) {
   }
 }
 
-function handleButtonClick(status) {
+function handleButtonClickStatus(status) {
   if (window.innerWidth <= 768) {
     window.location.href = "./add_Task.html";
   } else {
@@ -122,6 +122,9 @@ function openEditModal(categoryTask, title, description, dateTask, priorityTask,
   const headline = id ? "Edit Task" : "Add Task";
   setModalContent(title, description, id, status || 1, buttonCopy, headline);
   initEditModal(id, dateTask, priorityTask, categoryTask);
+  if (!categoryTask) {
+    document.getElementById("buttonContainerEdit").classList.remove("space");
+  }
 }
 
 function showModalVisibility() {

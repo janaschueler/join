@@ -175,15 +175,15 @@ function handleButtonClick(event, id) {
 function openStatusNav(event, id) {
   event.stopPropagation(event);
   document.getElementById(`statusMenu${id}`).style.display = "block";
-  document.getElementById(`arrowUp${id}`).style.display = "none";
-  document.getElementById(`arrowDown${id}`).style.display = "block";
+  document.getElementById(`arrowDown${id}`).style.display = "none";
+  document.getElementById(`arrowUp${id}`).style.display = "block";
 }
 
 function closeStatusNav(event, id) {
   event.stopPropagation(event);
   document.getElementById(`statusMenu${id}`).style.display = "none";
-  document.getElementById(`arrowUp${id}`).style.display = "block";
-  document.getElementById(`arrowDown${id}`).style.display = "none";
+  document.getElementById(`arrowDown${id}`).style.display = "block";
+  document.getElementById(`arrowUp${id}`).style.display = "none";
 }
 
 async function addStatusBoard(key, status, event) {
@@ -196,3 +196,4 @@ async function addStatusBoard(key, status, event) {
   }
   window.location.reload();
 }
+

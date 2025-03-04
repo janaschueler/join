@@ -93,16 +93,16 @@
                   <div class="list-header">
                     <div class="listHeader">
                       <h2 class="list-title">ToDo</h2>
-                      <button class="secondaryAddButton" onclick="handleButtonClick(1)">
+                      <button class="secondaryAddButton" onclick="handleButtonClickStatus(1)">
                         <svg class="icon" width="15" height="15" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M5 1.5V9.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                           <path d="M9 5.57544L1 5.57544" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                       </button>
                     </div>
-                    <div id="ToDoTaskContainer" ondrop="drop(1)" ondragover="allowDrop(event)">
+                    <div id="ToDoTaskContainer" class="statusContainer" ondrop="drop(1)" ondragover="allowDrop(event)">
                       <div class="listContainerEmpty">
-                       <span>No task To do</span>
+                       <span>No tasks To do</span>
                        <div id="dashedBox1" class="dashed-box" style="display: none;"></div>
                       </div>
                     </div>
@@ -114,16 +114,16 @@
                   <div class="list-header">
                     <div class="listHeader">
                       <h2 class="list-title">In Progress</h2>
-                      <button class="secondaryAddButton" onclick="handleButtonClick(2)">
+                      <button class="secondaryAddButton" onclick="handleButtonClickStatus(2)">
                         <svg class="icon" width="15" height="15" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M5 1.5V9.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                           <path d="M9 5.57544L1 5.57544" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                       </button>
                     </div>
-                    <div id="inProgressContainer" ondrop="drop(2)" ondragover="allowDrop(event)">
+                    <div id="inProgressContainer" ondrop="drop(2)" class="statusContainer" ondragover="allowDrop(event)">
                       <div class="listContainerEmpty">
-                        <span>No task To do</span>
+                        <span>No tasks In Progress</span>
                         <div id="dashedBox2" class="dashed-box" style="display: none;"></div>
                   </div>
                   </div>
@@ -134,16 +134,16 @@
                   <div class="list-header">
                     <div class="listHeader">
                       <h2 class="list-title">Awaiting Feedback </h2>
-                      <button class="secondaryAddButton" onclick="handleButtonClick(3)">
+                      <button class="secondaryAddButton" onclick="handleButtonClickStatus(3)">
                         <svg class="icon" width="15" height="15" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M5 1.5V9.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                           <path d="M9 5.57544L1 5.57544" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                       </button>
                     </div>
-                    <div id="TestingContainer" ondrop="drop(3)" ondragover="allowDrop(event)">
+                    <div id="TestingContainer" class="statusContainer" ondrop="drop(3)" ondragover="allowDrop(event)">
                       <div class="listContainerEmpty">
-                       <span>No task To do</span>
+                       <span>No tasks Awaiting Feedback</span>
                        <div id="dashedBox3" class="dashed-box" style="display: none;"></div>
                   </div>
                   </div>
@@ -153,17 +153,11 @@
                 <div class="list">
                   <div class="list-header">
                     <div class="listHeader">
-                      <h2 class="list-title">Done</h2>
-                      <button class="secondaryAddButton" onclick="handleButtonClick(4)">
-                        <svg class="icon" width="15" height="15" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M5 1.5V9.5" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
-                          <path d="M9 5.57544L1 5.57544" stroke="#2A3647" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                      </button>
+                      <h2 class="list-title">Done</h2>                
                     </div>
-                    <div id="doneContainer" ondrop="drop(4)" ondragover="allowDrop(event)">
+                    <div id="doneContainer" class="statusContainer" ondrop="drop(4)" ondragover="allowDrop(event)">
                       <div class="listContainerEmpty">
-                        <span>No task To do</span>
+                        <span>No tasks Done</span>
                         <div id="dashedBox4" class="dashed-box" style="display: none;"></div>
                   </div>
                   </div>

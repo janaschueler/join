@@ -6,8 +6,8 @@ function generateToDoHTML(allTodos, priorityIcon, numberOfSubtasks, progressOfPr
           <span>${allTodos["category"]}</span>
         </div>
         <div class="moveStatus">
-          <button id="arrowUp${allTodos["id"]}" onclick="openStatusNav(event, '${allTodos["id"]}')" class="iconArrowUp"></button>
-          <button id="arrowDown${allTodos["id"]}" onclick="closeStatusNav(event, '${allTodos["id"]}')" class="iconArrowDown"></button>
+          <button id="arrowDown${allTodos["id"]}" onclick="openStatusNav(event, '${allTodos["id"]}')" class="iconArrowDown"></button>
+          <button id="arrowUp${allTodos["id"]}" onclick="closeStatusNav(event, '${allTodos["id"]}')" class="iconArrowUp"></button>
         </div>
       </div>
       <div id="statusMenu${allTodos["id"]}" class="statusDialogMain">
@@ -27,7 +27,7 @@ function generateToDoHTML(allTodos, priorityIcon, numberOfSubtasks, progressOfPr
         </div>
       </div>
       <div class="listDiscription">
-        <span class="titleCopy">${allTodos["title"]}</span> <br>
+        <span class="titleCopy">${allTodos["title"]}</span>
         <span class="descriptionCopy">${allTodos["description"]}</span>
       </div>
       <div id="progressContainer${allTodos["id"]}" class="progressContainer">

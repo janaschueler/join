@@ -56,7 +56,6 @@ function selectCategory(label, value) {
   document.querySelectorAll("#category-dropdown .dropdown-option").forEach((option) => {
     option.classList.remove("selected");
   });
-  event.target.classList.add("selected");
 }
 
 // **Kontakte aus Firebase abrufen**
