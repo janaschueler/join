@@ -167,7 +167,7 @@ async function deleteContact(contactId) {
   contactsSmallRef.innerHTML = "";
   renderSmallContacts();
   renderBigContacts();
-  if (window.matchMedia("(max-width: 768px)").matches) location.reload();
+  location.reload();
 }
 
 function selectContact(contactId) {
