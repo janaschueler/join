@@ -118,7 +118,7 @@ main {
   border-color: rgba(41, 171, 226, 1) !important;
 }
 
-.deleteyButton {
+.deleteButton {
   padding: 16px 16px;
   background-color: transparent;
   color: rgba(42, 54, 71, 1) !important;
@@ -141,7 +141,6 @@ main {
 }
 
 .deleteButton:hover {
-  background-image: url(../assets/icons/close_lightblue.png);
   color: rgba(41, 171, 226, 1) !important;
   border-color: rgba(41, 171, 226, 1) !important;
 }
@@ -639,6 +638,13 @@ input[type="number"] {
   height: 3px;
   background-color: #29abe2;
   display: none;
+}
+
+#dialog-name:focus,
+#dialog-email:focus,
+#dialog-phone:focus {
+border: 1px solid rgba(41, 171, 226, 1);
+box-shadow: none;
 }
 
 @media (max-width: 768px) {
