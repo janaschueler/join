@@ -747,6 +747,10 @@ table td:first-child {
   margin-top: 12px;
 }
 
+.margin_10 {
+  margin: 8px 0px !important;
+}
+
 #assigneeListModal {
   display: flex;
   align-items: center;
