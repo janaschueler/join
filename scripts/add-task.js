@@ -8,6 +8,7 @@ let subTaskCount;
 let subtaskClickCount = 0;
 
 function init() {
+  checkAccessAuthorization()
   fetchContacts();
   initPriorityButtons();
 }

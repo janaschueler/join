@@ -3,7 +3,8 @@ const BASE_URL = "https://join2-72adb-default-rtdb.europe-west1.firebasedatabase
 let allTasks = [];
 let signedInName;
 
-async function init() {   
+async function init() {  
+    checkAccessAuthorization() 
     await fetchData();    
     renderTopBar();
     renderSummary();    

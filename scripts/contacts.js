@@ -4,6 +4,7 @@ let allUsers = [];
 let selectedContactId = null;
 
 function init() {
+  checkAccessAuthorization();
   fetchData();
   renderTopBar();
   renderSmallContacts();
