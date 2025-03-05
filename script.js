@@ -45,8 +45,8 @@ async function logOut() {
     contactEmail: [""],
     contactId: "",
     contactName: [""],
-    contactPassword: [""],  
-  }; 
+    contactPassword: [""],
+  };
   await postSignedInUserToDatabase(logoutUser);
   window.location.href = "./index.html";
 }
@@ -77,38 +77,41 @@ async function getSigneInUserData() {
   return logedInUsers;
 }
 
-// function getColorById(contactId) {
-//   let sum = 0;
-//   for (let i = 0; i < contactId.length; i++) {
-//     sum += contactId.charCodeAt(i);
-//   }
-//   let index = sum % coloursArray.length;
-//   return coloursArray[index];
-// }
+function getColorById(contactId) {
+  let sum = 0;
+  for (let i = 0; i < contactId.length; i++) {
+    sum += contactId.charCodeAt(i);
+  }
+  let index = sum % coloursArray.length;
+  return coloursArray[index];
+}
 
-// async function postData(path = "", data = {}) {
-//   let response = await fetch(BASE_URL + path + ".json", {
-//       method: "POST",
-//       headers: {
-//           "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(data),
-//   });
-//   return responseToJson = await response.json();
-// }
+async function postData(path = "", data = {}) {
+  let response = await fetch(BASE_URL + path + ".json", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return responseToJson = await response.json();
+}
 
-// async function addContactLogIn() {
-//   let signInUserData = getSigneInUserData();
-//   let contactName = signInUserData.contactName;
-//   let contactEmail = signInUserData.contactName;
-//   let firebaseId = await getFirebaseId(selectedContactId);
-//   let contactId = Date.now().toString();
-//   let newContact = {
-//     id: contactId,
-//     name: contactName,
-//     email: contactEmail,
-//     color: getColorById(contactId),
-//   };
-//   await postData("contacts", newContact);
-//   selectedContactId = newContact.id;
-// }
+async function addContactLogIn() {
+  let signInUserData = await getSigneInUserData();
+  if (!signInUserData || !signInUserData.contactName || !signInUserData.contactEmail) {
+    throw new Error('Fehlende oder ungültige Benutzerdaten');
+  }
+  let contactName = signInUserData.contactName[0];  
+  let contactEmail = signInUserData.contactEmail[0];
+  let contactId = Date.now().toString();
+  let newContact = {
+    id: contactId,
+    name: contactName,
+    email: contactEmail,
+    color: getColorById(contactId),
+  };
+  await postData("contacts", newContact);
+  selectedContactId = newContact.id;
+}
+
