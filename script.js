@@ -104,8 +104,15 @@ async function addContactLogIn() {
   if (!signInUserData || !signInUserData.contactName || !signInUserData.contactEmail) {
     throw new Error("Fehlende oder ungültige Benutzerdaten");
   }
+
   let contactName = signInUserData.contactName[0];
-  let contactEmail = signInUserData.contactEmail[0];
+  let contactEmail = signInUserData.contactEmail[0]; 
+  let allContacts = await fetchData("contacts");
+  let contactExists = allContacts.some(contact => contact.email === contactEmail);
+  if (contactExists) {
+    console.log("Kontakt existiert bereits und wird nicht erneut hinzugefügt.");
+    return; 
+  }
   let contactId = Date.now().toString();
   let newContact = {
     id: contactId,

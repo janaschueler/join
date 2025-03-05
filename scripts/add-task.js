@@ -25,7 +25,6 @@ function toggleCategoryDropdown(event) {
   }
 }
 
-
 function toggleAssignedDropdown(event) {
   event.stopPropagation(); 
   let dropdown = document.getElementById("assigned-dropdown");
