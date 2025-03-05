@@ -170,7 +170,7 @@
 
                     <div class="buttonContainer">
                       <button type="button" class="secondaryButton" data-bs-dismiss="modal">Cancel</button>
-                      <button onclick="addContact()" id="newContact" type="button" class="primaryButtonCheck">Create
+                      <button onclick="addContact()" id="newContact" type="button" class="primaryButtonCheck backgroundPosition">Create
                         Contact</button>
                     </div>
                   </div>
@@ -242,10 +242,10 @@
                     </form>
 
                     <div class="buttonContainer">
-                      <button onclick="cancelAndCross()" type="button" class="secondaryButton"
-                        data-bs-dismiss="modal">Cancel</button>
+                      <button onclick="deleteContact()" type="button" class="deleteyButton"
+                        data-bs-dismiss="modal">Delete</button>
                       <button onclick="saveEditedContact()" id="newContact" type="button"
-                        class="primaryButtonCheck">Create Contact</button>
+                        class="primaryButtonCheck">Save</button>
                     </div>
                   </div>
                 </div>
@@ -257,7 +257,7 @@
         <div id="overlay" class="overlay"></div>
         <div id="successMessage" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
           <div class="toast-body">
-            Contact successfully created
+            <span id="toastMessage">Contact successfully created</span>
           </div>
         </div>
   </div>

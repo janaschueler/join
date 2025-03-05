@@ -37,7 +37,7 @@ async function guestLogIn() {
     contactPassword: [""],
   };
   await postSignedInUserToDatabase(guest);
-  saveToLocalStorage(guest)
+  saveToLocalStorage(guest);
   window.location.href = "./index.html";
 }
 
@@ -96,15 +96,15 @@ async function postData(path = "", data = {}) {
     },
     body: JSON.stringify(data),
   });
-  return responseToJson = await response.json();
+  return (responseToJson = await response.json());
 }
 
 async function addContactLogIn() {
   let signInUserData = await getSigneInUserData();
   if (!signInUserData || !signInUserData.contactName || !signInUserData.contactEmail) {
-    throw new Error('Fehlende oder ungültige Benutzerdaten');
+    throw new Error("Fehlende oder ungültige Benutzerdaten");
   }
-  let contactName = signInUserData.contactName[0];  
+  let contactName = signInUserData.contactName[0];
   let contactEmail = signInUserData.contactEmail[0];
   let contactId = Date.now().toString();
   let newContact = {
@@ -117,3 +117,25 @@ async function addContactLogIn() {
   selectedContactId = newContact.id;
 }
 
+function saveToLocalStorage(user) {
+  let userEmail = user.contactEmail[0];
+  localStorage.setItem("user", JSON.stringify(userEmail));
+}
+
+async function checkAccessAuthorization() {
+  let userEmail = getFromLoclaStorage();
+  console.log(userEmail);
+  let signedInUserRef = await getSigneInUserData();
+  let signedInUser = signedInUserRef.contactEmail[0];
+  console.log(signedInUser);
+  if (userEmail == signedInUser) {
+    return;
+  } else {
+    window.location.href = "login.html";
+  }
+}
+
+function getFromLoclaStorage() {
+  let user = JSON.parse(localStorage.getItem("user"));
+  return user;
+}

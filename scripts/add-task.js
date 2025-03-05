@@ -8,6 +8,7 @@ let subTaskCount;
 let subtaskClickCount = 0;
 
 function init() {
+  checkAccessAuthorization()
   fetchContacts();
   initPriorityButtons();
 }
@@ -24,8 +25,9 @@ function toggleCategoryDropdown(event) {
   }
 }
 
+
 function toggleAssignedDropdown(event) {
-  event.stopPropagation();
+  event.stopPropagation(); 
   let dropdown = document.getElementById("assigned-dropdown");
   let isOpen = dropdown.classList.contains("visible");
   closeAllDropdowns();
@@ -42,6 +44,7 @@ document.addEventListener("click", function (event) {
   closeDropdownOnOutsideClick(event, "category-dropdown", "custom-category", "category-dropdown-icon");
   closeDropdownOnOutsideClick(event, "assigned-dropdown", "assigned-input", null);
 });
+
 
 function closeDropdownOnOutsideClick(event, dropdownId, toggleId, iconId) {
   const dropdown = document.getElementById(dropdownId);
@@ -60,6 +63,7 @@ function closeDropdownOnOutsideClick(event, dropdownId, toggleId, iconId) {
     }
   }
 }
+
 
 function closeAllDropdowns() {
   document.getElementById("category-dropdown").classList.remove("visible");
@@ -96,7 +100,8 @@ async function fetchContacts() {
       color: contact.color || getRandomColor(),
     }));
     populateAssignedToSelect();
-  } catch (error) {}
+  } catch (error) {
+  }
 }
 
 async function addTask(statusTask) {
