@@ -3,7 +3,7 @@ const BASE_URL = "https://join2-72adb-default-rtdb.europe-west1.firebasedatabase
 let allUsers = [];
 let selectedContactId = null;
 
-function init() {   
+function init() {
     fetchData();
     renderTopBar();
     renderSmallContacts();
@@ -22,7 +22,7 @@ function getColorById(contactId) {
 async function fetchData(path = "") {
     try {
         let response = await fetch(BASE_URL + path + ".json");
-        let data = await response.json();                 
+        let data = await response.json();
         if (data && data.contacts) {
             allUsers = Object.values(data.contacts);
         } else {
@@ -157,13 +157,13 @@ async function deleteContact(contactId) {
     let contactsSmallRef = document.getElementById('contactsSmall_content');
     let firebaseId = await getFirebaseId(contactId);
     if (!firebaseId) return;
-    await deleteData(`contacts/${firebaseId}`);    
-    await removeContactFromTasks(firebaseId);    
+    await deleteData(`contacts/${firebaseId}`);
+    await removeContactFromTasks(firebaseId);
     allUsers = allUsers.filter(contact => contact.id !== contactId);
     contactsSmallRef.innerHTML = "";
     renderSmallContacts();
     renderBigContacts();
-    if (window.matchMedia("(max-width: 768px)").matches) location.reload();
+    location.reload();
 }
 
 function selectContact(contactId) {
