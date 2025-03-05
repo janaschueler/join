@@ -1,11 +1,33 @@
 function generateToDoHTML(allTodos, priorityIcon, numberOfSubtasks, progressOfProgressbar, numberCompletetSubtasks, categoryColor) {
   return `
     <div onclick="openModal('${allTodos["id"]}')" draggable="true" ondragstart="startDragging('${allTodos["id"]}')" class="listContainerContent">
-      <div class="category" style="${categoryColor}">
-        <span>${allTodos["category"]}</span>
+      <div class="cardContainer">  
+        <div class="category" style="${categoryColor}">
+          <span>${allTodos["category"]}</span>
+        </div>
+        <div class="moveStatus">
+          <button id="arrowDown${allTodos["id"]}" onclick="openStatusNav(event, '${allTodos["id"]}')" class="iconArrowDown"></button>
+          <button id="arrowUp${allTodos["id"]}" onclick="closeStatusNav(event, '${allTodos["id"]}')" class="iconArrowUp"></button>
+        </div>
+      </div>
+      <div id="statusMenu${allTodos["id"]}" class="statusDialogMain">
+        <div class="statusDialogArea">
+          <div class="statusDialogNav">
+            <a class="dialogLinks" onclick="addStatusBoard('${allTodos["id"]}', 1, event)">ToDo</a>
+          </div>
+          <div class="statusDialogNav">
+            <a class="dialogLinks" onclick="addStatusBoard('${allTodos["id"]}', 2, event)">In Progress</a>
+          </div>
+          <div class="statusDialogNav">
+            <a class="dialogLinks" onclick="addStatusBoard('${allTodos["id"]}', 3, event)">Awaiting Feedback</a>
+          </div>
+          <div class="statusDialogNav">
+            <a class="dialogLinks" onclick="addStatusBoard('${allTodos["id"]}', 4, event)" >Done</a>
+          </div>
+        </div>
       </div>
       <div class="listDiscription">
-        <span class="titleCopy">${allTodos["title"]}</span> <br>
+        <span class="titleCopy">${allTodos["title"]}</span>
         <span class="descriptionCopy">${allTodos["description"]}</span>
       </div>
       <div id="progressContainer${allTodos["id"]}" class="progressContainer">
@@ -36,7 +58,7 @@ function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate, categ
               <div class="category" style="${categoryColor}">
               <span>${allTodos["category"]}</span>
               </div>
-              <button onclick="closeModal()"  type="button" class="ModalCloseButton"></button>
+              <button onclick="closeModal()"  type="button" class="modalCloseButton"></button>
             </div>
             <div class="listDiscription">
               <h1 class="mobileHeadline" >${allTodos["title"]}</h1> 
@@ -98,7 +120,7 @@ function generateSubtasks(allTodos, subtask, index, isChecked = false) {
 function addEditTask(title, description, id, status, buttonCopy, headline) {
   return `          <div class="headerAddTaskModal">
                       <p class="ModalHeadline">${headline}</p>
-                      <button onclick="closeModalAddTask(event)" type="button" class="ModalCloseButtonAddTask"></button>
+                      <button onclick="closeModalAddTask(event)" type="button" class="modalCloseButtonAddTask"></button>
                     </div>
                     <form class="task-form">
                       <div class="side1">
@@ -151,8 +173,8 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                             </svg>
                           </button>
                         </div>
-                        <label id="labelCategory" for="custom-category">Category<span class="red">*</span></label>
-                        <div id="custom-category" class="custom-dropdown" onclick="toggleCategoryDropdown()">
+                        <label id="labelCategory" for="custom-category">Category<span>*</span></label>
+                        <div id="custom-category" class="custom-dropdown" onclick="toggleCategoryDropdown(event)">
                           <div id="category-input" tabindex="0" class="dropdown-input paddingTop">
                             <span>Select task category</span>
                             <svg id="category-dropdown-icon" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -194,7 +216,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
 function addSubtaskTemplateinModal(subTaskInput, id) {
   return `                <div id="editSubTaskUnit${id}" class="input-wrapper">
                               <li id="edit${id}" class="formateList subtask-text">${subTaskInput}</li>
-                              <button id="editBtn${id}" onclick=" editSubtaskinModal('${id}', '${subTaskInput}')" class="resetSubtaskInput">
+                              <button id="editBtn${id}" onclick=" editSubtaskinModal('${id}', '${subTaskInput}')" class="editSubtask">
                                 <span class="editIconSubtask"></span>
                                 <span class="lineSubtask"></span>
                               </button>
@@ -211,4 +233,20 @@ function addInputFieldinModal(id, subTaskInput) {
                                   </button>
                                   <button onclick="acceptEdit('${id}')" class="acceptBtn"></button>
                               </div>`;
+}
+
+function addtransformedButton(id) {
+  return `                  
+      <button id="resetButton" onclick="handleButtonClick(event, '${id}')" class="resetSubtaskInput"></button>
+      <span class="clearSubtask"></span>
+      <span class="lineSubtaskAddnewSubtaskEdit"></span>
+      <button id="editBtnModal" onclick="addAdditionalSubtaskinEditModal(event, '${id}')" class="acceptBtnSubtask"></button>
+  `;
+}
+
+function returnTransformedButton(id) {
+  return `
+       <input type="text" id="new-subtask-input-Edit" placeholder="add new sub task" onfocus="transformButtonEdit('${id}')"/>
+       <button id="iconAddButtonEdit" class="iconAdd center" type="button" onclick="addAdditionalSubtaskinEditModal(event, '${id}')"></button>
+  `;
 }

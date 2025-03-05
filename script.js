@@ -23,19 +23,21 @@ async function renderTopBar() {
   topBarRef.innerHTML += templateTopBar(contactAbbreviation);
 }
 
-function transfereLoginData(user) {
+async function transfereLoginData(user) {
   postSignedInUserToDatabase(user);
+  saveToLocalStorage(user);
 }
 
 async function guestLogIn() {
   let guest = {
     contactAbbreviation: ["G"],
-    contactEmail: [""],
+    contactEmail: ["guest@mail.com"],
     contactId: "",
     contactName: ["Guest"],
     contactPassword: [""],
   };
   await postSignedInUserToDatabase(guest);
+  saveToLocalStorage(guest)
   window.location.href = "./index.html";
 }
 
