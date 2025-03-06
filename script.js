@@ -74,10 +74,13 @@ async function postSignedInUserToDatabase(data = {}) {
 }
 
 async function getSigneInUserData() {
-  let response = await fetch(BASE_URL + "signedIn/" + ".json");
+  let url = BASE_URL + "signedIn/.json";
+  let response = await fetch(url);  
   let logedInUsers = await response.json();
+  console.log(logedInUsers);  
   return logedInUsers;
 }
+
 
 function getColorById(contactId) {
   let sum = 0;
@@ -104,21 +107,15 @@ async function addContactLogIn() {
   if (!signInUserData || !signInUserData.contactName || !signInUserData.contactEmail) {
     throw new Error("Fehlende oder ungültige Benutzerdaten");
   }
-
-  let contactName = signInUserData.contactName[0];
-  let contactEmail = signInUserData.contactEmail[0]; 
-  let allContacts = await fetchData("contacts");
-  let contactExists = allContacts.some(contact => contact.email === contactEmail);
-  if (contactExists) {
-    console.log("Kontakt existiert bereits und wird nicht erneut hinzugefügt.");
-    return; 
-  }
+  let contactName = signInUserData.contactName[0];  
+  let contactEmail = signInUserData.contactEmail[0];  
   let contactId = Date.now().toString();
   let newContact = {
     id: contactId,
     name: contactName,
     email: contactEmail,
     color: getColorById(contactId),
+    phone: "",
   };
   await postData("contacts", newContact);
   selectedContactId = newContact.id;
@@ -131,7 +128,6 @@ function saveToLocalStorage(user) {
 
 async function checkAccessAuthorization() {
   let userEmail = getFromLoclaStorage();
-  console.log(userEmail);
   let signedInUserRef = await getSigneInUserData();
   let signedInUser = signedInUserRef.contactEmail[0];
   console.log(signedInUser);

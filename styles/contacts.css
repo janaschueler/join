@@ -140,6 +140,11 @@ main {
   font-size: 14px;
 }
 
+.deleteyButton:hover {
+  color: rgba(41, 171, 226, 1) !important;
+  border-color: rgba(41, 171, 226, 1) !important;
+}
+
 .deleteButton:hover {
   background-image: url(../assets/icons/close_lightblue.png);
   color: rgba(41, 171, 226, 1) !important;
