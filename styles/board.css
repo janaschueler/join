@@ -442,7 +442,7 @@ ol {
 
 .limitProgressBar {
   width: 160px;
-  background-color: rgba(244, 244, 244, 1); /* Grauer Hintergrund für den "ungemachten" Bereich */
+  background-color: rgba(244, 244, 244, 1); 
   border-radius: 8px;
   height: 10px;
   overflow: hidden;

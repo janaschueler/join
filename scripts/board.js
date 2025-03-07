@@ -200,7 +200,7 @@ async function injectAssignees(task) {
   if (Array.isArray(task.assignedTo) && Array.isArray(task.color)) {
     task.assignedTo.forEach((assignee, index) => {
       const assigneeAbbreviation = getAssigneeAbbreviation(assignee);
-      const assigneeColor = task.color[index] || "rgba(0, 0, 0, 1)"; // Fallback-Farbe falls nicht vorhanden
+      const assigneeColor = task.color[index] || "rgba(0, 0, 0, 1)"; 
       assigneeContainer.innerHTML += generateAssigneeCircle(assigneeAbbreviation, assigneeColor);
     });
   }

@@ -77,15 +77,13 @@ async function getSigneInUserData() {
   let url = BASE_URL + "signedIn/.json";
   let response = await fetch(url);  
   let logedInUsers = await response.json();
-  console.log(logedInUsers);  
   return logedInUsers;
 }
 
 async function getContacts() {
   let url = BASE_URL + "contacts/.json";
   let response = await fetch(url);  
-  let contacts = await response.json();
-  console.log(contacts);  
+  let contacts = await response.json(); 
   return contacts;
 }
 
@@ -146,7 +144,6 @@ async function checkAccessAuthorization() {
   let userEmail = getFromLoclaStorage();
   let signedInUserRef = await getSigneInUserData();
   let signedInUser = signedInUserRef.contactEmail[0];
-  console.log(signedInUser);
   if (userEmail == signedInUser) {
     return;
   } else {
