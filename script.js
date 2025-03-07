@@ -75,7 +75,7 @@ async function postSignedInUserToDatabase(data = {}) {
 
 async function getSigneInUserData() {
   let url = BASE_URL + "signedIn/.json";
-  let response = await fetch(url);  
+  let response = await fetch(url);
   let logedInUsers = await response.json();
   return logedInUsers;
 }
@@ -102,20 +102,18 @@ async function postData(path = "", data = {}) {
 
 async function addContactLogIn() {
   let signInUserData = await getSigneInUserData();
-  if (!signInUserData || !signInUserData.contactName || !signInUserData.contactEmail) {
+  if (!signInUserData  !signInUserData.contactName  !signInUserData.contactEmail) {
     throw new Error("Fehlende oder ungültige Benutzerdaten");
   }
   let contacts = await getContacts();
   let contactsArray = Object.values(contacts);
-  
-  let matchingContacts = contactsArray.filter(contact => 
-    contact.email?.toLowerCase().includes(signInUserData.contactEmail[0].toLowerCase())
-  );
-  if (matchingContacts) {
-    return
+
+  let matchingContacts = contactsArray.filter((contact) => contact.email?.toLowerCase().includes(signInUserData.contactEmail[0].toLowerCase()));
+  if (matchingContacts.length > 0) {
+    return;
   }
-  let contactName = signInUserData.contactName[0];  
-  let contactEmail = signInUserData.contactEmail[0];  
+  let contactName = signInUserData.contactName[0];
+  let contactEmail = signInUserData.contactEmail[0];
   let contactId = Date.now().toString();
   let newContact = {
     id: contactId,
