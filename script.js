@@ -80,6 +80,13 @@ async function getSigneInUserData() {
   return logedInUsers;
 }
 
+async function getContacts() {
+  let url = BASE_URL + "contacts/.json";
+  let response = await fetch(url);
+  let logedInUsers = await response.json();
+  return logedInUsers;
+}
+
 function getColorById(contactId) {
   let sum = 0;
   for (let i = 0; i < contactId.length; i++) {
@@ -103,8 +110,6 @@ async function postData(path = "", data = {}) {
 async function addContactLogIn() {
   let signInUserData = await getSigneInUserData();
   if (!signInUserData || !signInUserData.contactName || !signInUserData.contactEmail) {
-  }
-   {
     throw new Error("Fehlende oder ungültige Benutzerdaten");
   }
   let contacts = await getContacts();
