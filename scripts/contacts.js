@@ -19,8 +19,8 @@ function validateNumber(event) {
 
 function validateText(event) {
     let input = event.target.value;
-    if (!/^[a-zA-ZäöüÄÖÜß]*$/.test(input)) {        
-        event.target.value = input.replace(/[^a-zA-ZäöüÄÖÜß]/g, ""); // Entfernt alle Nicht-Buchstaben
+    if (!/^[a-zA-ZäöüÄÖÜß123456789@.\s]*$/.test(input)) {        
+        event.target.value = input.replace(/[^a-zA-ZäöüÄÖÜß123456789@.\s]/g, ""); // Erlaubt jetzt auch Punkte
     }
 }
 

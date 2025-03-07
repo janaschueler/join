@@ -102,7 +102,9 @@ async function postData(path = "", data = {}) {
 
 async function addContactLogIn() {
   let signInUserData = await getSigneInUserData();
-  if (!signInUserData  !signInUserData.contactName  !signInUserData.contactEmail) {
+  if (!signInUserData || !signInUserData.contactName || !signInUserData.contactEmail) {
+  }
+   {
     throw new Error("Fehlende oder ungültige Benutzerdaten");
   }
   let contacts = await getContacts();

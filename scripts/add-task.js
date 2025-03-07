@@ -8,7 +8,6 @@ let subTaskCount;
 let subtaskClickCount = 0;
 
 function init() {
-  checkAccessAuthorization()
   fetchContacts();
   initPriorityButtons();
 }
@@ -24,6 +23,7 @@ function toggleCategoryDropdown(event) {
     icon.style.transform = "rotate(180deg)";
   }
 }
+
 
 function toggleAssignedDropdown(event) {
   event.stopPropagation(); 
@@ -86,6 +86,7 @@ function selectCategory(label) {
   });
 }
 
+
 async function fetchContacts() {
   try {
     const response = await fetch(`${BASE_URL}/contacts.json`);
@@ -115,7 +116,6 @@ async function addTask(statusTask) {
     alert("Bitte alle Pflichtfelder ausfüllen und eine Priorität auswählen.");
     return;
   }
-
   const subtaskItems = document.querySelectorAll(".subtask-text");
   const subtasks = Array.from(subtaskItems).map((item) => item.textContent.trim());
 
@@ -142,7 +142,7 @@ async function addTask(statusTask) {
       throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
     }
 
-    console.log("✅ Aufgabe erfolgreich gespeichert:", await response.json());
+    
 
     window.location.href = "board.html";
   } catch (error) {
@@ -169,13 +169,10 @@ async function saveSubtask(subtaskText) {
       body: JSON.stringify({ text: subtaskText }),
     });
 
-    if (!response.ok) {
-      throw new Error(`Fehler beim Speichern des Subtasks: ${response.status}`);
-    }
+    
 
-    console.log("Subtask gespeichert:", await response.json());
   } catch (error) {
-    console.error("Fehler beim Speichern des Subtasks:", error);
+
   }
 }
 
@@ -185,7 +182,7 @@ function populateAssignedToSelect() {
     return;
   }
 
-  dropdown.innerHTML = ""; // Zurücksetzen
+  dropdown.innerHTML = ""; 
 
   contacts.forEach((contact) => {
     const label = document.createElement("label");
@@ -260,8 +257,8 @@ function createContactSVG(contact) {
   text.setAttribute("x", "50%");
   text.setAttribute("y", "55%");
   text.setAttribute("font-family", "Arial, sans-serif");
-  text.setAttribute("font-size", "12"); // Etwas größer für bessere Sichtbarkeit
-  text.setAttribute("fill", "white"); // Farbe der Initialen auf Weiß setzen
+  text.setAttribute("font-size", "12");
+  text.setAttribute("fill", "white"); 
   text.setAttribute("text-anchor", "middle");
   text.setAttribute("alignment-baseline", "middle");
   text.textContent = initials;
@@ -374,7 +371,7 @@ function clearForm() {
   selectedPriority = null;
 }
 
-// **Zufällige Farbe für Kontakte generieren**
+
 function getRandomColor() {
   const letters = "0123456789ABCDEF";
   let color = "#";
@@ -384,177 +381,3 @@ function getRandomColor() {
   return color;
 }
 
-// **Prioritäts-Buttons initialisieren**
-// function initPriorityButtons() {
-//   const priorityButtons = document.querySelectorAll(".priority button");
-//   priorityButtons.forEach((button) => {
-//     button.addEventListener("click", (event) => {
-//       event.preventDefault();
-//       handlePriorityClick(button);
-//     });
-//   });
-
-//   const defaultMediumButton = document.querySelector(".priority .medium");
-//   if (defaultMediumButton) {
-//     handlePriorityClick(defaultMediumButton);
-//   }
-// }
-
-function initPriorityButtons(priority) {
-  const priorityButtons = document.querySelectorAll(".priority button");
-
-  priorityButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      event.preventDefault();
-      handlePriorityClick(button);
-    });
-  });
-
-  const defaultMediumButton = document.querySelector(".priority .medium");
-
-  if (!priority) {
-    handlePriorityClick(defaultMediumButton);
-  } else {
-    const priorityButton = document.querySelector(`.priority .${priority}`);
-    if (priorityButton) {
-      handlePriorityClick(priorityButton);
-    } else {
-      console.warn("Invalid priority, falling back to default.");
-      handlePriorityClick(defaultMediumButton);
-    }
-  }
-}
-
-function handlePriorityClick(clickedButton) {
-  const priorityValue = clickedButton.classList[0];
-  const priorityButtons = document.querySelectorAll(".priority button");
-
-  if (selectedPriority === priorityValue) {
-    clickedButton.classList.remove("selected");
-    resetButtonState(clickedButton);
-    selectedPriority = null;
-  } else {
-    priorityButtons.forEach((button) => {
-      if (button !== clickedButton) {
-        button.classList.remove("selected");
-        resetButtonState(button);
-      }
-    });
-
-    clickedButton.classList.add("selected");
-    selectedPriority = priorityValue;
-    highlightButton(clickedButton);
-  }
-
-  console.log("Ausgewählte Priorität:", selectedPriority);
-}
-
-function resetButtonState(button) {
-  button.style.backgroundColor = "#FFFFFF";
-  button.style.color = "black";
-
-  const priorityColors = {
-    urgent: "#FF3D00",
-    medium: "#FFA800",
-    low: "#7AE229",
-  };
-
-  const svgPaths = button.querySelectorAll("svg path");
-  svgPaths.forEach((path) => {
-    path.style.fill = priorityColors[button.classList[0]];
-  });
-}
-
-function highlightButton(button) {
-  const priorityColors = {
-    urgent: "#FF3D00",
-    medium: "#FFA800",
-    low: "#7AE229",
-  };
-
-  button.style.backgroundColor = priorityColors[button.classList[0]];
-  button.style.color = "white";
-
-  const svgPaths = button.querySelectorAll("svg path");
-  svgPaths.forEach((path) => {
-    path.style.fill = "white";
-  });
-}
-
-function start() {
-  fetchContacts();
-  initPriorityButtons();
-  renderTopBar();
-}
-
-function openDatePicker() {
-  let dateInput = document.getElementById("due-date");
-  dateInput.showPicker(); // Funktioniert in modernen Browsern wie Chrome
-}
-
-function openEditTask(category, title, description, DueDate, priority, id) {
-  const editTaskContainer = document.getElementById("modalAddTask");
-  editTaskContainer.innerHTML = "";
-  editTaskContainer.innerHTML = addEditTask(category, title, description, DueDate, priority, id);
-}
-
-function addSubtask() {
-  let subTaskInputRef = document.getElementById("new-subtask-input");
-  let subTaskInput = subTaskInputRef.value.trim();
-  let subTaskContainer = document.getElementById("subtasks-container");
-
-  if (!subTaskInput) {
-    return;
-  }
-
-  if (!subTaskCount) {
-    subTaskCount = 0;
-  }
-
-  subTaskCount += 1;
-
-  subTaskContainer.innerHTML += addSubtaskTemplate(subTaskInput, subTaskCount);
-  subTaskInputRef.value = "";
-  resetButtonAddTask();
-}
-
-function clearForm() {
-  document.getElementById("new-subtask-input").value = "";
-  resetButtonAddTask();
-}
-
-function transformButtonAddTask() {
-  const buttonContainer = document.getElementById("iconAddButton");
-  if (!buttonContainer) {
-    return;
-  }
-  buttonContainer.outerHTML = `
-      <button id="clearInput" onclick="esetButtonAddTask()" class="resetSubtaskInput"></button>
-      <span class="clearSubtask"></span>
-      <span class="lineSubtaskAddnewSubtask"></span>
-      <button id="editBtnModal" onclick="addSubtask()" class="acceptBtnSubtask"></button>
-  `;
-}
-
-function resetButtonAddTask() {
-  const inputWrapper = document.getElementById("inputWrapper");
-
-  inputWrapper.innerHTML = `
-      <input 
-          type="text" 
-          id="new-subtask-input" 
-          placeholder="add new sub task" 
-          onfocus="transformButtonAddTask()" 
-          onblur="resetButtonAddTask()" 
-      />
-      <button id="iconAddButton" class="iconAdd" type="button" onclick="addSubtask()"></button>
-  `;
-}
-
-function handleButtonClickAddTask() {
-  if (["mouse", "touch", "pen"].includes(event.pointerType)) {
-    resetButtonAddTask();
-  } else {
-    addSubtask();
-  }
-}
