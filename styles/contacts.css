@@ -232,7 +232,7 @@ main {
 }
 
 .listBody:focus {
-  background-color:#29aae2ab;
+  background-color:rgba(42, 54, 71, 1);
   color: white;
   border-radius: 6px;
 }
@@ -258,8 +258,7 @@ main {
 }
 
 .contactHeader svg {
-  margin-left: 5%;
-  margin-top: 16px;
+  margin-left: 5%;  
 }
 
 .listEmail {
@@ -302,40 +301,34 @@ h2 {
   background-color: transparent;
   font-size: 18px;  
   display: flex;
-  gap: 3px; 
+  align-items: center;
+  gap: 3px;  
 }
 
 .editIconImg {
-  width: 18px;
+  width: 25px;
 }
 
-/* .editIconImg:hover {
-  background-image: url(../assets/icons/edit_lightblue.png);
-  background-size: 23px;
-  background-repeat: no-repeat;
-  background-position-y: center;
-  background-position-x: 0%;  
-} */
+.editIcon:hover .editIconImg path {
+  fill: #29ABE2;
+}
 
 .deleteIcon {
   border: none;
   background-color: transparent;
   font-size: 18px;
-  display: flex; 
+  display: flex;
+  align-items: center; 
   gap: 3px; 
 }
 
 .deleteImgIcon {
-  width: 17px;
+  width: 25px;
 }
 
-/* .deleteImgIcon:hover {
-  background-image: url(../assets/icons/delete_lightblue.png);
-  background-size: 22px;
-  background-repeat: no-repeat;
-  background-position-y: center;
-  background-position-x: 0%;
-} */
+.deleteIcon:hover .deleteImgIcon path{
+  fill: #29ABE2;
+}
 
 .subHeadline {
   margin-bottom: 16px;
@@ -516,6 +509,11 @@ h2 {
   background-size: contain;
   background-position: center;
   cursor: pointer;
+}
+
+.closeButton:hover { 
+  box-shadow: 10px 5px 15px rgb(255, 255, 255);
+  border-radius: 50%;
 }
 
 .formContainer form {

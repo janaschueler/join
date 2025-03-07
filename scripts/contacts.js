@@ -8,18 +8,30 @@ function init() {
     renderTopBar();
     renderSmallContacts();
     renderBigContacts();
+    renderModalContacts();
+}
+
+function renderModalContacts() {
+    let contactsModalRef = document.getElementById("contactsModal_content");
+    contactsModalRef.innerHTML = "";
+    if (selectedContactId) {
+        let selectedContact = allUsers.find((contact) => contact.id === selectedContactId);
+        if (selectedContact) {
+            contactsModalRef.innerHTML = templateModalContacts(selectedContact);
+        }
+    }
 }
 
 function validateNumber(event) {
     let input = event.target.value;
-    if (!/^e\d*$/.test(input)) {        
+    if (!/^e\d*$/.test(input)) {
         event.target.value = input.replace(/\D/g, ""); // Entfernt alle Nicht-Zahlen
     }
 }
 
 function validateText(event) {
     let input = event.target.value;
-    if (!/^[a-zA-ZäöüÄÖÜß]*$/.test(input)) {        
+    if (!/^[a-zA-ZäöüÄÖÜß]*$/.test(input)) {
         event.target.value = input.replace(/[^a-zA-ZäöüÄÖÜß]/g, ""); // Entfernt alle Nicht-Buchstaben
     }
 }
@@ -43,7 +55,7 @@ async function fetchData(path = "") {
             allUsers = [];
         }
         renderSmallContacts();
-        renderBigContacts();
+        renderBigContacts();        
         return data;
     } catch (error) {
         console.error("Fehler beim Laden der Daten:", error);
@@ -148,7 +160,7 @@ async function addContact() {
     allUsers.push(newContact);
     selectedContactId = newContact.id;
     renderSmallContacts();
-    renderBigContacts();
+    renderBigContacts();    
     contactsSmallRef.innerHTML = "";
     nameRef.value = "";
     emailRef.value = "";
@@ -185,6 +197,7 @@ async function deleteContact(contactId) {
 function selectContact(contactId) {
     selectedContactId = contactId;
     renderBigContacts();
+    renderModalContacts();
 }
 
 function renderSmallContacts() {
@@ -194,7 +207,6 @@ function renderSmallContacts() {
         let nameB = b.name.trim().split(" ")[0].toUpperCase();
         return nameA.localeCompare(nameB);
     });
-
     let currentGroup = "";
     allUsers.forEach((contact) => {
         let firstLetter = contact.name.trim().split(" ")[0].charAt(0).toUpperCase();
