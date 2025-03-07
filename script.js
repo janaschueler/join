@@ -81,6 +81,13 @@ async function getSigneInUserData() {
   return logedInUsers;
 }
 
+async function getContacts() {
+  let url = BASE_URL + "contacts/.json";
+  let response = await fetch(url);  
+  let contacts = await response.json();
+  console.log(contacts);  
+  return contacts;
+}
 
 function getColorById(contactId) {
   let sum = 0;
@@ -106,6 +113,15 @@ async function addContactLogIn() {
   let signInUserData = await getSigneInUserData();
   if (!signInUserData || !signInUserData.contactName || !signInUserData.contactEmail) {
     throw new Error("Fehlende oder ungültige Benutzerdaten");
+  }
+  let contacts = await getContacts();
+  let contactsArray = Object.values(contacts);
+  
+  let matchingContacts = contactsArray.filter(contact => 
+    contact.email?.toLowerCase().includes(signInUserData.contactEmail[0].toLowerCase())
+  );
+  if (matchingContacts) {
+    return
   }
   let contactName = signInUserData.contactName[0];  
   let contactEmail = signInUserData.contactEmail[0];  
