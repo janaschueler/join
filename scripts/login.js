@@ -97,26 +97,35 @@ function hideLoadingBackground() {
 }
 
 async function getData(path = "") {
-  let response = await fetch(BASE_URL + "signup/" + "user/" + path + ".json");
-  let responseToJson = await response.json();
-  let users = [];
-  for (let key in responseToJson) {
-    let user = responseToJson[key];
-    users.push({
-      contactEmail: user.contactEmail,
-      contactPassword: user.contactPassword,
-      contactId: key,
-      contactName: user.contactName,
-      contactAbbreviation: user.contactAbbreviation,
-    });
+  try {
+    let response = await fetch(BASE_URL + "signup/" + "user/" + path + ".json");
+    if (!response.ok) {
+      throw new Error("Netzwerkfehler: " + response.statusText);
+    }
+    let responseToJson = await response.json();
+    let users = [];
+    for (let key in responseToJson) {
+      let user = responseToJson[key];
+      users.push({
+        contactEmail: user.contactEmail,
+        contactPassword: user.contactPassword,
+        contactId: key,
+        contactName: user.contactName,
+        contactAbbreviation: user.contactAbbreviation,
+      });
+    }
+    return users;
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Daten:", error);
+    return [];
   }
-
-  return users;
 }
 
-async function initializeCheck() {
+async function initializeCheck(check) {
   allUser = await getData();
-  checkLogin();
+  if (check) {
+    checkLogin();
+  }
 }
 
 document.querySelector("#LoginButton").addEventListener("click", function (event) {
@@ -124,7 +133,7 @@ document.querySelector("#LoginButton").addEventListener("click", function (event
   initializeCheck();
 });
 
-function checkLogin() {
+async function checkLogin() {
   let loginEmail = document.getElementById("inputEmail").value;
   let loginPassword = document.getElementById("inputPassword1").value;
   let user = allUser.find((user) => {
@@ -133,9 +142,10 @@ function checkLogin() {
 
   if (user) {
     transfereLoginData(user);
+   await  addContactLogIn();
     setTimeout(() => {
       window.location.assign("./index.html");
-    }, 1000);
+    }, 100);
   } else {
     document.getElementById("wrongPassword").classList.remove("d-none");
     let passwordField = document.getElementById("inputPassword1");

@@ -36,7 +36,7 @@ main {
   margin-top: 340px;
   display: flex;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   margin-bottom: 30px;
 }
 
@@ -222,6 +222,7 @@ main {
 
 .dialog_area {
   background-color: #2a3647;
+  position: relative !important;
   width: 100%;
   padding: 10%;
   height: 198px;
@@ -232,6 +233,7 @@ main {
   font-weight: 400;
   gap: 2px;
   border-radius: 15px 0px 15px 15px;
+  z-index: 1000;
 }
 
 .dialog_nav {
@@ -244,7 +246,7 @@ main {
 }
 
 .dialog_nav:hover {
-  background-color: #0919314f;
+  background-color: rgba(42, 61, 89, 1);
 }
 
 .dialog_nav_help {

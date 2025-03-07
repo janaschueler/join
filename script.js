@@ -77,7 +77,6 @@ async function getSigneInUserData() {
   let url = BASE_URL + "signedIn/.json";
   let response = await fetch(url);  
   let logedInUsers = await response.json();
-  console.log(logedInUsers);  
   return logedInUsers;
 }
 
@@ -106,6 +105,15 @@ async function addContactLogIn() {
   if (!signInUserData || !signInUserData.contactName || !signInUserData.contactEmail) {
     throw new Error("Fehlende oder ungültige Benutzerdaten");
   }
+  let contacts = await getContacts();
+  let contactsArray = Object.values(contacts);
+  
+  let matchingContacts = contactsArray.filter(contact => 
+    contact.email?.toLowerCase().includes(signInUserData.contactEmail[0].toLowerCase())
+  );
+  if (matchingContacts) {
+    return
+  }
   let contactName = signInUserData.contactName[0];  
   let contactEmail = signInUserData.contactEmail[0];  
   let contactId = Date.now().toString();
@@ -129,7 +137,6 @@ async function checkAccessAuthorization() {
   let userEmail = getFromLoclaStorage();
   let signedInUserRef = await getSigneInUserData();
   let signedInUser = signedInUserRef.contactEmail[0];
-  console.log(signedInUser);
   if (userEmail == signedInUser) {
     return;
   } else {
