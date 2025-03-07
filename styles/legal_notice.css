@@ -2,12 +2,11 @@ main {
   overflow-y: scroll !important;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
 }
-
-
 
 h1 {
   margin-top: 40px !important;
@@ -70,15 +69,21 @@ ul li {
 }
 
 .noBulletPoints {
-  list-style-type: none; /* Entfernt die Bullet Points */
+  list-style-type: none;
 }
 
 .privacy {
-  margin-top: 16px !important
+  margin-top: 16px !important;
 }
 
 a {
   text-decoration: none !important;
-color: black !important;
-cursor: pointer;
+  color: black !important;
+  cursor: pointer;
+}
+
+@media (max-width: 786px) {
+  .legalPageContainer {
+    overflow-y: scroll;
+  }
 }
