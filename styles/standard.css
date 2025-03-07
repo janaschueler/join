@@ -217,6 +217,7 @@ main {
   top: 14px;
   right: 22px;
   width: 160px;
+  z-index: 1;
 }
 
 .dialog_area {

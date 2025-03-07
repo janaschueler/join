@@ -79,7 +79,7 @@
             <button type="button" class="primaryButton" data-bs-toggle="modal" data-bs-target="#exampleModal">Add new
               contact</button>
           </div>
-          <ol id="contactsSmall_content">
+          <ol class="scroll-container" id="contactsSmall_content">
           </ol>
         </Section>
 
@@ -156,15 +156,15 @@
                     <form>
                       <div>
                         <label for="recipient-name" class="col-form-label"></label>
-                        <input type="text" class="form-control iconName" placeholder="Name" id="recipient-name">
+                        <input type="text" oninput="validateText(event)" class="form-control iconName" placeholder="Name" id="recipient-name">
                       </div>
                       <div>
                         <label for="recipient-email" class="col-form-label"></label>
-                        <input type="email" class="form-control iconEmail" placeholder="Email" id="recipient-email">
+                        <input type="email" oninput="validateText(event)" class="form-control iconEmail" placeholder="Email" id="recipient-email">
                       </div>
                       <div>
                         <label for="recipient-phone" class="col-form-label"></label>
-                        <input type="number" class="form-control iconPhone" placeholder="Phone" id="recipient-phone">
+                        <input type="number" oninput="validateNumber(event)" class="form-control iconPhone" placeholder="Phone" id="recipient-phone">
                       </div>
                     </form>
 
@@ -229,15 +229,15 @@
                     <form>
                       <div>
                         <label for="recipient-name" class="col-form-label"></label>
-                        <input type="text" class="form-control iconName" placeholder="Name" id="dialog-name">
+                        <input type="text" oninput="validateText(event)" class="form-control iconName" placeholder="Name" id="dialog-name">
                       </div>
                       <div>
                         <label for="recipient-email" class="col-form-label"></label>
-                        <input type="email" class="form-control iconEmail" placeholder="Email" id="dialog-email">
+                        <input type="email" oninput="validateText(event)" class="form-control iconEmail" placeholder="Email" id="dialog-email">
                       </div>
                       <div>
                         <label for="recipient-phone" class="col-form-label"></label>
-                        <input type="number" class="form-control iconPhone" placeholder="Phone" id="dialog-phone">
+                        <input type="number" oninput="validateNumber(event)" class="form-control iconPhone" placeholder="Phone" id="dialog-phone">
                       </div>
                     </form>
 

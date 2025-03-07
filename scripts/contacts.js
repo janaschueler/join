@@ -10,6 +10,20 @@ function init() {
     renderBigContacts();
 }
 
+function validateNumber(event) {
+    let input = event.target.value;
+    if (!/^e\d*$/.test(input)) {        
+        event.target.value = input.replace(/\D/g, ""); // Entfernt alle Nicht-Zahlen
+    }
+}
+
+function validateText(event) {
+    let input = event.target.value;
+    if (!/^[a-zA-ZäöüÄÖÜß]*$/.test(input)) {        
+        event.target.value = input.replace(/[^a-zA-ZäöüÄÖÜß]/g, ""); // Entfernt alle Nicht-Buchstaben
+    }
+}
+
 function getColorById(contactId) {
     let sum = 0;
     for (let i = 0; i < contactId.length; i++) {
@@ -33,10 +47,9 @@ async function fetchData(path = "") {
         return data;
     } catch (error) {
         console.error("Fehler beim Laden der Daten:", error);
-        return null; 
+        return null;
     }
 }
-
 
 async function postData(path = "", data = {}) {
     let response = await fetch(BASE_URL + path + ".json", {

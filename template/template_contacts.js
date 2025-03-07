@@ -9,7 +9,7 @@ function templateSmallContacts(currentDatas) {
             <div class="list-header">
               <div class="listHeader">          
               </div>
-              <div class="listBody">
+              <div tabindex="0" class="listBody">
                 <svg class="circle" width="32" height="32" viewBox="0 0 32 32" fill="none"
                   xmlns="http://www.w3.org/2000/svg">
                   <circle cx="16" cy="16" r="15.5" fill="${currentDatas.color}" stroke="white" />
@@ -18,7 +18,8 @@ function templateSmallContacts(currentDatas) {
                 </svg>
                 <div class="listName_Email">
                   <span class="listName">${currentDatas.name}</span>
-                  <a class="listEmail" href="">${currentDatas.email}</a>
+                  <a class="listEmail" href="mailto:${currentDatas.email}">${currentDatas.email}</a>
+
                 </div>
               </div>
             </div>
@@ -39,8 +40,14 @@ function templateBigContacts(currentDatas) {
             <div class="contactName">
               <span>${currentDatas.name}</span>
               <div class="editContainer">
-                <button onclick="openEditDialog('${currentDatas.id}')" class="editIcon">Edit</button>
-                <button onclick="deleteContact('${currentDatas.id}')" class="deleteIcon">Delete</button>
+                <button onclick="openEditDialog('${currentDatas.id}')" class="editIcon">
+                  <img class="editIconImg" src="./assets/icons/edit.svg" alt="">
+                  <div>Edit</div>                
+                </button>
+                <button onclick="deleteContact('${currentDatas.id}')" class="deleteIcon">
+                  <img class="deleteImgIcon" src="./assets/icons/delete.svg" alt="">
+                  <div>Delete</div>
+                </button>
               </div>
             </div>
           </div>

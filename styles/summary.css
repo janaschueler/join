@@ -75,7 +75,7 @@ body {
 .check_pencil_area:hover {
     transform: scale(1.1);
     transition: transform 0.3s ease;
-    background-color: #2A3647;
+    background-color: #2A3647;   
 }
 
 .check_pencil_area:hover .side_number {
