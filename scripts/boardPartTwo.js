@@ -67,16 +67,44 @@ function handleCheckboxChange(event) {
   addSubtasksStatus(containerId, subtasksStatus);
 }
 
+async function getDataFromFireBase(path = "") {
+  let response = await fetch(BASE_URL + "tasks/" + path + ".json");
+  let responseToJson = await response.json();
+  return responseToJson;
+}
+
 async function deleteTask(taskId) {
-  let taskToDelete = allTasks.find((t) => t.id === taskId);
+  // 1. Daten aus Firebase abrufen
+  let allTasksFirebase = await getDataFromFireBase();
+
+  // 2. Objekt in ein Array umwandeln (erhält alle Tasks)
+  let allTasksArray = Object.entries(allTasksFirebase).map(([key, value]) => ({
+    ...value,
+    firebaseId: key // Firebase-ID separat speichern
+  }));
+
+  // 3. Zu löschendes Task finden
+  let taskToDelete = allTasksArray.find((task) => task.firebaseId === taskId);
+
+  // 4. Task aus dem Array entfernen, falls es existiert
   if (taskToDelete) {
-    const index = allTasks.indexOf(taskToDelete);
-    allTasks.splice(index, 1);
+    allTasksArray = allTasksArray.filter((task) => task.firebaseId !== taskId);
   }
-  await postToDatabase("", "", allTasks);
+
+  // 5. Daten wieder ins richtige Format bringen (Objekt mit dynamischen Schlüsseln)
+  let updatedTasks = allTasksArray.reduce((acc, task) => {
+    const { firebaseId, ...taskData } = task;
+    acc[firebaseId] = taskData;
+    return acc;
+  }, {});
+
+  // 6. In Firebase speichern und UI aktualisieren
+  await postToDatabase("", "", updatedTasks);
   loadBoardContent();
   closeModal();
 }
+
+
 
 function deleteSubtaskModal(id) {
   const removeSubtask = document.getElementById(`editSubTaskUnit${id}`);
