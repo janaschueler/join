@@ -1320,6 +1320,7 @@ table td:first-child {
     top: 370px !important;
   }
 }
+}
 
 @media (max-width: 480px) {
   .ModalHeadline {
