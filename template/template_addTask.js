@@ -20,3 +20,21 @@ function addInputField(id, subTaskInput) {
                               </div>`;
 }
 
+function getTransformedButton() {
+  return `              
+        <button id="clearInput" onclick="resetButtonAddTask()" class="resetSubtaskInput"></button>
+        <span class="clearSubtask"></span>
+        <span class="lineSubtaskAddnewSubtask"></span>
+        <button id="editBtnModal" onclick="addSubtask()" class="acceptBtnSubtask"></button>`;
+}
+
+function transformedResetButton() {
+  return `              
+            <input 
+            type="text" 
+            id="new-subtask-input" 
+            placeholder="add new sub task" 
+            onfocus="transformButtonAddTask()" 
+            onblur="resetButtonAddTask()"/>
+           <button id="iconAddButton" class="iconAdd" type="button" onclick="addSubtask()"></button>`;
+}

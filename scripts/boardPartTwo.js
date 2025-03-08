@@ -1,21 +1,20 @@
 function closeModal(event = null) {
   var modal = document.getElementById("modalTaskSummary");
   var backdrop = document.getElementById("taskSummaryModal");
-  
+
   if (!event || event.target === backdrop || event.target.classList.contains("modalCloseButton")) {
-      modal.classList.add("hide");
-      backdrop.classList.add("hide");
-      setTimeout(function () {
-          modal.style.visibility = "hidden";
-          backdrop.style.visibility = "hidden";
-          modal.classList.remove("show");
-          backdrop.classList.remove("show");
-      }, 500);
-      
-      window.location.reload();
+    modal.classList.add("hide");
+    backdrop.classList.add("hide");
+    setTimeout(function () {
+      modal.style.visibility = "hidden";
+      backdrop.style.visibility = "hidden";
+      modal.classList.remove("show");
+      backdrop.classList.remove("show");
+    }, 500);
+
+    window.location.reload();
   }
 }
-
 
 async function injectAssigneeContacts(task) {
   const assigneeContainer = document.getElementById(`assigneeListModal${task.id}`);
@@ -74,37 +73,24 @@ async function getDataFromFireBase(path = "") {
 }
 
 async function deleteTask(taskId) {
-  // 1. Daten aus Firebase abrufen
   let allTasksFirebase = await getDataFromFireBase();
-
-  // 2. Objekt in ein Array umwandeln (erhält alle Tasks)
   let allTasksArray = Object.entries(allTasksFirebase).map(([key, value]) => ({
     ...value,
-    firebaseId: key // Firebase-ID separat speichern
+    firebaseId: key,
   }));
-
-  // 3. Zu löschendes Task finden
   let taskToDelete = allTasksArray.find((task) => task.firebaseId === taskId);
-
-  // 4. Task aus dem Array entfernen, falls es existiert
   if (taskToDelete) {
     allTasksArray = allTasksArray.filter((task) => task.firebaseId !== taskId);
   }
-
-  // 5. Daten wieder ins richtige Format bringen (Objekt mit dynamischen Schlüsseln)
   let updatedTasks = allTasksArray.reduce((acc, task) => {
     const { firebaseId, ...taskData } = task;
     acc[firebaseId] = taskData;
     return acc;
   }, {});
-
-  // 6. In Firebase speichern und UI aktualisieren
   await postToDatabase("", "", updatedTasks);
   loadBoardContent();
   closeModal();
 }
-
-
 
 function deleteSubtaskModal(id) {
   const removeSubtask = document.getElementById(`editSubTaskUnit${id}`);
@@ -137,7 +123,7 @@ function closeModalAddTask(event) {
 
 function handleButtonClickStatus(status) {
   if (window.innerWidth <= 768) {
-    window.location.href = "./add_Task.html";
+    window.location.href = "/add_task.html";
   } else {
     openEditModal("", "", "", "", "", "", status);
   }

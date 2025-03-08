@@ -38,7 +38,6 @@ function handlePriorityClick(clickedButton) {
         resetButtonState(button);
       }
     });
-
     clickedButton.classList.add("selected");
     selectedPriority = priorityValue;
     highlightButton(clickedButton);
@@ -48,13 +47,11 @@ function handlePriorityClick(clickedButton) {
 function resetButtonState(button) {
   button.style.backgroundColor = "#FFFFFF";
   button.style.color = "black";
-
   const priorityColors = {
     urgent: "#FF3D00",
     medium: "#FFA800",
     low: "#7AE229",
   };
-
   const svgPaths = button.querySelectorAll("svg path");
   svgPaths.forEach((path) => {
     path.style.fill = priorityColors[button.classList[0]];
@@ -67,10 +64,8 @@ function highlightButton(button) {
     medium: "#FFA800",
     low: "#7AE229",
   };
-
   button.style.backgroundColor = priorityColors[button.classList[0]];
   button.style.color = "white";
-
   const svgPaths = button.querySelectorAll("svg path");
   svgPaths.forEach((path) => {
     path.style.fill = "white";
@@ -85,7 +80,7 @@ function start() {
 
 function openDatePicker() {
   let dateInput = document.getElementById("due-date");
-  dateInput.showPicker(); // Funktioniert in modernen Browsern wie Chrome
+  dateInput.showPicker();
 }
 
 function openEditTask(category, title, description, DueDate, priority, id) {
@@ -124,26 +119,12 @@ function transformButtonAddTask() {
   if (!buttonContainer) {
     return;
   }
-  buttonContainer.outerHTML = `
-        <button id="clearInput" onclick="esetButtonAddTask()" class="resetSubtaskInput"></button>
-        <span class="clearSubtask"></span>
-        <span class="lineSubtaskAddnewSubtask"></span>
-        <button id="editBtnModal" onclick="addSubtask()" class="acceptBtnSubtask"></button>
-    `;
+  buttonContainer.outerHTML = getTransformedButton();
 }
 
 function resetButtonAddTask() {
   const inputWrapper = document.getElementById("inputWrapper");
-
-  inputWrapper.innerHTML = `
-        <input 
-            type="text" 
-            id="new-subtask-input" 
-            placeholder="add new sub task" 
-            onfocus="transformButtonAddTask()" 
-            onblur="resetButtonAddTask()"/>
-           <button id="iconAddButton" class="iconAdd" type="button" onclick="addSubtask()"></button>
-    `;
+  inputWrapper.innerHTML = transformedResetButton();
 }
 
 function handleButtonClickAddTask() {

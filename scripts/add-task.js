@@ -173,49 +173,33 @@ function populateAssignedToSelect() {
   contacts.forEach((contact) => {
     const label = document.createElement("label");
     label.classList.add("customCheckboxContainer");
-
-    // Standard Checkbox (versteckt)
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.classList.add("contact-checkbox");
     checkbox.id = `contact-${contact.id}`;
     checkbox.name = `contact-${contact.id}`;
     checkbox.value = contact.id;
-
-    // Benutzerdefinierte Checkbox
     const customCheckbox = document.createElement("span");
     customCheckbox.classList.add("customCheckbox");
-
-    // SVG-Profilbild
     const svgContainer = document.createElement("div");
     svgContainer.classList.add("svg-container");
     svgContainer.style.backgroundColor = contact.color;
     svgContainer.innerHTML = `<span class="contact-initials">${getInitials(contact.name)}</span>`;
-
-    // Name des Kontakts
     const contactName = document.createElement("span");
     contactName.classList.add("subtasksUnit");
     contactName.textContent = contact.name;
-
-    // Flex-Container für Name + Checkbox
     const contactRow = document.createElement("div");
     contactRow.classList.add("contact-row");
     contactRow.appendChild(svgContainer);
     contactRow.appendChild(contactName);
     contactRow.appendChild(customCheckbox);
-
-    // Falls der Kontakt bereits ausgewählt wurde, Checkbox aktivieren
     if (selectedContacts.some((c) => c.id === contact.id)) {
       checkbox.checked = true;
       label.classList.add("checked");
     }
-
-    // Event-Listener für Checkbox
     checkbox.addEventListener("change", function () {
       toggleContactSelection(contact.id, contact.name, contact.color);
     });
-
-    // Zusammenbauen
     label.appendChild(checkbox);
     label.appendChild(contactRow);
     dropdown.appendChild(label);
@@ -258,9 +242,7 @@ window.toggleContactSelection = function (contactId, contactName, contactColor) 
   const checkbox = document.getElementById(`contact-${contactId}`);
   const container = checkbox.closest(".customCheckboxContainer");
   const input = document.getElementById("search-contacts");
-
   if (!checkbox) return;
-
   if (checkbox.checked) {
     if (!selectedContacts.some((c) => c.id === contactId)) {
       container.classList.add("checked");
@@ -272,38 +254,31 @@ window.toggleContactSelection = function (contactId, contactName, contactColor) 
     container.classList.remove("checked");
     selectedContacts = selectedContacts.filter((c) => c.id !== contactId);
   }
-
   updateSelectedContacts();
 };
 
 function updateSelectedContacts() {
   const selectedContactsContainer = document.getElementById("selected-contacts");
   selectedContactsContainer.innerHTML = "";
-
   selectedContacts.forEach((contact) => {
     const contactElement = document.createElement("div");
     contactElement.classList.add("selected-contact");
     contactElement.style.backgroundColor = contact.color;
-
     contactElement.innerHTML = `
           <span class="selected-contact-initials">${getInitials(contact.name)}</span>`;
-
     selectedContactsContainer.appendChild(contactElement);
   });
 }
 
 function removeSelectedContact(contactId) {
   selectedContacts = selectedContacts.filter((contact) => contact.id !== contactId);
-
   const checkbox = document.getElementById(`contact-${contactId}`);
   if (checkbox) {
     checkbox.checked = false;
   }
-
   updateSelectedContacts();
 }
 
-/* **Kontakte filtern** */
 function filterContacts() {
   const searchTerm = document.getElementById("search-contacts").value.toLowerCase();
   document.querySelectorAll(".customCheckboxContainer").forEach((label) => {
@@ -311,17 +286,14 @@ function filterContacts() {
     label.style.display = name.includes(searchTerm) ? "flex" : "none";
   });
 }
-// ** Initialen aus Namen generieren **
 function getInitials(name) {
   if (!name) return "??";
-
   const initials = name
     .split(" ")
     .filter((word) => word.length > 0)
     .map((word) => word[0])
     .join("")
     .toUpperCase();
-
   return initials.length > 0 ? initials : name[0].toUpperCase();
 }
 
@@ -340,10 +312,8 @@ function editSubtask(id, subTaskInput) {
 function accept(id) {
   let subTaskContainer = document.getElementById("subtasks-container");
   let newSubTask = document.getElementById(`inputSubtask${id}`).value;
-
   const removeSubtask = document.getElementById(`subTaskUnit${id}`);
   removeSubtask.remove();
-
   subTaskContainer.innerHTML += addSubtaskTemplate(newSubTask, id);
 }
 
