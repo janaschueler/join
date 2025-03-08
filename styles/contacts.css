@@ -485,7 +485,6 @@ h2 {
   width: 30%;
   height: 2px;
   background-color: rgba(41, 171, 226, 1);
-  /* Die Farbe der Unterstreichung */
 }
 
 .contactCircle {
@@ -682,7 +681,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 input[type="number"] {
-  appearance: textfield; /* Für Firefox */
+  appearance: textfield; 
 }
 
 .the_line_blue {
@@ -936,7 +935,6 @@ input[type="number"] {
     width: 30%;
     height: 2px;
     background-color: rgba(41, 171, 226, 1);
-    /* Die Farbe der Unterstreichung */
   }
 
   input.iconPhone {
