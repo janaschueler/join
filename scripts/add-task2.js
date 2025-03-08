@@ -43,8 +43,6 @@ function handlePriorityClick(clickedButton) {
     selectedPriority = priorityValue;
     highlightButton(clickedButton);
   }
-
-  console.log("Ausgewählte Priorität:", selectedPriority);
 }
 
 function resetButtonState(button) {

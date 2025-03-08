@@ -248,11 +248,11 @@ ol {
   padding-inline-start: 0px !important;
 }
 
-.statusContainer,
+/* .statusContainer,
 .list,
 .listContainer {
   overflow: visible;
-}
+} */
 
 .listContainerContent {
   background-color: white;
@@ -265,11 +265,16 @@ ol {
   word-wrap: break-word;
   margin: 16px 4px;
   position: relative;
-  width: 100%;
+  width: 98%;
+  transition: transform 125ms ease;
 }
 
 .listContainerContent:hover {
   box-shadow: 0 0 4px rgba(41, 171, 226, 1);
+}
+
+.listContainerContent.dragging {
+  transform: rotate(20deg);
 }
 
 .searchContainer {
@@ -1174,14 +1179,6 @@ table td:first-child {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-.listContainerContent {
-  transition: transform 125ms ease;
-}
-
-.listContainerContent.dragging {
-  transform: rotate(20deg);
-}
-
 .lineSubtaskAddnewSubtaskEdit {
   background-image: url(../assets/icons/verticalLine.svg);
   background-repeat: no-repeat;
@@ -1295,31 +1292,31 @@ table td:first-child {
   #modalTaskSummary.show {
     transform: translate(-50%, -55%) translateX(0);
 
-  .searchContainer {
-    min-width: 100vw;
-    width: 100% !important;
-  }
+    .searchContainer {
+      min-width: 100vw;
+      width: 100% !important;
+    }
 
-  #editSubtasks-container .input-wrapper:hover .editIconSubtask,
-  #editSubtasks-container.input-wrapper:hover .lineSubtask,
-  #editSubtasks-container .input-wrapper .deleteSubtask {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+    #editSubtasks-container .input-wrapper:hover .editIconSubtask,
+    #editSubtasks-container.input-wrapper:hover .lineSubtask,
+    #editSubtasks-container .input-wrapper .deleteSubtask {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-  #editSubtasks-container .input-wrapper .editIconSubtask,
-  #editSubtasks-container.input-wrapper:hover .lineSubtask,
-  #editSubtasks-container .input-wrapper .deleteSubtask {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+    #editSubtasks-container .input-wrapper .editIconSubtask,
+    #editSubtasks-container.input-wrapper:hover .lineSubtask,
+    #editSubtasks-container .input-wrapper .deleteSubtask {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-  .positoinCategory {
-    top: 370px !important;
+    .positoinCategory {
+      top: 370px !important;
+    }
   }
-}
 }
 
 @media (max-width: 480px) {

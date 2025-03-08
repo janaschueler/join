@@ -1,5 +1,3 @@
-let BASE_URL = "https://join2-72adb-default-rtdb.europe-west1.firebasedatabase.app/";
-
 let tasks = [];
 let selectedPriority = null;
 let contacts = [];
@@ -24,9 +22,8 @@ function toggleCategoryDropdown(event) {
   }
 }
 
-
 function toggleAssignedDropdown(event) {
-  event.stopPropagation(); 
+  event.stopPropagation();
   let dropdown = document.getElementById("assigned-dropdown");
   let isOpen = dropdown.classList.contains("visible");
   closeAllDropdowns();
@@ -43,7 +40,6 @@ document.addEventListener("click", function (event) {
   closeDropdownOnOutsideClick(event, "category-dropdown", "custom-category", "category-dropdown-icon");
   closeDropdownOnOutsideClick(event, "assigned-dropdown", "assigned-input", null);
 });
-
 
 function closeDropdownOnOutsideClick(event, dropdownId, toggleId, iconId) {
   const dropdown = document.getElementById(dropdownId);
@@ -62,7 +58,6 @@ function closeDropdownOnOutsideClick(event, dropdownId, toggleId, iconId) {
     }
   }
 }
-
 
 function closeAllDropdowns() {
   document.getElementById("category-dropdown").classList.remove("visible");
@@ -86,7 +81,6 @@ function selectCategory(label) {
   });
 }
 
-
 async function fetchContacts() {
   try {
     const response = await fetch(`${BASE_URL}/contacts.json`);
@@ -100,8 +94,7 @@ async function fetchContacts() {
       color: contact.color || getRandomColor(),
     }));
     populateAssignedToSelect();
-  } catch (error) {
-  }
+  } catch (error) {}
 }
 
 async function addTask(statusTask) {
@@ -142,8 +135,6 @@ async function addTask(statusTask) {
       throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
     }
 
-    
-
     window.location.href = "board.html";
   } catch (error) {
     console.error("Fehler beim Speichern der Aufgabe:", error);
@@ -168,12 +159,7 @@ async function saveSubtask(subtaskText) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text: subtaskText }),
     });
-
-    
-
-  } catch (error) {
-
-  }
+  } catch (error) {}
 }
 
 function populateAssignedToSelect() {
@@ -182,7 +168,7 @@ function populateAssignedToSelect() {
     return;
   }
 
-  dropdown.innerHTML = ""; 
+  dropdown.innerHTML = "";
 
   contacts.forEach((contact) => {
     const label = document.createElement("label");
@@ -258,7 +244,7 @@ function createContactSVG(contact) {
   text.setAttribute("y", "55%");
   text.setAttribute("font-family", "Arial, sans-serif");
   text.setAttribute("font-size", "12");
-  text.setAttribute("fill", "white"); 
+  text.setAttribute("fill", "white");
   text.setAttribute("text-anchor", "middle");
   text.setAttribute("alignment-baseline", "middle");
   text.textContent = initials;
@@ -371,7 +357,6 @@ function clearForm() {
   selectedPriority = null;
 }
 
-
 function getRandomColor() {
   const letters = "0123456789ABCDEF";
   let color = "#";
@@ -380,4 +365,3 @@ function getRandomColor() {
   }
   return color;
 }
-
