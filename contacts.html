@@ -75,8 +75,7 @@
         <Section class="contactContainer">
           <button type="button" class="addNewContact" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
           <div class="contacthead">
-            <button type="button" class="primaryButton" data-bs-toggle="modal" data-bs-target="#exampleModal">Add new
-              contact</button>
+            <button type="button" class="primaryButton" data-bs-toggle="modal" data-bs-target="#exampleModal">Add new contact</button>
           </div>
           <ol class="scroll-container" id="contactsSmall_content">
           </ol>
@@ -147,20 +146,21 @@
                   </svg>
                 </div>
 
-                <div class="formContainer">
-                  <button type="button" class="closeButton" data-bs-dismiss="modal" aria-label="Close">
+                <div class="formContainer" id="newContactContainer">
+                  <button type="button" class="closeButton" onclick="resetModal()" data-bs-dismiss="modal" aria-label="Close">
                     <img class="close_white" src="./assets/icons/close_white.svg" alt="">
                   </button>
                   <div class="d-flex-colum">
-                    <form>
+                    <form id="newContactForm">
                       <div>
                         <label for="recipient-name" class="col-form-label"></label>
-                        <input type="text" oninput="validateText(event)" class="form-control iconName" placeholder="Name" id="recipient-name">
+                        <input type="text" oninput="validateText(event)" class="form-control iconName" placeholder="Name" id="recipient-name" required>
                       </div>
                       <div>
                         <label for="recipient-email" class="col-form-label"></label>
-                        <input type="email" oninput="validateText(event)" class="form-control iconEmail" placeholder="Email" id="recipient-email">
+                        <input type="email" onblur="validateEmail(event)" class="form-control iconEmail" placeholder="Email" id="recipient-email" required>
                       </div>
+                      <div id="invalidPasswordNewContact" class="form-text alertMessage d_none">Please enter a valid email address.</div>
                       <div>
                         <label for="recipient-phone" class="col-form-label"></label>
                         <input type="number" oninput="validateNumber(event)" class="form-control iconPhone" placeholder="Phone" id="recipient-phone">
@@ -168,10 +168,11 @@
                     </form>
 
                     <div class="buttonContainer">
-                      <button type="button" class="secondaryButton" data-bs-dismiss="modal">Cancel</button>
-                      <button onclick="addContact()" id="newContact" type="button" class="primaryButtonCheck backgroundPosition">Create
+                      <button type="button" class="secondaryButton" onclick="resetModal()" data-bs-dismiss="modal">Cancel</button>
+                      <button onclick="addContact()" id="newContact" type="button" class="primaryButtonCheck backgroundPosition" disabled>Create
                         Contact</button>
                     </div>
+                    <div id="newContactInputfieldError" class="form-text alertMessage d_none">Please fill out all input fields.</div>
                   </div>
                 </div>
               </div>
@@ -192,20 +193,21 @@
                   
                 </div>
 
-                <div class="formContainer">
-                  <button onclick="cancelAndCross()" type="button" class="closeButton">
+                <div class="formContainer" id="editContactContainer">
+                  <button onclick="cancelAndCross(), resetModal()" type="button" class="closeButton">
                     <img class="close_white" src="./assets/icons/close_white.svg" alt="">
                   </button>
                   <div class="d-flex-colum">
-                    <form>
+                    <form id="editContactForm">
                       <div>
                         <label for="recipient-name" class="col-form-label"></label>
                         <input type="text" oninput="validateText(event)" class="form-control iconName" placeholder="Name" id="dialog-name">
                       </div>
                       <div>
                         <label for="recipient-email" class="col-form-label"></label>
-                        <input type="email" oninput="validateText(event)" class="form-control iconEmail" placeholder="Email" id="dialog-email">
+                        <input type="email" onblur="validateEmail(event)" class="form-control iconEmail" placeholder="Email" id="dialog-email">
                       </div>
+                      <div id="invalidPasswordContact" class="form-text alertMessage d_none">Please enter a valid email address.</div>
                       <div>
                         <label for="recipient-phone" class="col-form-label"></label>
                         <input type="number" oninput="validateNumber(event)" class="form-control iconPhone" placeholder="Phone" id="dialog-phone">
@@ -213,11 +215,12 @@
                     </form>
 
                     <div class="buttonContainer">
-                      <button onclick="deleteContact()" type="button" class="deleteButton"
+                      <button onclick="deleteContact(), resetModal()" type="button" class="deleteButton"
                         data-bs-dismiss="modal">Delete</button>
                       <button onclick="saveEditedContact()" id="newContact" type="button"
-                        class="primaryButtonCheck">Save</button>
+                        class="primaryButtonCheck" disabled>Save</button>
                     </div>
+                    <div id="editContactInputfieldError" class="form-text alertMessage d_none">Please fill out all input fields.</div>
                   </div>
                 </div>
               </div>

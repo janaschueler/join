@@ -171,6 +171,11 @@ main {
   padding-left: 16px !important;
 }
 
+.primaryButtonCheck:disabled {
+  background-color: rgba(240, 240, 240, 1);
+  border: none;
+}
+
 .backgroundPosition {
   background-position-x: 90%;
   padding-right: 36px;
@@ -232,7 +237,7 @@ main {
 }
 
 .listBody:focus {
-  background-color:rgba(42, 54, 71, 1);
+  background-color: rgba(42, 54, 71, 1);
   color: white;
   border-radius: 6px;
 }
@@ -258,7 +263,7 @@ main {
 }
 
 .contactHeader svg {
-  margin-left: 5%;  
+  margin-left: 5%;
 }
 
 .listEmail {
@@ -299,10 +304,10 @@ h2 {
 .editIcon {
   border: none;
   background-color: transparent;
-  font-size: 18px;  
+  font-size: 18px;
   display: flex;
   align-items: center;
-  gap: 3px;  
+  gap: 3px;
 }
 
 .editIconImg {
@@ -310,7 +315,7 @@ h2 {
 }
 
 .editIcon:hover .editIconImg path {
-  fill: #29ABE2;
+  fill: #29abe2;
 }
 
 .deleteIcon {
@@ -318,16 +323,16 @@ h2 {
   background-color: transparent;
   font-size: 18px;
   display: flex;
-  align-items: center; 
-  gap: 3px; 
+  align-items: center;
+  gap: 3px;
 }
 
 .deleteImgIcon {
   width: 25px;
 }
 
-.deleteIcon:hover .deleteImgIcon path{
-  fill: #29ABE2;
+.deleteIcon:hover .deleteImgIcon path {
+  fill: #29abe2;
 }
 
 .subHeadline {
@@ -393,6 +398,7 @@ h2 {
 
 .headerContainer {
   display: flex;
+  overflow: auto;
 }
 
 .addNewContact {
@@ -502,18 +508,39 @@ h2 {
   right: 48px;
   background: transparent;
   border: none;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background-color 75ms;
+}
+
+.closeButton::before {
+  content: "";
   width: 12px;
   height: 12px;
   background-image: url("../assets/icons/close.svg");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
-  cursor: pointer;
+  display: block;
 }
 
-.closeButton:hover { 
-  box-shadow: 10px 5px 15px rgb(255, 255, 255);
-  border-radius: 50%;
+.closeButton:hover {
+  background-color: rgba(128, 128, 128, 0.2);
+}
+
+.alertMessage {
+  color: red !important;
+  text-align: left;
+  font-size: 12px !important;
+}
+
+.input-error {
+  border: 1px solid red !important;
 }
 
 .formContainer form {
@@ -668,10 +695,13 @@ input[type="number"] {
 }
 
 #dialog-name:focus,
+#recipient-name:focus,
+#recipient-email:focus,
+#recipient-phone:focus,
 #dialog-email:focus,
 #dialog-phone:focus {
-border: 1px solid rgba(41, 171, 226, 1);
-box-shadow: none;
+  border: 1px solid rgba(41, 171, 226, 1);
+  box-shadow: none;
 }
 
 @media (max-width: 768px) {
@@ -736,10 +766,6 @@ box-shadow: none;
 
   body {
     overflow: hidden;
-  }
-
-  h1 {
-    font-size: 53px !important;
   }
 
   .mobile_header {
@@ -838,6 +864,15 @@ box-shadow: none;
 }
 
 @media (max-width: 730px) {
+
+  .headerBoard {
+    margin-top: 40px;
+  }
+
+  h1 {
+    font-size: 47px !important;
+  }
+
   .modal_edit {
     margin-top: 5px;
   }
@@ -948,4 +983,5 @@ box-shadow: none;
   .overlay {
     background-color: rgba(0, 0, 0, 0.5) !important;
   }
+
 }

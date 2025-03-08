@@ -142,10 +142,10 @@ async function checkLogin() {
 
   if (user) {
     transfereLoginData(user);
-   await  addContactLogIn();
+    await addContactLogIn();
     setTimeout(() => {
       window.location.assign("./index.html");
-    }, 100);
+    }, 1000);
   } else {
     document.getElementById("wrongPassword").classList.remove("d-none");
     let passwordField = document.getElementById("inputPassword1");

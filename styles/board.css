@@ -3,6 +3,10 @@ body {
   font-family: "inter 18pt";
 }
 
+h1 {
+  font-size: 61px !important;
+}
+
 .left-main-bar.collapsed {
   width: 80px;
 }
@@ -442,7 +446,7 @@ ol {
 
 .limitProgressBar {
   width: 160px;
-  background-color: rgba(244, 244, 244, 1); 
+  background-color: rgba(244, 244, 244, 1);
   border-radius: 8px;
   height: 10px;
   overflow: hidden;
@@ -1270,6 +1274,11 @@ table td:first-child {
 }
 
 @media (max-width: 768px) {
+
+  h1 {
+    font-size: 47px !important;
+  }
+
   .mobile {
     display: bock;
   }
