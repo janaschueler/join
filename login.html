@@ -43,20 +43,21 @@
         <div class="card">
             <div class="card-body">
                 <h1>Log in</h1>
-                <form class="formInputContainer">
+                <form id="formInputContainer" class="formInputContainer">
                   <div class="mb-3">
                       <label for="InputEmail1" class="form-label"></label>
                       <input type="email" class="form-control iconEmail" id="inputEmail" aria-describedby="emailHelp" placeholder="Email" required>
                   </div>
+                  <div id="invalidPasswordLogin" class="form-text alertMessage d_none margin_top">Please enter a valid email address.</div>
               
                   <div class="mb-3">
                       <label for="InputPassword1" class="form-label"></label>
                       <input type="password" class="form-control iconPassword" id="inputPassword1" placeholder="Password" required>
                       <div id="wrongPassword" class="form-text alertMessage d-none">User name and password do not match. Please try again</div>                 
                     </div>
-              
+                   
                   <div id="LoginButton" class="LoginButtonContainer d-flex gap-2">
-                      <button onclick="initializeCheck('check')" type="submit" class="btn primaryButton">Log in</button>
+                      <button type="submit" class="btn primaryButton">Log in</button>
                       <button onclick="guestLogIn()" class="btn secondaryButton">Guest Log in</button>
                   </div>
                </form>

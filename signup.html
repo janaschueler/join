@@ -36,13 +36,14 @@
                 <form id="signupForm" class="formInputContainer">
                     <div class="form-group">
                     <label for="inputNameSignin"></label>
-                    <input type="name" class="form-control iconName" id="inputNameSignin" aria-describedby="emailHelp" placeholder="Name" required>
+                    <input type="name" class="form-control iconName" id="inputNameSignin" aria-describedby="emailHelp" oninput="validateText(event)" placeholder="Name" required>
                     <small id="emailHelp" class="form-text text-muted"></small>
                     </div>
                     <div class="form-group">
                     <label for="inputEmailSignin"></label>
-                    <input type="email" class="form-control iconEmail" id="inputEmailSignin" placeholder="Email" required>
+                    <input type="email" class="form-control iconEmail" onblur="validateEmail(event)" id="inputEmailSignin" placeholder="Email" required>
                     </div>
+                    <div id="invalidPasswordSignup" class="form-text alertMessage d_none">Please enter a valid email address.</div>
                     <div class="form-group">
                         <label for="inputPassword1Signin"></label>
                         <input type="password" class="form-control iconPassword" id="inputPassword1Signin" placeholder="Password" required>
