@@ -5,14 +5,28 @@ let allContacts = { idContact: [], contactName: [], contactAbbreviation: [], col
 
 let currentDraggedElement;
 
+/**
+ * The `initi()` function asynchronously initializes the application by checking access authorization,
+ * fetching tasks and contacts data, loading board content, and rendering the top bar.
+ */
 async function initi() {
-  checkAccessAuthorization()
+  checkAccessAuthorization();
   allTasks = await getDataTasks();
   allContacts = await getDataContacts();
   loadBoardContent();
   renderTopBar();
 }
 
+/**
+ * The function `getDataTasks` retrieves data from a specified path `tasks`, processes and formats the
+ * data, and returns an array of tasks.
+ * @param [path] - The `path` parameter in the `getDataTasks` function is used to specify the path to
+ * the JSON file containing tasks data. It is concatenated with the base URL and "tasks/" to form the
+ * complete URL for fetching the data. If no path is provided, an empty string is used as the
+ * @returns The `getDataTasks` function is returning an array of tasks with specific properties such as
+ * id, assignedTo, color, category, createdAt, description, dueDate, priority, subtasks, title,
+ * subtasksStatus, and status.
+ */
 async function getDataTasks(path = "") {
   let response = await fetch(BASE_URL + "tasks/" + path + ".json");
   let responseToJson = await response.json();
@@ -36,7 +50,75 @@ async function getDataTasks(path = "") {
   }
   return tasks;
 }
+function determineAssignedTo(arryAssignedTo) {
+  if (!arryAssignedTo) {
+    return;
+  } else {
+    let assignedTo = arryAssignedTo.map((contact) => contact.name);
+    return assignedTo;
+  }
+}
 
+function determineColor(arryAssignedColor) {
+  if (!arryAssignedColor) {
+    return;
+  } else {
+    let assignedTo = arryAssignedColor.map((contact) => contact.color);
+    return assignedTo;
+  }
+}
+
+function determinStatus(key, status) {
+  if (status === null || status === undefined) {
+    status = 1;
+    addStatus(key, status);
+    return status;
+  } else {
+    return status;
+  }
+}
+
+async function addStatus(key, status) {
+  try {
+    await postToDatabase(key, "/status", status);
+  } catch (error) {
+    console.error("Error setting status:", error);
+    throw error;
+  }
+}
+
+async function postToDatabase(path1 = "", path2 = "", data = {}) {
+  const url = `${BASE_URL}tasks/${path1}${path2}.json`;
+  try {
+    let response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (response.ok) {
+      return;
+    }
+  } catch (error) {
+    console.error("Error posting:", error);
+  }
+}
+
+/**
+ * The function `getDataContacts` fetches contact data from a specified path `contacts` and generates an
+ * abbreviation for each contact name using the `generateAbbreviation` function.
+ * @param [path] - The `path` parameter in the `getDataContacts` function is used to specify the path
+ * to the JSON file containing contact information. It is concatenated with the base URL and ".json" to
+ * form the complete URL for fetching the data. If no `path` is provided, an empty string is used
+ * @returns The `getDataContacts` function is returning an array of objects with the following
+ * properties for each contact:
+ * - idContact: the key of the contact in the response JSON
+ * - contactName: the name of the contact from the response JSON
+ * - contactAbbreviation: the abbreviation generated from the contact name using the
+ * `generateAbbreviation` function
+ * - color: the color of the contact from
+ */
 async function getDataContacts(path = "") {
   let response = await fetch(BASE_URL + "contacts/" + path + ".json");
   let responseToJson = await response.json();
@@ -64,70 +146,11 @@ function generateAbbreviation(newName) {
   return abbreviation.toUpperCase();
 }
 
-function determinStatus(key, status) {
-  if (status === null || status === undefined) {
-    status = 1;
-    addStatus(key, status);
-    return status;
-  } else {
-    return status;
-  }
-}
-
-function determineAssignedTo(arryAssignedTo) {
-  if (!arryAssignedTo) {
-    return;
-  } else {
-    let assignedTo = arryAssignedTo.map((contact) => contact.name);
-    return assignedTo;
-  }
-}
-
-function determineColor(arryAssignedColor) {
-  if (!arryAssignedColor) {
-    return;
-  } else {
-    let assignedTo = arryAssignedColor.map((contact) => contact.color);
-    return assignedTo;
-  }
-}
-
-async function addStatus(key, status) {
-  try {
-    await postToDatabase(key, "/status", status);
-  } catch (error) {
-    console.error("Fehler beim Setzen des Status:", error);
-    throw error;
-  }
-}
-
-async function addSubtasksStatus(key, status) {
-  try {
-    await postToDatabase(key, "/subtasksStatus", status);
-  } catch (error) {
-    console.error("Fehler beim Setzen des Status:", error);
-    throw error;
-  }
-}
-
-async function postToDatabase(path1 = "", path2 = "", data = {}) {
-  const url = `${BASE_URL}tasks/${path1}${path2}.json`;
-  try {
-    let response = await fetch(url, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    if (response.ok) {
-      return;
-    }
-  } catch (error) {
-    console.error("Fehler beim Posten:", error);
-  }
-}
-
+/**
+ * The above JavaScript functions are used to load and render task content on a board, including
+ * determining priority, progress, completed subtasks, category color, and assigning tasks to users.
+ * `renderTask` generates all individual tasks shown in the board.
+ */
 function loadBoardContent() {
   loadBordContentByStatus(0, "ToDoTaskContainer");
   loadBordContentByStatus(1, "ToDoTaskContainer");
@@ -200,21 +223,10 @@ async function injectAssignees(task) {
   if (Array.isArray(task.assignedTo) && Array.isArray(task.color)) {
     task.assignedTo.forEach((assignee, index) => {
       const assigneeAbbreviation = getAssigneeAbbreviation(assignee);
-      const assigneeColor = task.color[index] || "rgba(0, 0, 0, 1)"; 
+      const assigneeColor = task.color[index] || "rgba(0, 0, 0, 1)";
       assigneeContainer.innerHTML += generateAssigneeCircle(assigneeAbbreviation, assigneeColor);
     });
   }
-}
-
-function determineCategoryColor(category) {
-  let categoryColor;
-  if (category == "Technical Task") {
-    categoryColor = "background-color:rgba(31, 215, 193, 1);";
-    return categoryColor;
-  } else {
-    categoryColor = "background-color:rgba(0, 56, 255, 1);";
-  }
-  return categoryColor;
 }
 
 function getAssigneeAbbreviation(assignee) {
@@ -227,17 +239,13 @@ function getAssigneeAbbreviation(assignee) {
     .join("");
 }
 
-function findContactColor(name) {
-  let contactNames = allContacts.map((contact) => contact.contactName);
-  const index = contactNames.indexOf(name);
-
-  if (index !== -1) {
-    return allContacts[index].color;
-  } else {
-    return null;
-  }
-}
-
+/**
+ * The above JavaScript functions handle drag and drop functionality for tasks in different status
+ * containers.
+ * @param event - The `event` parameter in the `allowDrop` function is an event object that represents
+ * the drop event. It is used to prevent the default behavior of the drop event using
+ * `event.preventDefault()`.
+ */
 function allowDrop(event) {
   event.preventDefault();
   const containerIds = ["ToDoTaskContainer", "inProgressContainer", "TestingContainer", "doneContainer"];
@@ -261,24 +269,31 @@ function drag(ev) {
 }
 
 async function drop(status) {
+  const task = getTaskAndUpdateStatus(status);
+  await updateUIAfterStatusChange(task, status);
+  location.reload(true);
+}
+
+function getTaskAndUpdateStatus(status) {
   const task = Object.values(allTasks).find((t) => t.id === currentDraggedElement);
   task.status = status;
+
+  const rotatingElement = document.querySelector(`[onclick="openModal('${currentDraggedElement}')"]`);
+  if (rotatingElement) rotatingElement.classList.remove("rotating");
+
+  return task;
+}
+
+async function updateUIAfterStatusChange(task, status) {
   const container = document.getElementById(getContainerIdByStatus(status));
   const dashedBox = container.querySelector(".dashed-box");
-  const rotatingElement = document.querySelector(`[onclick="openModal('${currentDraggedElement}')"]`);
-  if (rotatingElement) {
-    rotatingElement.classList.remove("rotating");
-  }
+
   try {
-    await addStatus(currentDraggedElement, status);
-    if (dashedBox) {
-      dashedBox.style.display = "none";
-    }
+    await addStatus(task.id, status);
+    if (dashedBox) dashedBox.style.display = "none";
   } catch (error) {
-    console.error("Fehler beim Aktualisieren des Status:", error);
-    return;
+    console.error("Error updating status:", error);
   }
-  location.reload(true);
 }
 
 function startDragging(id) {
@@ -290,6 +305,18 @@ function startDragging(id) {
   }
 }
 
+/**
+ * The above JavaScript code defines functions to search and render tasks based on input, with a focus
+ * on filtering and displaying tasks in different containers based on their status.
+ * @param searchInput - The `searchInput` parameter in the `searchTasks` function is the user input
+ * from the search form. It is the value entered by the user in the search input field, which is then
+ * trimmed of any extra whitespace and converted to lowercase for case-insensitive comparison.
+ * @returns The code snippet provided is an event listener that listens for a form submission on an
+ * element with the id "searchForm". When the form is submitted, it prevents the default form
+ * submission behavior, gets the value of the search input field, trims and converts it to lowercase,
+ * and then calls the function `searchTasks(searchInput)` with the search input value as an argument.
+ * Followed by `renderTaskByStatus(task)` which ultimately renders the filtered tasks back into the board.
+ */
 document.getElementById("searchForm").addEventListener("submit", function (e) {
   e.preventDefault();
   const searchInput = document.getElementById("searchInput").value.trim().toLowerCase();
@@ -328,15 +355,6 @@ function renderTaskByStatus(task) {
   toggleProgressContainer(task);
 }
 
-function toggleProgressContainer(task) {
-  const progressContainerId = `progressContainer${task.id}`;
-  if (!task.subtasks?.length) {
-    const progressContainerElement = document.getElementById(progressContainerId);
-    if (progressContainerElement) progressContainerElement.style.display = "none";
-    else console.warn(`Element mit ID ${progressContainerId} nicht gefunden.`);
-  }
-}
-
 function getContainerIdByStatus(status) {
   switch (status) {
     case 1:
@@ -352,52 +370,33 @@ function getContainerIdByStatus(status) {
   }
 }
 
-function loadTaskSummaryModal(id) {
-  return new Promise((resolve, reject) => {
-    let summaryModal = document.getElementById("taskSummaryModal");
-    summaryModal.innerHTML = "";
-
-    let task = allTasks.find((t) => t.id === id);
-    if (!task) return reject("Task not found");
-
-    renderTaskSummaryContent(summaryModal, task);
-    handleTaskVisibility(task);
-    setTimeout(resolve, 0);
-  });
+function toggleProgressContainer(task) {
+  const progressContainerId = `progressContainer${task.id}`;
+  if (!task.subtasks?.length) {
+    const progressContainerElement = document.getElementById(progressContainerId);
+    if (progressContainerElement) progressContainerElement.style.display = "none";
+  }
 }
 
-function renderTaskSummaryContent(summaryModal, task) {
-  let formattedDate = convertTask(task.dueDate);
-  let priorityIcon = determinePriotiry(task.priority);
-  let categoryColor = determineCategoryColor(task.category);
-  summaryModal.innerHTML += generateTaskSummaryModal(task, priorityIcon, formattedDate, categoryColor);
+/**
+ * The function `addStatusBoard` asynchronously posts a status to a database and reloads the window
+ * upon completion.
+ * @param key - The `key` parameter is a unique identifier. It is used to locate the specific data that needs 
+ * to be updated with the new status information.
+ * @param status - The `status` parameter in the `addStatusBoard` function represents one of tbe four status in the board. 
+ * It is the data that will be sent to the database endpoint `/status` using the `postToDatabase` function.
+ * @param event - The `event` parameter in the `addStatusBoard` function is an event object that is
+ * passed to the function when it is called. It is used to handle events in the browser, such as click
+ * events or form submissions. In this case, the `event.stopPropagation(event)` method is being called
+ */
+async function addStatusBoard(key, status, event) {
+  event.stopPropagation(event);
+  try {
+    await postToDatabase(key, "/status", status);
+  } catch (error) {
+    console.error("Error setting status:", error);
+    throw error;
+  }
+  window.location.reload();
 }
 
-function handleTaskVisibility(task) {
-  task.assignedTo?.length ? injectAssigneeContacts(task) : hideElement(`assignedToContainer${task.id}`);
-  task.subtasks?.length ? injectSubtasks(task) : hideElement(`subtaskContainer${task.id}`);
-}
-
-function hideElement(id) {
-  let element = document.getElementById(id);
-  if (element) element.style.display = "none";
-}
-
-function openModal(id) {
-  loadTaskSummaryModal(id)
-    .then(() => {
-      var modal = document.getElementById("modalTaskSummary");
-      var backdrop = document.getElementById("taskSummaryModal");
-
-      backdrop.style.visibility = "visible";
-      backdrop.style.opacity = "1";
-
-      modal.style.visibility = "visible";
-      type = "button";
-      modal.classList.remove("hide");
-      modal.classList.add("show");
-    })
-    .catch((error) => {
-      console.error("Fehler beim Laden des Inhalts:", error);
-    });
-}
