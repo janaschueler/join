@@ -110,7 +110,6 @@ function acceptEdit(id) {
   subTaskContainer.innerHTML += addSubtaskTemplateinModal(newSubTask, id);
 }
 
-
 /**
  * The `saveEditTask` function in JavaScript gathers task data, validates it, saves it to a server, and
  * handles any errors that may occur during the process.
@@ -309,8 +308,7 @@ async function addTaskModal(id, status) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(taskData),
     });
-    if (!response.ok) 
-    window.location.href = "board.html";
+    if (!response.ok) window.location.href = "board.html";
   } catch (error) {
     console.error("Error saving:", error);
   }
@@ -379,8 +377,7 @@ async function saveNewTask(taskData) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(taskData),
     });
-    if (!response.ok)
-    window.location.href = "board.html";
+    if (!response.ok) window.location.href = "board.html";
   } catch (error) {
     console.error("Error saving task:", error);
   }
@@ -396,4 +393,3 @@ function findContactColor(name) {
     return null;
   }
 }
-
