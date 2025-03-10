@@ -113,98 +113,111 @@ function hideLoadingBackground() {
  * @function initializeCheck
  * @returns {Promise<void>} A promise that resolves when the initialization and login check are complete.
  */
-async function initializeCheck() {
-  allUser = await getData();
-  checkLogin();
-}
 
 document.querySelector("#logInBtn").addEventListener("click", function (event) {
   event.preventDefault();
   initializeCheck();
 });
 
-/**
- * Fetches user data from a specified path and returns an array of user objects.
- *
- * @param {string} [path=""] - The path to the user data file (without the .json extension).
- * @returns {Promise<Array<Object>>} A promise that resolves to an array of user objects.
- * Each user object contains the following properties:
- *   - contactEmail {string}: The email of the user.
- *   - contactPassword {string}: The password of the user.
- *   - contactId {string}: The unique identifier of the user.
- *   - contactName {string}: The name of the user.
- *   - contactAbbreviation {string}: The abbreviation of the user's name.
- *
- * @throws {Error} If there is a network error or the response is not ok.
- */
+async function initializeCheck() {
+  allUser = await getData();
+  checkLogin();
+}
+
 async function getData(path = "") {
   try {
-    let response = await fetch(BASE_URL + "signup/" + "user/" + path + ".json");
+    const response = await fetch(`${BASE_URL}signup/user/${path}.json`);
     if (!response.ok) {
       throw new Error("Network error: " + response.statusText);
     }
-    let responseToJson = await response.json();
-    let users = [];
-    for (let key in responseToJson) {
-      let user = responseToJson[key];
-      users.push({
-        contactEmail: user.contactEmail,
-        contactPassword: user.contactPassword,
-        contactId: key,
-        contactName: user.contactName,
-        contactAbbreviation: user.contactAbbreviation,
-      });
-    }
-    return users;
+    return extractUserData(await response.json());
   } catch (error) {
-    console.error("error retrieving the data:", error);
+    console.error("Error retrieving the data:", error);
     return [];
   }
 }
 
+function extractUserData(responseToJson) {
+  return Object.entries(responseToJson || {}).map(([key, user]) => ({
+    contactEmail: user.contactEmail,
+    contactPassword: user.contactPassword,
+    contactId: key,
+    contactName: user.contactName,
+    contactAbbreviation: user.contactAbbreviation,
+  }));
+}
+
+
 /**
  * Asynchronously checks the login credentials entered by the user.
- * Validates the email format and checks if the email and password match any user in the `allUser` array.
- * If the credentials are valid, transfers login data, adds a contact log, and redirects to the index page.
- * If the credentials are invalid, displays an error message and highlights the password field.
+ * Disables the login button while validating the email and password.
+ * If the email is invalid, re-enables the login button and exits.
+ * If the email and password match a user in the `allUser` array,
+ * calls `handleLoginResult` with the user and the login button.
  *
  * @async
  * @function checkLogin
- * @returns {void}
+ * @returns {Promise<void>} A promise that resolves when the login check is complete.
  */
 async function checkLogin() {
-  let disabledBtn = document.getElementById("logInBtn");
+  const disabledBtn = document.getElementById("logInBtn");
   disabledBtn.disabled = true;
-  let validEmail = validateEmailLogin();
-  if (!validEmail) {
+
+  if (!validateEmailLogin()) {
     disabledBtn.disabled = false;
     return;
   }
-  let loginEmail = document.getElementById("inputEmail").value;
-  let loginPassword = document.getElementById("inputPassword1").value;
-  let user = allUser.find((user) => {
-    return user?.contactEmail?.[0]?.toLowerCase()?.trim() === loginEmail.toLowerCase().trim() && user?.contactPassword?.[0] === loginPassword;
-  });
+  const loginEmail = document.getElementById("inputEmail").value.trim().toLowerCase();
+  const loginPassword = document.getElementById("inputPassword1").value;
+  const user = allUser.find((u) => u?.contactEmail?.[0]?.toLowerCase() === loginEmail && u?.contactPassword?.[0] === loginPassword);
 
+  await handleLoginResult(user, disabledBtn);
+}
+
+async function handleLoginResult(user, disabledBtn) {
   if (user) {
     transfereLoginData(user);
-    let addedContact = await addContactLogIn();
-    disabledBtn.disabled = false;
-    if (addedContact == true) {
+    if (await addContactLogIn()) {
       window.location.assign("./index.html");
     }
   } else {
     document.getElementById("wrongPassword").classList.remove("d-none");
-    let passwordField = document.getElementById("inputPassword1");
+    const passwordField = document.getElementById("inputPassword1");
     passwordField.style.border = "1px solid red";
     passwordField.focus();
-    disabledBtn.disabled = false;
   }
+  disabledBtn.disabled = false;
 }
 
-document.querySelector(".formInputContainer").addEventListener("click", function (event) {
-  document.getElementById("wrongPassword").classList.add("d-none");
-});
+function validateEmailLogin() {
+  let input = document.getElementById("inputEmail").value;
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const isValidEmail = emailPattern.test(input);
+  if (!isValidEmail) {
+    document.querySelectorAll("[id*='invalidPassword']").forEach((element) => {
+      element.classList.remove("d_none");
+    });
+  } else {
+    document.querySelectorAll("[id*='invalidPassword']").forEach((element) => {
+      element.classList.add("d_none");
+    });
+  }
+  return isValidEmail;
+}
+
+/**
+ * Adjusts the position of loading messages based on the window's width.
+ *
+ * This function checks the current width of the window and adjusts the
+ * CSS position property of elements with IDs "loadingMessageMobile" and
+ * "loadingMessage". If the window's width is 480 pixels or less,
+ * "loadingMessageMobile" is set to "fixed" and "loadingMessage" to "relative".
+ * If the window's width is greater than 480 pixels, "loadingMessageMobile"
+ * is set to "relative" and "loadingMessage" to "fixed".
+ */
+
+window.addEventListener("load", handleResize);
+window.addEventListener("resize", handleResize);
 
 function handleResize() {
   const loadingMessageMobile = document.getElementById("loadingMessageMobile");
@@ -220,24 +233,4 @@ function handleResize() {
       loadingMessage.style.position = "fiexed";
     }
   }
-}
-
-window.addEventListener("load", handleResize);
-window.addEventListener("resize", handleResize);
-
-function validateEmailLogin() {
-  let input = document.getElementById("inputEmail").value;
-  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const isValidEmail = emailPattern.test(input);
-
-  if (!isValidEmail) {
-    document.querySelectorAll("[id*='invalidPassword']").forEach((element) => {
-      element.classList.remove("d_none");
-    });
-  } else {
-    document.querySelectorAll("[id*='invalidPassword']").forEach((element) => {
-      element.classList.add("d_none");
-    });
-  }
-  return isValidEmail;
 }
