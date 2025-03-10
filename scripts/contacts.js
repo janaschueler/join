@@ -3,12 +3,17 @@ const BASE_URL = "https://join2-72adb-default-rtdb.europe-west1.firebasedatabase
 let allUsers = [];
 let selectedContactId = null;
 
-function init() {
-  fetchData();
-  renderTopBar();
-  renderSmallContacts();
-  renderBigContacts();
-  renderModalContacts();
+async function init() {
+  let checkedAuthority = await checkAccessAuthorization();
+  if (checkedAuthority) {
+    fetchData();
+    renderTopBar();
+    renderSmallContacts();
+    renderBigContacts();
+    renderModalContacts();
+  } else {
+    window.location.href = "login.html";
+  }
 }
 
 function renderModalContacts() {

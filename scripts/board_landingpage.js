@@ -10,11 +10,15 @@ let currentDraggedElement;
  * fetching tasks and contacts data, loading board content, and rendering the top bar.
  */
 async function initi() {
-  checkAccessAuthorization();
-  allTasks = await getDataTasks();
-  allContacts = await getDataContacts();
-  loadBoardContent();
-  renderTopBar();
+  let checkedAuthority = await checkAccessAuthorization();
+  if (checkedAuthority) {
+    allTasks = await getDataTasks();
+    allContacts = await getDataContacts();
+    loadBoardContent();
+    renderTopBar();
+  } else {
+    window.location.href = "login.html";
+  }
 }
 
 /**
@@ -381,9 +385,9 @@ function toggleProgressContainer(task) {
 /**
  * The function `addStatusBoard` asynchronously posts a status to a database and reloads the window
  * upon completion.
- * @param key - The `key` parameter is a unique identifier. It is used to locate the specific data that needs 
+ * @param key - The `key` parameter is a unique identifier. It is used to locate the specific data that needs
  * to be updated with the new status information.
- * @param status - The `status` parameter in the `addStatusBoard` function represents one of tbe four status in the board. 
+ * @param status - The `status` parameter in the `addStatusBoard` function represents one of tbe four status in the board.
  * It is the data that will be sent to the database endpoint `/status` using the `postToDatabase` function.
  * @param event - The `event` parameter in the `addStatusBoard` function is an event object that is
  * passed to the function when it is called. It is used to handle events in the browser, such as click
@@ -399,4 +403,3 @@ async function addStatusBoard(key, status, event) {
   }
   window.location.reload();
 }
-

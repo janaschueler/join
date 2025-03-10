@@ -138,9 +138,10 @@ async function checkAccessAuthorization() {
   let signedInUserRef = await getSigneInUserData();
   let signedInUser = signedInUserRef.contactEmail[0];
   if (userEmail == signedInUser) {
-    return;
+    return true;
   } else {
     window.location.href = "login.html";
+    return false;
   }
 }
 
@@ -172,6 +173,14 @@ function validateEmail(event) {
     document.querySelectorAll("[id*='invalidPassword']").forEach((element) => {
       element.classList.add("d_none");
     });
+  }
+  checkFormValidity();
+}
+
+function validateNumber(event) {
+  let input = event.target.value;
+  if (!/^[0-9\s]*$/.test(input)) {
+    event.target.value = input.replace(/[^0-9\s]/g, "");
   }
   checkFormValidity();
 }

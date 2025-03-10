@@ -6,7 +6,7 @@
  * event, such as the type of event, the target element, and any additional data related to the event.
  * You can use this parameter
  * @param id - The `id` parameter in the `openStatusNav` and `closeStatusNav` functions is used to
- * identify the specific element that should be manipulated when the functions are called. 
+ * identify the specific element that should be manipulated when the functions are called.
  */
 
 function openStatusNav(event, id) {
@@ -28,7 +28,7 @@ function closeStatusNav(event, id) {
  * details, managing task visibility, assigning contacts, handling subtasks, and updating subtask
  * statuses.
  * @param id - The `id` parameter in the `openModal(id)` functions is used to
- * identify the specific task which information should be rendered in the modal. 
+ * identify the specific task which information should be rendered in the modal.
  */
 function openModal(id) {
   loadTaskSummaryModal(id)
@@ -311,58 +311,44 @@ function addDueDate(dateTask) {
   dueDateContainer.value = formattedDate;
 }
 
+function determineAssignedToEditModal(id) {
+  let task = allTasks.find((t) => t["id"] === id);
+  if (!task) return;
+  if (!task.assignedTo) return;
+  task.assignedTo.forEach((assignedPerson, index) => {
+    let color = task.color[index] || "#000000";
+    let foundContact = allContacts.find((contact) => contact.contactName === assignedPerson);
+    if (foundContact) {
+      toggleContactSelectionEditPreselected(foundContact.idContact, assignedPerson, color);
+    }
+  });
+}
+
 function populateAssignedToSelectEdit() {
   const dropdown = document.getElementById("assigned-dropdown-Edit");
-  if (!dropdown) return;
-
-  dropdown.innerHTML = "";
-
-  if (!allContacts || !Array.isArray(allContacts) || allContacts.length === 0) {
-    console.warn("Contacts ist leer oder nicht definiert.");
+  if (!dropdown) {
     return;
   }
+  if (!Array.isArray(allContacts) || allContacts.length === 0) {
+  }
+  dropdown.innerHTML = allContacts
+    .map((contact) =>
+      addTaskTemplateEdit(
+        contact,
+        selectedContacts.some((c) => c.id === contact.id)
+      )
+    )
+    .join("");
 
-  allContacts.forEach((contact) => {
-    const label = document.createElement("label");
-    label.classList.add("customCheckboxContainer");
-
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.classList.add("contact-checkbox");
-    checkbox.id = `edit-contact-${contact.idContact}`;
-    checkbox.name = `edit-contact-${contact.idContact}`;
-    checkbox.value = contact.id;
-
-    const customCheckbox = document.createElement("span");
-    customCheckbox.classList.add("customCheckbox");
-
-    const svgContainer = document.createElement("div");
-    svgContainer.classList.add("svg-container");
-    svgContainer.style.backgroundColor = contact.color;
-    svgContainer.innerHTML = `<span class="contact-initials">${contact.contactAbbreviation}</span>`;
-
-    const contactName = document.createElement("span");
-    contactName.classList.add("subtasksUnit");
-    contactName.textContent = contact.contactName;
-
-    const contactRow = document.createElement("div");
-    contactRow.classList.add("contact-row");
-    contactRow.appendChild(svgContainer);
-    contactRow.appendChild(contactName);
-    contactRow.appendChild(customCheckbox);
-
-    if (selectedContacts.some((c) => c.id === contact.idContact)) {
-      checkbox.checked = true;
-      label.classList.add("checked");
-    }
-
+  document.querySelectorAll(".contact-checkbox").forEach((checkbox) => {
     checkbox.addEventListener("change", function () {
-      toggleContactSelectionEdit(contact.idContact, contact.contactName, contact.color);
+      const label = this.closest(".customCheckboxContainer");
+      if (!label) return;
+      const contactRow = label.querySelector(".contact-row");
+      const name = contactRow.querySelector(".subtasksUnit")?.textContent || "unknown";
+      const color = contactRow.querySelector(".svg-container")?.style.backgroundColor || "#000";
+      toggleContactSelectionEdit(this.value, name, color);
     });
-
-    label.appendChild(checkbox);
-    label.appendChild(contactRow);
-    dropdown.appendChild(label);
   });
 }
 
