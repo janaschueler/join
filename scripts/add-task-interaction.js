@@ -1,3 +1,13 @@
+/**
+ * Initialisiert die Prioritätsbuttons und setzt die Standardpriorität.
+ *
+ * @param {string} [priority] - Die Priorität, die gesetzt werden soll (optional). 
+ *                              Mögliche Werte sind "low", "medium", "high".
+ *
+ * Diese Funktion fügt allen Prioritätsbuttons einen Klick-Event-Listener hinzu.
+ * Wenn keine Priorität angegeben ist, wird die Standardpriorität "medium" gesetzt.
+ * Wenn eine ungültige Priorität angegeben wird, wird ebenfalls die Standardpriorität "medium" gesetzt.
+ */
 function initPriorityButtons(priority) {
   const priorityButtons = document.querySelectorAll(".priority button");
 
@@ -7,9 +17,7 @@ function initPriorityButtons(priority) {
       handlePriorityClick(button);
     });
   });
-
   const defaultMediumButton = document.querySelector(".priority .medium");
-
   if (!priority) {
     handlePriorityClick(defaultMediumButton);
   } else {
@@ -23,6 +31,14 @@ function initPriorityButtons(priority) {
   }
 }
 
+/**
+ * Behandelt das Klicken auf eine Prioritätsschaltfläche.
+ * 
+ * Diese Funktion wird aufgerufen, wenn eine Prioritätsschaltfläche angeklickt wird.
+ * Sie aktualisiert den Zustand der Schaltflächen und hebt die ausgewählte Priorität hervor.
+ * 
+ * @param {HTMLElement} clickedButton - Die angeklickte Prioritätsschaltfläche.
+ */
 function handlePriorityClick(clickedButton) {
   const priorityValue = clickedButton.classList[0];
   const priorityButtons = document.querySelectorAll(".priority button");
@@ -44,6 +60,12 @@ function handlePriorityClick(clickedButton) {
   }
 }
 
+/**
+ * Setzt den Zustand eines Buttons zurück, indem die Hintergrundfarbe und die Textfarbe auf die Standardwerte gesetzt werden.
+ * Zusätzlich werden die Farben der SVG-Pfade basierend auf der Priorität des Buttons aktualisiert.
+ *
+ * @param {HTMLElement} button - Der Button, dessen Zustand zurückgesetzt werden soll.
+ */
 function resetButtonState(button) {
   button.style.backgroundColor = "#FFFFFF";
   button.style.color = "black";
@@ -58,6 +80,7 @@ function resetButtonState(button) {
   });
 }
 
+// Sorgt für die Farben, wenn die Prioritöt ausgewählt wird
 function highlightButton(button) {
   const priorityColors = {
     urgent: "#FF3D00",
@@ -72,38 +95,56 @@ function highlightButton(button) {
   });
 }
 
+
 function start() {
   fetchContacts();
   initPriorityButtons();
   renderTopBar();
 }
 
+// öffnet Kalaender
 function openDatePicker() {
   let dateInput = document.getElementById("due-date");
   dateInput.showPicker();
 }
 
+/**
+ * Öffnet das Bearbeitungsfenster für eine Aufgabe und füllt es mit den gegebenen Informationen.
+ *
+ * category - Die Kategorie der Aufgabe.
+ *  title - Der Titel der Aufgabe.
+ *  description - Die Beschreibung der Aufgabe.
+ *  DueDate - Das Fälligkeitsdatum der Aufgabe.
+ *  priority - Die Priorität der Aufgabe.
+ *  id - Die eindeutige ID der Aufgabe.
+ */
 function openEditTask(category, title, description, DueDate, priority, id) {
   const editTaskContainer = document.getElementById("modalAddTask");
   editTaskContainer.innerHTML = "";
   editTaskContainer.innerHTML = addEditTask(category, title, description, DueDate, priority, id);
 }
 
+/**
+ * Fügt eine neue Unteraufgabe zur Liste der Unteraufgaben hinzu.
+ * 
+ * Diese Funktion liest den Wert des Eingabefelds für neue Unteraufgaben aus,
+ * erstellt eine neue Unteraufgabe und fügt sie dem Container für Unteraufgaben hinzu.
+ * Wenn das Eingabefeld leer ist, wird die Funktion beendet.
+ * 
+ * @function
+ * @name addSubtask
+ */
 function addSubtask() {
   let subTaskInputRef = document.getElementById("new-subtask-input");
   let subTaskInput = subTaskInputRef.value.trim();
   let subTaskContainer = document.getElementById("subtasks-container");
-
   if (!subTaskInput) {
     return;
   }
-
   if (!subTaskCount) {
     subTaskCount = 0;
   }
-
   subTaskCount += 1;
-
   subTaskContainer.innerHTML += addSubtaskTemplate(subTaskInput, subTaskCount);
   subTaskInputRef.value = "";
   resetButtonAddTask();

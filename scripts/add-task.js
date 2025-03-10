@@ -37,8 +37,18 @@ function toggleAssignedDropdown(event) {
   }
 }
 document.addEventListener("click", function (event) {
-  closeDropdownOnOutsideClick(event, "category-dropdown", "custom-category", "category-dropdown-icon");
-  closeDropdownOnOutsideClick(event, "assigned-dropdown", "assigned-input", null);
+  closeDropdownOnOutsideClick(
+    event,
+    "category-dropdown",
+    "custom-category",
+    "category-dropdown-icon"
+  );
+  closeDropdownOnOutsideClick(
+    event,
+    "assigned-dropdown",
+    "assigned-input",
+    null
+  );
 });
 
 function closeDropdownOnOutsideClick(event, dropdownId, toggleId, iconId) {
@@ -47,7 +57,10 @@ function closeDropdownOnOutsideClick(event, dropdownId, toggleId, iconId) {
 
   if (!dropdown || !toggleButton) return;
 
-  if (!toggleButton.contains(event.target) && !dropdown.contains(event.target)) {
+  if (
+    !toggleButton.contains(event.target) &&
+    !dropdown.contains(event.target)
+  ) {
     dropdown.classList.remove("visible");
     if (iconId) {
       document.getElementById(iconId).style.transform = "rotate(0deg)";
@@ -61,12 +74,15 @@ function closeDropdownOnOutsideClick(event, dropdownId, toggleId, iconId) {
 
 function closeAllDropdowns() {
   document.getElementById("category-dropdown").classList.remove("visible");
-  const assignedDropdowns = document.querySelectorAll('[id*="assigned-dropdown"]');
+  const assignedDropdowns = document.querySelectorAll(
+    '[id*="assigned-dropdown"]'
+  );
   assignedDropdowns.forEach((dropdown) => {
     dropdown.classList.remove("visible");
   });
 
-  document.getElementById("category-dropdown-icon").style.transform = "rotate(0deg)";
+  document.getElementById("category-dropdown-icon").style.transform =
+    "rotate(0deg)";
   document.querySelector(".dropDown").style.display = "block";
   document.querySelector(".dropDown-up").style.display = "none";
 }
@@ -75,10 +91,11 @@ function selectCategory(label) {
   document.querySelector("#category-input span").textContent = label;
   document.getElementById("category").value = label;
   document.getElementById("category-dropdown").classList.remove("visible");
-
-  document.querySelectorAll("#category-dropdown .dropdown-option").forEach((option) => {
-    option.classList.remove("selected");
-  });
+  document
+    .querySelectorAll("#category-dropdown .dropdown-option")
+    .forEach((option) => {
+      option.classList.remove("selected");
+    });
 }
 
 async function fetchContacts() {
@@ -98,47 +115,39 @@ async function fetchContacts() {
 }
 
 async function addTask(statusTask) {
-  const title = document.getElementById("inputField").value.trim();
-  const description = document.getElementById("description").value.trim();
-  const dueDate = document.getElementById("due-date").value.trim();
-  const category = document.getElementById("category").value;
-  const assignedContacts = selectedContacts;
-  const status = determineStatusAddTask(statusTask);
+  const title = inputField.value.trim(),
+    description = description.value.trim(),
+    dueDate = dueDate.value.trim(),
+    category = category.value,
+    subtasks = [...document.querySelectorAll(".subtask-text")].map((el) =>
+      el.textContent.trim()
+    );
 
-  if (!title || !dueDate || !category || !selectedPriority) {
-    alert("Bitte alle Pflichtfelder ausfüllen und eine Priorität auswählen.");
-    return;
-  }
-  const subtaskItems = document.querySelectorAll(".subtask-text");
-  const subtasks = Array.from(subtaskItems).map((item) => item.textContent.trim());
+  if (!title || !dueDate || !category || !selectedPriority)
+    return alert("Please fill in all required fields.");
 
   const taskData = {
     title,
     description,
-    assignedContacts: assignedContacts,
     dueDate,
     category,
     priority: selectedPriority,
     subtasks,
+    assignedContacts: selectedContacts,
+    status: determineStatusAddTask(statusTask),
     createdAt: new Date().toISOString(),
-    status,
   };
 
   try {
-    const response = await fetch(`${BASE_URL}/tasks.json`, {
+    const res = await fetch(`${BASE_URL}/tasks.json`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(taskData),
     });
-
-    if (!response.ok) {
-      throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
-    }
-
-    window.location.href = "board.html";
-  } catch (error) {
-    console.error("Fehler beim Speichern der Aufgabe:", error);
-    alert("Es gab einen Fehler beim Speichern der Aufgabe. Bitte prüfe die Konsole.");
+    if (!res.ok) throw new Error(`Error saving task: ${res.status}`);
+    location.href = "board.html";
+  } catch (err) {
+    alert(err.message);
   }
 }
 
@@ -170,7 +179,12 @@ function populateAssignedToSelect() {
   if (!Array.isArray(contacts) || contacts.length === 0) {
   }
   dropdown.innerHTML = contacts
-    .map(contact => addTaskTemplate(contact, selectedContacts.some(c => c.id === contact.id)))
+    .map((contact) =>
+      addTaskTemplate(
+        contact,
+        selectedContacts.some((c) => c.id === contact.id)
+      )
+    )
     .join("");
 
   document.querySelectorAll(".contact-checkbox").forEach((checkbox) => {
@@ -178,46 +192,21 @@ function populateAssignedToSelect() {
       const label = this.closest(".customCheckboxContainer");
       if (!label) return;
       const contactRow = label.querySelector(".contact-row");
-      const name = contactRow.querySelector(".subtasksUnit")?.textContent || "Unbekannt";
-      const color = contactRow.querySelector(".svg-container")?.style.backgroundColor || "#000";
+      const name =
+        contactRow.querySelector(".subtasksUnit")?.textContent || "Unbekannt";
+      const color =
+        contactRow.querySelector(".svg-container")?.style.backgroundColor ||
+        "#000";
       toggleContactSelection(this.value, name, color);
     });
   });
 }
 
-function createContactSVG(contact) {
-  const initials = getInitials(contact.name);
-
-  const svgNS = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(svgNS, "svg");
-  svg.setAttribute("width", "32");
-  svg.setAttribute("height", "32");
-  svg.setAttribute("viewBox", "0 0 32 32");
-  svg.setAttribute("fill", "none");
-
-  const circle = document.createElementNS(svgNS, "circle");
-  circle.setAttribute("cx", "16");
-  circle.setAttribute("cy", "16");
-  circle.setAttribute("r", "15");
-  circle.setAttribute("fill", contact.color || "#ccc");
-  circle.setAttribute("stroke", "white");
-
-  const text = document.createElementNS(svgNS, "text");
-  text.setAttribute("x", "50%");
-  text.setAttribute("y", "55%");
-  text.setAttribute("font-family", "Arial, sans-serif");
-  text.setAttribute("font-size", "12");
-  text.setAttribute("fill", "white");
-  text.setAttribute("text-anchor", "middle");
-  text.setAttribute("alignment-baseline", "middle");
-  text.textContent = initials;
-
-  svg.appendChild(circle);
-  svg.appendChild(text);
-  return svg;
-}
-
-window.toggleContactSelection = function (contactId, contactName, contactColor) {
+window.toggleContactSelection = function (
+  contactId,
+  contactName,
+  contactColor
+) {
   const checkbox = document.getElementById(`contact-${contactId}`);
   const container = checkbox.closest(".customCheckboxContainer");
   const input = document.getElementById("search-contacts");
@@ -225,7 +214,11 @@ window.toggleContactSelection = function (contactId, contactName, contactColor) 
   if (checkbox.checked) {
     if (!selectedContacts.some((c) => c.id === contactId)) {
       container.classList.add("checked");
-      selectedContacts.push({ id: contactId, name: contactName, color: contactColor });
+      selectedContacts.push({
+        id: contactId,
+        name: contactName,
+        color: contactColor,
+      });
       input.value = "";
       filterContacts();
     }
@@ -237,20 +230,25 @@ window.toggleContactSelection = function (contactId, contactName, contactColor) 
 };
 
 function updateSelectedContacts() {
-  const selectedContactsContainer = document.getElementById("selected-contacts");
+  const selectedContactsContainer =
+    document.getElementById("selected-contacts");
   selectedContactsContainer.innerHTML = "";
   selectedContacts.forEach((contact) => {
     const contactElement = document.createElement("div");
     contactElement.classList.add("selected-contact");
     contactElement.style.backgroundColor = contact.color;
     contactElement.innerHTML = `
-          <span class="selected-contact-initials">${getInitials(contact.name)}</span>`;
+          <span class="selected-contact-initials">${getInitials(
+            contact.name
+          )}</span>`;
     selectedContactsContainer.appendChild(contactElement);
   });
 }
 
 function removeSelectedContact(contactId) {
-  selectedContacts = selectedContacts.filter((contact) => contact.id !== contactId);
+  selectedContacts = selectedContacts.filter(
+    (contact) => contact.id !== contactId
+  );
   const checkbox = document.getElementById(`contact-${contactId}`);
   if (checkbox) {
     checkbox.checked = false;
@@ -258,8 +256,11 @@ function removeSelectedContact(contactId) {
   updateSelectedContacts();
 }
 
+// Erlaubt, dass Filtern der Kontakte bzw das suchen nach Kontakten.
 function filterContacts() {
-  const searchTerm = document.getElementById("search-contacts").value.toLowerCase();
+  const searchTerm = document
+    .getElementById("search-contacts")
+    .value.toLowerCase();
   document.querySelectorAll(".customCheckboxContainer").forEach((label) => {
     const name = label.querySelector(".subtasksUnit").textContent.toLowerCase();
     label.style.display = name.includes(searchTerm) ? "flex" : "none";
