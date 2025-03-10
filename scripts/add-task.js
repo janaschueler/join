@@ -167,42 +167,21 @@ function populateAssignedToSelect() {
   if (!dropdown) {
     return;
   }
+  if (!Array.isArray(contacts) || contacts.length === 0) {
+  }
+  dropdown.innerHTML = contacts
+    .map(contact => addTaskTemplate(contact, selectedContacts.some(c => c.id === contact.id)))
+    .join("");
 
-  dropdown.innerHTML = "";
-
-  contacts.forEach((contact) => {
-    const label = document.createElement("label");
-    label.classList.add("customCheckboxContainer");
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.classList.add("contact-checkbox");
-    checkbox.id = `contact-${contact.id}`;
-    checkbox.name = `contact-${contact.id}`;
-    checkbox.value = contact.id;
-    const customCheckbox = document.createElement("span");
-    customCheckbox.classList.add("customCheckbox");
-    const svgContainer = document.createElement("div");
-    svgContainer.classList.add("svg-container");
-    svgContainer.style.backgroundColor = contact.color;
-    svgContainer.innerHTML = `<span class="contact-initials">${getInitials(contact.name)}</span>`;
-    const contactName = document.createElement("span");
-    contactName.classList.add("subtasksUnit");
-    contactName.textContent = contact.name;
-    const contactRow = document.createElement("div");
-    contactRow.classList.add("contact-row");
-    contactRow.appendChild(svgContainer);
-    contactRow.appendChild(contactName);
-    contactRow.appendChild(customCheckbox);
-    if (selectedContacts.some((c) => c.id === contact.id)) {
-      checkbox.checked = true;
-      label.classList.add("checked");
-    }
+  document.querySelectorAll(".contact-checkbox").forEach((checkbox) => {
     checkbox.addEventListener("change", function () {
-      toggleContactSelection(contact.id, contact.name, contact.color);
+      const label = this.closest(".customCheckboxContainer");
+      if (!label) return;
+      const contactRow = label.querySelector(".contact-row");
+      const name = contactRow.querySelector(".subtasksUnit")?.textContent || "Unbekannt";
+      const color = contactRow.querySelector(".svg-container")?.style.backgroundColor || "#000";
+      toggleContactSelection(this.value, name, color);
     });
-    label.appendChild(checkbox);
-    label.appendChild(contactRow);
-    dropdown.appendChild(label);
   });
 }
 
