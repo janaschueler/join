@@ -6,6 +6,13 @@ function init() {
   showLoadingMessage();
 }
 
+/**
+ * Displays a loading message based on the current window width.
+ *
+ * If the window width is greater than 480 pixels, it shows the desktop loading message
+ * and content. Otherwise, it shows the mobile loading message, switches the mobile logo,
+ * and displays the mobile content.
+ */
 function showLoadingMessage() {
   if (window.innerWidth > 480) {
     showDesktopLoadingMessage();
@@ -96,11 +103,45 @@ function hideLoadingBackground() {
   }, 1000);
 }
 
+/**
+ * Initializes the login check process by fetching user data and verifying login status.
+ *
+ * This function asynchronously retrieves all user data using the `getData` function,
+ * and then calls `checkLogin` to verify the login status of the user.
+ *
+ * @async
+ * @function initializeCheck
+ * @returns {Promise<void>} A promise that resolves when the initialization and login check are complete.
+ */
+async function initializeCheck() {
+  allUser = await getData();
+  checkLogin();
+}
+
+document.querySelector("#logInBtn").addEventListener("click", function (event) {
+  event.preventDefault();
+  initializeCheck();
+});
+
+/**
+ * Fetches user data from a specified path and returns an array of user objects.
+ *
+ * @param {string} [path=""] - The path to the user data file (without the .json extension).
+ * @returns {Promise<Array<Object>>} A promise that resolves to an array of user objects.
+ * Each user object contains the following properties:
+ *   - contactEmail {string}: The email of the user.
+ *   - contactPassword {string}: The password of the user.
+ *   - contactId {string}: The unique identifier of the user.
+ *   - contactName {string}: The name of the user.
+ *   - contactAbbreviation {string}: The abbreviation of the user's name.
+ *
+ * @throws {Error} If there is a network error or the response is not ok.
+ */
 async function getData(path = "") {
   try {
     let response = await fetch(BASE_URL + "signup/" + "user/" + path + ".json");
     if (!response.ok) {
-      throw new Error("Netzwerkfehler: " + response.statusText);
+      throw new Error("Network error: " + response.statusText);
     }
     let responseToJson = await response.json();
     let users = [];
@@ -116,24 +157,27 @@ async function getData(path = "") {
     }
     return users;
   } catch (error) {
-    console.error("Fehler beim Abrufen der Daten:", error);
+    console.error("error retrieving the data:", error);
     return [];
   }
 }
 
-async function initializeCheck() {
-  allUser = await getData();
-  checkLogin();
-}
-
-document.querySelector("#LoginButton").addEventListener("click", function (event) {
-  event.preventDefault();
-  initializeCheck();
-});
-
+/**
+ * Asynchronously checks the login credentials entered by the user.
+ * Validates the email format and checks if the email and password match any user in the `allUser` array.
+ * If the credentials are valid, transfers login data, adds a contact log, and redirects to the index page.
+ * If the credentials are invalid, displays an error message and highlights the password field.
+ *
+ * @async
+ * @function checkLogin
+ * @returns {void}
+ */
 async function checkLogin() {
-  let validEmial = validateEmailLogin();
-  if (!validEmial) {
+  let disabledBtn = document.getElementById("logInBtn");
+  disabledBtn.disabled = true;
+  let validEmail = validateEmailLogin();
+  if (!validEmail) {
+    disabledBtn.disabled = false;
     return;
   }
   let loginEmail = document.getElementById("inputEmail").value;
@@ -144,15 +188,17 @@ async function checkLogin() {
 
   if (user) {
     transfereLoginData(user);
-    await addContactLogIn();
-    setTimeout(() => {
+    let addedContact = await addContactLogIn();
+    disabledBtn.disabled = false;
+    if (addedContact == true) {
       window.location.assign("./index.html");
-    }, 1000);
+    }
   } else {
     document.getElementById("wrongPassword").classList.remove("d-none");
     let passwordField = document.getElementById("inputPassword1");
     passwordField.style.border = "1px solid red";
     passwordField.focus();
+    disabledBtn.disabled = false;
   }
 }
 

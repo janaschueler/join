@@ -111,7 +111,7 @@ async function addContactLogIn() {
 
   let matchingContacts = contactsArray.filter((contact) => contact.email?.toLowerCase().includes(signInUserData.contactEmail[0].toLowerCase()));
   if (matchingContacts.length > 0) {
-    return;
+    return true;
   }
   let contactName = signInUserData.contactName[0];
   let contactEmail = signInUserData.contactEmail[0];
@@ -125,6 +125,7 @@ async function addContactLogIn() {
   };
   await postData("contacts", newContact);
   selectedContactId = newContact.id;
+  return true;
 }
 
 function saveToLocalStorage(user) {

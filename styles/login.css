@@ -63,6 +63,10 @@ body {
   font-weight: 700 !important;
 }
 
+.primaryButton:disabled {
+  background-color: (117, 124, 136);
+}
+
 .formInputContainer input::placeholder {
   color: rgba(209, 209, 209, 1);
   opacity: 1;
