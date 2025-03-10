@@ -60,3 +60,40 @@ header {
   background-color: #091931;
 }
 
+.login_color {
+  color: #A1A4A9 !important;
+  font-size: 19px;
+}
+
+.task_bar_login {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 80px;
+  gap: 5%;
+}
+
+.nav_bar_area {
+  display: flex;
+}
+
+.nav_bar_login {
+  text-decoration: none;
+  border-radius: 10px;
+  width: 97px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav_bar_login:focus {
+  background-color: #091931;
+  color: white;
+}
+
+.nav_link_login {
+  width: 95px;
+  font-size: 15px;
+  color: white;
+}
