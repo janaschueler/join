@@ -8,15 +8,15 @@ function showDesktopMenu() {
 }
 
 /**
- * Rendert die obere Leiste (TopBar) der Benutzeroberfläche.
+ * Asynchronously renders the top bar with the logged-in user's information.
  *
- * Diese Funktion ruft die Daten des angemeldeten Benutzers ab und aktualisiert
- * die obere Leiste mit den Initialen des Benutzers. Falls keine Initialen vorhanden
- * sind, wird der Buchstabe "G" verwendet.
+ * This function retrieves the signed-in user's data and updates the top bar
+ * with the user's contact abbreviation. If the contact abbreviation is not
+ * available, it defaults to "G".
  *
  * @async
  * @function renderTopBar
- * @returns {Promise<void>} Eine Promise, die aufgelöst wird, wenn die obere Leiste aktualisiert wurde.
+ * @returns {Promise<void>} A promise that resolves when the top bar has been updated.
  */
 async function renderTopBar() {
   logedInUser = await getSigneInUserData();
@@ -33,6 +33,14 @@ async function transfereLoginData(user) {
   saveToLocalStorage(user);
 }
 
+/**
+ * Logs in a guest user by creating a guest user object, posting it to the database,
+ * saving it to local storage, and then redirecting to the index page.
+ *
+ * @async
+ * @function guestLogIn
+ * @returns {Promise<void>} A promise that resolves when the guest user has been logged in and the page has been redirected.
+ */
 async function guestLogIn() {
   let guest = {
     contactAbbreviation: ["G"],
@@ -47,12 +55,38 @@ async function guestLogIn() {
 }
 
 /**
- * Loggt den aktuellen Benutzer aus, indem es die Benutzerdaten zurücksetzt und die geänderten Daten in die Datenbank speichert.
- * Anschließend wird der Benutzer zur Startseite weitergeleitet.
- *
+ * Logs out the current user by resetting user details and redirecting to the index page.
+ * 
+ * This function creates a `logoutUser` object with empty or default values for user details,
+ * sends this object to the database using `postSignedInUserToDatabase`, and then redirects
+ * the user to the index page.
+ * 
  * @async
  * @function logOut
- * @returns {Promise<void>} - Eine Promise, die aufgelöst wird, wenn der Benutzer erfolgreich ausgeloggt wurde und die Weiterleitung erfolgt ist.
+ * @returns {Promise<void>} A promise that resolves when the user has been logged out and redirected.
+ */
+async function logOut() {
+  let logoutUser = {
+    contactAbbreviation: [""],
+    contactEmail: [""],
+    contactId: "",
+    contactName: [""],
+    contactPassword: [""],
+  };
+  await postSignedInUserToDatabase(logoutUser);
+  window.location.href = "./index.html";
+}
+
+/**
+ * Sends the signed-in user data to the database.
+ *
+ * @async
+ * @function postSignedInUserToDatabase
+ * @param {Object} [data={}] - The user data to be posted.
+ * @param {string} data.username - The username of the signed-in user.
+ * @param {string} data.email - The email of the signed-in user.
+ * @returns {Promise<void>} - A promise that resolves when the data has been posted.
+ * @throws Will throw an error if the request fails.
  */
 async function postSignedInUserToDatabase(data = {}) {
   const url = `${BASE_URL}signedIn/.json`;
@@ -71,6 +105,15 @@ async function postSignedInUserToDatabase(data = {}) {
   } catch (error) {}
 }
 
+/**
+ * Fetches the data of signed-in users from the server.
+ *
+ * This asynchronous function constructs a URL using the base URL and the endpoint for signed-in users.
+ * It then performs a fetch request to retrieve the data in JSON format.
+ *
+ * @returns {Promise<Object>} A promise that resolves to an object containing the data of signed-in users.
+ * @throws {Error} If the fetch request fails or the response cannot be parsed as JSON.
+ */
 async function getSigneInUserData() {
   let url = BASE_URL + "signedIn/.json";
   let response = await fetch(url);
@@ -105,15 +148,17 @@ async function postData(path = "", data = {}) {
   return (responseToJson = await response.json());
 }
 
+
 /**
- * Fügt einen neuen Kontakt basierend auf den Anmeldedaten des Benutzers hinzu.
+ * Fetches the list of contacts from the server.
  *
- * Diese Funktion ruft die Anmeldedaten des Benutzers ab und überprüft, ob der Kontakt bereits existiert.
- * Wenn der Kontakt nicht existiert, wird ein neuer Kontakt erstellt und gespeichert.
- *
+ * This function sends an asynchronous request to the server to retrieve
+ * the list of contacts in JSON format. It constructs the URL using the
+ * base URL and the endpoint for contacts, then performs a fetch request.
+ * The response is parsed as JSON and returned.
  * @async
- * @function addContactLogIn
- * @returns {Promise<boolean>} - Gibt true zurück, wenn der Kontakt erfolgreich hinzugefügt wurde oder bereits existiert.
+ * @function getContacts
+ * @returns {Promise<Object>} A promise that resolves to the list of contacts.
  */
 async function addContactLogIn() {
   let signInUserData = await getSigneInUserData();
@@ -121,7 +166,11 @@ async function addContactLogIn() {
   }
   let contacts = await getContacts();
   let contactsArray = Object.values(contacts);
+
   let matchingContacts = contactsArray.filter((contact) => contact.email?.toLowerCase().includes(signInUserData.contactEmail[0].toLowerCase()));
+  if (matchingContacts.length > 0) {
+    return true;
+  }
   if (matchingContacts.length > 0) {
     return true;
   }
@@ -146,6 +195,16 @@ function saveToLocalStorage(user) {
 }
 
 /**
+ * Asynchronously checks if the user has access authorization.
+ * 
+ * This function retrieves the user's email from local storage and compares it 
+ * with the signed-in user's email fetched from the server. If the emails match, 
+ * the function returns true, indicating that the user is authorized. If the 
+ * emails do not match, the user is redirected to the login page and the function 
+ * returns false.
+ * 
+ * @returns {Promise<boolean>} A promise that resolves to true if the user is 
+ * authorized, or false if the user is redirected to the login page.
  * Überprüft die Zugriffsberechtigung des Benutzers.
  *
  * Diese Funktion überprüft, ob die E-Mail-Adresse des Benutzers, die im lokalen Speicher gespeichert ist,
@@ -162,8 +221,10 @@ async function checkAccessAuthorization() {
   let signedInUser = signedInUserRef.contactEmail[0];
   if (userEmail == signedInUser) {
     return true;
+    return true;
   } else {
     window.location.href = "login.html";
+    return false;
     return false;
   }
 }
@@ -189,11 +250,24 @@ function validateNumber(event) {
   checkFormValidity();
 }
 
+function validateNumber(event) {
+  let input = event.target.value;
+  if (!/^\d*$/.test(input)) {
+    event.target.value = input.replace(/[^\d]/g, "");
+  }
+  checkFormValidity();
+}
+
 /**
- * Überprüft die Gültigkeit einer E-Mail-Adresse und aktualisiert die Benutzeroberfläche entsprechend.
- *
- * @param {Event} event - Das Ereignis, das durch die Eingabe des Benutzers ausgelöst wird.
- * @returns {void}
+ * Validates the email input field and updates the UI based on the validity of the email.
+ * 
+ * This function checks if the email entered by the user matches a specific pattern.
+ * If the email is invalid, it adds an "input-error" class to the input field and 
+ * removes the "d_none" class from elements with IDs containing 'invalidPassword'.
+ * If the email is valid, it removes the "input-error" class from the input field and 
+ * adds the "d_none" class to elements with IDs containing 'invalidPassword'.
+ * 
+ * @param {Event} event - The input event triggered by the user.
  */
 function validateEmail(event) {
   let input = event.target.value;
@@ -215,16 +289,34 @@ function validateEmail(event) {
 }
 
 /**
- * Überprüft die Gültigkeit von Formularen und aktiviert/deaktiviert den Senden-Button basierend auf der Gültigkeit der Eingaben.
+ * Validates the input to ensure it contains only numbers and spaces.
+ * If invalid characters are found, they are removed from the input.
+ * 
+ * @param {Event} event - The input event triggered by the user.
+ */
+function validateNumber(event) {
+  let input = event.target.value;
+  if (!/^[0-9\s]*$/.test(input)) {
+    event.target.value = input.replace(/[^0-9\s]/g, "");
+  }
+  checkFormValidity();
+}
+
+/**
+ * Validates the forms specified by their IDs and enables or disables the submit button
+ * based on the validity of the form inputs.
  *
- * Diese Funktion durchsucht eine Liste von Formular-IDs, findet die entsprechenden Formulare im DOM und überprüft die Eingabefelder.
- * Wenn alle Eingabefelder gültig sind, wird der Senden-Button aktiviert, andernfalls wird er deaktiviert.
+ * The function checks the validity of the forms with the following IDs:
+ * - "newContactContainer"
+ * - "editContactContainer"
+ * - "formInputContainer"
+ * - "signupForm"
  *
- * Die Überprüfung umfasst:
- * - Sicherstellen, dass E-Mail-Felder gültige E-Mail-Adressen enthalten.
- * - Sicherstellen, dass alle anderen Eingabefelder nicht leer sind.
+ * For each form, it verifies that all input fields are filled. For email input fields,
+ * it also checks if the value matches a basic email pattern.
  *
- * @function
+ * If all inputs in a form are valid, the submit button with the ID "newContact" inside
+ * the form's ".buttonContainer" is enabled. Otherwise, the button is disabled.
  */
 function checkFormValidity() {
   const forms = ["newContactContainer", "editContactContainer", "formInputContainer", "signupForm"];
