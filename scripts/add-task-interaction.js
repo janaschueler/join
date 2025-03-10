@@ -150,11 +150,22 @@ function addSubtask() {
   resetButtonAddTask();
 }
 
+
 function clearForm() {
   document.getElementById("new-subtask-input").value = "";
   resetButtonAddTask();
 }
 
+/**
+ * Transformiert den "Add Task"-Button.
+ *
+ * Diese Funktion sucht nach einem Element mit der ID "iconAddButton".
+ * Wenn das Element gefunden wird, wird es durch ein transformiertes
+ * Button-Element ersetzt, das von der Funktion `getTransformedButton` 
+ * zurückgegeben wird.
+ *
+ * @returns {void} Gibt nichts zurück.
+ */
 function transformButtonAddTask() {
   const buttonContainer = document.getElementById("iconAddButton");
   if (!buttonContainer) {
