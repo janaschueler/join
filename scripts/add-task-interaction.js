@@ -1,12 +1,11 @@
+
 /**
- * Initialisiert die Prioritätsbuttons und setzt die Standardpriorität.
+ * Initializes the priority buttons by adding click event listeners to each button.
+ * When a button is clicked, it triggers the handlePriorityClick function.
+ * If no priority is provided, the default medium priority button is selected.
+ * If an invalid priority is provided, a warning is logged and the default medium priority button is selected.
  *
- * @param {string} [priority] - Die Priorität, die gesetzt werden soll (optional). 
- *                              Mögliche Werte sind "low", "medium", "high".
- *
- * Diese Funktion fügt allen Prioritätsbuttons einen Klick-Event-Listener hinzu.
- * Wenn keine Priorität angegeben ist, wird die Standardpriorität "medium" gesetzt.
- * Wenn eine ungültige Priorität angegeben wird, wird ebenfalls die Standardpriorität "medium" gesetzt.
+ * @param {string} [priority] - The priority to be set initially. Can be 'low', 'medium', or 'high'.
  */
 function initPriorityButtons(priority) {
   const priorityButtons = document.querySelectorAll(".priority button");
@@ -31,40 +30,15 @@ function initPriorityButtons(priority) {
   }
 }
 
-/**
- * Behandelt das Klicken auf eine Prioritätsschaltfläche.
- * 
- * Diese Funktion wird aufgerufen, wenn eine Prioritätsschaltfläche angeklickt wird.
- * Sie aktualisiert den Zustand der Schaltflächen und hebt die ausgewählte Priorität hervor.
- * 
- * @param {HTMLElement} clickedButton - Die angeklickte Prioritätsschaltfläche.
- */
-function handlePriorityClick(clickedButton) {
-  const priorityValue = clickedButton.classList[0];
-  const priorityButtons = document.querySelectorAll(".priority button");
 
-  if (selectedPriority === priorityValue) {
-    clickedButton.classList.remove("selected");
-    resetButtonState(clickedButton);
-    selectedPriority = null;
-  } else {
-    priorityButtons.forEach((button) => {
-      if (button !== clickedButton) {
-        button.classList.remove("selected");
-        resetButtonState(button);
-      }
-    });
-    clickedButton.classList.add("selected");
-    selectedPriority = priorityValue;
-    highlightButton(clickedButton);
-  }
-}
+
+
 
 /**
- * Setzt den Zustand eines Buttons zurück, indem die Hintergrundfarbe und die Textfarbe auf die Standardwerte gesetzt werden.
- * Zusätzlich werden die Farben der SVG-Pfade basierend auf der Priorität des Buttons aktualisiert.
+ * Resets the state of a button by changing its background color, text color, 
+ * and the fill color of any SVG paths within the button based on its priority class.
  *
- * @param {HTMLElement} button - Der Button, dessen Zustand zurückgesetzt werden soll.
+ * @param {HTMLElement} button - The button element to reset.
  */
 function resetButtonState(button) {
   button.style.backgroundColor = "#FFFFFF";
@@ -80,7 +54,15 @@ function resetButtonState(button) {
   });
 }
 
-// Sorgt für die Farben, wenn die Prioritöt ausgewählt wird
+
+/**
+ * Highlights a button by changing its background color and text color based on its priority class.
+ * The priority class should be one of "urgent", "medium", or "low".
+ * Also changes the fill color of any SVG paths within the button to white.
+ *
+ * @param {HTMLElement} button - The button element to be highlighted. The button should have a class
+ *                               indicating its priority ("urgent", "medium", or "low").
+ */
 function highlightButton(button) {
   const priorityColors = {
     urgent: "#FF3D00",
@@ -102,7 +84,7 @@ function start() {
   renderTopBar();
 }
 
-// öffnet Kalaender
+// open Calendar
 function openDatePicker() {
   let dateInput = document.getElementById("due-date");
   dateInput.showPicker();
@@ -124,15 +106,17 @@ function openEditTask(category, title, description, DueDate, priority, id) {
   editTaskContainer.innerHTML = addEditTask(category, title, description, DueDate, priority, id);
 }
 
+
 /**
- * Fügt eine neue Unteraufgabe zur Liste der Unteraufgaben hinzu.
+ * Adds a new subtask to the subtask container.
  * 
- * Diese Funktion liest den Wert des Eingabefelds für neue Unteraufgaben aus,
- * erstellt eine neue Unteraufgabe und fügt sie dem Container für Unteraufgaben hinzu.
- * Wenn das Eingabefeld leer ist, wird die Funktion beendet.
+ * This function retrieves the input value from the subtask input field,
+ * trims any leading or trailing whitespace, and if the input is not empty,
+ * it increments the subtask count and appends a new subtask to the subtask container.
+ * The input field is then cleared, and the add task button is reset.
  * 
- * @function
- * @name addSubtask
+ * @function addSubtask
+ * @returns {void}
  */
 function addSubtask() {
   let subTaskInputRef = document.getElementById("new-subtask-input");
@@ -157,14 +141,11 @@ function clearForm() {
 }
 
 /**
- * Transformiert den "Add Task"-Button.
- *
- * Diese Funktion sucht nach einem Element mit der ID "iconAddButton".
- * Wenn das Element gefunden wird, wird es durch ein transformiertes
- * Button-Element ersetzt, das von der Funktion `getTransformedButton` 
- * zurückgegeben wird.
- *
- * @returns {void} Gibt nichts zurück.
+ * Transforms the "Add Task" button by replacing its outer HTML with a new button.
+ * 
+ * This function searches for an element with the ID "iconAddButton". If the element
+ * is found, it replaces the element's outer HTML with the result of the `getTransformedButton` function.
+ * If the element is not found, the function exits without making any changes.
  */
 function transformButtonAddTask() {
   const buttonContainer = document.getElementById("iconAddButton");
@@ -174,11 +155,25 @@ function transformButtonAddTask() {
   buttonContainer.outerHTML = getTransformedButton();
 }
 
+/**
+ * Resets the "Add Task" button by updating the inner HTML of the input wrapper element.
+ * This function retrieves the element with the ID "inputWrapper" and sets its inner HTML
+ * to the result of the `transformedResetButton` function, effectively resetting the button.
+ */
 function resetButtonAddTask() {
   const inputWrapper = document.getElementById("inputWrapper");
   inputWrapper.innerHTML = transformedResetButton();
 }
 
+/**
+ * Handles the click event for adding a task.
+ * 
+ * This function checks the type of input device used for the event (mouse, touch, or pen).
+ * If the event is triggered by one of these devices, it resets the add task button.
+ * Otherwise, it adds a subtask.
+ * 
+ * @param {Event} event - The event object representing the click event.
+ */
 function handleButtonClickAddTask() {
   if (["mouse", "touch", "pen"].includes(event.pointerType)) {
     resetButtonAddTask();
