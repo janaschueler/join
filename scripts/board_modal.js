@@ -1,19 +1,94 @@
-function closeModal(event = null) {
-  var modal = document.getElementById("modalTaskSummary");
-  var backdrop = document.getElementById("taskSummaryModal");
+/**
+ * The above functions are used to toggle the display of a status menu and change the visibility of
+ * arrow icons based on the menu state.
+ * @param event - The `event` parameter in your functions represents the event object that is passed
+ * when the event is triggered, such as a click event. This object contains information about the
+ * event, such as the type of event, the target element, and any additional data related to the event.
+ * You can use this parameter
+ * @param id - The `id` parameter in the `openStatusNav` and `closeStatusNav` functions is used to
+ * identify the specific element that should be manipulated when the functions are called. 
+ */
 
-  if (!event || event.target === backdrop || event.target.classList.contains("modalCloseButton")) {
-    modal.classList.add("hide");
-    backdrop.classList.add("hide");
-    setTimeout(function () {
-      modal.style.visibility = "hidden";
-      backdrop.style.visibility = "hidden";
-      modal.classList.remove("show");
-      backdrop.classList.remove("show");
-    }, 500);
+function openStatusNav(event, id) {
+  event.stopPropagation(event);
+  document.getElementById(`statusMenu${id}`).style.display = "block";
+  document.getElementById(`arrowDown${id}`).style.display = "none";
+  document.getElementById(`arrowUp${id}`).style.display = "block";
+}
 
-    window.location.reload();
+function closeStatusNav(event, id) {
+  event.stopPropagation(event);
+  document.getElementById(`statusMenu${id}`).style.display = "none";
+  document.getElementById(`arrowDown${id}`).style.display = "block";
+  document.getElementById(`arrowUp${id}`).style.display = "none";
+}
+
+/**
+ * The above JavaScript functions handle opening a modal, loading task summary content, rendering task
+ * details, managing task visibility, assigning contacts, handling subtasks, and updating subtask
+ * statuses.
+ * @param id - The `id` parameter in the `openModal(id)` functions is used to
+ * identify the specific task which information should be rendered in the modal. 
+ */
+function openModal(id) {
+  loadTaskSummaryModal(id)
+    .then(() => {
+      var modal = document.getElementById("modalTaskSummary");
+      var backdrop = document.getElementById("taskSummaryModal");
+
+      backdrop.style.visibility = "visible";
+      backdrop.style.opacity = "1";
+
+      modal.style.visibility = "visible";
+      type = "button";
+      modal.classList.remove("hide");
+      modal.classList.add("show");
+    })
+    .catch((error) => {
+      console.error("Error loading content:", error);
+    });
+}
+
+function loadTaskSummaryModal(id) {
+  return new Promise((resolve, reject) => {
+    let summaryModal = document.getElementById("taskSummaryModal");
+    summaryModal.innerHTML = "";
+
+    let task = allTasks.find((t) => t.id === id);
+    if (!task) return reject("Task not found");
+
+    renderTaskSummaryContent(summaryModal, task);
+    handleTaskVisibility(task);
+    setTimeout(resolve, 0);
+  });
+}
+
+function renderTaskSummaryContent(summaryModal, task) {
+  let formattedDate = convertTask(task.dueDate);
+  let priorityIcon = determinePriotiry(task.priority);
+  let categoryColor = determineCategoryColor(task.category);
+  summaryModal.innerHTML += generateTaskSummaryModal(task, priorityIcon, formattedDate, categoryColor);
+}
+
+function convertTask(dueDate) {
+  let formatedDueDate = new Intl.DateTimeFormat("en-Gb").format(new Date(dueDate));
+  return formatedDueDate;
+}
+
+function determineCategoryColor(category) {
+  let categoryColor;
+  if (category == "Technical Task") {
+    categoryColor = "background-color:rgba(31, 215, 193, 1);";
+    return categoryColor;
+  } else {
+    categoryColor = "background-color:rgba(0, 56, 255, 1);";
   }
+  return categoryColor;
+}
+
+function handleTaskVisibility(task) {
+  task.assignedTo?.length ? injectAssigneeContacts(task) : hideElement(`assignedToContainer${task.id}`);
+  task.subtasks?.length ? injectSubtasks(task) : hideElement(`subtaskContainer${task.id}`);
 }
 
 async function injectAssigneeContacts(task) {
@@ -21,6 +96,11 @@ async function injectAssigneeContacts(task) {
   assigneeContainer.innerHTML = "";
   let assigneeList = extractAssigneeList(task.assignedTo);
   assigneeList.forEach((assignee, index) => renderAssignee(assignee, task.color[index], assigneeContainer));
+}
+
+function hideElement(id) {
+  let element = document.getElementById(id);
+  if (element) element.style.display = "none";
 }
 
 function extractAssigneeList(assignedTo) {
@@ -66,12 +146,49 @@ function handleCheckboxChange(event) {
   addSubtasksStatus(containerId, subtasksStatus);
 }
 
-async function getDataFromFireBase(path = "") {
-  let response = await fetch(BASE_URL + "tasks/" + path + ".json");
-  let responseToJson = await response.json();
-  return responseToJson;
+async function addSubtasksStatus(key, status) {
+  try {
+    await postToDatabase(key, "/subtasksStatus", status);
+  } catch (error) {
+    console.error("Error setting status:", error);
+    throw error;
+  }
 }
 
+/**
+ * The function closeModal closes a modal dialog and reloads the window when triggered by a specific
+ * event or element.
+ * @param [event=null] - The `event` parameter in the `closeModal` function is used to pass an event
+ * object, which can be used to determine the source of the event that triggered the modal closure.
+ * This allows the function to check if the modal should be closed based on the event target, such as
+ * clicking on the
+ */
+function closeModal(event = null) {
+  var modal = document.getElementById("modalTaskSummary");
+  var backdrop = document.getElementById("taskSummaryModal");
+
+  if (!event || event.target === backdrop || event.target.classList.contains("modalCloseButton")) {
+    modal.classList.add("hide");
+    backdrop.classList.add("hide");
+    setTimeout(function () {
+      modal.style.visibility = "hidden";
+      backdrop.style.visibility = "hidden";
+      modal.classList.remove("show");
+      backdrop.classList.remove("show");
+    }, 500);
+
+    window.location.reload();
+  }
+}
+
+/**
+ * The `deleteTask` function deletes a specific task from a Firebase database and updates the database
+ * with the remaining tasks.
+ * @param taskId - The `taskId` parameter in the `deleteTask` function represents the unique identifier
+ * of the task that needs to be deleted from the Firebase database. This identifier is used to locate
+ * the specific task within the list of tasks retrieved from Firebase and then remove it before
+ * updating the database with the remaining tasks.
+ */
 async function deleteTask(taskId) {
   let allTasksFirebase = await getDataFromFireBase();
   let allTasksArray = Object.entries(allTasksFirebase).map(([key, value]) => ({
@@ -92,16 +209,21 @@ async function deleteTask(taskId) {
   closeModal();
 }
 
-function deleteSubtaskModal(id) {
-  const removeSubtask = document.getElementById(`editSubTaskUnit${id}`);
-  removeSubtask.remove();
+async function getDataFromFireBase(path = "") {
+  let response = await fetch(BASE_URL + "tasks/" + path + ".json");
+  let responseToJson = await response.json();
+  return responseToJson;
 }
 
-function convertTask(dueDate) {
-  let formatedDueDate = new Intl.DateTimeFormat("en-Gb").format(new Date(dueDate));
-  return formatedDueDate;
-}
-
+/**
+ * The function closeModalAddTask closes a modal for adding a task when triggered by a specific event.
+ * @param event - The `event` parameter in the `closeModalAddTask` function is an event object that
+ * represents the event that triggered the function. It is typically passed as an argument when the
+ * function is called in response to an event, such as a click or keypress event. The function uses the
+ * event object
+ * @returns The function `closeModalAddTask` returns nothing (`undefined`) if the `event` parameter is
+ * falsy (null, undefined, false, 0, NaN, or an empty string).
+ */
 function closeModalAddTask(event) {
   if (!event) {
     return;
@@ -120,6 +242,15 @@ function closeModalAddTask(event) {
     location.reload();
   }
 }
+/**
+ * The above functions are used to handle button clicks, open and populate an edit modal, set modal
+ * content, initialize the edit modal with data, add due date, and populate a dropdown for selecting
+ * contacts in a task management application.
+ * @param status - The `status` parameter in the `handleButtonClickStatus` function is used to
+ * which of the four states the current task is in.
+ * If the window width is less than or equal to 768 pixels, it will redirect to "/add_task.html";
+ * otherwise,
+ */
 
 function handleButtonClickStatus(status) {
   if (window.innerWidth <= 768) {
@@ -171,117 +302,6 @@ function initEditModal(id, dateTask, priorityTask, categoryTask) {
     document.getElementById("divider").style.height = "350px";
   }
   determineAssignedToEditModal(id);
-}
-
-function closeSummaryModal() {
-  var modal = document.getElementById("modalTaskSummary");
-  var backdrop = document.getElementById("taskSummaryModal");
-  if (modal && backdrop) {
-    modal.classList.add("hide");
-    backdrop.classList.add("hide");
-    setTimeout(function () {
-      modal.style.visibility = "hidden";
-      backdrop.style.visibility = "hidden";
-      modal.classList.remove("show");
-      backdrop.classList.remove("show");
-    }, 500);
-  }
-}
-
-function addSubtaskinEditModal(id) {
-  let subTaskContainer = document.getElementById("editSubtasks-container");
-  let tasks = allTasks.filter((t) => t["id"] === id);
-  if (tasks.length === 0) {
-    return;
-  }
-  let subTaskInput = tasks[0].subtasks;
-  if (!subTaskInput) {
-    return;
-  }
-  subTaskInput.forEach((subTask, index) => {
-    subTaskCount = index + 1;
-    subTaskContainer.innerHTML += addSubtaskTemplateinModal(subTask, subTaskCount);
-  });
-}
-
-function addAdditionalSubtaskinEditModal(event, id) {
-  event.preventDefault();
-  event.stopPropagation();
-  let subTaskInputRef = document.getElementById("new-subtask-input-Edit");
-  let subTaskInput = subTaskInputRef.value.trim();
-  let subTaskContainer = document.getElementById("editSubtasks-container");
-  if (!subTaskInput) {
-    return;
-  }
-
-  let tasks = allTasks.filter((t) => t["id"] === id);
-  let numberOfSubTaskInput = tasks[0]?.subtasks?.length || 0;
-  let subTaskCount = numberOfSubTaskInput + 1;
-
-  subTaskContainer.innerHTML += addSubtaskTemplateinModal(subTaskInput, subTaskCount);
-  subTaskInputRef.value = "";
-  resetButtonEdit(id);
-}
-
-function acceptEdit(id) {
-  let subTaskContainer = document.getElementById("editSubtasks-container");
-  let newSubTask = document.getElementById(`inputSubtask${id}`).value;
-  const removeSubtask = document.getElementById(`editSubTaskUnit${id}`);
-  removeSubtask.remove();
-  subTaskContainer.innerHTML += addSubtaskTemplateinModal(newSubTask, id);
-}
-
-function editSubtaskinModal(id, subTaskInput) {
-  let editSubtask = document.getElementById(`editSubTaskUnit${id}`);
-  editSubtask.innerHTML = "";
-  editSubtask.classList.add("editing");
-  editSubtask.innerHTML = addInputFieldinModal(id, subTaskInput);
-}
-
-async function saveEditTask(id) {
-  const taskData = gatherTaskData();
-  if (!validateTaskData(taskData)) return;
-
-  try {
-    await saveTaskData(id, taskData);
-    alert("Aufgabe erfolgreich erstellt!");
-    clearForm();
-  } catch (error) {
-    console.error("Fehler beim Speichern der Aufgabe:", error);
-  }
-}
-
-function gatherTaskData() {
-  return {
-    title: document.getElementById("inputField").value.trim(),
-    description: document.getElementById("description").value.trim(),
-    dueDate: document.getElementById("due-date").value,
-    category: document.getElementById("category").value,
-    assignedContacts: selectedContacts,
-    priority: selectedPriority,
-    status: determineStatusAddTask(),
-    createdAt: new Date().toISOString(),
-  };
-}
-
-function validateTaskData({ title, description, dueDate, category, priority }) {
-  if (!title || !description || !dueDate || !category || !priority) {
-    alert("Bitte fülle alle Felder aus!");
-    return false;
-  }
-  return true;
-}
-
-async function saveTaskData(id, taskData) {
-  const response = await fetch(`${BASE_URL}/tasks/${id}.json`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(taskData),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
-  }
 }
 
 function addDueDate(dateTask) {
@@ -346,55 +366,20 @@ function populateAssignedToSelectEdit() {
   });
 }
 
-window.toggleContactSelectionEdit = function (contactId, contactName, contactColor) {
-  const checkbox = document.getElementById(`edit-contact-${contactId}`);
-  if (!checkbox) return;
-  setTimeout(() => {
-    const container = checkbox.closest(".customCheckboxContainer");
-    const input = document.getElementById("search-contacts-edit");
-    if (checkbox.checked) {
-      if (!selectedContacts.some((c) => c.id === contactId)) {
-        container.classList.add("checked");
-        selectedContacts.push({ id: contactId, name: contactName, color: contactColor });
-        input.value = "";
-        filterContactsEdit();
-      }
-    } else {
-      container.classList.remove("checked");
-      selectedContacts = selectedContacts.filter((c) => c.id !== contactId);
-    }
-    updateSelectedContactsEdit();
-  }, 0);
-};
-
-window.toggleContactSelectionEditPreselected = function (contactId, contactName, contactColor) {
-  const checkbox = document.getElementById(`edit-contact-${contactId}`);
-  if (!checkbox) return;
-  setTimeout(() => {
-    const container = checkbox.closest(".customCheckboxContainer");
-    const input = document.getElementById("search-contacts-edit");
-    if (!checkbox.checked) {
-      checkbox.checked = true;
-      container.classList.add("checked");
-      if (!selectedContacts.some((c) => c.id === contactId)) {
-        selectedContacts.push({ id: contactId, name: contactName, color: contactColor });
-      }
-      input.value = "";
-      filterContactsEdit();
-    }
-    updateSelectedContactsEdit();
-  }, 0);
-};
-
-function updateSelectedContactsEdit() {
-  const selectedContactsContainer = document.getElementById("selected-contacts-Edit");
-  selectedContactsContainer.innerHTML = "";
-  selectedContacts.forEach((contact) => {
-    const contactElement = document.createElement("div");
-    contactElement.classList.add("selected-contact");
-    contactElement.style.backgroundColor = contact.color;
-    contactElement.innerHTML = `
-              <span class="selected-contact-initials">${getInitials(contact.name)}</span>`;
-    selectedContactsContainer.appendChild(contactElement);
-  });
+/**
+ * The closeSummaryModal function hides a modal and its backdrop after a delay of 500 milliseconds.
+ */
+function closeSummaryModal() {
+  var modal = document.getElementById("modalTaskSummary");
+  var backdrop = document.getElementById("taskSummaryModal");
+  if (modal && backdrop) {
+    modal.classList.add("hide");
+    backdrop.classList.add("hide");
+    setTimeout(function () {
+      modal.style.visibility = "hidden";
+      backdrop.style.visibility = "hidden";
+      modal.classList.remove("show");
+      backdrop.classList.remove("show");
+    }, 500);
+  }
 }

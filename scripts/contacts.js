@@ -22,59 +22,6 @@ function renderModalContacts() {
   }
 }
 
-function validateText(event) {
-    let input = event.target.value;
-    if (!/^[a-zA-ZäöüÄÖÜß\s]*$/.test(input)) {
-      event.target.value = input.replace(/[^a-zA-ZäöüÄÖÜß\s]/g, ""); 
-    }
-    checkFormValidity();
-  }
-  
-
-function validateEmail(event) {
-  let input = event.target.value;
-  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const isValidEmail = emailPattern.test(input);
-
-  if (!isValidEmail) {
-    event.target.classList.add("input-error");
-    document.getElementById("invalidPasswordNewContact").classList.remove("d_none");
-    document.getElementById("invalidPasswordContact").classList.remove("d_none");
-  } else {
-    event.target.classList.remove("input-error");
-    document.getElementById("invalidPasswordNewContact").classList.add("d_none");
-    document.getElementById("invalidPasswordContact").classList.add("d_none");
-  }
-  checkFormValidity();
-}
-
-function validateNumber(event) {
-  let input = event.target.value;
-  if (!/^\d*$/.test(input)) {
-    event.target.value = input.replace(/\D/g, "");
-  }
-  checkFormValidity();
-}
-
-function checkFormValidity() {
-    const forms = ["newContactContainer", "editContactContainer"];
-    forms.forEach((formId) => {
-      const form = document.getElementById(formId); 
-      const inputs = form.querySelectorAll("input");
-      const submitButton = form.querySelector(".buttonContainer button#newContact");
-      const isFormValid = Array.from(inputs).every((input) => {
-        if (input.type === "email") {
-          return input.value && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(input.value);
-        }
-        return input.value.trim() !== "";
-      });
-      if (submitButton) {
-        submitButton.disabled = !isFormValid;
-      }
-    });
-  }
-  
-
 function resetAlert() {
   document.getElementById("invalidPasswordContact").classList.add("d_none");
   document.getElementById("invalidPasswordNewContact").classList.add("d_none");

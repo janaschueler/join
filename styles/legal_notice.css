@@ -85,5 +85,6 @@ a {
 @media (max-width: 786px) {
   .legalPageContainer {
     overflow-y: scroll;
+    margin-bottom: 120px;
   }
 }

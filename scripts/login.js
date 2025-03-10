@@ -121,11 +121,9 @@ async function getData(path = "") {
   }
 }
 
-async function initializeCheck(check) {
+async function initializeCheck() {
   allUser = await getData();
-  if (check) {
-    checkLogin();
-  }
+  checkLogin();
 }
 
 document.querySelector("#LoginButton").addEventListener("click", function (event) {
@@ -134,6 +132,10 @@ document.querySelector("#LoginButton").addEventListener("click", function (event
 });
 
 async function checkLogin() {
+  let validEmial = validateEmailLogin();
+  if (!validEmial) {
+    return;
+  }
   let loginEmail = document.getElementById("inputEmail").value;
   let loginPassword = document.getElementById("inputPassword1").value;
   let user = allUser.find((user) => {
@@ -176,3 +178,20 @@ function handleResize() {
 
 window.addEventListener("load", handleResize);
 window.addEventListener("resize", handleResize);
+
+function validateEmailLogin() {
+  let input = document.getElementById("inputEmail").value;
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const isValidEmail = emailPattern.test(input);
+
+  if (!isValidEmail) {
+    document.querySelectorAll("[id*='invalidPassword']").forEach((element) => {
+      element.classList.remove("d_none");
+    });
+  } else {
+    document.querySelectorAll("[id*='invalidPassword']").forEach((element) => {
+      element.classList.add("d_none");
+    });
+  }
+  return isValidEmail;
+}

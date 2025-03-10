@@ -259,6 +259,10 @@ input {
   cursor: pointer;
 }
 
+.margin_top {
+  margin-top: -12px !important;
+}
+
 @media (max-width: 1000px) {
   .atfLogo img {
     width: 80px;
