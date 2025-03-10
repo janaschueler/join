@@ -9,11 +9,11 @@ function showDesktopMenu() {
 
 /**
  * Rendert die obere Leiste (TopBar) der Benutzeroberfläche.
- * 
+ *
  * Diese Funktion ruft die Daten des angemeldeten Benutzers ab und aktualisiert
  * die obere Leiste mit den Initialen des Benutzers. Falls keine Initialen vorhanden
  * sind, wird der Buchstabe "G" verwendet.
- * 
+ *
  * @async
  * @function renderTopBar
  * @returns {Promise<void>} Eine Promise, die aufgelöst wird, wenn die obere Leiste aktualisiert wurde.
@@ -68,9 +68,7 @@ async function postSignedInUserToDatabase(data = {}) {
       return;
     } else {
     }
-  } catch (error) {
- 
-  }
+  } catch (error) {}
 }
 
 async function getSigneInUserData() {
@@ -79,7 +77,6 @@ async function getSigneInUserData() {
   let logedInUsers = await response.json();
   return logedInUsers;
 }
-
 
 async function getContacts() {
   let url = BASE_URL + "contacts/.json";
@@ -110,10 +107,10 @@ async function postData(path = "", data = {}) {
 
 /**
  * Fügt einen neuen Kontakt basierend auf den Anmeldedaten des Benutzers hinzu.
- * 
+ *
  * Diese Funktion ruft die Anmeldedaten des Benutzers ab und überprüft, ob der Kontakt bereits existiert.
  * Wenn der Kontakt nicht existiert, wird ein neuer Kontakt erstellt und gespeichert.
- * 
+ *
  * @async
  * @function addContactLogIn
  * @returns {Promise<boolean>} - Gibt true zurück, wenn der Kontakt erfolgreich hinzugefügt wurde oder bereits existiert.
@@ -125,7 +122,9 @@ async function addContactLogIn() {
   let contacts = await getContacts();
   let contactsArray = Object.values(contacts);
   let matchingContacts = contactsArray.filter((contact) => contact.email?.toLowerCase().includes(signInUserData.contactEmail[0].toLowerCase()));
-  if (matchingContacts.length > 0) { return true;}
+  if (matchingContacts.length > 0) {
+    return true;
+  }
   let contactName = signInUserData.contactName[0];
   let contactEmail = signInUserData.contactEmail[0];
   let contactId = Date.now().toString();
@@ -148,11 +147,11 @@ function saveToLocalStorage(user) {
 
 /**
  * Überprüft die Zugriffsberechtigung des Benutzers.
- * 
+ *
  * Diese Funktion überprüft, ob die E-Mail-Adresse des Benutzers, die im lokalen Speicher gespeichert ist,
  * mit der E-Mail-Adresse des angemeldeten Benutzers übereinstimmt. Wenn die E-Mail-Adressen übereinstimmen,
  * wird die Funktion beendet. Andernfalls wird der Benutzer zur Anmeldeseite weitergeleitet.
- * 
+ *
  * @async
  * @function checkAccessAuthorization
  * @returns {Promise<void>} Eine Promise, die aufgelöst wird, wenn die Überprüfung abgeschlossen ist.
@@ -162,9 +161,10 @@ async function checkAccessAuthorization() {
   let signedInUserRef = await getSigneInUserData();
   let signedInUser = signedInUserRef.contactEmail[0];
   if (userEmail == signedInUser) {
-    return;
+    return true;
   } else {
     window.location.href = "login.html";
+    return false;
   }
 }
 
@@ -177,6 +177,14 @@ function validateText(event) {
   let input = event.target.value;
   if (!/^[a-zA-ZäöüÄÖÜß\s]*$/.test(input)) {
     event.target.value = input.replace(/[^a-zA-ZäöüÄÖÜß\s]/g, "");
+  }
+  checkFormValidity();
+}
+
+function validateNumber(event) {
+  let input = event.target.value;
+  if (!/^\d*$/.test(input)) {
+    event.target.value = input.replace(/[^\d]/g, "");
   }
   checkFormValidity();
 }
