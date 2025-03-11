@@ -240,6 +240,28 @@ function toggleDropdownEdit(event) {
   }
 }
 
+document.addEventListener("click", function (event) {
+  closeDropdownOnOutsideClickEdit(event, "assigned-dropdown-Edit", "assigned-input-Edit", null);
+});
+
+function closeDropdownOnOutsideClickEdit(event, dropdownId, toggleId, iconId) {
+  const dropdown = document.getElementById(dropdownId);
+  const toggleButton = document.getElementById("assigned-input-Edit");
+
+  if (!dropdown || !toggleButton) return;
+
+  if (!toggleButton.contains(event.target) && !dropdown.contains(event.target)) {
+    dropdown.classList.remove("visible");
+    if (iconId) {
+      document.getElementById(iconId).style.transform = "rotate(0deg)";
+    }
+    if (dropdownId === "assigned-dropdown-Edit") {
+      document.querySelector(".dropDown").style.display = "block";
+      document.querySelector(".dropDown-up").style.display = "none";
+    }
+  }
+}
+
 window.toggleContactSelectionEditPreselected = function (contactId, contactName, contactColor) {
   const checkbox = document.getElementById(`edit-contact-${contactId}`);
   if (!checkbox) return;

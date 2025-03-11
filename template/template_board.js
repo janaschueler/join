@@ -52,7 +52,7 @@ function generateAssigneeCircle(assigneeAbbreviation, assingeeColor) {
                             </svg>`;
 }
 
-function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate, categoryColor) {
+function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate, categoryColor, priority) {
   return ` <div id="modalTaskSummary" class="summaryTaskContainer modal">
             <div class="ModalheaderContainer">
               <div class="category" style="${categoryColor}">
@@ -71,7 +71,7 @@ function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate, categ
               </tr>
               <tr>
                 <td>Priority:</td>
-                <td>${allTodos["priority"]}<img class="iconSummaryModal" src="${priorityIcon}" alt=""></td>
+                <td>${priority}<img class="iconSummaryModal" src="${priorityIcon}" alt=""></td>
               </tr>
             </table>
             <div id="assignedToContainer${allTodos["id"]}" class="margin_8">
@@ -125,7 +125,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                     <form class="task-form">
                       <div class="side1">
                         <label for="inputField">Title<span class="red">*</span></label>
-                        <input id="inputField" type="text" value="${title}" placeholder="Enter a title" required>
+                        <input id="inputField" type="text" value="${title}" placeholder="Enter a title">
                         <label for="description">Description</label>
                         <textarea id="description" placeholder="Enter a Description">${description}</textarea>
                         <label for="assigned">Assigned to</label>
@@ -147,7 +147,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                       <div class="side2">
                         <label for="due-date">Due date <span class="red">*</span></label>
                         <div class="custom-date-picker">
-                          <input type="date" id="due-date-edit" name="due-date"  required>
+                          <input type="date" id="due-date-edit" name="due-date" min="">
                           <button type="button" class="calendar-icon" onclick="openDatePickerModal()">
                            <img src="./assets/icons/calender.svg" alt="Calendar Icon"> <!-- Dein eigenes Icon -->
                           </button>
@@ -173,7 +173,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                             </svg>
                           </button>
                         </div>
-                        <label id="labelCategory" for="custom-category">Category<span>*</span></label>
+                        <label id="labelCategory" for="custom-category">Category<span class="red">*</span></label>
                         <div id="custom-category" class="custom-dropdown" onclick="toggleCategoryDropdown(event)">
                           <div id="category-input" tabindex="0" class="dropdown-input paddingTop">
                             <span>Select task category</span>
@@ -186,13 +186,13 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                           <div class="dropdown-option" onclick="selectCategory('Technical Task', 'technical')">Technical Task</div>
                           <div class="dropdown-option" onclick="selectCategory('User Story', 'user-story')">User Story</div>
                         </div>
-                        <input type="hidden" id="category" required>                        
+                        <input type="hidden" id="category">                        
                         <label for="category">Subtasks</label>
                         <div class="input-wrapper"  id="inputWrapperEdit">
                           <input type="text" id="new-subtask-input-Edit" placeholder="add new sub task" onfocus="transformButtonEdit('${id}')"/>
                           <button id="iconAddButtonEdit" class="iconAdd center" type="button"></button>
                         </div>
-                        <div id="editSubtasks-container"></div>
+                        <div id="editSubtasks-container" class="editSubtasks-container"></div>
                       <p class="error-message-mobile"><span class="required">*</span> This field is required</p>
                       <div id="buttonContainerEdit" class="form-footer-modal space">
                         <p class="error-message"><span class="required">*</span> This field is required</p>

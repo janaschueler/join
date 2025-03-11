@@ -65,14 +65,22 @@ function loadTaskSummaryModal(id) {
 
 function renderTaskSummaryContent(summaryModal, task) {
   let formattedDate = convertTask(task.dueDate);
+  let priority = determinePriotirySpan(task.priority);
   let priorityIcon = determinePriotiry(task.priority);
   let categoryColor = determineCategoryColor(task.category);
-  summaryModal.innerHTML += generateTaskSummaryModal(task, priorityIcon, formattedDate, categoryColor);
+  summaryModal.innerHTML += generateTaskSummaryModal(task, priorityIcon, formattedDate, categoryColor, priority);
 }
 
 function convertTask(dueDate) {
   let formatedDueDate = new Intl.DateTimeFormat("en-Gb").format(new Date(dueDate));
   return formatedDueDate;
+}
+
+function determinePriotirySpan(priority) {
+  if (!priority) {
+    priority = "medium";
+  }
+  return priority;
 }
 
 function determineCategoryColor(category) {
@@ -242,6 +250,7 @@ function closeModalAddTask(event) {
     location.reload();
   }
 }
+
 /**
  * The above functions are used to handle button clicks, open and populate an edit modal, set modal
  * content, initialize the edit modal with data, add due date, and populate a dropdown for selecting
