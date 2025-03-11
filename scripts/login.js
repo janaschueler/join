@@ -147,7 +147,6 @@ function extractUserData(responseToJson) {
   }));
 }
 
-
 /**
  * Asynchronously checks the login credentials entered by the user.
  * Disables the login button while validating the email and password.
@@ -177,8 +176,9 @@ async function checkLogin() {
 async function handleLoginResult(user, disabledBtn) {
   if (user) {
     transfereLoginData(user);
-    if (await addContactLogIn()) {
-      window.location.assign("./index.html");
+    let addContact = await addContactLogIn();
+    if (addContact) {
+        window.location.assign("./index.html");
     }
   } else {
     document.getElementById("wrongPassword").classList.remove("d-none");
