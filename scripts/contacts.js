@@ -85,23 +85,30 @@ function renderModalContacts() {
 }
 
 /**
- * Resets the contact modal forms and alerts.
+ * Selects a contact by its ID and triggers the rendering of the contact details.
  *
- * This function resets any alerts and clears the input fields
- * of both the new contact form and the edit contact form. Afterwards
- * the function `resetAltert` hides alert messages and removes error styles from input fields.
+ * @param {number} contactId - The ID of the contact to be selected.
  */
-function resetModal() {
-  resetAlert();
-  document.getElementById("newContactForm").reset();
-  document.getElementById("editContactForm").reset();
+function selectContact(contactId) {
+  selectedContactId = contactId;
+  renderBigContacts();
+  renderModalContacts();
 }
 
-function resetAlert() {
-  document.getElementById("invalidPasswordContact").classList.add("d_none");
-  document.getElementById("invalidPasswordNewContact").classList.add("d_none");
-  document.getElementById("dialog-email").classList.remove("input-error");
-  document.getElementById("recipient-email").classList.remove("input-error");
+/**
+ * Displays the contact information section on mobile devices.
+ *
+ * This function checks if the viewport width is 768 pixels or less
+ * using the `window.matchMedia` method. If the condition is met,
+ * it removes the "d_none_mobile" class from the element with the
+ * ID "contactInfo_content", making the contact information visible
+ * on mobile devices.
+ */
+function mobileContactInfo() {
+  let contactInfo = document.getElementById("contactInfo_content");
+  if (window.matchMedia("(max-width: 768px)").matches) {
+    contactInfo.classList.remove("d_none_mobile");
+  }
 }
 
 /**
@@ -149,6 +156,17 @@ async function deleteContact(contactId) {
   location.reload();
 }
 
+async function getFirebaseId(contactId) {
+  let response = await fetch(BASE_URL + "contacts.json");
+  let data = await response.json();
+  for (let firebaseId in data) {
+    if (data[firebaseId].id === contactId.toString()) {
+      return firebaseId;
+    }
+  }
+  return null;
+}
+
 async function deleteData(path = "") {
   let response = await fetch(BASE_URL + path + ".json", {
     method: "DELETE",
@@ -183,17 +201,6 @@ async function removeContactFromTasks(firebaseId) {
 }
 
 /**
- * Selects a contact by its ID and triggers the rendering of the contact details.
- *
- * @param {number} contactId - The ID of the contact to be selected.
- */
-function selectContact(contactId) {
-  selectedContactId = contactId;
-  renderBigContacts();
-  renderModalContacts();
-}
-
-/**
  * Toggles the visibility of the dialog content and reloads the page.
  *
  * This function finds the element with the ID "dialog_content" and toggles
@@ -218,22 +225,6 @@ function closeContactInfo() {
 }
 
 /**
- * Displays the contact information section on mobile devices.
- *
- * This function checks if the viewport width is 768 pixels or less
- * using the `window.matchMedia` method. If the condition is met,
- * it removes the "d_none_mobile" class from the element with the
- * ID "contactInfo_content", making the contact information visible
- * on mobile devices.
- */
-function mobileContactInfo() {
-  let contactInfo = document.getElementById("contactInfo_content");
-  if (window.matchMedia("(max-width: 768px)").matches) {
-    contactInfo.classList.remove("d_none_mobile");
-  }
-}
-
-/**
  * Toggles the visibility of the edit and delete buttons.
  * This function finds the element with the ID "showOption_content" and toggles
  * the "d_none" class on it, which controls the display property.
@@ -245,4 +236,114 @@ function showEditandDeleteBtn() {
 
 function protection(event) {
   event.stopPropagation();
+}
+
+/**
+ * Adds a new contact to the contact list.
+ *
+ * This function retrieves the input values for name, email, and phone from the DOM,
+ * creates a new contact object, validates the input fields, and if valid, posts the
+ * new contact data to the server. It then updates the contact list and clears the input fields.
+ *
+ * @async
+ * @function addContact
+ * @returns {Promise<void>} - A promise that resolves when the contact has been added.
+ */
+
+async function addContact() {
+  let contactsSmallRef = document.getElementById("contactsSmall_content");
+  let nameRef = document.getElementById("recipient-name");
+  let emailRef = document.getElementById("recipient-email");
+  let phoneRef = document.getElementById("recipient-phone");
+  let contactId = Date.now().toString();
+  let newContact = {
+    id: contactId,
+    name: nameRef.value,
+    email: emailRef.value,
+    phone: phoneRef.value,
+    color: getColorById(contactId),
+  };
+  if (nameRef.value == "" || emailRef.value == "" || phoneRef.value == "") {
+    document.getElementById("editContactInputfieldError").classList.remove("d_none");
+    document.getElementById("newContactInputfieldError").classList.remove("d_none");
+    return;
+  }
+  document.getElementById("editContactInputfieldError").classList.add("d_none");
+  document.getElementById("newContactInputfieldError").classList.add("d_none");
+  await postData("contacts", newContact);
+  allUsers.push(newContact);
+  selectedContactId = newContact.id;
+  renderSmallContacts();
+  renderBigContacts();
+  contactsSmallRef.innerHTML = "";
+  nameRef.value = "";
+  emailRef.value = "";
+  phoneRef.value = "";
+  signupSuccessfullMessage("new");
+}
+
+async function patchData(path = "", data = {}) {
+  const response = await fetch(BASE_URL + path + ".json", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return await response.json();
+}
+
+function getColorById(contactId) {
+  let sum = 0;
+  for (let i = 0; i < contactId.length; i++) {
+    sum += contactId.charCodeAt(i);
+  }
+  let index = sum % coloursArray.length;
+  return coloursArray[index];
+}
+
+/**
+ * Displays a success message toast notification and reloads the page after the toast is hidden.
+ *
+ * @param {string} status - The status of the signup process. If the status is "edit", the message will indicate that the contact was successfully edited.
+ */
+function signupSuccessfullMessage(status) {
+  let toastRef = document.getElementById("successMessage");
+  if (status == "edit") {
+    let messageRef = document.getElementById("toastMessage");
+    messageRef.textContent = "Contact successfully edited";
+  }
+  let overlay = document.getElementById("overlay");
+  let toast = new bootstrap.Toast(toastRef, {
+    autohide: false,
+  });
+  overlay.style.display = "block";
+  toast.show();
+  setTimeout(function () {
+    toast.hide();
+  }, 2000);
+  toastRef.addEventListener("hidden.bs.toast", function () {
+    overlay.style.display = "none";
+    location.reload();
+  });
+}
+
+/**
+ * Resets the contact modal forms and alerts.
+ *
+ * This function resets any alerts and clears the input fields
+ * of both the new contact form and the edit contact form. Afterwards
+ * the function `resetAltert` hides alert messages and removes error styles from input fields.
+ */
+function resetModal() {
+  resetAlert();
+  document.getElementById("newContactForm").reset();
+  document.getElementById("editContactForm").reset();
+}
+
+function resetAlert() {
+  document.getElementById("invalidPasswordContact").classList.add("d_none");
+  document.getElementById("invalidPasswordNewContact").classList.add("d_none");
+  document.getElementById("dialog-email").classList.remove("input-error");
+  document.getElementById("recipient-email").classList.remove("input-error");
 }

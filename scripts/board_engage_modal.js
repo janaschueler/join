@@ -310,7 +310,8 @@ function prepareTaskData(id, status) {
   const title = document.getElementById("inputField").value.trim();
   const dueDate = document.getElementById("due-date-edit").value.trim();
   const category = determineCategory(id);
-  if (!title || !dueDate || !category || !selectedPriority) return null;
+  const selectedPriority = determinePriority(id);
+  if (!title || !dueDate || !category) return null;
   return {
     title,
     description: document.getElementById("description").value.trim(),
@@ -333,6 +334,19 @@ function determineCategory(id) {
     let category = task[0].category;
     return category;
   }
+}
+
+function determinePriority() {
+  const priorityButtons = document.querySelectorAll(".priority button");
+  for (let button of priorityButtons) {
+    const backgroundColor = window.getComputedStyle(button).backgroundColor;
+    if (backgroundColor !== "rgb(255, 255, 255)") {
+      console.log(button.classList);
+      priority = String(button.classList).toLowerCase().trim();
+      return priority;
+    }
+  }
+  return "medium";
 }
 
 async function addTaskModalNewTask(status) {
