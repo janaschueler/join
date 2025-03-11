@@ -190,6 +190,8 @@ function determinePriotiry(priority) {
   if (!priority) {
     priority = "medium";
   }
+  priority = String(priority).toLowerCase().trim();
+
   priority = priority.toLowerCase();
   priority = priority.trim();
   if (priority === "low") {
