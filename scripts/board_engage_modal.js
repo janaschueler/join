@@ -363,7 +363,7 @@ function prepareNewTaskData(status) {
   const title = document.getElementById("inputField").value.trim();
   const dueDate = document.getElementById("due-date-edit").value.trim();
   const category = document.getElementById("category").value;
-  if (!title || !dueDate || !category || !selectedPriority) return null;
+  if (!title || !dueDate || !category) return null;
   return {
     title,
     description: document.getElementById("description").value.trim(),

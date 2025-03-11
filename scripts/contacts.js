@@ -28,22 +28,22 @@ function renderModalContacts() {
 }
 
 async function fetchData(path = "") {
-    let response = await fetch(BASE_URL + path + ".json");
-    let data = await response.json();
-    if (data && data.contacts) {
-      allUsers = Object.values(data.contacts);
-    } else {
-      allUsers = [];
-    }
-    renderSmallContacts();
-    renderBigContacts();
-    return data;  
+  let response = await fetch(BASE_URL + path + ".json");
+  let data = await response.json();
+  if (data && data.contacts) {
+    allUsers = Object.values(data.contacts);
+  } else {
+    allUsers = [];
+  }
+  renderSmallContacts();
+  renderBigContacts();
+  return data;
 }
 
 function renderSmallContacts() {
   let contactsSmallRef = document.getElementById("contactsSmall_content");
   contactsSmallRef.innerHTML = ""; // Verhindert doppeltes Rendering
-  
+
   let sortedContacts = sortContactsByName(allUsers);
   let groupedContactsHTML = generateGroupedContactsHTML(sortedContacts);
 
@@ -61,12 +61,12 @@ function sortContactsByName(contacts) {
 function generateGroupedContactsHTML(contacts) {
   let currentGroup = "";
   let html = "";
-  contacts.forEach(contact => {
+  contacts.forEach((contact) => {
     let firstLetter = contact.name.trim().split(" ")[0].charAt(0).toUpperCase();
     if (firstLetter !== currentGroup) {
       currentGroup = firstLetter;
       html += createGroupHeader(firstLetter);
-    }    
+    }
     html += templateSmallContacts(contact);
   });
   return html;
@@ -78,7 +78,6 @@ function createGroupHeader(letter) {
     <div class="horizontalLine"></div>
   `;
 }
-
 
 function renderBigContacts() {
   let contactsBigRef = document.getElementById("contactsBig_content");
@@ -129,7 +128,6 @@ function mobileContactInfo() {
   }
 }
 
-
 /**
  * Opens the edit dialog for a specific contact. Populates the dialog fields
  * with contact information based on the provided contact ID and sets the action
@@ -159,6 +157,7 @@ async function populateDialogFields(contactId) {
   nameRef.value = contactData.name || "";
   emailRef.value = contactData.email || "";
   phoneRef.value = contactData.phone || "";
+  deleteButton.setAttribute("onclick", `deleteContact('${contactId}')`);
 }
 
 async function deleteContact(contactId) {
@@ -192,6 +191,10 @@ async function deleteData(path = "") {
   return (responseToJson = await response.json());
 }
 
+function setDeleteButtonAction(id) {
+  console.log(id);
+}
+
 /**
  * Removes a contact from all tasks in the database.
  *
@@ -218,7 +221,6 @@ async function removeContactFromTasks(firebaseId) {
   }
 }
 
-
 /**
  * Toggles the visibility of the dialog content and reloads the page.
  *
@@ -243,7 +245,6 @@ function closeContactInfo() {
   showDialog.classList.add("d_none_mobile");
 }
 
-
 /**
  * Toggles the visibility of the edit and delete buttons.
  * This function finds the element with the ID "showOption_content" and toggles
@@ -260,11 +261,11 @@ function protection(event) {
 
 /**
  * Adds a new contact to the contact list.
- * 
+ *
  * This function retrieves the input values for name, email, and phone from the DOM,
- * creates a new contact object, validates the input fields, and if valid, posts the 
+ * creates a new contact object, validates the input fields, and if valid, posts the
  * new contact data to the server. It then updates the contact list and clears the input fields.
- * 
+ *
  * @async
  * @function addContact
  * @returns {Promise<void>} - A promise that resolves when the contact has been added.
@@ -329,7 +330,6 @@ async function patchData(path = "", data = {}) {
   return await response.json();
 }
 
-
 function getColorById(contactId) {
   let sum = 0;
   for (let i = 0; i < contactId.length; i++) {
@@ -338,8 +338,6 @@ function getColorById(contactId) {
   let index = sum % coloursArray.length;
   return coloursArray[index];
 }
-
-
 
 /**
  * Displays a success message toast notification and reloads the page after the toast is hidden.

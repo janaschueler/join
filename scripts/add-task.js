@@ -24,11 +24,11 @@ function toggleCategoryDropdown(event) {
 
 /**
  * Toggles the visibility of the assigned dropdown menu.
- * 
+ *
  * This function stops the propagation of the event, checks the current state of the dropdown,
  * closes all other dropdowns, and then toggles the visibility of the assigned dropdown based on its current state.
  * It also adjusts the display properties of elements with the classes "dropDown" and "dropDown-up".
- * 
+ *
  * @param {Event} event - The event object associated with the dropdown toggle action.
  */
 function toggleAssignedDropdown(event) {
@@ -46,18 +46,8 @@ function toggleAssignedDropdown(event) {
   }
 }
 document.addEventListener("click", function (event) {
-  closeDropdownOnOutsideClick(
-    event,
-    "category-dropdown",
-    "custom-category",
-    "category-dropdown-icon"
-  );
-  closeDropdownOnOutsideClick(
-    event,
-    "assigned-dropdown",
-    "assigned-input",
-    null
-  );
+  closeDropdownOnOutsideClick(event, "category-dropdown", "custom-category", "category-dropdown-icon");
+  closeDropdownOnOutsideClick(event, "assigned-dropdown", "assigned-input", null);
 });
 
 /**
@@ -74,10 +64,7 @@ function closeDropdownOnOutsideClick(event, dropdownId, toggleId, iconId) {
 
   if (!dropdown || !toggleButton) return;
 
-  if (
-    !toggleButton.contains(event.target) &&
-    !dropdown.contains(event.target)
-  ) {
+  if (!toggleButton.contains(event.target) && !dropdown.contains(event.target)) {
     dropdown.classList.remove("visible");
     if (iconId) {
       document.getElementById(iconId).style.transform = "rotate(0deg)";
@@ -91,23 +78,20 @@ function closeDropdownOnOutsideClick(event, dropdownId, toggleId, iconId) {
 
 /**
  * Closes all dropdown menus on the page.
- * 
- * This function hides the category dropdown and all assigned dropdowns by 
- * removing the "visible" class from their respective elements. It also 
- * resets the rotation of the category dropdown icon and toggles the 
+ *
+ * This function hides the category dropdown and all assigned dropdowns by
+ * removing the "visible" class from their respective elements. It also
+ * resets the rotation of the category dropdown icon and toggles the
  * display properties of elements with classes "dropDown" and "dropDown-up".
  */
 function closeAllDropdowns() {
   document.getElementById("category-dropdown").classList.remove("visible");
-  const assignedDropdowns = document.querySelectorAll(
-    '[id*="assigned-dropdown"]'
-  );
+  const assignedDropdowns = document.querySelectorAll('[id*="assigned-dropdown"]');
   assignedDropdowns.forEach((dropdown) => {
     dropdown.classList.remove("visible");
   });
 
-  document.getElementById("category-dropdown-icon").style.transform =
-    "rotate(0deg)";
+  document.getElementById("category-dropdown-icon").style.transform = "rotate(0deg)";
   document.querySelector(".dropDown").style.display = "block";
   document.querySelector(".dropDown-up").style.display = "none";
 }
@@ -116,22 +100,20 @@ function selectCategory(label) {
   document.querySelector("#category-input span").textContent = label;
   document.getElementById("category").value = label;
   document.getElementById("category-dropdown").classList.remove("visible");
-  document
-    .querySelectorAll("#category-dropdown .dropdown-option")
-    .forEach((option) => {
-      option.classList.remove("selected");
-    });
+  document.querySelectorAll("#category-dropdown .dropdown-option").forEach((option) => {
+    option.classList.remove("selected");
+  });
 }
 
 /**
  * Fetches contacts from the server and processes them into a usable format.
- * 
+ *
  * This function makes an asynchronous request to retrieve contact data from a specified URL.
  * It then processes the data into an array of contact objects, each containing an id, name, email, and color.
  * If the contact's name or email is missing, default values are provided.
  * If the contact's color is missing, a random color is assigned.
  * Finally, it calls the `populateAssignedToSelect` function to update the UI with the fetched contacts.
- * 
+ *
  * @async
  * @function fetchContacts
  * @throws {Error} Throws an error if the HTTP request fails.
@@ -170,7 +152,7 @@ async function addTask(statusTask) {
   const category = document.getElementById("category")?.value;
   const subtasks = [...document.querySelectorAll(".subtask-text")].map((el) => el.textContent.trim());
 
-  if (!title || !description || !dueDate || !category || !selectedPriority) {
+  if (!title || !description || !dueDate || !category) {
     alert("Please fill in all required fields.");
     return;
   }
@@ -225,7 +207,7 @@ async function saveSubtask(subtaskText) {
  * Populates the "assigned-dropdown" select element with contact options.
  * Each contact option is rendered using the addTaskTemplate function.
  * Adds event listeners to each contact checkbox to handle selection changes.
- * 
+ *
  * @function
  * @name populateAssignedToSelect
  * @returns {void}
@@ -241,22 +223,21 @@ function populateAssignedToSelect() {
       )
     )
     .join("");
-    document.querySelectorAll(".contact-checkbox").forEach((checkbox) => {
-      checkbox.addEventListener("change", function () {
-          const contact = contacts.find((c) => c.id === this.value);
-          if (!contact) return;
-          const parentContainer = this.closest(".customCheckboxContainer");
-          if (this.checked) {
-              selectedContacts.push(contact);
-              parentContainer.classList.add("checked"); // Styling aktivieren
-          } else {
-              selectedContacts = selectedContacts.filter(c => c.id !== contact.id);
-              parentContainer.classList.remove("checked"); // Styling entfernen
-          }
-          updateSelectedContacts();
-      });
+  document.querySelectorAll(".contact-checkbox").forEach((checkbox) => {
+    checkbox.addEventListener("change", function () {
+      const contact = contacts.find((c) => c.id === this.value);
+      if (!contact) return;
+      const parentContainer = this.closest(".customCheckboxContainer");
+      if (this.checked) {
+        selectedContacts.push(contact);
+        parentContainer.classList.add("checked"); // Styling aktivieren
+      } else {
+        selectedContacts = selectedContacts.filter((c) => c.id !== contact.id);
+        parentContainer.classList.remove("checked"); // Styling entfernen
+      }
+      updateSelectedContacts();
+    });
   });
-  
 }
 
 /**
@@ -265,22 +246,17 @@ function populateAssignedToSelect() {
  * Each contact element displays the contact's initials and is styled with the contact's color.
  */
 function updateSelectedContacts() {
-  const selectedContactsContainer =
-    document.getElementById("selected-contacts");
+  const selectedContactsContainer = document.getElementById("selected-contacts");
   selectedContactsContainer.innerHTML = "";
   selectedContacts.forEach((contact) => {
     const contactElement = document.createElement("div");
     contactElement.classList.add("selected-contact");
     contactElement.style.backgroundColor = contact.color;
     contactElement.innerHTML = `
-          <span class="selected-contact-initials">${getInitials(
-            contact.name
-          )}</span>`;
+          <span class="selected-contact-initials">${getInitials(contact.name)}</span>`;
     selectedContactsContainer.appendChild(contactElement);
   });
 }
-
-
 
 /**
  * Removes a contact from the selected contacts list by their ID.
@@ -288,9 +264,7 @@ function updateSelectedContacts() {
  * @param {number} contactId - The ID of the contact to be removed.
  */
 function removeSelectedContact(contactId) {
-  selectedContacts = selectedContacts.filter(
-    (contact) => contact.id !== contactId
-  );
+  selectedContacts = selectedContacts.filter((contact) => contact.id !== contactId);
   const checkbox = document.getElementById(`contact-${contactId}`);
   if (checkbox) {
     checkbox.checked = false;
@@ -298,19 +272,16 @@ function removeSelectedContact(contactId) {
   updateSelectedContacts();
 }
 
-
 /**
  * Filters the list of contacts based on the search term entered by the user.
- * 
+ *
  * This function retrieves the search term from an input element with the ID "search-contacts",
  * converts it to lowercase, and then iterates over all elements with the class "customCheckboxContainer".
  * It compares the text content of each element's child with the class "subtasksUnit" to the search term.
  * If the text content includes the search term, the element is displayed; otherwise, it is hidden.
  */
 function filterContacts() {
-  const searchTerm = document
-    .getElementById("search-contacts")
-    .value.toLowerCase();
+  const searchTerm = document.getElementById("search-contacts").value.toLowerCase();
   document.querySelectorAll(".customCheckboxContainer").forEach((label) => {
     const name = label.querySelector(".subtasksUnit").textContent.toLowerCase();
     label.style.display = name.includes(searchTerm) ? "flex" : "none";
