@@ -111,6 +111,7 @@ function mobileContactInfo() {
   }
 }
 
+
 /**
  * Opens the edit dialog for a specific contact. Populates the dialog fields
  * with contact information based on the provided contact ID and sets the action
@@ -200,6 +201,7 @@ async function removeContactFromTasks(firebaseId) {
   }
 }
 
+
 /**
  * Toggles the visibility of the dialog content and reloads the page.
  *
@@ -224,6 +226,7 @@ function closeContactInfo() {
   showDialog.classList.add("d_none_mobile");
 }
 
+
 /**
  * Toggles the visibility of the edit and delete buttons.
  * This function finds the element with the ID "showOption_content" and toggles
@@ -240,11 +243,11 @@ function protection(event) {
 
 /**
  * Adds a new contact to the contact list.
- *
+ * 
  * This function retrieves the input values for name, email, and phone from the DOM,
- * creates a new contact object, validates the input fields, and if valid, posts the
+ * creates a new contact object, validates the input fields, and if valid, posts the 
  * new contact data to the server. It then updates the contact list and clears the input fields.
- *
+ * 
  * @async
  * @function addContact
  * @returns {Promise<void>} - A promise that resolves when the contact has been added.
@@ -293,6 +296,7 @@ async function patchData(path = "", data = {}) {
   return await response.json();
 }
 
+
 function getColorById(contactId) {
   let sum = 0;
   for (let i = 0; i < contactId.length; i++) {
@@ -301,6 +305,8 @@ function getColorById(contactId) {
   let index = sum % coloursArray.length;
   return coloursArray[index];
 }
+
+
 
 /**
  * Displays a success message toast notification and reloads the page after the toast is hidden.
@@ -327,6 +333,7 @@ function signupSuccessfullMessage(status) {
     location.reload();
   });
 }
+
 
 /**
  * Resets the contact modal forms and alerts.

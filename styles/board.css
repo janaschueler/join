@@ -1391,6 +1391,13 @@ table td:first-child {
   .modalAddTask {
     width: 100%;
     max-height: 700px;
-    height: none;
+  }
+}
+
+@media (max-width: 375px) {
+  .modalAddTask {
+    width: 100%;
+    max-height: 600px;
+    margin-top: -30px;
   }
 }
