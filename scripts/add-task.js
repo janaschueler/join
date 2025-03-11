@@ -164,23 +164,21 @@ async function fetchContacts() {
  * @throws {Error} - Throws an error if the task could not be saved.
  */
 async function addTask(statusTask) {
-  const title = inputField.value.trim(),
-    description = description.value.trim(),
-    dueDate = dueDate.value.trim(),
-    category = category.value,
-    subtasks = [...document.querySelectorAll(".subtask-text")].map((el) => el.textContent.trim());
+  const title = document.getElementById("inputField")?.value.trim();
+  const description = document.getElementById("description")?.value.trim();
+  const dueDate = document.getElementById("due-date")?.value.trim();
+  const category = document.getElementById("category")?.value;
+  const subtasks = [...document.querySelectorAll(".subtask-text")].map((el) => el.textContent.trim());
 
-  if (!title || !dueDate || !category || !selectedPriority) return alert("Please fill in all required fields.");
+  if (!title || !description || !dueDate || !category || !selectedPriority) {
+    alert("Please fill in all required fields.");
+    return;
+  }
 
-  const taskData = {
-    title, description, dueDate, category, priority: selectedPriority, subtasks,
-    assignedContacts: selectedContacts, status: determineStatusAddTask(statusTask), createdAt: new Date().toISOString(),
-  };
+  const taskData = { title, description, dueDate, category, priority: selectedPriority, subtasks, assignedContacts: selectedContacts, status: determineStatusAddTask(statusTask), createdAt: new Date().toISOString() };
 
   try {
-    const res = await fetch(`${BASE_URL}/tasks.json`, {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(taskData),
-    });
+    const res = await fetch(`${BASE_URL}/tasks.json`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(taskData) });
     if (!res.ok) throw new Error(`Error saving task: ${res.status}`);
     location.href = "board.html";
   } catch (err) {
@@ -243,16 +241,22 @@ function populateAssignedToSelect() {
       )
     )
     .join("");
-  document.querySelectorAll(".contact-checkbox").forEach((checkbox) => {
-    checkbox.addEventListener("change", function () {
-      const contact = contacts.find((c) => c.id === this.value);
-      if (!contact) return;
-      this.checked
-        ? selectedContacts.push(contact)
-        : selectedContacts.splice(selectedContacts.indexOf(contact), 1);
-      updateSelectedContacts();
-    });
+    document.querySelectorAll(".contact-checkbox").forEach((checkbox) => {
+      checkbox.addEventListener("change", function () {
+          const contact = contacts.find((c) => c.id === this.value);
+          if (!contact) return;
+          const parentContainer = this.closest(".customCheckboxContainer");
+          if (this.checked) {
+              selectedContacts.push(contact);
+              parentContainer.classList.add("checked"); // Styling aktivieren
+          } else {
+              selectedContacts = selectedContacts.filter(c => c.id !== contact.id);
+              parentContainer.classList.remove("checked"); // Styling entfernen
+          }
+          updateSelectedContacts();
+      });
   });
+  
 }
 
 /**
