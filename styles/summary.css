@@ -36,9 +36,12 @@ body {
   font-size: 27px;
 }
 
+#summary_content {
+  margin-left: 5%;
+}
+
 .summary_main {
   width: 100%;
-  margin-left: 5%;
   display: flex;
   justify-content: center;
   flex-direction: column;
