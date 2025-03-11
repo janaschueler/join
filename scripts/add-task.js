@@ -22,6 +22,15 @@ function toggleCategoryDropdown(event) {
   }
 }
 
+/**
+ * Toggles the visibility of the assigned dropdown menu.
+ * 
+ * This function stops the propagation of the event, checks the current state of the dropdown,
+ * closes all other dropdowns, and then toggles the visibility of the assigned dropdown based on its current state.
+ * It also adjusts the display properties of elements with the classes "dropDown" and "dropDown-up".
+ * 
+ * @param {Event} event - The event object associated with the dropdown toggle action.
+ */
 function toggleAssignedDropdown(event) {
   event.stopPropagation();
   let dropdown = document.getElementById("assigned-dropdown");
@@ -37,17 +46,38 @@ function toggleAssignedDropdown(event) {
   }
 }
 document.addEventListener("click", function (event) {
-  closeDropdownOnOutsideClick(event, "category-dropdown", "custom-category", "category-dropdown-icon");
-  closeDropdownOnOutsideClick(event, "assigned-dropdown", "assigned-input", null);
+  closeDropdownOnOutsideClick(
+    event,
+    "category-dropdown",
+    "custom-category",
+    "category-dropdown-icon"
+  );
+  closeDropdownOnOutsideClick(
+    event,
+    "assigned-dropdown",
+    "assigned-input",
+    null
+  );
 });
 
+/**
+ * Closes a dropdown menu when a click is detected outside of it.
+ *
+ * @param {Event} event - The click event that triggers the function.
+ * @param {string} dropdownId - The ID of the dropdown element to be closed.
+ * @param {string} toggleId - The ID of the button that toggles the dropdown.
+ * @param {string} [iconId] - The optional ID of the icon element to be rotated.
+ */
 function closeDropdownOnOutsideClick(event, dropdownId, toggleId, iconId) {
   const dropdown = document.getElementById(dropdownId);
   const toggleButton = document.getElementById(toggleId);
 
   if (!dropdown || !toggleButton) return;
 
-  if (!toggleButton.contains(event.target) && !dropdown.contains(event.target)) {
+  if (
+    !toggleButton.contains(event.target) &&
+    !dropdown.contains(event.target)
+  ) {
     dropdown.classList.remove("visible");
     if (iconId) {
       document.getElementById(iconId).style.transform = "rotate(0deg)";
@@ -59,14 +89,25 @@ function closeDropdownOnOutsideClick(event, dropdownId, toggleId, iconId) {
   }
 }
 
+/**
+ * Closes all dropdown menus on the page.
+ * 
+ * This function hides the category dropdown and all assigned dropdowns by 
+ * removing the "visible" class from their respective elements. It also 
+ * resets the rotation of the category dropdown icon and toggles the 
+ * display properties of elements with classes "dropDown" and "dropDown-up".
+ */
 function closeAllDropdowns() {
   document.getElementById("category-dropdown").classList.remove("visible");
-  const assignedDropdowns = document.querySelectorAll('[id*="assigned-dropdown"]');
+  const assignedDropdowns = document.querySelectorAll(
+    '[id*="assigned-dropdown"]'
+  );
   assignedDropdowns.forEach((dropdown) => {
     dropdown.classList.remove("visible");
   });
 
-  document.getElementById("category-dropdown-icon").style.transform = "rotate(0deg)";
+  document.getElementById("category-dropdown-icon").style.transform =
+    "rotate(0deg)";
   document.querySelector(".dropDown").style.display = "block";
   document.querySelector(".dropDown-up").style.display = "none";
 }
@@ -75,12 +116,26 @@ function selectCategory(label) {
   document.querySelector("#category-input span").textContent = label;
   document.getElementById("category").value = label;
   document.getElementById("category-dropdown").classList.remove("visible");
-
-  document.querySelectorAll("#category-dropdown .dropdown-option").forEach((option) => {
-    option.classList.remove("selected");
-  });
+  document
+    .querySelectorAll("#category-dropdown .dropdown-option")
+    .forEach((option) => {
+      option.classList.remove("selected");
+    });
 }
 
+/**
+ * Fetches contacts from the server and processes them into a usable format.
+ * 
+ * This function makes an asynchronous request to retrieve contact data from a specified URL.
+ * It then processes the data into an array of contact objects, each containing an id, name, email, and color.
+ * If the contact's name or email is missing, default values are provided.
+ * If the contact's color is missing, a random color is assigned.
+ * Finally, it calls the `populateAssignedToSelect` function to update the UI with the fetched contacts.
+ * 
+ * @async
+ * @function fetchContacts
+ * @throws {Error} Throws an error if the HTTP request fails.
+ */
 async function fetchContacts() {
   try {
     const response = await fetch(`${BASE_URL}/contacts.json`);
@@ -96,52 +151,49 @@ async function fetchContacts() {
     populateAssignedToSelect();
   } catch (error) {}
 }
-
+/**
+ * Adds a new task with the provided status.
+ *
+ * This function collects task details from input fields, validates the input,
+ * constructs a task object, and sends it to the server to be saved.
+ * If the task is successfully saved, the user is redirected to the board page.
+ * If there is an error during the save process, an alert is shown with the error message.
+ *
+ * @param {string} statusTask - The status of the task to be added.
+ * @returns {Promise<void>} - A promise that resolves when the task is added.
+ * @throws {Error} - Throws an error if the task could not be saved.
+ */
 async function addTask(statusTask) {
-  const title = document.getElementById("inputField").value.trim();
-  const description = document.getElementById("description").value.trim();
-  const dueDate = document.getElementById("due-date").value.trim();
-  const category = document.getElementById("category").value;
-  const assignedContacts = selectedContacts;
-  const status = determineStatusAddTask(statusTask);
+  const title = inputField.value.trim(),
+    description = description.value.trim(),
+    dueDate = dueDate.value.trim(),
+    category = category.value,
+    subtasks = [...document.querySelectorAll(".subtask-text")].map((el) => el.textContent.trim());
 
-  if (!title || !dueDate || !category || !selectedPriority) {
-    alert("Bitte alle Pflichtfelder ausfüllen und eine Priorität auswählen.");
-    return;
-  }
-  const subtaskItems = document.querySelectorAll(".subtask-text");
-  const subtasks = Array.from(subtaskItems).map((item) => item.textContent.trim());
+  if (!title || !dueDate || !category || !selectedPriority) return alert("Please fill in all required fields.");
 
   const taskData = {
-    title,
-    description,
-    assignedContacts: assignedContacts,
-    dueDate,
-    category,
-    priority: selectedPriority,
-    subtasks,
-    createdAt: new Date().toISOString(),
-    status,
+    title, description, dueDate, category, priority: selectedPriority, subtasks,
+    assignedContacts: selectedContacts, status: determineStatusAddTask(statusTask), createdAt: new Date().toISOString(),
   };
 
   try {
-    const response = await fetch(`${BASE_URL}/tasks.json`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(taskData),
+    const res = await fetch(`${BASE_URL}/tasks.json`, {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(taskData),
     });
-
-    if (!response.ok) {
-      throw new Error(`Fehler beim Speichern der Aufgabe: ${response.status}`);
-    }
-
-    window.location.href = "board.html";
-  } catch (error) {
-    console.error("Fehler beim Speichern der Aufgabe:", error);
-    alert("Es gab einen Fehler beim Speichern der Aufgabe. Bitte prüfe die Konsole.");
+    if (!res.ok) throw new Error(`Error saving task: ${res.status}`);
+    location.href = "board.html";
+  } catch (err) {
+    alert(err.message);
   }
 }
 
+/**
+ * Determines the status of a task to be added.
+ *
+ * @param {number} statusTask - The status of the task. If not provided, defaults to 1.
+ * @returns {number} The determined status of the task.
+ */
 function determineStatusAddTask(statusTask) {
   let status;
   if (!statusTask) {
@@ -152,6 +204,15 @@ function determineStatusAddTask(statusTask) {
   return status;
 }
 
+/**
+ * Saves a subtask to the server.
+ *
+ * This function sends a POST request to the server to save a subtask with the provided text.
+ *
+ * @param {string} subtaskText - The text of the subtask to be saved.
+ * @returns {Promise<void>} A promise that resolves when the subtask is successfully saved.
+ * @throws {Error} Throws an error if the request fails.
+ */
 async function saveSubtask(subtaskText) {
   try {
     const response = await fetch(`${BASE_URL}/subtasks.json`, {
@@ -162,116 +223,70 @@ async function saveSubtask(subtaskText) {
   } catch (error) {}
 }
 
+/**
+ * Populates the "assigned-dropdown" select element with contact options.
+ * Each contact option is rendered using the addTaskTemplate function.
+ * Adds event listeners to each contact checkbox to handle selection changes.
+ * 
+ * @function
+ * @name populateAssignedToSelect
+ * @returns {void}
+ */
 function populateAssignedToSelect() {
   const dropdown = document.getElementById("assigned-dropdown");
-  if (!dropdown) {
-    return;
-  }
-
-  dropdown.innerHTML = "";
-
-  contacts.forEach((contact) => {
-    const label = document.createElement("label");
-    label.classList.add("customCheckboxContainer");
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.classList.add("contact-checkbox");
-    checkbox.id = `contact-${contact.id}`;
-    checkbox.name = `contact-${contact.id}`;
-    checkbox.value = contact.id;
-    const customCheckbox = document.createElement("span");
-    customCheckbox.classList.add("customCheckbox");
-    const svgContainer = document.createElement("div");
-    svgContainer.classList.add("svg-container");
-    svgContainer.style.backgroundColor = contact.color;
-    svgContainer.innerHTML = `<span class="contact-initials">${getInitials(contact.name)}</span>`;
-    const contactName = document.createElement("span");
-    contactName.classList.add("subtasksUnit");
-    contactName.textContent = contact.name;
-    const contactRow = document.createElement("div");
-    contactRow.classList.add("contact-row");
-    contactRow.appendChild(svgContainer);
-    contactRow.appendChild(contactName);
-    contactRow.appendChild(customCheckbox);
-    if (selectedContacts.some((c) => c.id === contact.id)) {
-      checkbox.checked = true;
-      label.classList.add("checked");
-    }
+  if (!dropdown || !Array.isArray(contacts) || contacts.length === 0) return;
+  dropdown.innerHTML = contacts
+    .map((contact) =>
+      addTaskTemplate(
+        contact,
+        selectedContacts.some((c) => c.id === contact.id)
+      )
+    )
+    .join("");
+  document.querySelectorAll(".contact-checkbox").forEach((checkbox) => {
     checkbox.addEventListener("change", function () {
-      toggleContactSelection(contact.id, contact.name, contact.color);
+      const contact = contacts.find((c) => c.id === this.value);
+      if (!contact) return;
+      this.checked
+        ? selectedContacts.push(contact)
+        : selectedContacts.splice(selectedContacts.indexOf(contact), 1);
+      updateSelectedContacts();
     });
-    label.appendChild(checkbox);
-    label.appendChild(contactRow);
-    dropdown.appendChild(label);
   });
 }
 
-function createContactSVG(contact) {
-  const initials = getInitials(contact.name);
-
-  const svgNS = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(svgNS, "svg");
-  svg.setAttribute("width", "32");
-  svg.setAttribute("height", "32");
-  svg.setAttribute("viewBox", "0 0 32 32");
-  svg.setAttribute("fill", "none");
-
-  const circle = document.createElementNS(svgNS, "circle");
-  circle.setAttribute("cx", "16");
-  circle.setAttribute("cy", "16");
-  circle.setAttribute("r", "15");
-  circle.setAttribute("fill", contact.color || "#ccc");
-  circle.setAttribute("stroke", "white");
-
-  const text = document.createElementNS(svgNS, "text");
-  text.setAttribute("x", "50%");
-  text.setAttribute("y", "55%");
-  text.setAttribute("font-family", "Arial, sans-serif");
-  text.setAttribute("font-size", "12");
-  text.setAttribute("fill", "white");
-  text.setAttribute("text-anchor", "middle");
-  text.setAttribute("alignment-baseline", "middle");
-  text.textContent = initials;
-
-  svg.appendChild(circle);
-  svg.appendChild(text);
-  return svg;
-}
-
-window.toggleContactSelection = function (contactId, contactName, contactColor) {
-  const checkbox = document.getElementById(`contact-${contactId}`);
-  const container = checkbox.closest(".customCheckboxContainer");
-  const input = document.getElementById("search-contacts");
-  if (!checkbox) return;
-  if (checkbox.checked) {
-    if (!selectedContacts.some((c) => c.id === contactId)) {
-      container.classList.add("checked");
-      selectedContacts.push({ id: contactId, name: contactName, color: contactColor });
-      input.value = "";
-      filterContacts();
-    }
-  } else {
-    container.classList.remove("checked");
-    selectedContacts = selectedContacts.filter((c) => c.id !== contactId);
-  }
-  updateSelectedContacts();
-};
-
+/**
+ * Updates the selected contacts container by clearing its current content
+ * and appending a new div element for each contact in the selectedContacts array.
+ * Each contact element displays the contact's initials and is styled with the contact's color.
+ */
 function updateSelectedContacts() {
-  const selectedContactsContainer = document.getElementById("selected-contacts");
+  const selectedContactsContainer =
+    document.getElementById("selected-contacts");
   selectedContactsContainer.innerHTML = "";
   selectedContacts.forEach((contact) => {
     const contactElement = document.createElement("div");
     contactElement.classList.add("selected-contact");
     contactElement.style.backgroundColor = contact.color;
     contactElement.innerHTML = `
-          <span class="selected-contact-initials">${getInitials(contact.name)}</span>`;
+          <span class="selected-contact-initials">${getInitials(
+            contact.name
+          )}</span>`;
     selectedContactsContainer.appendChild(contactElement);
   });
 }
 
+
+
+/**
+ * Removes a contact from the selected contacts list by their ID.
+ *
+ * @param {number} contactId - The ID of the contact to be removed.
+ */
 function removeSelectedContact(contactId) {
-  selectedContacts = selectedContacts.filter((contact) => contact.id !== contactId);
+  selectedContacts = selectedContacts.filter(
+    (contact) => contact.id !== contactId
+  );
   const checkbox = document.getElementById(`contact-${contactId}`);
   if (checkbox) {
     checkbox.checked = false;
@@ -279,13 +294,25 @@ function removeSelectedContact(contactId) {
   updateSelectedContacts();
 }
 
+
+/**
+ * Filters the list of contacts based on the search term entered by the user.
+ * 
+ * This function retrieves the search term from an input element with the ID "search-contacts",
+ * converts it to lowercase, and then iterates over all elements with the class "customCheckboxContainer".
+ * It compares the text content of each element's child with the class "subtasksUnit" to the search term.
+ * If the text content includes the search term, the element is displayed; otherwise, it is hidden.
+ */
 function filterContacts() {
-  const searchTerm = document.getElementById("search-contacts").value.toLowerCase();
+  const searchTerm = document
+    .getElementById("search-contacts")
+    .value.toLowerCase();
   document.querySelectorAll(".customCheckboxContainer").forEach((label) => {
     const name = label.querySelector(".subtasksUnit").textContent.toLowerCase();
     label.style.display = name.includes(searchTerm) ? "flex" : "none";
   });
 }
+
 function getInitials(name) {
   if (!name) return "??";
   const initials = name
@@ -302,6 +329,12 @@ function deleteSubtask(id) {
   removeSubtask.remove();
 }
 
+/**
+ * Edits a subtask by replacing its content with an input field for editing.
+ *
+ * @param {number} id - The unique identifier of the subtask to be edited.
+ * @param {string} subTaskInput - The current value of the subtask to be placed in the input field.
+ */
 function editSubtask(id, subTaskInput) {
   let editSubtask = document.getElementById(`subTaskUnit${id}`);
   editSubtask.innerHTML = "";
@@ -309,6 +342,11 @@ function editSubtask(id, subTaskInput) {
   editSubtask.innerHTML = addInputField(id, subTaskInput);
 }
 
+/**
+ * Accepts a subtask input, removes the input field, and adds the subtask to the subtask container.
+ *
+ * @param {number} id - The unique identifier for the subtask input and subtask unit elements.
+ */
 function accept(id) {
   let subTaskContainer = document.getElementById("subtasks-container");
   let newSubTask = document.getElementById(`inputSubtask${id}`).value;

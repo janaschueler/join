@@ -250,3 +250,35 @@ function returnTransformedButton(id) {
        <button id="iconAddButtonEdit" class="iconAdd center" type="button" onclick="addAdditionalSubtaskinEditModal(event, '${id}')"></button>
   `;
 }
+
+function addTaskTemplate(contact, isSelected) {
+  return `
+    <label class="customCheckboxContainer ${isSelected ? "checked" : ""}">
+      <input type="checkbox" class="contact-checkbox" id="contact-${contact.id}" 
+        name="contact-${contact.id}" value="${contact.id}" 
+        ${isSelected ? "checked" : ""}>
+      <div class="contact-row">
+        <div class="svg-container" style="background-color: ${contact.color}">
+          <span class="contact-initials">${getInitials(contact.name)}</span>
+        </div>
+        <span class="subtasksUnit">${contact.name}</span>
+        <span class="customCheckbox"></span>
+      </div>
+    </label>`;
+}
+
+function addTaskTemplateEdit(contact, isSelected) {
+  return `
+    <label class="customCheckboxContainer ${isSelected ? "checked" : ""}">
+      <input type="checkbox" class="contact-checkbox" id="edit-contact-${contact.idContact}" 
+        name="edit-contact-${contact.idContact}" value="${contact.idContact}" 
+        ${isSelected ? "checked" : ""}>
+      <div class="contact-row">
+        <div class="svg-container" style="background-color: ${contact.color}">
+          <span class="contact-initials">${getInitials(contact.contactName)}</span>
+        </div>
+        <span class="subtasksUnit">${contact.contactName}</span>
+        <span class="customCheckbox"></span>
+      </div>
+    </label>`;
+}

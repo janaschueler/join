@@ -170,32 +170,34 @@ async function saveTaskData(id, taskData) {
  * contacts, filtering contacts, toggling dropdown visibility, and determining assigned contacts in an
  * edit modal.
  */
+
 window.toggleContactSelectionEdit = function (contactId, contactName, contactColor) {
   const checkbox = document.getElementById(`edit-contact-${contactId}`);
+  const container = checkbox.closest(".customCheckboxContainer");
+  const input = document.getElementById("search-contacts-edit");
   if (!checkbox) return;
-
-  setTimeout(() => {
-    const container = checkbox.closest(".customCheckboxContainer");
-    const input = document.getElementById("search-contacts-edit");
-
-    if (checkbox.checked) {
-      handleCheckedState(contactId, contactName, contactColor, container, input);
-    } else {
-      handleUncheckedState(contactId, container);
+  if (checkbox.checked) {
+    if (!selectedContacts.some((c) => c.id === contactId)) {
+      container.classList.add("checked");
+      selectedContacts.push({ id: contactId, name: contactName, color: contactColor });
+      input.value = "";
+      filterContactsEdit();
     }
-
-    updateSelectedContactsEdit();
-  }, 0);
+  } else {
+    container.classList.remove("checked");
+    selectedContacts = selectedContacts.filter((c) => c.id !== contactId);
+  }
+  updateSelectedContactsEdit();
 };
 
-function handleCheckedState(contactId, contactName, contactColor, container, input) {
-  if (!selectedContacts.some((c) => c.id === contactId)) {
-    container.classList.add("checked");
-    selectedContacts.push({ id: contactId, name: contactName, color: contactColor });
-    input.value = "";
-    filterContactsEdit();
-  }
-}
+// function handleCheckedState(contactId, contactName, contactColor, container, input) {
+//   if (!selectedContacts.some((c) => c.id === contactId)) {
+//     container.classList.add("checked");
+//     selectedContacts.push({ id: contactId, name: contactName, color: contactColor });
+//     input.value = "";
+//     filterContactsEdit();
+//   }
+// }
 
 function handleUncheckedState(contactId, container) {
   container.classList.remove("checked");
@@ -238,19 +240,6 @@ function toggleDropdownEdit(event) {
   }
 }
 
-function determineAssignedToEditModal(id) {
-  let task = allTasks.find((t) => t["id"] === id);
-  if (!task) return;
-  if (!task.assignedTo) return;
-  task.assignedTo.forEach((assignedPerson, index) => {
-    let color = task.color[index] || "#000000";
-    let foundContact = allContacts.find((contact) => contact.contactName === assignedPerson);
-    if (foundContact) {
-      toggleContactSelectionEditPreselected(foundContact.idContact, assignedPerson, color);
-    }
-  });
-}
-
 window.toggleContactSelectionEditPreselected = function (contactId, contactName, contactColor) {
   const checkbox = document.getElementById(`edit-contact-${contactId}`);
   if (!checkbox) return;
@@ -258,13 +247,13 @@ window.toggleContactSelectionEditPreselected = function (contactId, contactName,
     const container = checkbox.closest(".customCheckboxContainer");
     const input = document.getElementById("search-contacts-edit");
     if (!checkbox.checked) {
-      handlePreselectedState(contactId, contactName, contactColor, container, input);
+      handlePreselectedState(contactId, contactName, contactColor, container, input, checkbox);
     }
     updateSelectedContactsEdit();
   }, 0);
 };
 
-function handlePreselectedState(contactId, contactName, contactColor, container, input) {
+function handlePreselectedState(contactId, contactName, contactColor, container, input, checkbox) {
   checkbox.checked = true;
   container.classList.add("checked");
   if (!selectedContacts.some((c) => c.id === contactId)) {
@@ -296,7 +285,10 @@ function openDatePickerModal() {
  * return).
  */
 async function addTaskModal(id, status) {
-  if (!id) return addTaskModalNewTask(status);
+  if (!id) {
+    addTaskModalNewTask(status);
+    return;
+  }
   const taskData = prepareTaskData(id, status);
   if (!taskData) {
     alert("Please fill in all required fields and select a priority.");
@@ -308,7 +300,7 @@ async function addTaskModal(id, status) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(taskData),
     });
-    if (!response.ok) window.location.href = "board.html";
+    if (response.ok) window.location.href = "board.html";
   } catch (error) {
     console.error("Error saving:", error);
   }
@@ -350,6 +342,7 @@ async function addTaskModalNewTask(status) {
     return;
   }
   await saveNewTask(taskData);
+  window.location.href = "board.html";
 }
 
 function prepareNewTaskData(status) {
