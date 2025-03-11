@@ -16,17 +16,6 @@ async function init() {
   }
 }
 
-function renderModalContacts() {
-  let contactsModalRef = document.getElementById("contactsModal_content");
-  contactsModalRef.innerHTML = "";
-  if (selectedContactId) {
-    let selectedContact = allUsers.find((contact) => contact.id === selectedContactId);
-    if (selectedContact) {
-      contactsModalRef.innerHTML = templateModalContacts(selectedContact);
-    }
-  }
-}
-
 async function fetchData(path = "") {
   let response = await fetch(BASE_URL + path + ".json");
   let data = await response.json();
@@ -40,9 +29,31 @@ async function fetchData(path = "") {
   return data;
 }
 
+/**
+ * Renders the modal content for the selected contact.
+ *
+ * This function clears the current content of the modal and, if a contact is selected,
+ * finds the contact from the list of all users and updates the modal content with the
+ * selected contact's details.
+ *
+ * @function
+ * @name renderModalContacts
+ * @global
+ */
+function renderModalContacts() {
+  let contactsModalRef = document.getElementById("contactsModal_content");
+  contactsModalRef.innerHTML = "";
+  if (selectedContactId) {
+    let selectedContact = allUsers.find((contact) => contact.id === selectedContactId);
+    if (selectedContact) {
+      contactsModalRef.innerHTML = templateModalContacts(selectedContact);
+    }
+  }
+}
+
 function renderSmallContacts() {
   let contactsSmallRef = document.getElementById("contactsSmall_content");
-  contactsSmallRef.innerHTML = ""; // Verhindert doppeltes Rendering
+  contactsSmallRef.innerHTML = "";
 
   let sortedContacts = sortContactsByName(allUsers);
   let groupedContactsHTML = generateGroupedContactsHTML(sortedContacts);
@@ -184,6 +195,35 @@ async function getFirebaseId(contactId) {
   return null;
 }
 
+async function saveEditedContact() {
+  let closDialog = document.getElementById("dialog_content");
+  let updatedData = await getUpdatedContactData();
+  let firebaseId = await getFirebaseId(selectedContactId);
+  await patchData(`contacts/${firebaseId}`, updatedData);
+  closDialog.classList.add("d_none");
+  resetDialogFields();
+  signupSuccessfullMessage("edit");
+}
+
+async function getUpdatedContactData() {
+  let nameRef = document.getElementById("dialog-name");
+  let emailRef = document.getElementById("dialog-email");
+  let phoneRef = document.getElementById("dialog-phone");
+  return {
+    id: selectedContactId,
+    name: nameRef.value,
+    email: emailRef.value,
+    phone: phoneRef.value,
+    color: getColorById(selectedContactId),
+  };
+}
+
+function resetDialogFields() {
+  document.getElementById("dialog-name").value = "";
+  document.getElementById("dialog-email").value = "";
+  document.getElementById("dialog-phone").value = "";
+}
+
 async function deleteData(path = "") {
   let response = await fetch(BASE_URL + path + ".json", {
     method: "DELETE",
@@ -276,6 +316,11 @@ async function addContact() {
   let emailRef = document.getElementById("recipient-email");
   let phoneRef = document.getElementById("recipient-phone");
   if (!validateContactInputs(nameRef, emailRef, phoneRef)) return;
+  let checkExistingContacts = checkContact(emailRef);
+  if (checkExistingContacts > 0) {
+    signupSuccessfullMessage("existing");
+    return;
+  }
   let newContact = createContact(nameRef.value, emailRef.value, phoneRef.value);
   await saveContact(newContact);
   updateContactUI();
@@ -288,6 +333,10 @@ function validateContactInputs(nameRef, emailRef, phoneRef) {
   document.getElementById("editContactInputfieldError").classList.toggle("d_none", isValid);
   document.getElementById("newContactInputfieldError").classList.toggle("d_none", isValid);
   return isValid;
+}
+function checkExistingContacts(emailRef) {
+  let existingEmails = allUsers.filter((contact) => contact.email === emailRef.value);
+  return existingEmails.length;
 }
 
 function createContact(name, email, phone) {
@@ -355,6 +404,9 @@ function signupSuccessfullMessage(status) {
 function updateToastMessage(status) {
   if (status === "edit") {
     document.getElementById("toastMessage").textContent = "Contact successfully edited";
+  }
+  if (status === "existing") {
+    document.getElementById("toastMessage").textContent = "Email address already in use";
   }
 }
 
