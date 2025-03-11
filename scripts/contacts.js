@@ -3,12 +3,17 @@ const BASE_URL = "https://join2-72adb-default-rtdb.europe-west1.firebasedatabase
 let allUsers = [];
 let selectedContactId = null;
 
-function init() {
-  fetchData();
-  renderTopBar();
-  renderSmallContacts();
-  renderBigContacts();
-  renderModalContacts();
+async function init() {
+  let checkedAuthority = await checkAccessAuthorization();
+  if (checkedAuthority) {
+    await fetchData();
+    renderTopBar();
+    renderSmallContacts();
+    renderBigContacts();
+    renderModalContacts();
+  } else {
+    window.location.href = "login.html";
+  }
 }
 
 function renderModalContacts() {
@@ -45,7 +50,6 @@ function getColorById(contactId) {
 }
 
 async function fetchData(path = "") {
-  try {
     let response = await fetch(BASE_URL + path + ".json");
     let data = await response.json();
     if (data && data.contacts) {
@@ -55,11 +59,7 @@ async function fetchData(path = "") {
     }
     renderSmallContacts();
     renderBigContacts();
-    return data;
-  } catch (error) {
-    console.error("Fehler beim Laden der Daten:", error);
-    return null;
-  }
+    return data;  
 }
 
 async function postData(path = "", data = {}) {

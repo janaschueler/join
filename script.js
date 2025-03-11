@@ -108,7 +108,6 @@ async function addContactLogIn() {
   }
   let contacts = await getContacts();
   let contactsArray = Object.values(contacts);
-
   let matchingContacts = contactsArray.filter((contact) => contact.email?.toLowerCase().includes(signInUserData.contactEmail[0].toLowerCase()));
   if (matchingContacts.length > 0) {
     return;
