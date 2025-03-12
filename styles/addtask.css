@@ -22,7 +22,7 @@ h1 {
   margin-top: 40px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
   margin-left: 5%;
 }
@@ -974,6 +974,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 @media (max-width: 768px) {
   .addTaskSection {
+    align-items: center !important;
     margin-bottom: 200px;
   }
 
@@ -1055,6 +1056,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   }
 
   .task-form {
-    width: 98%;
+    width: 90%;
+  }
+
+  .priority {
+    flex-direction: column;
   }
 }

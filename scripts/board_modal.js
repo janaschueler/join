@@ -247,7 +247,6 @@ function closeModalAddTask(event) {
       backdrop.style.visibility = "hidden";
       modal.classList.remove("show");
     }, 500);
-    location.reload();
   }
 }
 
