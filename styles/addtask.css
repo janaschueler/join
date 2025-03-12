@@ -40,6 +40,10 @@ input:focus {
   font-size: 20px;
 }
 
+.red-border {
+  border: 1px solid red !important;
+}
+
 .task-form label {
   align-self: flex-start;
 }
@@ -903,10 +907,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
   -webkit-appearance: none;
 }
-
+#subtasks-container,
 #editSubtasks-container {
-  min-height: 100px; /* Mindesthöhe, damit er nicht zu klein bleibt */
-  max-height: 200px;
+  min-height: 100px;
+  max-height: 150px;
   overflow-y: auto;
   padding: 5px;
 }

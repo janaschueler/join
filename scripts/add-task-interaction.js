@@ -4,6 +4,7 @@ function start() {
   renderTopBar();
 }
 
+let normalSubtaskCount = 0;
 /**
  * Handles the click event on a priority button.
  * It resets the state of all priority buttons, then highlights the clicked button.
@@ -47,7 +48,7 @@ function initPriorityButtons(priority) {
 }
 
 /**
- * Resets the state of a button by changing its background color, text color, 
+ * Resets the state of a button by changing its background color, text color,
  * and the fill color of any SVG paths within the button based on its priority class.
  *
  * @param {HTMLElement} button - The button element to reset.
@@ -71,7 +72,7 @@ function resetButtonState(button) {
  * The priority class should be one of "urgent", "medium", or "low".
  * Also changes the fill color of any SVG paths within the button to white.
  *
- * @param {HTMLElement} button - The button element to be highlighted. 
+ * @param {HTMLElement} button - The button element to be highlighted.
  */
 function highlightButton(button) {
   const priorityColors = {
@@ -89,12 +90,12 @@ function highlightButton(button) {
 
 // open Calendar
 function openDatePicker() {
+  setMinDate()
   let dateInput = document.getElementById("due-date");
   if (dateInput) {
     dateInput.showPicker();
   }
 }
-
 
 /**
  * Opens the edit task modal and populates it with the provided task details.
@@ -113,9 +114,6 @@ function openEditTask(category, title, description, DueDate, priority, id) {
   }
 }
 
-
-
-
 function addSubtask() {
   let subTaskInputRef = document.getElementById("new-subtask-input");
   let subTaskContainer = document.getElementById("subtasks-container");
@@ -124,24 +122,13 @@ function addSubtask() {
     let subTaskInput = subTaskInputRef.value.trim();
     if (!subTaskInput) return;
 
-    subTaskCount += 1;
-    subTaskContainer.innerHTML += addSubtaskTemplate(subTaskInput, subTaskCount);
+    normalSubtaskCount += 1;
+    subTaskContainer.innerHTML += addSubtaskTemplate(subTaskInput, normalSubtaskCount);
     subTaskInputRef.value = "";
-    resetButtonAddTask();
+    resetButtonAddTask(normalSubtaskCount);
   }
 }
 
-function clearForm() {
-  let inputField = document.getElementById("new-subtask-input");
-  if (inputField) {
-    inputField.value = "";
-    resetButtonAddTask();
-  }
-}
-
-/**
- * Transforms the "Add Task" button by replacing its outer HTML with a new button.
- */
 function transformButtonAddTask() {
   const buttonContainer = document.getElementById("iconAddButton");
   if (buttonContainer) {
@@ -149,23 +136,30 @@ function transformButtonAddTask() {
   }
 }
 
-/**
- * Resets the "Add Task" button.
- */
-function resetButtonAddTask() {
+function resetButtonAddTask(normalSubtaskCount) {
   const inputWrapper = document.getElementById("inputWrapper");
   if (inputWrapper) {
-    inputWrapper.innerHTML = transformedResetButton();
+    inputWrapper.innerHTML = transformedResetButtonAddTask(normalSubtaskCount);
   }
 }
 
-/**
- * Handles the click event for adding a task.
- */
 function handleButtonClickAddTask(event) {
   if (["mouse", "touch", "pen"].includes(event.pointerType)) {
     resetButtonAddTask();
   } else {
     addSubtask();
   }
+}
+
+function deleteSubtaskAddTask(id) {
+  const removeSubtask = document.getElementById(`subTaskUnit${id}`);
+  removeSubtask.remove();
+}
+
+function acceptAddTask(id) {
+  let newSubTask = document.getElementById(`inputSubtask${id}`).value;
+  const subTaskContainer = document.getElementById("subtasks-container");
+  const removeSubtask = document.getElementById(`editSubTaskUnit${id}`);
+  removeSubtask.remove();
+  subTaskContainer.innerHTML += addSubtaskTemplate(newSubTask, id);
 }

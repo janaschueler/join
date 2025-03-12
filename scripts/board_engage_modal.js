@@ -290,6 +290,7 @@ function handlePreselectedState(contactId, contactName, contactColor, container,
  * "due-date-edit".
  */
 function openDatePickerModal() {
+  setMinDate();
   let dateInput = document.getElementById("due-date-edit");
   dateInput.showPicker();
 }
@@ -374,7 +375,6 @@ function determinePriority() {
 async function addTaskModalNewTask(status) {
   const taskData = prepareNewTaskData(status);
   if (!taskData) {
-    alert("Please fill in all required fields and select a priority.");
     return;
   }
   await saveNewTask(taskData);
@@ -384,8 +384,12 @@ async function addTaskModalNewTask(status) {
 function prepareNewTaskData(status) {
   const title = document.getElementById("inputField").value.trim();
   const dueDate = document.getElementById("due-date-edit").value.trim();
-  const category = document.getElementById("category").value;
+  const category = document.querySelector("#category-input span").textContent.trim();
+
+  validateTaskFields(title, dueDate, category);
+
   if (!title || !dueDate || !category) return null;
+
   return {
     title,
     description: document.getElementById("description").value.trim(),

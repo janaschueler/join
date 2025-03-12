@@ -151,20 +151,38 @@ async function addTask(statusTask) {
   const dueDate = document.getElementById("due-date")?.value.trim();
   const category = document.getElementById("category")?.value;
   const subtasks = [...document.querySelectorAll(".subtask-text")].map((el) => el.textContent.trim());
-
+  validateTaskFields(title, dueDate, category);
   if (!title || !description || !dueDate || !category) {
-    alert("Please fill in all required fields.");
     return;
   }
-
   const taskData = { title, description, dueDate, category, priority: selectedPriority, subtasks, assignedContacts: selectedContacts, status: determineStatusAddTask(statusTask), createdAt: new Date().toISOString() };
-
   try {
     const res = await fetch(`${BASE_URL}/tasks.json`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(taskData) });
     if (!res.ok) throw new Error(`Error saving task: ${res.status}`);
     location.href = "board.html";
   } catch (err) {
     alert(err.message);
+  }
+}
+
+function validateTaskFields(title, dueDate, category) {
+  toggleRedBorder("inputField", !title);
+  const dueDateElement = document.querySelector("[id^='due-date']");
+  toggleRedBorder(dueDateElement.id, !dueDate);
+  if (category == "Select task category" || category == "") {
+    category = "";
+    toggleRedBorder("category-input", !category);
+  } else {
+    toggleRedBorder("category-input", !category);
+  }
+}
+
+function toggleRedBorder(elementId, condition) {
+  const element = document.getElementById(elementId);
+  if (condition) {
+    element.classList.add("red-border");
+  } else {
+    element.classList.remove("red-border");
   }
 }
 
@@ -330,14 +348,18 @@ function accept(id) {
   subTaskContainer.innerHTML += addSubtaskTemplate(newSubTask, id);
 }
 
-function clearForm() {
+function clearForm(event) {
+  event.preventDefault();
   document.getElementById("inputField").value = "";
   document.getElementById("description").value = "";
   document.getElementById("due-date").value = "";
-  document.getElementById("category").selectedIndex = 0;
+  document.getElementById("category-input").querySelector("span").textContent = "Select task category";
+  document.getElementById("category").value = "";
   document.getElementById("selected-contacts").innerHTML = "";
   selectedContacts = [];
-  selectedPriority = null;
+  const defaultMediumButton = document.querySelector(".priority .medium");
+  handlePriorityClick(defaultMediumButton);
+  return;
 }
 
 function getRandomColor() {
@@ -347,4 +369,21 @@ function getRandomColor() {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
+}
+
+function setMinDate() {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  let mm = today.getMonth() + 1;
+  let dd = today.getDate();
+
+  if (mm < 10) mm = "0" + mm;
+  if (dd < 10) dd = "0" + dd;
+
+  const todayDate = `${yyyy}-${mm}-${dd}`;
+
+  const dueDateElements = document.querySelectorAll('[id*="due-date"]');
+  dueDateElements.forEach((element) => {
+    element.setAttribute("min", todayDate);
+  });
 }
