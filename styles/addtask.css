@@ -80,7 +80,7 @@ input:focus {
   font-weight: bold;
   margin: 12px;
   border-radius: 10px;
-  margin-top: 7rem;
+  margin-top: 32px;
   width: 110px;
   height: 56px;
   border: 10px !;
@@ -99,7 +99,7 @@ input:focus {
   font-family: "Inter 18pt";
   font-weight: bold;
   margin: 12px;
-  margin-top: 7rem;
+  margin-top: 32px;
   width: 110px;
   border-color: #091931 !important;
   background-color: transparent;
@@ -164,7 +164,7 @@ input:focus {
 
 .error-message {
   font-size: 14px;
-  margin-top: 6rem;
+  margin-top: 32px;
   white-space: nowrap;
 }
 
