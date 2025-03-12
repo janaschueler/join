@@ -95,6 +95,7 @@ function openDatePicker() {
   if (dateInput) {
     dateInput.showPicker();
   }
+  
 }
 
 /**

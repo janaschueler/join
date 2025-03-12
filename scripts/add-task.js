@@ -152,7 +152,7 @@ async function addTask(statusTask) {
   const category = document.getElementById("category")?.value;
   const subtasks = [...document.querySelectorAll(".subtask-text")].map((el) => el.textContent.trim());
   validateTaskFields(title, dueDate, category);
-  if (!title || !description || !dueDate || !category) {
+  if (!title || !dueDate || !category) {
     return;
   }
   const taskData = { title, description, dueDate, category, priority: selectedPriority, subtasks, assignedContacts: selectedContacts, status: determineStatusAddTask(statusTask), createdAt: new Date().toISOString() };
@@ -184,6 +184,15 @@ function toggleRedBorder(elementId, condition) {
   } else {
     element.classList.remove("red-border");
   }
+}
+
+function validateOnBlur(input) {
+  if (!input.value.trim()) {
+    input.classList.add("red-border");
+  } else {
+    input.classList.remove("red-border");
+  }
+  
 }
 
 /**

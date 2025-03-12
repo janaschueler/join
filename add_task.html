@@ -71,7 +71,7 @@
         <form class="task-form">
           <div class="side1">
             <label for="inputField">Title<span class="red">*</span></label>
-            <input id="inputField" type="text" placeholder="Enter a title">
+            <input id="inputField" type="text" onblur="validateOnBlur(this)" placeholder="Enter a title">
             <label for="description">Description</label>
             <textarea id="description" placeholder="Enter a Description"></textarea>
 
@@ -103,8 +103,8 @@
           <div class="side2">
             <label for="due-date">Due date <span class="red">*</span></label>
             <div class="custom-date-picker">
-              <input type="date" id="due-date" name="due-date">
-              <button type="button" class="calendar-icon" onclick="openDatePicker()">
+              <input type="date" id="due-date" onblur="validateOnBlur(this)" onchange="validateOnBlur(this)" name="due-date">
+              <button type="button" class="calendar-icon" onclick="openDatePicker();">
                 <img src="./assets/icons/calender.svg" alt="Calendar Icon">
               </button>
             </div>
@@ -145,9 +145,9 @@
               </button>
             </div>
             <label for="custom-category">Category<span class="red">*</span></label>
-            <div id="custom-category" class="custom-dropdown" onclick="toggleCategoryDropdown(event)">
+            <div id="custom-category" class="custom-dropdown" onclick="toggleCategoryDropdown(event)" tabindex="0" >
               <div id="category-input" class="dropdown-input paddingTop">
-                <span>Select task category</span>
+                <span id="category-selection">Select task category</span>
                 <svg id="category-dropdown-icon" width="8" height="5" viewBox="0 0 8 5" fill="none"
                   xmlns="http://www.w3.org/2000/svg">
                   <path
