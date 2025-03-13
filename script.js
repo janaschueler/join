@@ -333,6 +333,18 @@ function checkFormValidity() {
   });
 }
 
+/**
+ * Handles the click event on navigation links for both desktop and mobile versions.
+ * On click, the function prevents the default link navigation, saves the clicked link's text
+ * to the localStorage, and redirects the user to the desired page.
+ *
+ * The function is invoked once the DOM is fully loaded to ensure all elements are accessible.
+ *
+ * @param {Event} event - The click event triggered by the user clicking on a navigation link.
+ *
+ * @returns {void} - The function does not return any value. It modifies the page behavior by setting the localStorage
+ *                   and redirecting the browser to the href of the clicked link.
+ */
 document.addEventListener("DOMContentLoaded", function () {
   const navLinks = document.querySelectorAll(".nav_bar");
   navLinks.forEach(function (link) {
@@ -350,9 +362,7 @@ document.addEventListener("DOMContentLoaded", function () {
       lastLinkElement.classList.add("active");
     }
   }
-});
 
-document.addEventListener("DOMContentLoaded", function () {
   const navLinksMobile = document.querySelectorAll(".nav_bar_mobile");
   navLinksMobile.forEach(function (link) {
     link.addEventListener("click", function (event) {
@@ -365,8 +375,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (lastClickedLinkMobile) {
     const lastLinkElementMobile = [...navLinksMobile].find((link) => link.querySelector(".nav_link_mobile").textContent === lastClickedLinkMobile);
     if (lastLinkElementMobile) {
-      lastLinkElementMobile.classList.add("active"); 
+      lastLinkElementMobile.classList.add("active");
     }
   }
 });
-
