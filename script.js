@@ -3,8 +3,8 @@ function greet(name) {
 }
 
 function showDesktopMenu() {
-  let deskMenuRef = document.getElementById('deskMenu_content');  
-  deskMenuRef.classList.toggle('d_none');  
+  let deskMenuRef = document.getElementById("deskMenu_content");
+  deskMenuRef.classList.toggle("d_none");
 }
 
 /**
@@ -103,7 +103,7 @@ async function postSignedInUserToDatabase(data = {}) {
       return;
     } else {
     }
-  } catch (error) { }
+  } catch (error) {}
 }
 
 /**
@@ -332,3 +332,41 @@ function checkFormValidity() {
     }
   });
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const navLinks = document.querySelectorAll(".nav_bar");
+  navLinks.forEach(function (link) {
+    link.addEventListener("click", function (event) {
+      event.preventDefault();
+      const clickedLink = event.currentTarget.querySelector(".nav_link").textContent;
+      localStorage.setItem("lastClickedLink", clickedLink);
+      window.location.href = event.currentTarget.href;
+    });
+  });
+  const lastClickedLink = localStorage.getItem("lastClickedLink");
+  if (lastClickedLink) {
+    const lastLinkElement = [...navLinks].find((link) => link.querySelector(".nav_link").textContent === lastClickedLink);
+    if (lastLinkElement) {
+      lastLinkElement.classList.add("active");
+    }
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const navLinksMobile = document.querySelectorAll(".nav_bar_mobile");
+  navLinksMobile.forEach(function (link) {
+    link.addEventListener("click", function (event) {
+      const clickedLink = event.currentTarget.querySelector(".nav_link_mobile").textContent;
+      localStorage.setItem("lastClickedLinkMobile", clickedLink);
+      window.location.href = event.currentTarget.href;
+    });
+  });
+  const lastClickedLinkMobile = localStorage.getItem("lastClickedLinkMobile");
+  if (lastClickedLinkMobile) {
+    const lastLinkElementMobile = [...navLinksMobile].find((link) => link.querySelector(".nav_link_mobile").textContent === lastClickedLinkMobile);
+    if (lastLinkElementMobile) {
+      lastLinkElementMobile.classList.add("active"); 
+    }
+  }
+});
+
