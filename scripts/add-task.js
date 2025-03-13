@@ -62,7 +62,9 @@ function closeDropdownOnOutsideClick(event, dropdownId, toggleId, iconId) {
   const dropdown = document.getElementById(dropdownId);
   const toggleButton = document.getElementById(toggleId);
 
-  if (!dropdown || !toggleButton) return;
+  if (!dropdown || !toggleButton) {
+    return;
+  }
 
   if (!toggleButton.contains(event.target) && !dropdown.contains(event.target)) {
     dropdown.classList.remove("visible");
@@ -103,6 +105,7 @@ function selectCategory(label) {
   document.querySelectorAll("#category-dropdown .dropdown-option").forEach((option) => {
     option.classList.remove("selected");
   });
+  validateCategoryOnBlurModal();
 }
 
 /**

@@ -426,3 +426,14 @@ function findContactColor(name) {
     return null;
   }
 }
+
+function validateCategoryOnBlurModal() {
+  let category = document.getElementById("category-input").textContent.trim();
+  if (category) {
+  if (category == "Select task category") {
+    document.getElementById("category-input").classList.add("red-border");
+  } else {
+    document.getElementById("category-input").classList.remove("red-border");
+  }
+}
+}

@@ -125,7 +125,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                     <form class="task-form">
                       <div class="side1">
                         <label for="inputField">Title<span class="red">*</span></label>
-                        <input id="inputField" type="text" value="${title}" placeholder="Enter a title">
+                        <input id="inputField" type="text" value="${title}" placeholder="Enter a title" onblur="validateOnBlur(this)">
                         <label for="description">Description</label>
                         <textarea id="description" placeholder="Enter a Description">${description}</textarea>
                         <label for="assigned">Assigned to</label>
@@ -147,7 +147,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                       <div class="side2">
                         <label for="due-date">Due date <span class="red">*</span></label>
                         <div class="custom-date-picker">
-                          <input type="date" id="due-date-edit" name="due-date" min="">
+                          <input type="date" id="due-date-edit" name="due-date" min="" onblur="validateOnBlur(this)" onchange="validateOnBlur(this)"">
                           <button type="button" class="calendar-icon" onclick="openDatePickerModal()">
                            <img src="./assets/icons/calender.svg" alt="Calendar Icon"> <!-- Dein eigenes Icon -->
                           </button>
@@ -175,7 +175,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                         </div>
                         <label id="labelCategory" for="custom-category">Category<span class="red">*</span></label>
                         <div id="custom-category" class="custom-dropdown" onclick="toggleCategoryDropdown(event)">
-                          <div id="category-input" tabindex="0" class="dropdown-input paddingTop">
+                          <div id="category-input" tabindex="0" class="dropdown-input paddingTop"">
                             <span>Select task category</span>
                             <svg id="category-dropdown-icon" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <path d="M3.29998 4.3L0.699975 1.7C0.383309 1.38333 0.312475 1.02083 0.487475 0.6125C0.662475 0.204167 0.974975 0 1.42498 0H6.57498C7.02498 0 7.33747 0.204167 7.51248 0.6125C7.68748 1.02083 7.61664 1.38333 7.29997 1.7L4.69998 4.3C4.59998 4.4 4.49164 4.475 4.37498 4.525C4.25831 4.575 4.13331 4.6 3.99998 4.6C3.86664 4.6 3.74164 4.575 3.62498 4.525C3.50831 4.475 3.39998 4.4 3.29998 4.3Z" fill="#2A3647"/>
