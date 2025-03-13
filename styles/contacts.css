@@ -2,11 +2,6 @@ body {
   background: rgb(246, 247, 248) !important;
 }
 
-.headerBoard {
-  margin-top: 64px;
-  margin-bottom: 32px;
-}
-
 main {
   flex: 1;
 }
@@ -649,6 +644,8 @@ h2 {
 .headerBoard {
   justify-content: flex-start;
   width: 100%;
+  margin-top: 40px;
+  margin-bottom: 32px;
 }
 
 .mobile_arrow_btn {

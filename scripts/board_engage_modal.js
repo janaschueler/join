@@ -240,6 +240,28 @@ function toggleDropdownEdit(event) {
   }
 }
 
+document.addEventListener("click", function (event) {
+  closeDropdownOnOutsideClickEdit(event, "assigned-dropdown-Edit", "assigned-input-Edit", null);
+});
+
+function closeDropdownOnOutsideClickEdit(event, dropdownId, toggleId, iconId) {
+  const dropdown = document.getElementById(dropdownId);
+  const toggleButton = document.getElementById("assigned-input-Edit");
+
+  if (!dropdown || !toggleButton) return;
+
+  if (!toggleButton.contains(event.target) && !dropdown.contains(event.target)) {
+    dropdown.classList.remove("visible");
+    if (iconId) {
+      document.getElementById(iconId).style.transform = "rotate(0deg)";
+    }
+    if (dropdownId === "assigned-dropdown-Edit") {
+      document.querySelector(".dropDown").style.display = "block";
+      document.querySelector(".dropDown-up").style.display = "none";
+    }
+  }
+}
+
 window.toggleContactSelectionEditPreselected = function (contactId, contactName, contactColor) {
   const checkbox = document.getElementById(`edit-contact-${contactId}`);
   if (!checkbox) return;
@@ -268,6 +290,7 @@ function handlePreselectedState(contactId, contactName, contactColor, container,
  * "due-date-edit".
  */
 function openDatePickerModal() {
+  setMinDate();
   let dateInput = document.getElementById("due-date-edit");
   dateInput.showPicker();
 }
@@ -352,7 +375,6 @@ function determinePriority() {
 async function addTaskModalNewTask(status) {
   const taskData = prepareNewTaskData(status);
   if (!taskData) {
-    alert("Please fill in all required fields and select a priority.");
     return;
   }
   await saveNewTask(taskData);
@@ -362,8 +384,12 @@ async function addTaskModalNewTask(status) {
 function prepareNewTaskData(status) {
   const title = document.getElementById("inputField").value.trim();
   const dueDate = document.getElementById("due-date-edit").value.trim();
-  const category = document.getElementById("category").value;
-  if (!title || !dueDate || !category || !selectedPriority) return null;
+  const category = document.querySelector("#category-input span").textContent.trim();
+
+  validateTaskFields(title, dueDate, category);
+
+  if (!title || !dueDate || !category) return null;
+
   return {
     title,
     description: document.getElementById("description").value.trim(),

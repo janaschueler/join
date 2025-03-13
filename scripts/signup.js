@@ -150,9 +150,12 @@ document.getElementById("flexCheckDefault").addEventListener("change", function 
 
 function activateSignUpButton() {
   const name = document.getElementById("inputNameSignin").value;
-  const email = validateEmailSignUp();
   const password1 = document.getElementById("inputPassword1Signin").value;
   const password2 = document.getElementById("inputPassword2Signin").value;
+  if (!name || !password1 || !password2) {
+    return;
+  }
+  const email = validateEmailSignUp();
   const signUpButton = document.getElementById("submitSignup");
   const passwordMismatchMessage = document.getElementById("nonMatchingPassword");
   const allFieldsFilled = name && email && password1 && password2 && isCheckboxValid();

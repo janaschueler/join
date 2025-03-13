@@ -16,6 +16,30 @@ async function init() {
   }
 }
 
+async function fetchData(path = "") {
+  let response = await fetch(BASE_URL + path + ".json");
+  let data = await response.json();
+  if (data && data.contacts) {
+    allUsers = Object.values(data.contacts);
+  } else {
+    allUsers = [];
+  }
+  renderSmallContacts();
+  renderBigContacts();
+  return data;
+}
+
+/**
+ * Renders the modal content for the selected contact.
+ *
+ * This function clears the current content of the modal and, if a contact is selected,
+ * finds the contact from the list of all users and updates the modal content with the
+ * selected contact's details.
+ *
+ * @function
+ * @name renderModalContacts
+ * @global
+ */
 function renderModalContacts() {
   let contactsModalRef = document.getElementById("contactsModal_content");
   contactsModalRef.innerHTML = "";
@@ -27,23 +51,14 @@ function renderModalContacts() {
   }
 }
 
-async function fetchData(path = "") {
-    let response = await fetch(BASE_URL + path + ".json");
-    let data = await response.json();
-    if (data && data.contacts) {
-      allUsers = Object.values(data.contacts);
-    } else {
-      allUsers = [];
-    }
-    renderSmallContacts();
-    renderBigContacts();
-    return data;  
-}
-
 function renderSmallContacts() {
   let contactsSmallRef = document.getElementById("contactsSmall_content");
   contactsSmallRef.innerHTML = "";
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> b9788a76a2bb105d8f823dc36d521358901c294a
   let sortedContacts = sortContactsByName(allUsers);
   let groupedContactsHTML = generateGroupedContactsHTML(sortedContacts);
 
@@ -61,12 +76,12 @@ function sortContactsByName(contacts) {
 function generateGroupedContactsHTML(contacts) {
   let currentGroup = "";
   let html = "";
-  contacts.forEach(contact => {
+  contacts.forEach((contact) => {
     let firstLetter = contact.name.trim().split(" ")[0].charAt(0).toUpperCase();
     if (firstLetter !== currentGroup) {
       currentGroup = firstLetter;
       html += createGroupHeader(firstLetter);
-    }    
+    }
     html += templateSmallContacts(contact);
   });
   return html;
@@ -78,7 +93,6 @@ function createGroupHeader(letter) {
     <div class="horizontalLine"></div>
   `;
 }
-
 
 function renderBigContacts() {
   let contactsBigRef = document.getElementById("contactsBig_content");
@@ -129,7 +143,6 @@ function mobileContactInfo() {
   }
 }
 
-
 /**
  * Opens the edit dialog for a specific contact. Populates the dialog fields
  * with contact information based on the provided contact ID and sets the action
@@ -159,6 +172,7 @@ async function populateDialogFields(contactId) {
   nameRef.value = contactData.name || "";
   emailRef.value = contactData.email || "";
   phoneRef.value = contactData.phone || "";
+  deleteButton.setAttribute("onclick", `deleteContact('${contactId}')`);
 }
 
 async function deleteContact(contactId) {
@@ -185,11 +199,44 @@ async function getFirebaseId(contactId) {
   return null;
 }
 
+async function saveEditedContact() {
+  let closDialog = document.getElementById("dialog_content");
+  let updatedData = await getUpdatedContactData();
+  let firebaseId = await getFirebaseId(selectedContactId);
+  await patchData(`contacts/${firebaseId}`, updatedData);
+  closDialog.classList.add("d_none");
+  resetDialogFields();
+  signupSuccessfullMessage("edit");
+}
+
+async function getUpdatedContactData() {
+  let nameRef = document.getElementById("dialog-name");
+  let emailRef = document.getElementById("dialog-email");
+  let phoneRef = document.getElementById("dialog-phone");
+  return {
+    id: selectedContactId,
+    name: nameRef.value,
+    email: emailRef.value,
+    phone: phoneRef.value,
+    color: getColorById(selectedContactId),
+  };
+}
+
+function resetDialogFields() {
+  document.getElementById("dialog-name").value = "";
+  document.getElementById("dialog-email").value = "";
+  document.getElementById("dialog-phone").value = "";
+}
+
 async function deleteData(path = "") {
   let response = await fetch(BASE_URL + path + ".json", {
     method: "DELETE",
   });
   return (responseToJson = await response.json());
+}
+
+function setDeleteButtonAction(id) {
+  console.log(id);
 }
 
 /**
@@ -218,7 +265,6 @@ async function removeContactFromTasks(firebaseId) {
   }
 }
 
-
 /**
  * Toggles the visibility of the dialog content and reloads the page.
  *
@@ -243,7 +289,6 @@ function closeContactInfo() {
   showDialog.classList.add("d_none_mobile");
 }
 
-
 /**
  * Toggles the visibility of the edit and delete buttons.
  * This function finds the element with the ID "showOption_content" and toggles
@@ -260,11 +305,11 @@ function protection(event) {
 
 /**
  * Adds a new contact to the contact list.
- * 
+ *
  * This function retrieves the input values for name, email, and phone from the DOM,
- * creates a new contact object, validates the input fields, and if valid, posts the 
+ * creates a new contact object, validates the input fields, and if valid, posts the
  * new contact data to the server. It then updates the contact list and clears the input fields.
- * 
+ *
  * @async
  * @function addContact
  * @returns {Promise<void>} - A promise that resolves when the contact has been added.
@@ -275,6 +320,11 @@ async function addContact() {
   let emailRef = document.getElementById("recipient-email");
   let phoneRef = document.getElementById("recipient-phone");
   if (!validateContactInputs(nameRef, emailRef, phoneRef)) return;
+  let checkExistingContacts = checkContact(emailRef);
+  if (checkExistingContacts > 0) {
+    signupSuccessfullMessage("existing");
+    return;
+  }
   let newContact = createContact(nameRef.value, emailRef.value, phoneRef.value);
   await saveContact(newContact);
   updateContactUI();
@@ -287,6 +337,10 @@ function validateContactInputs(nameRef, emailRef, phoneRef) {
   document.getElementById("editContactInputfieldError").classList.toggle("d_none", isValid);
   document.getElementById("newContactInputfieldError").classList.toggle("d_none", isValid);
   return isValid;
+}
+function checkExistingContacts(emailRef) {
+  let existingEmails = allUsers.filter((contact) => contact.email === emailRef.value);
+  return existingEmails.length;
 }
 
 function createContact(name, email, phone) {
@@ -329,7 +383,6 @@ async function patchData(path = "", data = {}) {
   return await response.json();
 }
 
-
 function getColorById(contactId) {
   let sum = 0;
   for (let i = 0; i < contactId.length; i++) {
@@ -355,6 +408,9 @@ function signupSuccessfullMessage(status) {
 function updateToastMessage(status) {
   if (status === "edit") {
     document.getElementById("toastMessage").textContent = "Contact successfully edited";
+  }
+  if (status === "existing") {
+    document.getElementById("toastMessage").textContent = "Email address already in use";
   }
 }
 

@@ -41,7 +41,8 @@ async function transfereLoginData(user) {
  * @function guestLogIn
  * @returns {Promise<void>} A promise that resolves when the guest user has been logged in and the page has been redirected.
  */
-async function guestLogIn() {
+async function guestLogIn(event) {
+  event.preventDefault();
   let guest = {
     contactAbbreviation: ["G"],
     contactEmail: ["guest@mail.com"],
@@ -56,11 +57,11 @@ async function guestLogIn() {
 
 /**
  * Logs out the current user by resetting user details and redirecting to the index page.
- * 
+ *
  * This function creates a `logoutUser` object with empty or default values for user details,
  * sends this object to the database using `postSignedInUserToDatabase`, and then redirects
  * the user to the index page.
- * 
+ *
  * @async
  * @function logOut
  * @returns {Promise<void>} A promise that resolves when the user has been logged out and redirected.
@@ -148,7 +149,6 @@ async function postData(path = "", data = {}) {
   return (responseToJson = await response.json());
 }
 
-
 /**
  * Fetches the list of contacts from the server.
  *
@@ -167,9 +167,6 @@ async function addContactLogIn() {
   let contacts = await getContacts();
   let contactsArray = Object.values(contacts);
   let matchingContacts = contactsArray.filter((contact) => contact.email?.toLowerCase().includes(signInUserData.contactEmail[0].toLowerCase()));
-  if (matchingContacts.length > 0) {
-    return true;
-  }
   if (matchingContacts.length > 0) {
     return true;
   }
@@ -195,14 +192,14 @@ function saveToLocalStorage(user) {
 
 /**
  * Asynchronously checks if the user has access authorization.
- * 
- * This function retrieves the user's email from local storage and compares it 
- * with the signed-in user's email fetched from the server. If the emails match, 
- * the function returns true, indicating that the user is authorized. If the 
- * emails do not match, the user is redirected to the login page and the function 
+ *
+ * This function retrieves the user's email from local storage and compares it
+ * with the signed-in user's email fetched from the server. If the emails match,
+ * the function returns true, indicating that the user is authorized. If the
+ * emails do not match, the user is redirected to the login page and the function
  * returns false.
- * 
- * @returns {Promise<boolean>} A promise that resolves to true if the user is 
+ *
+ * @returns {Promise<boolean>} A promise that resolves to true if the user is
  * authorized, or false if the user is redirected to the login page.
  * Überprüft die Zugriffsberechtigung des Benutzers.
  *
@@ -259,13 +256,13 @@ function validateNumber(event) {
 
 /**
  * Validates the email input field and updates the UI based on the validity of the email.
- * 
+ *
  * This function checks if the email entered by the user matches a specific pattern.
- * If the email is invalid, it adds an "input-error" class to the input field and 
+ * If the email is invalid, it adds an "input-error" class to the input field and
  * removes the "d_none" class from elements with IDs containing 'invalidPassword'.
- * If the email is valid, it removes the "input-error" class from the input field and 
+ * If the email is valid, it removes the "input-error" class from the input field and
  * adds the "d_none" class to elements with IDs containing 'invalidPassword'.
- * 
+ *
  * @param {Event} event - The input event triggered by the user.
  */
 function validateEmail(event) {
@@ -290,7 +287,7 @@ function validateEmail(event) {
 /**
  * Validates the input to ensure it contains only numbers and spaces.
  * If invalid characters are found, they are removed from the input.
- * 
+ *
  * @param {Event} event - The input event triggered by the user.
  */
 function validateNumber(event) {

@@ -5,18 +5,18 @@ function addSubtaskTemplate(subTaskInput, id) {
                                 <span class="editIconSubtask"></span>
                                 <span class="lineSubtask"></span>
                               </button>
-                              <button id="deleteBtn${id}" onclick="deleteSubtask('${id}')" class="deleteSubtask"></button>
+                              <button id="deleteBtn${id}" onclick="deleteSubtaskAddTask('${id}')" class="deleteSubtask"></button>
                             </div>`;
 }
 
 function addInputField(id, subTaskInput) {
   return `                  <div id="editSubTaskUnit${id}" class="input-wrapper">
                                 <input id="inputSubtask${id}" class="inputSubtaskEdit" type="text" id="myInput" value="${subTaskInput}">
-                                  <button onclick="deleteSubtask('${id}')" class=""> 
+                                  <button onclick="deleteSubtaskAddTask('${id}')" class=""> 
                                     <span class="deleteSubtaskEdit"></span>
                                     <span class="lineSubtaskEdit"></span>
                                   </button>
-                                  <button onclick="accept('${id}')" class="acceptBtn"></button>
+                                  <button onclick="acceptAddTask('${id}')" class="acceptBtn"></button>
                               </div>`;
 }
 
@@ -28,15 +28,14 @@ function getTransformedButton() {
         <button id="editBtnModal" onclick="addSubtask()" class="acceptBtnSubtask"></button>`;
 }
 
-function transformedResetButton() {
+function transformedResetButtonAddTask(subTaskCount) {
   return `              
-            <input 
-            type="text" 
-            id="new-subtask-input" 
-            placeholder="add new sub task" 
-            onfocus="transformButtonAddTask()" 
-            onblur="resetButtonAddTask()"/>
-           <button id="iconAddButton" class="iconAdd" type="button" onclick="addSubtask()"></button>`;
+    <input 
+      type="text" 
+      id="new-subtask-input" 
+      placeholder="add new sub task" 
+      onfocus="transformButtonAddTask('${subTaskCount}')"/>
+    <button id="iconAddButton" class="iconAdd" type="button" onclick="addSubtask()"></button>`;
 }
 
 function addTaskTemplate(contact, isSelected) {
