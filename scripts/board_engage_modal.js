@@ -286,16 +286,6 @@ function handlePreselectedState(contactId, contactName, contactColor, container,
 }
 
 /**
- * The function `openDatePickerModal` opens a date picker modal for the element with the ID
- * "due-date-edit".
- */
-function openDatePickerModal() {
-  setMinDate();
-  let dateInput = document.getElementById("due-date-edit");
-  dateInput.showPicker();
-}
-
-/**
  * The function `addTaskModal` in the JavaScript code snippet handles the addition and updating of
  * tasks by sending data to a server and redirecting to a board page upon successful save.
  * @param id - The `id` parameter in your functions represents the unique identifier of a task. It is
@@ -314,7 +304,6 @@ async function addTaskModal(id, status) {
   }
   const taskData = prepareTaskData(id, status);
   if (!taskData) {
-    alert("Please fill in all required fields and select a priority.");
     return;
   }
   try {
@@ -416,24 +405,3 @@ async function saveNewTask(taskData) {
   }
 }
 
-function findContactColor(name) {
-  let contactNames = allContacts.map((contact) => contact.contactName);
-  const index = contactNames.indexOf(name);
-
-  if (index !== -1) {
-    return allContacts[index].color;
-  } else {
-    return null;
-  }
-}
-
-function validateCategoryOnBlurModal() {
-  let category = document.getElementById("category-input").textContent.trim();
-  if (category) {
-  if (category == "Select task category") {
-    document.getElementById("category-input").classList.add("red-border");
-  } else {
-    document.getElementById("category-input").classList.remove("red-border");
-  }
-}
-}

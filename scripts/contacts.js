@@ -230,18 +230,6 @@ async function deleteData(path = "") {
   return (responseToJson = await response.json());
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  let modal = document.getElementById("exampleModal");
-
-  modal.addEventListener("shown.bs.modal", function () {
-    modal.removeAttribute("aria-hidden");
-  });
-
-  modal.addEventListener("hidden.bs.modal", function () {
-    modal.setAttribute("aria-hidden", "true");
-  });
-});
-
 /**
  * Removes a contact from all tasks in the database.
  *
@@ -451,4 +439,3 @@ function resetAlert() {
   document.getElementById("dialog-email").classList.remove("input-error");
   document.getElementById("recipient-email").classList.remove("input-error");
 }
-
