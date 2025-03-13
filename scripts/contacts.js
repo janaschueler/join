@@ -54,11 +54,6 @@ function renderModalContacts() {
 function renderSmallContacts() {
   let contactsSmallRef = document.getElementById("contactsSmall_content");
   contactsSmallRef.innerHTML = "";
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> b9788a76a2bb105d8f823dc36d521358901c294a
   let sortedContacts = sortContactsByName(allUsers);
   let groupedContactsHTML = generateGroupedContactsHTML(sortedContacts);
 
@@ -235,9 +230,17 @@ async function deleteData(path = "") {
   return (responseToJson = await response.json());
 }
 
-function setDeleteButtonAction(id) {
-  console.log(id);
-}
+document.addEventListener("DOMContentLoaded", function () {
+  let modal = document.getElementById("exampleModal");
+
+  modal.addEventListener("shown.bs.modal", function () {
+    modal.removeAttribute("aria-hidden");
+  });
+
+  modal.addEventListener("hidden.bs.modal", function () {
+    modal.setAttribute("aria-hidden", "true");
+  });
+});
 
 /**
  * Removes a contact from all tasks in the database.
@@ -448,3 +451,4 @@ function resetAlert() {
   document.getElementById("dialog-email").classList.remove("input-error");
   document.getElementById("recipient-email").classList.remove("input-error");
 }
+

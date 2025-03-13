@@ -145,7 +145,7 @@
               </button>
             </div>
             <label for="custom-category">Category<span class="red">*</span></label>
-            <div id="custom-category" class="custom-dropdown" onclick="toggleCategoryDropdown(event)" tabindex="0" >
+            <div id="custom-category" class="custom-dropdown" onblur="validateCategoryOnBlur()" onchange="validateCategoryOnBlur(this)" onclick="toggleCategoryDropdown(event)" tabindex="0" >
               <div id="category-input" class="dropdown-input paddingTop">
                 <span id="category-selection">Select task category</span>
                 <svg id="category-dropdown-icon" width="8" height="5" viewBox="0 0 8 5" fill="none"

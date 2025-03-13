@@ -186,13 +186,21 @@ function toggleRedBorder(elementId, condition) {
   }
 }
 
+function validateCategoryOnBlur() {
+  let category = document.getElementById("category-selection").textContent.trim();
+  if (category == "Select task category") {
+    document.getElementById("category-input").classList.add("red-border");
+  } else {
+    document.getElementById("category-input").classList.remove("red-border");
+  }
+}
+
 function validateOnBlur(input) {
   if (!input.value.trim()) {
     input.classList.add("red-border");
   } else {
     input.classList.remove("red-border");
   }
-  
 }
 
 /**
