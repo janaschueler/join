@@ -3,8 +3,8 @@ function greet(name) {
 }
 
 function showDesktopMenu() {
-  let deskMenuRef = document.getElementById("deskMenu_content");
-  deskMenuRef.classList.toggle("d_none");
+  let deskMenuRef = document.getElementById('deskMenu_content');  
+  deskMenuRef.classList.toggle('d_none');  
 }
 
 /**
@@ -102,7 +102,7 @@ async function postSignedInUserToDatabase(data = {}) {
       return;
     } else {
     }
-  } catch (error) {}
+  } catch (error) { }
 }
 
 /**

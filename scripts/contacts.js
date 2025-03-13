@@ -42,7 +42,7 @@ async function fetchData(path = "") {
 
 function renderSmallContacts() {
   let contactsSmallRef = document.getElementById("contactsSmall_content");
-  contactsSmallRef.innerHTML = ""; // Verhindert doppeltes Rendering
+  contactsSmallRef.innerHTML = "";
   
   let sortedContacts = sortContactsByName(allUsers);
   let groupedContactsHTML = generateGroupedContactsHTML(sortedContacts);
@@ -338,8 +338,6 @@ function getColorById(contactId) {
   let index = sum % coloursArray.length;
   return coloursArray[index];
 }
-
-
 
 /**
  * Displays a success message toast notification and reloads the page after the toast is hidden.
