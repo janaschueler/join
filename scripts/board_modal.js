@@ -393,7 +393,6 @@ function validateCategoryOnBlurModal() {
   }
 }
 
-
 /**
  * The function `openDatePickerModal` opens a date picker modal for the element with the ID
  * "due-date-edit".

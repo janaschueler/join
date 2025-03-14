@@ -413,4 +413,3 @@ async function saveNewTask(taskData) {
     console.error("Error saving task:", error);
   }
 }
-
