@@ -232,11 +232,7 @@ async function getDataFromFireBase(path = "") {
  * @returns The function `closeModalAddTask` returns nothing (`undefined`) if the `event` parameter is
  * falsy (null, undefined, false, 0, NaN, or an empty string).
  */
-function closeModalAddTask(event) {
-  if (!event) {
-    return;
-  }
-  event.preventDefault();
+function closeModalAddTask() {
   var modal = document.getElementById("modalEditTask");
   var backdrop = document.getElementById("editTaskSectionModal");
   if (!event || event.target === backdrop || event.target.classList.contains("secondaryButton-clear") || event.target.classList.contains("modalCloseButtonAddTask")) {

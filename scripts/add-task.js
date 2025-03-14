@@ -162,7 +162,9 @@ async function addTask(statusTask) {
   try {
     const res = await fetch(`${BASE_URL}/tasks.json`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(taskData) });
     if (!res.ok) throw new Error(`Error saving task: ${res.status}`);
-    location.href = "board.html";
+    setTimeout(() => {
+      location.href = "board.html";
+    }, 100); // Warte 100ms
   } catch (err) {
     alert(err.message);
   }

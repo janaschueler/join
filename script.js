@@ -346,36 +346,17 @@ function checkFormValidity() {
  *                   and redirecting the browser to the href of the clicked link.
  */
 document.addEventListener("DOMContentLoaded", function () {
-  const navLinks = document.querySelectorAll(".nav_bar");
-  navLinks.forEach(function (link) {
-    link.addEventListener("click", function (event) {
-      event.preventDefault();
-      const clickedLink = event.currentTarget.querySelector(".nav_link").textContent;
-      localStorage.setItem("lastClickedLink", clickedLink);
-      window.location.href = event.currentTarget.href;
-    });
-  });
-  const lastClickedLink = localStorage.getItem("lastClickedLink");
-  if (lastClickedLink) {
-    const lastLinkElement = [...navLinks].find((link) => link.querySelector(".nav_link").textContent === lastClickedLink);
-    if (lastLinkElement) {
-      lastLinkElement.classList.add("active");
-    }
-  }
-
-  const navLinksMobile = document.querySelectorAll(".nav_bar_mobile");
-  navLinksMobile.forEach(function (link) {
-    link.addEventListener("click", function (event) {
-      const clickedLink = event.currentTarget.querySelector(".nav_link_mobile").textContent;
-      localStorage.setItem("lastClickedLinkMobile", clickedLink);
-      window.location.href = event.currentTarget.href;
-    });
-  });
-  const lastClickedLinkMobile = localStorage.getItem("lastClickedLinkMobile");
-  if (lastClickedLinkMobile) {
-    const lastLinkElementMobile = [...navLinksMobile].find((link) => link.querySelector(".nav_link_mobile").textContent === lastClickedLinkMobile);
-    if (lastLinkElementMobile) {
-      lastLinkElementMobile.classList.add("active");
-    }
-  }
+  highlightActiveLink('.nav_bar', 'href');  // Desktop Navigation
+  highlightActiveLink('.nav_bar_mobile', 'href');  // Mobile Navigation
 });
+
+function highlightActiveLink(navSelector, hrefAttr) {
+  const navLinks = document.querySelectorAll(navSelector);
+  const currentPath = window.location.pathname;
+  navLinks.forEach(link => {
+    const linkHref = link.getAttribute(hrefAttr);
+    if (currentPath.endsWith(linkHref)) {
+      link.classList.add('active');  
+    }
+  });
+}

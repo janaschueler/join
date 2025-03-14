@@ -312,11 +312,20 @@ async function addTaskModal(id, status) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(taskData),
     });
-    if (response.ok) window.location.href = "board.html";
+
+    if (response.ok) {
+      closeModalAddTask();
+      allTasks = await getDataTasks();
+      allContacts = await getDataContacts();
+      loadBoardContent();
+    }
+    
   } catch (error) {
     console.error("Error saving:", error);
   }
 }
+
+
 
 function prepareTaskData(id, status) {
   const title = document.getElementById("inputField").value.trim();

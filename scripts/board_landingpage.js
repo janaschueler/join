@@ -325,6 +325,7 @@ function startDragging(id) {
  */
 document.getElementById("searchForm").addEventListener("submit", function (e) {
   e.preventDefault();
+  console.log("Form submitted");
   const searchInput = document.getElementById("searchInput").value.trim().toLowerCase();
   searchTasks(searchInput);
 });
