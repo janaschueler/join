@@ -54,7 +54,10 @@ function renderModalContacts() {
 function renderSmallContacts() {
   let contactsSmallRef = document.getElementById("contactsSmall_content");
   contactsSmallRef.innerHTML = "";
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6df1aadc989fe47beeaac3023175fea77d792cea
   let sortedContacts = sortContactsByName(allUsers);
   let groupedContactsHTML = generateGroupedContactsHTML(sortedContacts);
 

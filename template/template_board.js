@@ -120,12 +120,12 @@ function generateSubtasks(allTodos, subtask, index, isChecked = false) {
 function addEditTask(title, description, id, status, buttonCopy, headline) {
   return `          <div class="headerAddTaskModal">
                       <p class="ModalHeadline">${headline}</p>
-                      <button onclick="closeModalAddTask(event)" type="button" class="modalCloseButtonAddTask"></button>
+                      <button onclick="closeModalAddTask()" type="button" class="modalCloseButtonAddTask"></button>
                     </div>
                     <form class="task-form">
                       <div class="side1">
                         <label for="inputField">Title<span class="red">*</span></label>
-                        <input id="inputField" type="text" value="${title}" placeholder="Enter a title">
+                        <input id="inputField" type="text" value="${title}" placeholder="Enter a title" onblur="validateOnBlur(this)">
                         <label for="description">Description</label>
                         <textarea id="description" placeholder="Enter a Description">${description}</textarea>
                         <label for="assigned">Assigned to</label>
@@ -147,7 +147,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                       <div class="side2">
                         <label for="due-date">Due date <span class="red">*</span></label>
                         <div class="custom-date-picker">
-                          <input type="date" id="due-date-edit" name="due-date" min="">
+                          <input type="date" id="due-date-edit" name="due-date" min="" onblur="validateOnBlur(this)" onchange="validateOnBlur(this)"">
                           <button type="button" class="calendar-icon" onclick="openDatePickerModal()">
                            <img src="./assets/icons/calender.svg" alt="Calendar Icon"> <!-- Dein eigenes Icon -->
                           </button>
@@ -175,7 +175,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                         </div>
                         <label id="labelCategory" for="custom-category">Category<span class="red">*</span></label>
                         <div id="custom-category" class="custom-dropdown" onclick="toggleCategoryDropdown(event)">
-                          <div id="category-input" tabindex="0" class="dropdown-input paddingTop">
+                          <div id="category-input" tabindex="0" class="dropdown-input paddingTop"">
                             <span>Select task category</span>
                             <svg id="category-dropdown-icon" width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <path d="M3.29998 4.3L0.699975 1.7C0.383309 1.38333 0.312475 1.02083 0.487475 0.6125C0.662475 0.204167 0.974975 0 1.42498 0H6.57498C7.02498 0 7.33747 0.204167 7.51248 0.6125C7.68748 1.02083 7.61664 1.38333 7.29997 1.7L4.69998 4.3C4.59998 4.4 4.49164 4.475 4.37498 4.525C4.25831 4.575 4.13331 4.6 3.99998 4.6C3.86664 4.6 3.74164 4.575 3.62498 4.525C3.50831 4.475 3.39998 4.4 3.29998 4.3Z" fill="#2A3647"/>
@@ -197,7 +197,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                       <div id="buttonContainerEdit" class="form-footer-modal space">
                         <p class="error-message"><span class="required">*</span> This field is required</p>
                         <div class="addTaskButtonModal desktop">
-                         <button type="button" onclick="closeModalAddTask(event)" class="secondaryButton-clear">Cancel 
+                         <button type="button" onclick="closeModalAddTask()" class="secondaryButton-clear">Cancel 
                           <svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
                             <path d="M7.00005 8.40005L2.10005 13.3C1.91672 13.4834 1.68338 13.575 1.40005 13.575C1.11672 13.575 0.883382 13.4834 0.700049 13.3C0.516715 13.1167 0.425049 12.8834 0.425049 12.6C0.425049 12.3167 0.516715 12.0834 0.700049 11.9L5.60005 7.00005L0.700049 2.10005C0.516715 1.91672 0.425049 1.68338 0.425049 1.40005C0.425049 1.11672 0.516715 0.883382 0.700049 0.700049C0.883382 0.516715 1.11672 0.425049 1.40005 0.425049C1.68338 0.425049 1.91672 0.516715 2.10005 0.700049L7.00005 5.60005L11.9 0.700049C12.0834 0.516715 12.3167 0.425049 12.6 0.425049C12.8834 0.425049 13.1167 0.516715 13.3 0.700049C13.4834 0.883382 13.575 1.11672 13.575 1.40005C13.575 1.68338 13.4834 1.91672 13.3 2.10005L8.40005 7.00005L13.3 11.9C13.4834 12.0834 13.575 12.3167 13.575 12.6C13.575 12.8834 13.4834 13.1167 13.3 13.3C13.1167 13.4834 12.8834 13.575 12.6 13.575C12.3167 13.575 12.0834 13.4834 11.9 13.3L7.00005 8.40005Z"></path>
                           </svg>
@@ -208,7 +208,7 @@ function addEditTask(title, description, id, status, buttonCopy, headline) {
                     </div>
                     </form>
                     <div class="addTaskButtonModal mobile">
-                      <button type="button" onclick="closeModalAddTask(event)" class="secondaryButton-clear">Cancel <img src="assets/icons/close.svg" alt=""></button> 
+                      <button type="button" onclick="closeModalAddTask()" class="secondaryButton-clear">Cancel <img src="assets/icons/close.svg" alt=""></button> 
                       <button type="button" onclick="addTaskModal('${id}', ${status})" class="addTaskButtonPrimary create">${buttonCopy} <img src="assets/icons/check.svg" alt=""></button>
                    </div>`;
 }

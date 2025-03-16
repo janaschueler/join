@@ -136,6 +136,10 @@ main {
   background-color: #0919314f;
 }
 
+.nav_stripe.active, .nav_stripe_mobile.active {
+  background-color: rgba(9, 25, 49, 1);
+}
+
 .nav_link {
   color: white;
   margin-left: 8px;

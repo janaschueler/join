@@ -232,11 +232,7 @@ async function getDataFromFireBase(path = "") {
  * @returns The function `closeModalAddTask` returns nothing (`undefined`) if the `event` parameter is
  * falsy (null, undefined, false, 0, NaN, or an empty string).
  */
-function closeModalAddTask(event) {
-  if (!event) {
-    return;
-  }
-  event.preventDefault();
+function closeModalAddTask() {
   var modal = document.getElementById("modalEditTask");
   var backdrop = document.getElementById("editTaskSectionModal");
   if (!event || event.target === backdrop || event.target.classList.contains("secondaryButton-clear") || event.target.classList.contains("modalCloseButtonAddTask")) {
@@ -376,4 +372,33 @@ function closeSummaryModal() {
       backdrop.classList.remove("show");
     }, 500);
   }
+}
+
+/**
+ * Validates the category input field when it loses focus (on blur event).
+ * If the category input field contains the default text "Select task category",
+ * it adds a red border to indicate an invalid selection. Otherwise, it removes
+ * the red border if it was previously added.
+ *
+ * @function validateCategoryOnBlurModal
+ */
+function validateCategoryOnBlurModal() {
+  let category = document.getElementById("category-input").textContent.trim();
+  if (category) {
+    if (category == "Select task category") {
+      document.getElementById("category-input").classList.add("red-border");
+    } else {
+      document.getElementById("category-input").classList.remove("red-border");
+    }
+  }
+}
+
+/**
+ * The function `openDatePickerModal` opens a date picker modal for the element with the ID
+ * "due-date-edit".
+ */
+function openDatePickerModal() {
+  setMinDate();
+  let dateInput = document.getElementById("due-date-edit");
+  dateInput.showPicker();
 }

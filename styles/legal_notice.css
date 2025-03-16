@@ -30,9 +30,10 @@ h3 {
 .legalPageContainer {
   text-align: left;
   margin-left: 5%;
+  margin-right: 5%;
   overflow-y: auto;
   margin-bottom: 50px;
-  width: 1440px;
+  max-width: 1440px;
 }
 
 .spanLegalCopy {

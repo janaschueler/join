@@ -12,13 +12,17 @@ let currentDraggedElement;
 async function initi() {
   let checkedAuthority = await checkAccessAuthorization();
   if (checkedAuthority) {
-    allTasks = await getDataTasks();
-    allContacts = await getDataContacts();
-    loadBoardContent();
+    reloadBoardContent();
     renderTopBar();
   } else {
     window.location.href = "login.html";
   }
+}
+
+async function reloadBoardContent() {
+  allTasks = await getDataTasks();
+  allContacts = await getDataContacts();
+  loadBoardContent();
 }
 
 /**
@@ -325,6 +329,7 @@ function startDragging(id) {
  */
 document.getElementById("searchForm").addEventListener("submit", function (e) {
   e.preventDefault();
+  console.log("Form submitted");
   const searchInput = document.getElementById("searchInput").value.trim().toLowerCase();
   searchTasks(searchInput);
 });

@@ -12,7 +12,7 @@ h1 {
 }
 
 .active {
-  background-color: #007bff;
+  background-color: rgba(9, 25, 49, 1);
 }
 
 body {
@@ -61,7 +61,7 @@ header {
 }
 
 .login_color {
-  color: #A1A4A9 !important;
+  color: #a1a4a9 !important;
   font-size: 19px;
 }
 

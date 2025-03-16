@@ -62,7 +62,9 @@ function closeDropdownOnOutsideClick(event, dropdownId, toggleId, iconId) {
   const dropdown = document.getElementById(dropdownId);
   const toggleButton = document.getElementById(toggleId);
 
-  if (!dropdown || !toggleButton) return;
+  if (!dropdown || !toggleButton) {
+    return;
+  }
 
   if (!toggleButton.contains(event.target) && !dropdown.contains(event.target)) {
     dropdown.classList.remove("visible");
@@ -103,6 +105,7 @@ function selectCategory(label) {
   document.querySelectorAll("#category-dropdown .dropdown-option").forEach((option) => {
     option.classList.remove("selected");
   });
+  validateCategoryOnBlurModal();
 }
 
 /**
@@ -159,7 +162,9 @@ async function addTask(statusTask) {
   try {
     const res = await fetch(`${BASE_URL}/tasks.json`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(taskData) });
     if (!res.ok) throw new Error(`Error saving task: ${res.status}`);
-    location.href = "board.html";
+    setTimeout(() => {
+      location.href = "board.html";
+    }, 100); // Warte 100ms
   } catch (err) {
     alert(err.message);
   }
@@ -186,13 +191,21 @@ function toggleRedBorder(elementId, condition) {
   }
 }
 
+function validateCategoryOnBlur() {
+  let category = document.getElementById("category-selection").textContent.trim();
+  if (category == "Select task category") {
+    document.getElementById("category-input").classList.add("red-border");
+  } else {
+    document.getElementById("category-input").classList.remove("red-border");
+  }
+}
+
 function validateOnBlur(input) {
   if (!input.value.trim()) {
     input.classList.add("red-border");
   } else {
     input.classList.remove("red-border");
   }
-  
 }
 
 /**

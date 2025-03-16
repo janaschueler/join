@@ -286,16 +286,6 @@ function handlePreselectedState(contactId, contactName, contactColor, container,
 }
 
 /**
- * The function `openDatePickerModal` opens a date picker modal for the element with the ID
- * "due-date-edit".
- */
-function openDatePickerModal() {
-  setMinDate();
-  let dateInput = document.getElementById("due-date-edit");
-  dateInput.showPicker();
-}
-
-/**
  * The function `addTaskModal` in the JavaScript code snippet handles the addition and updating of
  * tasks by sending data to a server and redirecting to a board page upon successful save.
  * @param id - The `id` parameter in your functions represents the unique identifier of a task. It is
@@ -314,7 +304,6 @@ async function addTaskModal(id, status) {
   }
   const taskData = prepareTaskData(id, status);
   if (!taskData) {
-    alert("Please fill in all required fields and select a priority.");
     return;
   }
   try {
@@ -323,11 +312,20 @@ async function addTaskModal(id, status) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(taskData),
     });
-    if (response.ok) window.location.href = "board.html";
+
+    if (response.ok) {
+      closeModalAddTask();
+      allTasks = await getDataTasks();
+      allContacts = await getDataContacts();
+      loadBoardContent();
+    }
+    
   } catch (error) {
     console.error("Error saving:", error);
   }
 }
+
+
 
 function prepareTaskData(id, status) {
   const title = document.getElementById("inputField").value.trim();
@@ -413,16 +411,5 @@ async function saveNewTask(taskData) {
     if (!response.ok) window.location.href = "board.html";
   } catch (error) {
     console.error("Error saving task:", error);
-  }
-}
-
-function findContactColor(name) {
-  let contactNames = allContacts.map((contact) => contact.contactName);
-  const index = contactNames.indexOf(name);
-
-  if (index !== -1) {
-    return allContacts[index].color;
-  } else {
-    return null;
   }
 }

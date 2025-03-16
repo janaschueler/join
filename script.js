@@ -3,8 +3,8 @@ function greet(name) {
 }
 
 function showDesktopMenu() {
-  let deskMenuRef = document.getElementById('deskMenu_content');  
-  deskMenuRef.classList.toggle('d_none');  
+  let deskMenuRef = document.getElementById("deskMenu_content");
+  deskMenuRef.classList.toggle("d_none");
 }
 
 /**
@@ -103,7 +103,7 @@ async function postSignedInUserToDatabase(data = {}) {
       return;
     } else {
     }
-  } catch (error) { }
+  } catch (error) {}
 }
 
 /**
@@ -329,6 +329,34 @@ function checkFormValidity() {
     });
     if (submitButton) {
       submitButton.disabled = !isFormValid;
+    }
+  });
+}
+
+/**
+ * Handles the click event on navigation links for both desktop and mobile versions.
+ * On click, the function prevents the default link navigation, saves the clicked link's text
+ * to the localStorage, and redirects the user to the desired page.
+ *
+ * The function is invoked once the DOM is fully loaded to ensure all elements are accessible.
+ *
+ * @param {Event} event - The click event triggered by the user clicking on a navigation link.
+ *
+ * @returns {void} - The function does not return any value. It modifies the page behavior by setting the localStorage
+ *                   and redirecting the browser to the href of the clicked link.
+ */
+document.addEventListener("DOMContentLoaded", function () {
+  highlightActiveLink('.nav_bar', 'href');  // Desktop Navigation
+  highlightActiveLink('.nav_bar_mobile', 'href');  // Mobile Navigation
+});
+
+function highlightActiveLink(navSelector, hrefAttr) {
+  const navLinks = document.querySelectorAll(navSelector);
+  const currentPath = window.location.pathname;
+  navLinks.forEach(link => {
+    const linkHref = link.getAttribute(hrefAttr);
+    if (currentPath.endsWith(linkHref)) {
+      link.classList.add('active');  
     }
   });
 }
