@@ -54,11 +54,7 @@ function renderModalContacts() {
 function renderSmallContacts() {
   let contactsSmallRef = document.getElementById("contactsSmall_content");
   contactsSmallRef.innerHTML = "";
-<<<<<<< HEAD
-  
-=======
 
->>>>>>> b9788a76a2bb105d8f823dc36d521358901c294a
   let sortedContacts = sortContactsByName(allUsers);
   let groupedContactsHTML = generateGroupedContactsHTML(sortedContacts);
 
@@ -155,7 +151,6 @@ async function openEditDialog(contactId) {
   selectedContactId = contactId;
   toggleDialogVisibility();
   await populateDialogFields(contactId);
-  setDeleteButtonAction(contactId);
 }
 
 function toggleDialogVisibility() {
@@ -185,7 +180,7 @@ async function deleteContact(contactId) {
   contactsSmallRef.innerHTML = "";
   renderSmallContacts();
   renderBigContacts();
-  location.reload();
+  await fetchData ();
 }
 
 async function getFirebaseId(contactId) {
@@ -235,10 +230,6 @@ async function deleteData(path = "") {
   return (responseToJson = await response.json());
 }
 
-function setDeleteButtonAction(id) {
-  console.log(id);
-}
-
 /**
  * Removes a contact from all tasks in the database.
  *
@@ -272,10 +263,10 @@ async function removeContactFromTasks(firebaseId) {
  * the "d_none" class on it, which is presumably used to show or hide the
  * dialog. After toggling the visibility, the page is reloaded.
  */
-function cancelAndCross() {
+async function cancelAndCross() {
   let showDialog = document.getElementById("dialog_content");
   showDialog.classList.toggle("d_none");
-  location.reload();
+  await fetchData();  
 }
 
 /**
@@ -315,13 +306,18 @@ function protection(event) {
  * @returns {Promise<void>} - A promise that resolves when the contact has been added.
  */
 
+function checkExistingContacts(emailRef) {
+  let existingEmails = allUsers.filter((contact) => contact.email === emailRef.value);
+  return existingEmails.length;
+}
+
 async function addContact() {
   let nameRef = document.getElementById("recipient-name");
   let emailRef = document.getElementById("recipient-email");
   let phoneRef = document.getElementById("recipient-phone");
   if (!validateContactInputs(nameRef, emailRef, phoneRef)) return;
-  let checkExistingContacts = checkContact(emailRef);
-  if (checkExistingContacts > 0) {
+  let existingContactsCount = checkExistingContacts(emailRef);
+  if (existingContactsCount > 0) {
     signupSuccessfullMessage("existing");
     return;
   }
@@ -337,10 +333,6 @@ function validateContactInputs(nameRef, emailRef, phoneRef) {
   document.getElementById("editContactInputfieldError").classList.toggle("d_none", isValid);
   document.getElementById("newContactInputfieldError").classList.toggle("d_none", isValid);
   return isValid;
-}
-function checkExistingContacts(emailRef) {
-  let existingEmails = allUsers.filter((contact) => contact.email === emailRef.value);
-  return existingEmails.length;
 }
 
 function createContact(name, email, phone) {
