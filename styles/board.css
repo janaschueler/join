@@ -1282,31 +1282,35 @@ table td:first-child {
 
   #modalTaskSummary.show {
     transform: translate(-50%, -55%) translateX(0);
+  }
 
-    .searchContainer {
-      min-width: 100vw;
-      width: 100% !important;
-    }
+  .searchContainer {
+    min-width: 100vw;
+    width: 100% !important;
+  }
 
-    #editSubtasks-container .input-wrapper:hover .editIconSubtask,
-    #editSubtasks-container.input-wrapper:hover .lineSubtask,
-    #editSubtasks-container .input-wrapper .deleteSubtask {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  #editSubtasks-container .input-wrapper:hover .editIconSubtask,
+  #editSubtasks-container.input-wrapper:hover .lineSubtask,
+  #editSubtasks-container .input-wrapper .deleteSubtask {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-    #editSubtasks-container .input-wrapper .editIconSubtask,
-    #editSubtasks-container.input-wrapper:hover .lineSubtask,
-    #editSubtasks-container .input-wrapper .deleteSubtask {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  #editSubtasks-container .input-wrapper .editIconSubtask,
+  #editSubtasks-container.input-wrapper:hover .lineSubtask,
+  #editSubtasks-container .input-wrapper .deleteSubtask {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-    .positoinCategory {
-      top: 370px !important;
-    }
+  .positoinCategory {
+    top: 370px !important;
+  }
+
+  .canvasContainer {
+    margin-left: 1%;
   }
 }
 
