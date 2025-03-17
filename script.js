@@ -346,8 +346,8 @@ function checkFormValidity() {
  *                   and redirecting the browser to the href of the clicked link.
  */
 document.addEventListener("DOMContentLoaded", function () {
-  highlightActiveLink('.nav_bar', 'href');  // Desktop Navigation
-  highlightActiveLink('.nav_bar_mobile', 'href');  // Mobile Navigation
+  highlightActiveLink('.nav_bar', 'href'); 
+  highlightActiveLink('.nav_bar_mobile', 'href');
 });
 
 function highlightActiveLink(navSelector, hrefAttr) {

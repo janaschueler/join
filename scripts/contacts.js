@@ -11,6 +11,7 @@ async function init() {
     renderSmallContacts();
     renderBigContacts();
     renderModalContacts();
+    highlightActiveContact();
   } else {
     window.location.href = "login.html";
   }
@@ -90,6 +91,7 @@ function createGroupHeader(letter) {
 }
 
 function renderBigContacts() {
+  const selectedContactId = localStorage.getItem("selectedContact");
   let contactsBigRef = document.getElementById("contactsBig_content");
   contactsBigRef.innerHTML = "";
   if (selectedContactId) {
@@ -117,9 +119,11 @@ function renderModalContacts() {
  * @param {number} contactId - The ID of the contact to be selected.
  */
 function selectContact(contactId) {
+  localStorage.setItem("selectedContact", contactId);
   selectedContactId = contactId;
   renderBigContacts();
   renderModalContacts();
+  highlightActiveContact();
 }
 
 /**
@@ -162,11 +166,22 @@ async function populateDialogFields(contactId) {
   let emailRef = document.getElementById("dialog-email");
   let phoneRef = document.getElementById("dialog-phone");
   let firebaseId = await getFirebaseId(contactId);
-  let contactData = await fetchData(`contacts/${firebaseId}`);
+  let contactData = await fetchContactData(`contacts/${firebaseId}`);
   nameRef.value = contactData.name || "";
   emailRef.value = contactData.email || "";
   phoneRef.value = contactData.phone || "";
   deleteButton.setAttribute("onclick", `deleteContact('${contactId}')`);
+}
+
+async function fetchContactData(path = "") {
+  let response = await fetch(BASE_URL + path + ".json");
+  let data = await response.json();
+  if (data && data.contacts) {
+    allUsers = Object.values(data.contacts);
+  } else {
+    allUsers = [];
+  }
+  return data;
 }
 
 async function deleteContact(contactId) {
@@ -179,7 +194,7 @@ async function deleteContact(contactId) {
   contactsSmallRef.innerHTML = "";
   renderSmallContacts();
   renderBigContacts();
-  await fetchData ();
+  await fetchData();
 }
 
 async function getFirebaseId(contactId) {
@@ -265,7 +280,7 @@ async function removeContactFromTasks(firebaseId) {
 async function cancelAndCross() {
   let showDialog = document.getElementById("dialog_content");
   showDialog.classList.toggle("d_none");
-  await fetchData();  
+  await fetchData();
 }
 
 /**
@@ -415,9 +430,12 @@ function showToast(toastRef, overlay) {
   toastRef.addEventListener("hidden.bs.toast", () => hideOverlayAndReload(overlay));
 }
 
-function hideOverlayAndReload(overlay) {
+async function hideOverlayAndReload(overlay) {
   overlay.style.display = "none";
-  location.reload();
+  await fetchData();
+  renderSmallContacts();
+  renderBigContacts();
+  highlightActiveContact();
 }
 
 /**
@@ -438,4 +456,22 @@ function resetAlert() {
   document.getElementById("invalidPasswordNewContact").classList.add("d_none");
   document.getElementById("dialog-email").classList.remove("input-error");
   document.getElementById("recipient-email").classList.remove("input-error");
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  highlightActiveContact(".listBody");
+});
+
+function highlightActiveContact() {
+  const selectedContactId = localStorage.getItem("selectedContact");
+  const contacts = document.querySelectorAll(".listBody");
+  contacts.forEach((contact) => {
+    contact.classList.remove("active");
+  });
+  if (selectedContactId) {
+    const contact = document.getElementById(`list${selectedContactId}`);
+    if (contact) {
+      contact.classList.add("active");
+    }
+  }
 }

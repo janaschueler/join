@@ -9,7 +9,7 @@ function templateSmallContacts(currentDatas) {
             <div class="list-header">
               <div class="listHeader">          
               </div>
-              <div tabindex="0" class="listBody">
+              <div tabindex="0" id="list${currentDatas.id}" class="listBody">
                 <svg class="circle" width="32" height="32" viewBox="0 0 32 32" fill="none"
                   xmlns="http://www.w3.org/2000/svg">
                   <circle cx="16" cy="16" r="15.5" fill="${currentDatas.color}" stroke="white" />
@@ -23,7 +23,7 @@ function templateSmallContacts(currentDatas) {
                 </div>
               </div>
             </div>
-          </div>`
+          </div>`;
 }
 
 function templateBigContacts(currentDatas) {
@@ -105,7 +105,7 @@ function templateBigContacts(currentDatas) {
               </defs>
             </svg>
           </button>
-          `
+          `;
 }
 
 function templateModalContacts(currentDatas) {
@@ -117,5 +117,5 @@ function templateModalContacts(currentDatas) {
   return `<svg class="circle big_circle" width="120" height="120" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="16" cy="16" r="15.5" fill="${currentDatas.color}" stroke="white"/>
               <text x="50%" y="50%" font-family="Arial" font-size="12" fill="white" text-anchor="middle" alignment-baseline="central">${initials}</text>
-            </svg>`
+            </svg>`;
 }

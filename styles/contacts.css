@@ -232,7 +232,7 @@ main {
   background-image: linear-gradient(to top, rgba(219, 220, 222, 0.6), rgba(209, 209, 209, 0.2));
 }
 
-.listBody:focus {
+.listBody.active {
   background-color: rgba(42, 54, 71, 1);
   color: white;
   border-radius: 6px;
