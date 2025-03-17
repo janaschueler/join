@@ -23,7 +23,7 @@ main {
   flex-direction: column;
   justify-content: space-between;
   background-color: #2a3647;
-  width: 232px;
+  min-width: 232px;
 }
 
 .left_bar_area {

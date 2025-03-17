@@ -294,8 +294,7 @@ h2 {
 }
 
 .scroll-container {
-  overflow: auto;
-  max-height: 900px;
+  overflow: auto;  
 }
 
 .editIcon {
@@ -702,7 +701,44 @@ input[type="number"] {
   box-shadow: none;
 }
 
+@media (max-width: 970px) {
+  .mobile_main {
+    display: block;
+  }
+  
+  .left_bar_main {
+    display: none;
+  }
+}
+
 @media (max-width: 768px) {
+  .mobile_header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .headerBoardTitle {
+    margin-left: 5%;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 90%;
+  }
+
+  .headerBoardTitle h1::after {
+    display: none;
+  }
+
+  .headerContainer {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    background-color: rgb(246, 247, 248);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+  }
   .the_line_blue {
     display: block;
   }
@@ -764,13 +800,7 @@ input[type="number"] {
 
   body {
     overflow: hidden;
-  }
-
-  .mobile_header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
+  }  
 
   .mobile_arrow_btn {
     padding-block: 0px;
@@ -806,17 +836,6 @@ input[type="number"] {
     display: none;
   }
 
-  .headerBoardTitle {
-    margin-left: 5%;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 90%;
-  }
-
-  .headerBoardTitle h1::after {
-    display: none;
-  }
-
   .primaryAddButton {
     display: block !important;
     margin-right: 20px;
@@ -832,17 +851,6 @@ input[type="number"] {
 
   .d_none_mobile {
     display: none !important;
-  }
-
-  .headerContainer {
-    position: fixed;
-    top: 80px;
-    left: 0;
-    background-color: rgb(246, 247, 248);
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
   }
 
   .contactContainer {
