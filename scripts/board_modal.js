@@ -293,6 +293,8 @@ function showModalVisibility() {
   const showModal = document.getElementById("modalEditTask");
   showModal.innerHTML = "";
   if (showModalBackground && showModal) {
+    showModalBackground.classList.remove("hide");
+    showModal.classList.remove("hide");
     showModalBackground.style.visibility = "visible";
     showModalBackground.classList.add("show");
     showModal.style.visibility = "visible";

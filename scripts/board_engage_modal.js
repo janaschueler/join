@@ -359,7 +359,6 @@ function determinePriority() {
   for (let button of priorityButtons) {
     const backgroundColor = window.getComputedStyle(button).backgroundColor;
     if (backgroundColor !== "rgb(255, 255, 255)") {
-      console.log(button.classList);
       priority = String(button.classList).toLowerCase().trim();
       return priority;
     }
