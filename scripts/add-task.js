@@ -192,13 +192,15 @@ function toggleRedBorder(elementId, condition) {
 }
 
 function validateCategoryOnBlur() {
-  let category = document.getElementById("category-selection").textContent.trim();
-  if (category == "Select task category") {
-    document.getElementById("category-input").classList.add("red-border");
-  } else {
-    document.getElementById("category-input").classList.remove("red-border");
-  }
+    let category = document.getElementById("category-selection").textContent.trim();
+    if (category == "Select task category") {
+        document.getElementById("category-input").classList.add("red-border");
+    } else {
+        document.getElementById("category-input").classList.remove("red-border");
+    }
 }
+
+
 
 function validateOnBlur(input) {
   if (!input.value.trim()) {
@@ -207,6 +209,16 @@ function validateOnBlur(input) {
     input.classList.remove("red-border");
   }
 }
+
+function validateCategoryOnBlurModal() {
+  let category = document.getElementById("category-selection").textContent.trim();
+  if (category == "Select task category") {
+      document.getElementById("category-input").classList.add("red-border");
+  } else {
+      document.getElementById("category-input").classList.remove("red-border");
+  }
+}
+
 
 /**
  * Determines the status of a task to be added.
@@ -378,10 +390,22 @@ function clearForm(event) {
   document.getElementById("category-input").querySelector("span").textContent = "Select task category";
   document.getElementById("category").value = "";
   document.getElementById("selected-contacts").innerHTML = "";
+  document.getElementById("subtasks-container").innerHTML = "";
+  document.querySelectorAll(".contact-checkbox").forEach((checkbox) => {
+    checkbox.checked = false;  
+    checkbox.closest(".customCheckboxContainer").classList.remove("checked");
+  });
+   document.querySelectorAll(".red-border").forEach((element) => {
+    element.classList.remove("red-border");
+  });
+  document.querySelectorAll(".error-message").forEach((error) => {
+    error.style.display = "none";
+  });s
   selectedContacts = [];
   const defaultMediumButton = document.querySelector(".priority .medium");
   handlePriorityClick(defaultMediumButton);
   return;
+
 }
 
 function getRandomColor() {
