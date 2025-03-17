@@ -107,7 +107,7 @@
       </section>
 
       <section>
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+        <div class="modal fade" id="exampleModal" tabindex="-1">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modalBody">
@@ -149,7 +149,7 @@
                 </div>
 
                 <div class="formContainer" id="newContactContainer">
-                  <button type="button" class="closeButton" onclick="resetModal()" data-bs-dismiss="modal"
+                  <button type="button" class="closeButton" onclick="resetModal(), closeModalAddTask()" data-bs-dismiss="modal"
                     aria-label="Close">
                     <img class="close_white" src="./assets/icons/close_white.svg" alt="">
                   </button>

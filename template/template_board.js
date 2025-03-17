@@ -55,7 +55,7 @@ function generateAssigneeCircle(assigneeAbbreviation, assingeeColor) {
 function noTaskLeft() {
   return `
     <div class="listContainerEmpty">
-      <span>No tasks Left</span>
+      <span>No Tasks</span>
       <div id="dashedBox2" class="dashed-box" style="display: none;"></div>
     </div>
   `;
