@@ -319,13 +319,10 @@ async function addTaskModal(id, status) {
       allContacts = await getDataContacts();
       loadBoardContent();
     }
-    
   } catch (error) {
     console.error("Error saving:", error);
   }
 }
-
-
 
 function prepareTaskData(id, status) {
   const title = document.getElementById("inputField").value.trim();
@@ -376,7 +373,8 @@ async function addTaskModalNewTask(status) {
     return;
   }
   await saveNewTask(taskData);
-  window.location.href = "board.html";
+  reloadBoardContent();
+  closeModalAddTask();
 }
 
 function prepareNewTaskData(status) {

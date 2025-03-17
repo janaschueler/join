@@ -1159,12 +1159,7 @@ table td:first-child {
 }
 
 .subTaskHover {
-  color: white;
-  transition: color 125ms ease;
-}
-
-[id^="progressContainer-"]:hover .subTaskHover {
-  color: rgba(0, 0, 0, 1);
+  color: black;
 }
 
 .dashed-box {

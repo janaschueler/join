@@ -171,11 +171,11 @@ async function addSubtasksStatus(key, status) {
  * This allows the function to check if the modal should be closed based on the event target, such as
  * clicking on the
  */
-function closeModal(event = null) {
+function closeModal(event) {
   var modal = document.getElementById("modalTaskSummary");
   var backdrop = document.getElementById("taskSummaryModal");
 
-  if (!event || event.target === backdrop || event.target.classList.contains("modalCloseButton")) {
+  if (event && event.target.closest(".modalCloseButton")) {
     modal.classList.add("hide");
     backdrop.classList.add("hide");
     setTimeout(function () {
@@ -184,9 +184,21 @@ function closeModal(event = null) {
       modal.classList.remove("show");
       backdrop.classList.remove("show");
     }, 500);
-
-    window.location.reload();
+  } else {
+    reloadBoardContent();
   }
+}
+
+function closeModalAfterDelete() {
+  var modal = document.getElementById("modalTaskSummary");
+  var backdrop = document.getElementById("taskSummaryModal");
+  modal.classList.add("hide");
+  backdrop.classList.add("hide");
+  modal.style.visibility = "hidden";
+  backdrop.style.visibility = "hidden";
+  modal.classList.remove("show");
+  backdrop.classList.remove("show");
+  reloadBoardContent();
 }
 
 /**
@@ -214,7 +226,7 @@ async function deleteTask(taskId) {
   }, {});
   await postToDatabase("", "", updatedTasks);
   loadBoardContent();
-  closeModal();
+  closeModalAfterDelete();
 }
 
 async function getDataFromFireBase(path = "") {

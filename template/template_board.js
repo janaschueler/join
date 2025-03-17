@@ -52,13 +52,22 @@ function generateAssigneeCircle(assigneeAbbreviation, assingeeColor) {
                             </svg>`;
 }
 
+function noTaskLeft() {
+  return `
+    <div class="listContainerEmpty">
+      <span>No tasks Left</span>
+      <div id="dashedBox2" class="dashed-box" style="display: none;"></div>
+    </div>
+  `;
+}
+
 function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate, categoryColor, priority) {
   return ` <div id="modalTaskSummary" class="summaryTaskContainer modal">
             <div class="ModalheaderContainer">
               <div class="category" style="${categoryColor}">
               <span>${allTodos["category"]}</span>
               </div>
-              <button onclick="closeModal()"  type="button" class="modalCloseButton"></button>
+              <button onclick="closeModal(event)"  type="button" class="modalCloseButton"></button>
             </div>
             <div class="listDiscription">
               <h1 class="mobileHeadline" >${allTodos["title"]}</h1> 
@@ -88,7 +97,7 @@ function generateTaskSummaryModal(allTodos, priorityIcon, formatedDueDate, categ
             <div class="buttonContainer">
               <div class="editContainer">
                 <button onclick="openEditModal('${allTodos["category"]}', '${allTodos["title"]}', '${allTodos["description"]}', '${formatedDueDate}', '${allTodos["priority"]}', '${allTodos["id"]}', '${allTodos["status"]}')" class="editIcon">Edit</button>
-                <button onclick="deleteTask('${allTodos["id"]}')" class="deleteIcon">Delete</button>
+                <button id="deleteTask" onclick="deleteTask('${allTodos["id"]}')" class="deleteIcon">Delete</button>
               </div>
             </div>
           </div>`;

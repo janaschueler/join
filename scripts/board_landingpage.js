@@ -170,11 +170,13 @@ function loadBoardContent() {
 function loadBordContentByStatus(status, containerId) {
   let tasks = allTasks.filter((t) => t["status"] === status);
   if (tasks.length === 0) {
-    return;
+    let container = document.getElementById(containerId);
+    container.innerHTML = noTaskLeft();
+  } else {
+    let container = document.getElementById(containerId);
+    container.innerHTML = "";
+    tasks.forEach((task) => renderTask(task, container));
   }
-  let container = document.getElementById(containerId);
-  container.innerHTML = "";
-  tasks.forEach((task) => renderTask(task, container));
 }
 
 function renderTask(task, container) {
@@ -281,16 +283,14 @@ function drag(ev) {
 async function drop(status) {
   const task = getTaskAndUpdateStatus(status);
   await updateUIAfterStatusChange(task, status);
-  location.reload(true);
+  reloadBoardContent();
 }
 
 function getTaskAndUpdateStatus(status) {
   const task = Object.values(allTasks).find((t) => t.id === currentDraggedElement);
   task.status = status;
-
   const rotatingElement = document.querySelector(`[onclick="openModal('${currentDraggedElement}')"]`);
   if (rotatingElement) rotatingElement.classList.remove("rotating");
-
   return task;
 }
 
@@ -299,8 +299,15 @@ async function updateUIAfterStatusChange(task, status) {
   const dashedBox = container.querySelector(".dashed-box");
 
   try {
-    await addStatus(task.id, status);
-    if (dashedBox) dashedBox.style.display = "none";
+    await addStatus(task.id, status); // Status speichern
+
+    // 🟢 NEU: Entferne das Element aus der alten Spalte
+    const oldTaskElement = document.getElementById(task.id);
+    if (oldTaskElement) {
+      oldTaskElement.remove();
+    }
+
+    if (dashedBox) dashedBox.style.display = "none"; // Die Drop-Zone verstecken
   } catch (error) {
     console.error("Error updating status:", error);
   }
@@ -308,7 +315,6 @@ async function updateUIAfterStatusChange(task, status) {
 
 function startDragging(id) {
   currentDraggedElement = id;
-
   const element = document.querySelector(`[onclick="openModal('${id}')"]`);
   if (element) {
     element.classList.add("rotating");
@@ -404,9 +410,9 @@ async function addStatusBoard(key, status, event) {
   event.stopPropagation(event);
   try {
     await postToDatabase(key, "/status", status);
+    reloadBoardContent();
   } catch (error) {
     console.error("Error setting status:", error);
     throw error;
   }
-  window.location.reload();
 }
