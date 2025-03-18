@@ -105,6 +105,10 @@ function editSubtaskinModal(id, subTaskInput) {
 function acceptEdit(id) {
   let subTaskContainer = document.getElementById("editSubtasks-container");
   let newSubTask = document.getElementById(`inputSubtask${id}`).value;
+  if (!newSubTask) {
+    deleteSubtaskModal(`${id}`);
+    return;
+  }
   const removeSubtask = document.getElementById(`editSubTaskUnit${id}`);
   removeSubtask.remove();
   subTaskContainer.innerHTML += addSubtaskTemplateinModal(newSubTask, id);
@@ -298,6 +302,14 @@ function handlePreselectedState(contactId, contactName, contactColor, container,
  * return).
  */
 async function addTaskModal(id, status) {
+  const title = document.getElementById("inputField")?.value.trim();
+  const dueDate = document.getElementById("due-date-edit")?.value.trim();
+  const dueDateCheck = dueDateValidity(dueDate);
+  const category = document.getElementById("category")?.value;
+  validateTaskFields(title, dueDate, category);
+  if (!title || !dueDate || !category || !dueDateCheck) {
+    return;
+  }
   if (!id) {
     addTaskModalNewTask(status);
     return;
@@ -408,5 +420,16 @@ async function saveNewTask(taskData) {
     if (!response.ok) window.location.href = "board.html";
   } catch (error) {
     console.error("Error saving task:", error);
+  }
+}
+
+function validateCategoryOnBlurModal() {
+  let categoryInput = document.getElementById("category-input");
+  let categorySpan = categoryInput.querySelector("span");
+  let category = categorySpan.textContent.trim();
+  if (category === "Select task category") {
+    categoryInput.classList.add("red-border");
+  } else {
+    categoryInput.classList.remove("red-border");
   }
 }

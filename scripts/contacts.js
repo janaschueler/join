@@ -274,13 +274,33 @@ async function addContact() {
   let existingContactsCount = checkExistingContacts(emailRef);
   if (existingContactsCount > 0) {
     signupSuccessfullMessage("existing");
+    closeModalAddTask();
     return;
   }
+  await saveNewContact(nameRef, emailRef, phoneRef);
+  closeModalAddTask();
+}
+
+async function saveNewContact(nameRef, emailRef, phoneRef) {
   let newContact = createContact(nameRef.value, emailRef.value, phoneRef.value);
   await saveContact(newContact);
   updateContactUI();
   resetContactForm(nameRef, emailRef, phoneRef);
   signupSuccessfullMessage("new");  
+}
+
+function closeModalAddTask() {
+  let modalElement = document.getElementById("exampleModal");
+  let modalInstance = bootstrap.Modal.getInstance(modalElement);
+  if (modalInstance) {
+    modalInstance.hide();
+  }
+  let navElement = document.querySelector(".task_bar .nav_bar");
+  if (navElement) {
+    navElement.focus();
+  } else {
+    document.body.focus();
+  }
 }
 
 function validateContactInputs(nameRef, emailRef, phoneRef) {

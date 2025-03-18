@@ -135,7 +135,6 @@ async function injectSubtasks(task) {
   subtasks.forEach((subtask, index) => {
     subtaskContainer.innerHTML += generateSubtasks(task, subtask, index, statuses[index] === 1);
   });
-
   document.querySelectorAll('input[type="checkbox"]').forEach((cb) => cb.addEventListener("change", handleCheckboxChange));
 }
 

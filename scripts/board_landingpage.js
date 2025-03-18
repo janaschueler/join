@@ -197,7 +197,6 @@ function determinePriotiry(priority) {
     priority = "medium";
   }
   priority = String(priority).toLowerCase().trim();
-
   priority = priority.toLowerCase();
   priority = priority.trim();
   if (priority === "low") {
@@ -297,16 +296,12 @@ function getTaskAndUpdateStatus(status) {
 async function updateUIAfterStatusChange(task, status) {
   const container = document.getElementById(getContainerIdByStatus(status));
   const dashedBox = container.querySelector(".dashed-box");
-
   try {
-    await addStatus(task.id, status); // Status speichern
-
-    // 🟢 NEU: Entferne das Element aus der alten Spalte
+    await addStatus(task.id, status);
     const oldTaskElement = document.getElementById(task.id);
     if (oldTaskElement) {
       oldTaskElement.remove();
     }
-
     if (dashedBox) dashedBox.style.display = "none"; // Die Drop-Zone verstecken
   } catch (error) {
     console.error("Error updating status:", error);
