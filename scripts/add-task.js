@@ -175,6 +175,16 @@ async function addTask(statusTask) {
   }
 }
 
+/**
+ * Validates the input fields for a task creation form.
+ *
+ * This function checks if the task title, due date, and category fields are valid.
+ * It applies or removes a red border to indicate invalid fields.
+ *
+ * @param {string} title - The title of the task. Must not be empty.
+ * @param {string} dueDate - The due date of the task in a valid date format.
+ * @param {string} category - The category of the task. Must not be empty or the default "Select task category".
+ */
 function validateTaskFields(title, dueDate, category) {
   toggleRedBorder("inputField", !title);
   if (category == "Select task category" || category == "") {
@@ -215,6 +225,12 @@ function toggleRedBorder(elementId, condition) {
   }
 }
 
+/**
+ * Validates the selected category when the input loses focus.
+ * If the selected category is the default placeholder ("Select task category"),
+ * it adds a red border to the category input element to indicate an error.
+ * Otherwise, it removes the red border.
+ */
 function validateCategoryOnBlur() {
   let category = document.getElementById("category-selection").textContent.trim();
   if (category == "Select task category") {
@@ -224,6 +240,14 @@ function validateCategoryOnBlur() {
   }
 }
 
+/**
+ * Validates an input field's value when it loses focus (on blur).
+ * Checks if the input value is empty or represents a date earlier than today.
+ * If the validation fails, it adds a "red-border" class to the input element.
+ * Otherwise, it removes the "red-border" class.
+ *
+ * @param {HTMLInputElement} input - The input element to validate.
+ */
 function validateOnBlur(input) {
   const inputDate = new Date(input.value);
   const today = new Date();
@@ -397,6 +421,16 @@ function accept(id) {
   subTaskContainer.innerHTML += addSubtaskTemplate(newSubTask, id);
 }
 
+/**
+ * Clears and resets the task creation form to its default state.
+ * 
+ * This function prevents the default form submission behavior and resets all input fields,
+ * dropdowns, checkboxes, and error messages in the task creation form. It also clears
+ * any selected contacts and subtasks, resets the priority to the default medium level,
+ * and removes any visual indicators such as red borders or error messages.
+ * 
+ * @param {Event} event - The event object associated with the form submission.
+ */
 function clearForm(event) {
   event.preventDefault();
   document.getElementById("inputField").value = "";
@@ -416,7 +450,7 @@ function clearForm(event) {
   document.querySelectorAll(".error-message").forEach((error) => {
     error.style.display = "none";
   });
-  s;
+  
   selectedContacts = [];
   const defaultMediumButton = document.querySelector(".priority .medium");
   handlePriorityClick(defaultMediumButton);
@@ -432,6 +466,12 @@ function getRandomColor() {
   return color;
 }
 
+/**
+ * Sets the minimum selectable date for all input elements with an ID containing "due-date" 
+ * to the current date. The function ensures that users cannot select a date earlier than today.
+ * It formats the current date as "YYYY-MM-DD" and applies it as the "min" attribute to the 
+ * relevant input elements.
+ */
 function setMinDate() {
   const today = new Date();
   const yyyy = today.getFullYear();

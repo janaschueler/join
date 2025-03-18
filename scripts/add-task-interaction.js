@@ -120,8 +120,11 @@ function addSubtask() {
   let subTaskContainer = document.getElementById("subtasks-container");
 
   if (subTaskInputRef && subTaskContainer) {
-    let subTaskInput = subTaskInputRef.value.trim();
-    if (!subTaskInput) return;
+    let subTaskInput = subTaskInputRef.value.trim(); 
+
+    if (!subTaskInput) {
+      return;
+    }
 
     normalSubtaskCount += 1;
     subTaskContainer.innerHTML += addSubtaskTemplate(subTaskInput, normalSubtaskCount);
@@ -129,6 +132,7 @@ function addSubtask() {
     resetButtonAddTask(normalSubtaskCount);
   }
 }
+
 
 function transformButtonAddTask() {
   const buttonContainer = document.getElementById("iconAddButton");
