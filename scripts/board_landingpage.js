@@ -67,6 +67,12 @@ async function getDataTasks(path = "") {
   return tasks;
 }
 
+/**
+ * Determines the names of assigned contacts from an array of contact objects.
+ *
+ * @param {Array<{name: string}>} arryAssignedTo - An array of contact objects, each containing a `name` property.
+ * @returns {string[]|undefined} An array of names of the assigned contacts, or `undefined` if the input is falsy.
+ */
 function determineAssignedTo(arryAssignedTo) {
   if (!arryAssignedTo) {
     return;
@@ -76,6 +82,12 @@ function determineAssignedTo(arryAssignedTo) {
   }
 }
 
+/**
+ * Extracts and returns an array of colors from the provided array of assigned contacts.
+ *
+ * @param {Array<{color: string}>} arryAssignedColor - An array of objects, each containing a `color` property.
+ * @returns {string[]|undefined} An array of color strings if `arryAssignedColor` is provided; otherwise, undefined.
+ */
 function determineColor(arryAssignedColor) {
   if (!arryAssignedColor) {
     return;
@@ -85,6 +97,15 @@ function determineColor(arryAssignedColor) {
   }
 }
 
+/**
+ * Determines the status for a given key. If the status is null or undefined, 
+ * it initializes the status to 1, adds it using the `addStatus` function, 
+ * and returns the initialized status. Otherwise, it simply returns the provided status.
+ *
+ * @param {string} key - The unique identifier for which the status is being determined.
+ * @param {number|null|undefined} status - The current status value, which can be null or undefined.
+ * @returns {number} - The determined or provided status value.
+ */
 function determinStatus(key, status) {
   if (status === null || status === undefined) {
     status = 1;
@@ -95,6 +116,15 @@ function determinStatus(key, status) {
   }
 }
 
+/**
+ * Asynchronously adds or updates a status in the database for a given key.
+ *
+ * @async
+ * @function
+ * @param {string} key - The unique identifier for the database entry.
+ * @param {string} status - The status value to be added or updated.
+ * @throws {Error} Throws an error if the operation fails.
+ */
 async function addStatus(key, status) {
   try {
     await postToDatabase(key, "/status", status);
@@ -104,6 +134,17 @@ async function addStatus(key, status) {
   }
 }
 
+/**
+ * Sends a PUT request to the specified database endpoint with the provided data.
+ *
+ * @async
+ * @function postToDatabase
+ * @param {string} [path1=""] - The first part of the path to append to the base URL.
+ * @param {string} [path2=""] - The second part of the path to append to the base URL.
+ * @param {Object} [data={}] - The data to be sent in the request body.
+ * @returns {Promise<void>} Resolves if the request is successful, otherwise logs an error to the console.
+ * @throws {Error} Logs an error to the console if the fetch request fails.
+ */
 async function postToDatabase(path1 = "", path2 = "", data = {}) {
   const url = `${BASE_URL}tasks/${path1}${path2}.json`;
   try {
@@ -152,6 +193,19 @@ async function getDataContacts(path = "") {
   return contacts;
 }
 
+/**
+ * Generates an abbreviation from a given name or object.
+ *
+ * If the input is an object, the function extracts the first key
+ * and uses it as the name. If the input is a string, it splits the
+ * string into words, takes the first character of each word, and
+ * combines them into an abbreviation.
+ *
+ * @param {string|Object} newName - The input name as a string or an object.
+ *                                  If an object is provided, the first key
+ *                                  of the object is used as the name.
+ * @returns {string} The generated abbreviation in uppercase.
+ */
 function generateAbbreviation(newName) {
   if (typeof newName === "object" && newName !== null) {
     newName = Object.keys(newName)[0];
@@ -176,6 +230,16 @@ function loadBoardContent() {
   loadBordContentByStatus(4, "doneContainer");
 }
 
+/**
+ * Loads and displays tasks based on their status into a specified container.
+ *
+ * @param {string} status - The status of the tasks to filter (e.g., "in-progress", "completed").
+ * @param {string} containerId - The ID of the HTML container where the tasks will be rendered.
+ *
+ * This function filters tasks from the global `allTasks` array based on the provided status.
+ * If no tasks match the status, it displays a "no tasks left" message in the container.
+ * Otherwise, it clears the container and renders each matching task using the `renderTask` function.
+ */
 function loadBordContentByStatus(status, containerId) {
   let tasks = allTasks.filter((t) => t["status"] === status);
   if (tasks.length === 0) {
@@ -188,6 +252,18 @@ function loadBordContentByStatus(status, containerId) {
   }
 }
 
+/**
+ * Renders a task into the specified container by generating its HTML representation
+ * and injecting additional elements such as assignees and progress indicators.
+ *
+ * @param {Object} task - The task object containing details about the task.
+ * @param {string} task.id - The unique identifier for the task.
+ * @param {string} task.priority - The priority level of the task (e.g., "high", "medium", "low").
+ * @param {Array} [task.subtasks] - An optional array of subtasks associated with the task.
+ * @param {Array} [task.subtasksStatus] - An optional array indicating the completion status of each subtask.
+ * @param {string} task.category - The category of the task, used to determine its color.
+ * @param {HTMLElement} container - The DOM element where the task will be rendered.
+ */
 function renderTask(task, container) {
   let priorityIcon = determinePriotiry(task.priority);
   let numberOfSubtasks = Array.isArray(task.subtasks) ? task.subtasks.length : 0;
@@ -201,6 +277,14 @@ function renderTask(task, container) {
   injectAssignees(task);
 }
 
+/**
+ * Determines the appropriate priority icon path based on the given priority level.
+ * If no priority is provided, defaults to "medium".
+ *
+ * @param {string} priority - The priority level ("low", "medium", or "urgent").
+ *                             Case-insensitive and leading/trailing spaces are ignored.
+ * @returns {string} - The file path to the corresponding priority icon.
+ */
 function determinePriotiry(priority) {
   if (!priority) {
     priority = "medium";
@@ -220,6 +304,15 @@ function determinePriotiry(priority) {
   return priority;
 }
 
+/**
+ * Calculates the progress percentage based on the number of subtasks and their completion status.
+ *
+ * @param {number} numberOfSubtasks - The total number of subtasks.
+ * @param {number[]} subtasksStatus - An array representing the status of each subtask, 
+ *                                    where 1 indicates a completed subtask and other values indicate incomplete.
+ * @returns {number} The progress percentage, rounded to the nearest whole number. 
+ *                   Returns 0 if the subtasksStatus array is empty or not an array.
+ */
 function determineProgress(numberOfSubtasks, subtasksStatus) {
   if (!Array.isArray(subtasksStatus) || subtasksStatus.length === 0) {
     return 0;
@@ -229,6 +322,13 @@ function determineProgress(numberOfSubtasks, subtasksStatus) {
   return Math.round(progressPercentage);
 }
 
+/**
+ * Determines the number of completed subtasks from a given array of subtask statuses.
+ *
+ * @param {number[]} subtasksStatus - An array representing the statuses of subtasks, 
+ *                                    where each status is a number (e.g., 1 for completed, 0 for not completed).
+ * @returns {number} The count of completed subtasks. Returns 0 if the input is null or undefined.
+ */
 function determineNumberCompletetSubtasks(subtasksStatus) {
   if (!subtasksStatus) {
     return 0;
@@ -237,6 +337,19 @@ function determineNumberCompletetSubtasks(subtasksStatus) {
   return completedSubtasks;
 }
 
+/**
+ * Injects assignee information into the DOM for a given task.
+ * This function dynamically updates the HTML content of an assignee container
+ * by generating and appending visual representations (circles) for each assignee.
+ *
+ * @async
+ * @function
+ * @param {Object} task - The task object containing assignee and color information.
+ * @param {number|string} task.id - The unique identifier of the task.
+ * @param {Array<string>} task.assignedTo - An array of assignee names.
+ * @param {Array<string>} task.color - An array of color strings corresponding to each assignee.
+ * @throws {Error} Throws an error if the task object does not have valid `assignedTo` or `color` arrays.
+ */
 async function injectAssignees(task) {
   const assigneeContainer = document.getElementById(`assigneeContainer${task["id"]}`);
   assigneeContainer.innerHTML = "";
@@ -249,6 +362,14 @@ async function injectAssignees(task) {
   }
 }
 
+/**
+ * Generates an abbreviation from the given assignee's name.
+ * The abbreviation is created by taking the first letter of each word in the name.
+ *
+ * @param {string} assignee - The full name of the assignee (e.g., "John Doe").
+ * @returns {string|undefined} The abbreviation of the assignee's name (e.g., "JD"),
+ * or `undefined` if no assignee is provided.
+ */
 function getAssigneeAbbreviation(assignee) {
   if (!assignee) {
     return;
@@ -282,141 +403,4 @@ function allowDrop(event) {
       }
     }
   });
-}
-
-function drag(ev) {
-  ev.dataTransfer.setData("text", ev.target.id);
-}
-
-async function drop(status) {
-  const task = getTaskAndUpdateStatus(status);
-  await updateUIAfterStatusChange(task, status);
-  reloadBoardContent();
-}
-
-function getTaskAndUpdateStatus(status) {
-  const task = Object.values(allTasks).find((t) => t.id === currentDraggedElement);
-  task.status = status;
-  const rotatingElement = document.querySelector(`[onclick="openModal('${currentDraggedElement}')"]`);
-  if (rotatingElement) rotatingElement.classList.remove("rotating");
-  return task;
-}
-
-async function updateUIAfterStatusChange(task, status) {
-  const container = document.getElementById(getContainerIdByStatus(status));
-  const dashedBox = container.querySelector(".dashed-box");
-  try {
-    await addStatus(task.id, status);
-    const oldTaskElement = document.getElementById(task.id);
-    if (oldTaskElement) {
-      oldTaskElement.remove();
-    }
-    if (dashedBox) dashedBox.style.display = "none"; // Die Drop-Zone verstecken
-  } catch (error) {
-    console.error("Error updating status:", error);
-  }
-}
-
-function startDragging(id) {
-  currentDraggedElement = id;
-  const element = document.querySelector(`[onclick="openModal('${id}')"]`);
-  if (element) {
-    element.classList.add("rotating");
-  }
-}
-
-/**
- * The above JavaScript code defines functions to search and render tasks based on input, with a focus
- * on filtering and displaying tasks in different containers based on their status.
- * @param searchInput - The `searchInput` parameter in the `searchTasks` function is the user input
- * from the search form. It is the value entered by the user in the search input field, which is then
- * trimmed of any extra whitespace and converted to lowercase for case-insensitive comparison.
- * @returns The code snippet provided is an event listener that listens for a form submission on an
- * element with the id "searchForm". When the form is submitted, it prevents the default form
- * submission behavior, gets the value of the search input field, trims and converts it to lowercase,
- * and then calls the function `searchTasks(searchInput)` with the search input value as an argument.
- * Followed by `renderTaskByStatus(task)` which ultimately renders the filtered tasks back into the board.
- */
-document.getElementById("searchForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-  console.log("Form submitted");
-  const searchInput = document.getElementById("searchInput").value.trim().toLowerCase();
-  searchTasks(searchInput);
-});
-
-function searchTasks(searchInput) {
-  ["ToDoTaskContainer", "inProgressContainer", "TestingContainer", "doneContainer"].forEach((id) => {
-    document.getElementById(id).innerHTML = "";
-  });
-  if (!searchInput) {
-    allTasks.forEach((task) => renderTaskByStatus(task));
-    return;
-  }
-  const filteredTasks = allTasks.filter((task) => {
-    const titleMatches = task.title?.toLowerCase().includes(searchInput);
-    const descriptionMatches = task.description?.toLowerCase().includes(searchInput);
-    return titleMatches || descriptionMatches;
-  });
-  if (filteredTasks.length > 0) {
-    filteredTasks.forEach((task) => renderTaskByStatus(task));
-  }
-}
-
-function renderTaskByStatus(task) {
-  const containerId = getContainerIdByStatus(task.status);
-  if (!containerId) return console.error("Ungültiger Status:", task.status);
-  const container = document.getElementById(containerId);
-  const priorityIcon = determinePriotiry(task.priority);
-  const numberOfSubtasks = task.subtasks ? task.subtasks.length : 0;
-  const progressOfProgressbar = 50;
-  const numberCompletetSubtasks = determineNumberCompletetSubtasks(task.subtasksStatus);
-  const categoryColor = determineCategoryColor(task.category);
-  container.innerHTML += generateToDoHTML(task, priorityIcon, numberOfSubtasks, progressOfProgressbar, numberCompletetSubtasks, categoryColor);
-  injectAssignees(task);
-  toggleProgressContainer(task);
-}
-
-function getContainerIdByStatus(status) {
-  switch (status) {
-    case 1:
-      return "ToDoTaskContainer";
-    case 2:
-      return "inProgressContainer";
-    case 3:
-      return "TestingContainer";
-    case 4:
-      return "doneContainer";
-    default:
-      return null;
-  }
-}
-
-function toggleProgressContainer(task) {
-  const progressContainerId = `progressContainer${task.id}`;
-  if (!task.subtasks?.length) {
-    const progressContainerElement = document.getElementById(progressContainerId);
-    if (progressContainerElement) progressContainerElement.style.display = "none";
-  }
-}
-
-/**
- * The function `addStatusBoard` asynchronously posts a status to a database and reloads the window
- * upon completion.
- * @param key - The `key` parameter is a unique identifier. It is used to locate the specific data that needs
- * to be updated with the new status information.
- * @param status - The `status` parameter in the `addStatusBoard` function represents one of tbe four status in the board.
- * It is the data that will be sent to the database endpoint `/status` using the `postToDatabase` function.
- * @param event - The `event` parameter in the `addStatusBoard` function is an event object that is
- * passed to the function when it is called. It is used to handle events in the browser, such as click
- * events or form submissions. In this case, the `event.stopPropagation(event)` method is being called
- */
-async function addStatusBoard(key, status, event) {
-  event.stopPropagation(event);
-  try {
-    await postToDatabase(key, "/status", status);
-    reloadBoardContent();
-  } catch (error) {
-    console.error("Error setting status:", error);
-    throw error;
-  }
 }

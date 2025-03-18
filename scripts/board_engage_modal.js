@@ -42,6 +42,18 @@ function handleButtonClick(event, id) {
   }
 }
 
+/**
+ * Adds a new subtask to the edit modal for a specific task.
+ * 
+ * This function handles the addition of a new subtask in the edit modal by 
+ * appending the subtask to the subtask container and updating the task's 
+ * subtask list. It also resets the input field and updates the edit modal buttons.
+ * 
+ * @param {Event} event - The event object triggered by the form submission or button click.
+ * @param {number} id - The unique identifier of the task to which the subtask belongs.
+ * 
+ * @returns {void} This function does not return a value.
+ */
 function addAdditionalSubtaskinEditModal(event, id) {
   event.preventDefault();
   event.stopPropagation();
@@ -51,16 +63,25 @@ function addAdditionalSubtaskinEditModal(event, id) {
   if (!subTaskInput) {
     return;
   }
-
   let tasks = allTasks.filter((t) => t["id"] === id);
   let numberOfSubTaskInput = tasks[0]?.subtasks?.length || 0;
   let subTaskCount = numberOfSubTaskInput + 1;
-
   subTaskContainer.innerHTML += addSubtaskTemplateinModal(subTaskInput, subTaskCount);
   subTaskInputRef.value = "";
   resetButtonEdit(id);
 }
 
+/**
+ * Deletes a subtask element from the DOM based on its unique identifier.
+ *
+ * @param {number|string} id - The unique identifier of the subtask to be removed.
+ *                             This ID is used to locate the subtask element in the DOM.
+ *
+ * @example
+ * // Assuming there is an element with the ID "editSubTaskUnit1" in the DOM:
+ * deleteSubtaskModal(1);
+ * // The element with ID "editSubTaskUnit1" will be removed from the DOM.
+ */
 function deleteSubtaskModal(id) {
   const removeSubtask = document.getElementById(`editSubTaskUnit${id}`);
   removeSubtask.remove();
@@ -81,6 +102,12 @@ function transformButtonEdit(id) {
   buttonContainer.outerHTML = addtransformedButton(id);
 }
 
+/**
+ * Resets the content of the button edit wrapper by replacing its inner HTML
+ * with the transformed button HTML for the specified ID.
+ *
+ * @param {string} id - The unique identifier used to generate the transformed button HTML.
+ */
 function resetButtonEdit(id) {
   const inputWrapper = document.getElementById("inputWrapperEdit");
   inputWrapper.innerHTML = returnTransformedButton(id);
@@ -102,6 +129,16 @@ function editSubtaskinModal(id, subTaskInput) {
   editSubtask.innerHTML = addInputFieldinModal(id, subTaskInput);
 }
 
+/**
+ * Handles the acceptance of an edited subtask in a modal.
+ * 
+ * This function retrieves the value of an edited subtask input field by its ID.
+ * If the input value is empty, it deletes the subtask from the modal. Otherwise,
+ * it removes the existing subtask element from the DOM and appends a new subtask
+ * element with the updated value to the container.
+ * 
+ * @param {number|string} id - The unique identifier of the subtask being edited.
+ */
 function acceptEdit(id) {
   let subTaskContainer = document.getElementById("editSubtasks-container");
   let newSubTask = document.getElementById(`inputSubtask${id}`).value;
@@ -128,7 +165,6 @@ function acceptEdit(id) {
 async function saveEditTask(id) {
   const taskData = gatherTaskData();
   if (!validateTaskData(taskData)) return;
-
   try {
     await saveTaskData(id, taskData);
     alert("Task successfully created!");
@@ -138,6 +174,19 @@ async function saveEditTask(id) {
   }
 }
 
+/**
+ * Gathers task data from the input fields in the DOM and returns it as an object.
+ * 
+ * @returns {Object} An object containing the task data.
+ * @property {string} title - The title of the task, trimmed of whitespace.
+ * @property {string} description - The description of the task, trimmed of whitespace.
+ * @property {string} dueDate - The due date of the task in ISO format.
+ * @property {string} category - The category of the task.
+ * @property {Array} assignedContacts - An array of selected contacts assigned to the task.
+ * @property {string} priority - The selected priority level of the task.
+ * @property {string} status - The status of the task, determined by the `determineStatusAddTask` function.
+ * @property {string} createdAt - The ISO timestamp of when the task was created.
+ */
 function gatherTaskData() {
   return {
     title: document.getElementById("inputField").value.trim(),
@@ -151,6 +200,17 @@ function gatherTaskData() {
   };
 }
 
+/**
+ * Validates the task data to ensure all required fields are present.
+ *
+ * @param {Object} taskData - The task data to validate.
+ * @param {string} taskData.title - The title of the task.
+ * @param {string} taskData.description - The description of the task.
+ * @param {string} taskData.dueDate - The due date of the task in a valid date format.
+ * @param {string} taskData.category - The category of the task.
+ * @param {string} taskData.priority - The priority level of the task.
+ * @returns {boolean} Returns `true` if all fields are present and valid, otherwise `false`.
+ */
 function validateTaskData({ title, description, dueDate, category, priority }) {
   if (!title || !description || !dueDate || !category || !priority) {
     return false;
@@ -158,6 +218,16 @@ function validateTaskData({ title, description, dueDate, category, priority }) {
   return true;
 }
 
+/**
+ * Saves task data to the server by sending a PUT request to the specified endpoint.
+ *
+ * @async
+ * @function saveTaskData
+ * @param {string} id - The unique identifier of the task to be updated.
+ * @param {Object} taskData - The data object containing the updated task details.
+ * @throws {Error} Throws an error if the server response is not OK (status not in the range 200-299).
+ * @returns {Promise<void>} A promise that resolves when the task data is successfully saved.
+ */
 async function saveTaskData(id, taskData) {
   const response = await fetch(`${BASE_URL}/tasks/${id}.json`, {
     method: "PUT",
@@ -208,6 +278,14 @@ function handleUncheckedState(contactId, container) {
   selectedContacts = selectedContacts.filter((c) => c.id !== contactId);
 }
 
+/**
+ * Updates the "selected-contacts-Edit" container with the currently selected contacts.
+ * Clears the container and dynamically creates and appends a visual representation
+ * of each selected contact, including their initials and background color.
+ *
+ * @function
+ * @returns {void}
+ */
 function updateSelectedContactsEdit() {
   const selectedContactsContainer = document.getElementById("selected-contacts-Edit");
   selectedContactsContainer.innerHTML = "";
@@ -221,6 +299,18 @@ function updateSelectedContactsEdit() {
   });
 }
 
+/**
+ * Filters the list of contacts in the edit modal based on the search input.
+ * 
+ * This function retrieves the search term entered by the user in the input field
+ * with the ID "search-contacts-edit", converts it to lowercase, and compares it
+ * against the text content of elements with the class "subtasksUnit" inside
+ * elements with the class "customCheckboxContainer". If the text content matches
+ * the search term, the corresponding container is displayed; otherwise, it is hidden.
+ * 
+ * @function
+ * @returns {void}
+ */
 function filterContactsEdit() {
   const searchTerm = document.getElementById("search-contacts-edit").value.toLowerCase();
   document.querySelectorAll(".customCheckboxContainer").forEach((label) => {
@@ -229,6 +319,24 @@ function filterContactsEdit() {
   });
 }
 
+/**
+ * Toggles the visibility of the dropdown menu for editing assignments and updates the display of the dropdown icons.
+ * 
+ * @param {Event} event - The event object triggered by the user interaction.
+ * @returns {void}
+ * 
+ * @description
+ * This function prevents the event from propagating further, then toggles the visibility of the dropdown menu
+ * with the ID "assigned-dropdown-Edit". It also switches the display of the dropdown icons between a "down" icon
+ * and an "up" icon based on the visibility state of the dropdown menu.
+ * 
+ * - When the dropdown becomes visible:
+ *   - The "down" icon is hidden.
+ *   - The "up" icon is displayed.
+ * - When the dropdown is hidden:
+ *   - The "down" icon is displayed.
+ *   - The "up" icon is hidden.
+ */
 function toggleDropdownEdit(event) {
   event.stopPropagation();
   const dropdown = document.getElementById("assigned-dropdown-Edit");
@@ -244,6 +352,20 @@ function toggleDropdownEdit(event) {
   }
 }
 
+
+/**
+ * Closes a dropdown menu when a click is detected outside of the dropdown or its toggle button.
+ *
+ * @param {Event} event - The click event triggered by the user.
+ * @param {string} dropdownId - The ID of the dropdown element to be closed.
+ * @param {string} toggleId - The ID of the toggle button associated with the dropdown.
+ * @param {string} [iconId] - The optional ID of an icon element to reset its rotation.
+ *
+ * @description
+ * This function checks if the click event occurred outside the specified dropdown and its toggle button.
+ * If so, it hides the dropdown, resets the rotation of the icon (if provided), and adjusts the display
+ * of specific dropdown-related elements when the dropdown ID matches "assigned-dropdown-Edit".
+ */
 document.addEventListener("click", function (event) {
   closeDropdownOnOutsideClickEdit(event, "assigned-dropdown-Edit", "assigned-input-Edit", null);
 });
@@ -263,176 +385,5 @@ function closeDropdownOnOutsideClickEdit(event, dropdownId, toggleId, iconId) {
       document.querySelector(".dropDown").style.display = "block";
       document.querySelector(".dropDown-up").style.display = "none";
     }
-  }
-}
-
-window.toggleContactSelectionEditPreselected = function (contactId, contactName, contactColor) {
-  const checkbox = document.getElementById(`edit-contact-${contactId}`);
-  if (!checkbox) return;
-  setTimeout(() => {
-    const container = checkbox.closest(".customCheckboxContainer");
-    const input = document.getElementById("search-contacts-edit");
-    if (!checkbox.checked) {
-      handlePreselectedState(contactId, contactName, contactColor, container, input, checkbox);
-    }
-    updateSelectedContactsEdit();
-  }, 0);
-};
-
-function handlePreselectedState(contactId, contactName, contactColor, container, input, checkbox) {
-  checkbox.checked = true;
-  container.classList.add("checked");
-  if (!selectedContacts.some((c) => c.id === contactId)) {
-    selectedContacts.push({ id: contactId, name: contactName, color: contactColor });
-  }
-  input.value = "";
-  filterContactsEdit();
-}
-
-/**
- * The function `addTaskModal` in the JavaScript code snippet handles the addition and updating of
- * tasks by sending data to a server and redirecting to a board page upon successful save.
- * @param id - The `id` parameter in your functions represents the unique identifier of a task. It is
- * used to determine whether the task being modified is an existing task or a new task. If the `id` is
- * provided, it indicates an existing task is being edited, and if it is not provided, it
- * @param status - The `status` parameter in the `addTaskModal` and `addTaskModalNewTask` functions
- * represents the status of the task being added. It is used to determine the initial status of the
- * task, whether it's a new task or an existing task being updated. The status can be passed
- * @returns The `addTaskModal` function returns either `undefined` or nothing explicitly (implicit
- * return).
- */
-async function addTaskModal(id, status) {
-  const title = document.getElementById("inputField")?.value.trim();
-  const dueDate = document.getElementById("due-date-edit")?.value.trim();
-  const dueDateCheck = dueDateValidity(dueDate);
-  const category = document.getElementById("category")?.value;
-  validateTaskFields(title, dueDate, category);
-  if (!title || !dueDate || !dueDateCheck) {
-    return;
-  }
-  if (!id) {
-    if (!category) {
-      return;
-    }
-    addTaskModalNewTask(status);
-    return;
-  }
-  const taskData = prepareTaskData(id, status);
-  if (!taskData) {
-    return;
-  }
-  try {
-    const response = await fetch(`${BASE_URL}/tasks/${id}.json`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(taskData),
-    });
-
-    if (response.ok) {
-      closeModalAddTask();
-      allTasks = await getDataTasks();
-      allContacts = await getDataContacts();
-      loadBoardContent();
-    }
-  } catch (error) {
-    console.error("Error saving:", error);
-  }
-}
-
-function prepareTaskData(id, status) {
-  const title = document.getElementById("inputField").value.trim();
-  const dueDate = document.getElementById("due-date-edit").value.trim();
-  const category = determineCategory(id);
-  const selectedPriority = determinePriority(id);
-  if (!title || !dueDate || !category) return null;
-  return {
-    title,
-    description: document.getElementById("description").value.trim(),
-    assignedContacts: selectedContacts,
-    dueDate,
-    category,
-    priority: selectedPriority,
-    subtasks: Array.from(document.querySelectorAll(".subtask-text")).map((item) => item.textContent.trim()),
-    createdAt: new Date().toISOString(),
-    status,
-  };
-}
-
-function determineCategory(id) {
-  let formCategory = document.getElementById("category").value;
-  if (formCategory) {
-    return formCategory;
-  } else {
-    let task = allTasks.filter((t) => t["id"] === id);
-    let category = task[0].category;
-    return category;
-  }
-}
-
-function determinePriority() {
-  const priorityButtons = document.querySelectorAll(".priority button");
-  for (let button of priorityButtons) {
-    const backgroundColor = window.getComputedStyle(button).backgroundColor;
-    if (backgroundColor !== "rgb(255, 255, 255)") {
-      priority = String(button.classList).toLowerCase().trim();
-      return priority;
-    }
-  }
-  return "medium";
-}
-
-async function addTaskModalNewTask(status) {
-  const taskData = prepareNewTaskData(status);
-  if (!taskData) {
-    return;
-  }
-  await saveNewTask(taskData);
-  reloadBoardContent();
-  closeModalAddTask();
-}
-
-function prepareNewTaskData(status) {
-  const title = document.getElementById("inputField").value.trim();
-  const dueDate = document.getElementById("due-date-edit").value.trim();
-  const category = document.querySelector("#category-input span").textContent.trim();
-
-  validateTaskFields(title, dueDate, category);
-
-  if (!title || !dueDate || !category) return null;
-
-  return {
-    title,
-    description: document.getElementById("description").value.trim(),
-    assignedContacts: selectedContacts,
-    dueDate,
-    category,
-    priority: selectedPriority,
-    subtasks: Array.from(document.querySelectorAll(".subtask-text")).map((item) => item.textContent.trim()),
-    createdAt: new Date().toISOString(),
-    status,
-  };
-}
-
-async function saveNewTask(taskData) {
-  try {
-    const response = await fetch(`${BASE_URL}/tasks.json`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(taskData),
-    });
-    if (!response.ok) window.location.href = "board.html";
-  } catch (error) {
-    console.error("Error saving task:", error);
-  }
-}
-
-function validateCategoryOnBlurModal() {
-  let categoryInput = document.getElementById("category-input");
-  let categorySpan = categoryInput.querySelector("span");
-  let category = categorySpan.textContent.trim();
-  if (category === "Select task category") {
-    categoryInput.classList.add("red-border");
-  } else {
-    categoryInput.classList.remove("red-border");
   }
 }

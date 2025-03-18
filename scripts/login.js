@@ -24,6 +24,18 @@ function showLoadingMessage() {
   }
 }
 
+/**
+ * Displays a loading message on the desktop with a series of timed animations.
+ *
+ * This function manipulates the styles of an HTML element with the ID "loadingMessage"
+ * to create a loading animation. It performs the following steps:
+ * 1. Adds a "show" class to the element after 100ms.
+ * 2. Updates the element's display, size, position, and transformation styles after 1000ms.
+ * 3. Resets the position style of the element after 2000ms.
+ *
+ * Note: Ensure that an element with the ID "loadingMessage" exists in the DOM
+ * before calling this function.
+ */
 function showDesktopLoadingMessage() {
   const loadingMessage = document.getElementById("loadingMessage");
   setTimeout(() => {
@@ -42,6 +54,14 @@ function showDesktopLoadingMessage() {
   }, 2000);
 }
 
+/**
+ * Displays the desktop content by making the login container, footer, and header visible.
+ * Adds a "show" class to these elements for potential animations or styling.
+ * The visibility changes occur after a delay of 1.5 seconds.
+ *
+ * @function
+ * @returns {void}
+ */
 function showDesktopContent() {
   const loginContainer = document.getElementById("loginContainer");
   const footer = document.getElementById("footer");
@@ -56,6 +76,20 @@ function showDesktopContent() {
   }, 1500);
 }
 
+/**
+ * Displays a loading message on mobile devices with an animated transition.
+ *
+ * This function selects an HTML element with the ID "loadingMessageMobile" and applies
+ * a series of style changes to create a loading animation. The animation consists of
+ * two stages:
+ *
+ * 1. Immediately adds a "show" class to the element to make it visible.
+ * 2. After a delay of 1 second, adjusts the element's size, position, and transform properties
+ *    to create a scaling and translating effect.
+ *
+ * Note: Ensure that an element with the ID "loadingMessageMobile" exists in the DOM
+ * before calling this function to avoid runtime errors.
+ */
 function showMobileLoadingMessage() {
   const loadingMessageMobile = document.getElementById("loadingMessageMobile");
   setTimeout(() => {
@@ -70,6 +104,13 @@ function showMobileLoadingMessage() {
   }, 1000);
 }
 
+/**
+ * Switches the visibility of two mobile logo elements after a delay.
+ * The function hides the element with the ID "mobileLogoChange" and displays
+ * the element with the ID "mobileLogoChangeDark" after a 1.5-second timeout.
+ * It also ensures the displayed element is fully visible by setting its
+ * opacity and visibility styles.
+ */
 function switchMobileLogo() {
   const mobileLogoChange = document.getElementById("mobileLogoChange");
   const mobileLogoChangeDark = document.getElementById("mobileLogoChangeDark");
@@ -81,6 +122,24 @@ function switchMobileLogo() {
   }, 1500);
 }
 
+/**
+ * Displays the mobile content by modifying the styles and classes of specific elements
+ * after a delay of 1.5 seconds. This function is intended to adjust the layout for
+ * mobile views by showing the login container, mobile navigation, and footer.
+ *
+ * The following changes are made:
+ * - Sets the body's background color to "rgb(246, 247, 248)" with high priority.
+ * - Displays the login container and mobile navigation as flex elements.
+ * - Adds the "show" class to the login container, mobile navigation, and footer.
+ *
+ * Elements involved:
+ * - `loginContainer`: The container for the login section.
+ * - `mobileNav`: The navigation bar for mobile devices.
+ * - `footer`: The footer section of the page.
+ *
+ * Note: Ensure the elements with IDs `loginContainer`, `mobileNav`, and `footer`
+ * exist in the DOM before calling this function to avoid runtime errors.
+ */
 function showMobileContent() {
   const loginContainer = document.getElementById("loginContainer");
   const mobileNav = document.getElementById("mobileNav");
@@ -95,6 +154,14 @@ function showMobileContent() {
   }, 1500);
 }
 
+/**
+ * Hides the loading background element by gradually reducing its opacity to 0
+ * and then setting its display property to "none" after a delay.
+ *
+ * This function assumes there is an element with the ID "loadingBackground"
+ * in the DOM. It first sets the opacity of the element to "0" to create a fade-out
+ * effect, and then uses a timeout to hide the element completely after 1 second.
+ */
 function hideLoadingBackground() {
   const loadingBackground = document.getElementById("loadingBackground");
   loadingBackground.style.opacity = "0";
@@ -124,6 +191,18 @@ async function initializeCheck() {
   checkLogin();
 }
 
+/**
+ * Retrieves data from the server for a specific path and processes the response.
+ *
+ * This function asynchronously fetches data from the server using the provided `path`,
+ * processes the JSON response, and extracts the user data. In case of an error,
+ * it logs the error to the console and returns an empty array.
+ *
+ * @async
+ * @function getData
+ * @param {string} [path=""] - The optional path appended to the base URL for the specific request. Default is an empty string.
+ * @returns {Promise<Array>} A promise that resolves to an array containing the processed user data. In case of an error, it resolves to an empty array.
+ */
 async function getData(path = "") {
   try {
     const response = await fetch(`${BASE_URL}signup/user/${path}.json`);
@@ -137,6 +216,18 @@ async function getData(path = "") {
   }
 }
 
+/**
+ * Extracts and processes user data from the given JSON response.
+ *
+ * This function takes a JSON object and extracts specific user-related fields
+ * (such as contact email, password, name, and abbreviation) from it,
+ * returning an array of user objects containing the extracted information.
+ *
+ * @function extractUserData
+ * @param {Object} responseToJson - The JSON response object containing user data.
+ * @returns {Array} An array of objects, each representing a user with properties
+ *                  `contactEmail`, `contactPassword`, `contactId`, `contactName`, and `contactAbbreviation`.
+ */
 function extractUserData(responseToJson) {
   return Object.entries(responseToJson || {}).map(([key, user]) => ({
     contactEmail: user.contactEmail,
@@ -169,16 +260,30 @@ async function checkLogin() {
   const loginEmail = document.getElementById("inputEmail").value.trim().toLowerCase();
   const loginPassword = document.getElementById("inputPassword1").value;
   const user = allUser.find((u) => u?.contactEmail?.[0]?.toLowerCase() === loginEmail && u?.contactPassword?.[0] === loginPassword);
-
   await handleLoginResult(user, disabledBtn);
 }
 
+/**
+ * Handles the result of a login attempt by processing the user data and updating the UI accordingly.
+ *
+ * @async
+ * @function handleLoginResult
+ * @param {Object|null} user - The user object returned from the login attempt. If null, the login failed.
+ * @param {HTMLButtonElement} disabledBtn - The button element that was disabled during the login process.
+ * @returns {Promise<void>} Resolves when the login handling is complete.
+ *
+ * @description
+ * If the login is successful (user is not null), the function transfers the login data, attempts to add a contact,
+ * and redirects the user to the index page if successful. If the login fails (user is null), it displays an error
+ * message, highlights the password field with a red border, and focuses on the password input field.
+ * The disabled button is re-enabled at the end of the process.
+ */
 async function handleLoginResult(user, disabledBtn) {
   if (user) {
     transfereLoginData(user);
     let addContact = await addContactLogIn();
     if (addContact) {
-        window.location.assign("./index.html");
+      window.location.assign("./index.html");
     }
   } else {
     document.getElementById("wrongPassword").classList.remove("d-none");
@@ -189,6 +294,18 @@ async function handleLoginResult(user, disabledBtn) {
   disabledBtn.disabled = false;
 }
 
+/**
+ * Validates the email input from a login form and toggles the visibility of 
+ * elements with IDs containing 'invalidPassword' based on the validation result.
+ *
+ * @returns {boolean} - Returns `true` if the email input is valid, otherwise `false`.
+ *
+ * The function performs the following steps:
+ * 1. Retrieves the value of the input field with the ID "inputEmail".
+ * 2. Validates the input against a regular expression pattern for email addresses.
+ * 3. If the email is invalid, removes the "d_none" class from elements with IDs containing "invalidPassword".
+ * 4. If the email is valid, adds the "d_none" class to those elements.
+ */
 function validateEmailLogin() {
   let input = document.getElementById("inputEmail").value;
   const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
