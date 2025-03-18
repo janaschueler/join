@@ -90,12 +90,11 @@ function highlightButton(button) {
 
 // open Calendar
 function openDatePicker() {
-  setMinDate()
+  setMinDate();
   let dateInput = document.getElementById("due-date");
   if (dateInput) {
     dateInput.showPicker();
   }
-  
 }
 
 /**
@@ -120,7 +119,7 @@ function addSubtask() {
   let subTaskContainer = document.getElementById("subtasks-container");
 
   if (subTaskInputRef && subTaskContainer) {
-    let subTaskInput = subTaskInputRef.value.trim(); 
+    let subTaskInput = subTaskInputRef.value.trim();
 
     if (!subTaskInput) {
       return;
@@ -132,7 +131,6 @@ function addSubtask() {
     resetButtonAddTask(normalSubtaskCount);
   }
 }
-
 
 function transformButtonAddTask() {
   const buttonContainer = document.getElementById("iconAddButton");
@@ -163,6 +161,10 @@ function deleteSubtaskAddTask(id) {
 
 function acceptAddTask(id) {
   let newSubTask = document.getElementById(`inputSubtask${id}`).value;
+  if (!newSubTask) {
+    deleteSubtaskAddTask(id);
+    return;
+  }
   const subTaskContainer = document.getElementById("subtasks-container");
   const removeSubtask = document.getElementById(`editSubTaskUnit${id}`);
   removeSubtask.remove();
