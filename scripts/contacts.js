@@ -280,7 +280,7 @@ async function addContact() {
   await saveContact(newContact);
   updateContactUI();
   resetContactForm(nameRef, emailRef, phoneRef);
-  signupSuccessfullMessage("new");
+  signupSuccessfullMessage("new");  
 }
 
 function validateContactInputs(nameRef, emailRef, phoneRef) {

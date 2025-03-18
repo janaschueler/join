@@ -702,6 +702,10 @@ input[type="number"] {
 }
 
 @media (max-width: 970px) {
+  .contactContainer {
+    height: calc(96vh - 80px);
+  }
+
   .mobile_main {
     display: block;
   }
@@ -711,7 +715,11 @@ input[type="number"] {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px) {  
+  .contactContainer {
+    height: calc(100vh - 80px) !important;
+  }
+
   .mobile_header {
     display: flex;
     justify-content: space-between;
