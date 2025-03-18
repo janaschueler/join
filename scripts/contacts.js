@@ -286,7 +286,7 @@ async function saveNewContact(nameRef, emailRef, phoneRef) {
   await saveContact(newContact);
   updateContactUI();
   resetContactForm(nameRef, emailRef, phoneRef);
-  signupSuccessfullMessage("new");
+  signupSuccessfullMessage("new");  
 }
 
 function closeModalAddTask() {

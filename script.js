@@ -162,28 +162,35 @@ async function postData(path = "", data = {}) {
  */
 async function addContactLogIn() {
   let signInUserData = await getSigneInUserData();
-  if (!signInUserData || !signInUserData.contactName || !signInUserData.contactEmail) {
-  }
+  if (!isValidSignInUser(signInUserData)) return;
   let contacts = await getContacts();
-  let contactsArray = Object.values(contacts);
-  let matchingContacts = contactsArray.filter((contact) => contact.email?.toLowerCase().includes(signInUserData.contactEmail[0].toLowerCase()));
-  if (matchingContacts.length > 0) {
-    return true;
-  }
-  let contactName = signInUserData.contactName[0];
-  let contactEmail = signInUserData.contactEmail[0];
-  let contactId = Date.now().toString();
-  let newContact = {
-    id: contactId,
-    name: contactName,
-    email: contactEmail,
-    color: getColorById(contactId),
-    phone: "",
-  };
+  if (isExistingContact(contacts, signInUserData.contactEmail[0])) return true;
+  let newContact = createNewContact(signInUserData);
   await postData("contacts", newContact);
   selectedContactId = newContact.id;
   return true;
 }
+
+function isValidSignInUser(user) {
+  return user && user.contactName && user.contactEmail;
+}
+
+function isExistingContact(contacts, email) {
+  let contactsArray = Object.values(contacts);
+  return contactsArray.some(contact => contact.email?.toLowerCase().includes(email.toLowerCase()));
+}
+
+function createNewContact(user) {
+  let contactId = Date.now().toString();
+  return {
+    id: contactId,
+    name: user.contactName[0],
+    email: user.contactEmail[0],
+    color: getColorById(contactId),
+    phone: "",
+  };
+}
+
 
 function saveToLocalStorage(user) {
   let userEmail = user.contactEmail[0];

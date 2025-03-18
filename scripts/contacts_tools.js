@@ -45,7 +45,6 @@ function highlightActiveContact() {
 function signupSuccessfullMessage(status) {
     let toastRef = document.getElementById("successMessage");
     let overlay = document.getElementById("overlay");
-
     updateToastMessage(status);
     showToast(toastRef, overlay);
 }
@@ -127,5 +126,5 @@ function mobileContactInfo() {
 
 function toggleDialogVisibility() {
     document.getElementById("body").classList.toggle("o_none");
-    document.getElementById("dialog_content").classList.remove("d_none");
+    document.getElementById("dialog_content").classList.remove("d_none");    
 }
