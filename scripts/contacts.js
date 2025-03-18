@@ -3,6 +3,18 @@ const BASE_URL = "https://join2-72adb-default-rtdb.europe-west1.firebasedatabase
 let allUsers = [];
 let selectedContactId = null;
 
+/**
+ * Initializes the application by checking user authorization and fetching necessary data.
+ *
+ * This asynchronous function verifies the user's access authorization using `checkAccessAuthorization()`.
+ * If authorized, it fetches required data and updates the UI by rendering the top bar,
+ * small and big contact lists, and the modal contacts.
+ * If the user is not authorized, they are redirected to the login page.
+ *
+ * @async
+ * @function init
+ * @returns {Promise<void>} A promise that resolves when all initialization steps are complete.
+ */
 async function init() {
   let checkedAuthority = await checkAccessAuthorization();
   if (checkedAuthority) {
@@ -17,6 +29,18 @@ async function init() {
   }
 }
 
+/**
+ * Fetches data from the specified path and updates the user list.
+ *
+ * This asynchronous function retrieves data from the given API endpoint,
+ * extracts the `contacts` property if available, and updates the `allUsers` array.
+ * After fetching, it updates the UI by rendering small and big contact lists.
+ *
+ * @async
+ * @function fetchData
+ * @param {string} [path=""] - The API endpoint path to fetch data from.
+ * @returns {Promise<Object>} A promise that resolves to the fetched data object.
+ */
 async function fetchData(path = "") {
   let response = await fetch(BASE_URL + path + ".json");
   let data = await response.json();
@@ -52,15 +76,30 @@ function renderModalContacts() {
   }
 }
 
+/**
+ * Renders the small contacts section by sorting the list of users alphabetically,
+ * grouping them by their first letter, and updating the HTML content of the
+ * "contactsSmall_content" element with the generated grouped contacts HTML.
+ *
+ * @function
+ * @returns {void}
+ */
 function renderSmallContacts() {
   let contactsSmallRef = document.getElementById("contactsSmall_content");
   contactsSmallRef.innerHTML = "";
   let sortedContacts = sortContactsByName(allUsers);
   let groupedContactsHTML = generateGroupedContactsHTML(sortedContacts);
-
   contactsSmallRef.innerHTML = groupedContactsHTML;
 }
 
+/**
+ * Sorts an array of contact objects alphabetically by the first name.
+ *
+ * @param {Array<Object>} contacts - An array of contact objects to be sorted.
+ * Each object should have a `name` property containing the full name as a string.
+ *
+ * @returns {Array<Object>} A new array of contact objects sorted by the first name in ascending order.
+ */
 function sortContactsByName(contacts) {
   return contacts.slice().sort((a, b) => {
     let nameA = a.name.trim().split(" ")[0].toUpperCase();
@@ -69,6 +108,16 @@ function sortContactsByName(contacts) {
   });
 }
 
+/**
+ * Generates HTML for a grouped contact list.
+ *
+ * This function takes an array of contacts, groups them alphabetically by the first letter
+ * of their first name, and returns an HTML string with group headers and contact elements.
+ *
+ * @function generateGroupedContactsHTML
+ * @param {Array<Object>} contacts - An array of contact objects with a `name` property.
+ * @returns {string} The generated HTML string containing grouped contacts.
+ */
 function generateGroupedContactsHTML(contacts) {
   let currentGroup = "";
   let html = "";
@@ -83,6 +132,12 @@ function generateGroupedContactsHTML(contacts) {
   return html;
 }
 
+/**
+ * Generates an HTML string for a group header with a specified letter.
+ *
+ * @param {string} letter - The letter to be displayed in the group header.
+ * @returns {string} An HTML string containing a styled group header with the given letter.
+ */
 function createGroupHeader(letter) {
   return `
     <div class="category"><span><b>${letter}</b></span></div>
@@ -90,6 +145,17 @@ function createGroupHeader(letter) {
   `;
 }
 
+/**
+ * Renders the detailed view of a selected contact in the "contactsBig_content" element.
+ *
+ * This function retrieves the ID of the selected contact from localStorage, finds the corresponding
+ * contact in the `allUsers` array, and updates the "contactsBig_content" element with the contact's
+ * detailed information using the `templateBigContacts` function. If no contact is selected or the
+ * contact is not found, the content is cleared.
+ *
+ * @function renderBigContacts
+ * @returns {void} This function does not return a value.
+ */
 function renderBigContacts() {
   const selectedContactId = localStorage.getItem("selectedContact");
   let contactsBigRef = document.getElementById("contactsBig_content");
@@ -101,6 +167,15 @@ function renderBigContacts() {
     }
   }
 }
+
+/**
+ * Renders the contact details in the modal.
+ *
+ * This function clears the modal content and, if a contact is selected,
+ * retrieves the contact data and updates the modal with the contact's details.
+ *
+ * @function renderModalContacts
+ */
 
 function renderModalContacts() {
   let contactsModalRef = document.getElementById("contactsModal_content");
@@ -140,6 +215,17 @@ async function openEditDialog(contactId) {
   await populateDialogFields(contactId);
 }
 
+/**
+ * Populates the dialog fields with contact information.
+ *
+ * This function retrieves the contact details from the database using the provided `contactId`,
+ * then updates the corresponding input fields in the dialog.
+ *
+ * @async
+ * @function populateDialogFields
+ * @param {string} contactId - The ID of the contact whose data should be loaded.
+ * @returns {Promise<void>} A promise that resolves once the fields have been populated.
+ */
 async function populateDialogFields(contactId) {
   let nameRef = document.getElementById("dialog-name");
   let emailRef = document.getElementById("dialog-email");
@@ -152,6 +238,17 @@ async function populateDialogFields(contactId) {
   deleteButton.setAttribute("onclick", `deleteContact('${contactId}')`);
 }
 
+/**
+ * Fetches contact data from the database.
+ *
+ * This function sends a request to retrieve contact information from the given path
+ * and updates the global `allUsers` array with the retrieved contacts.
+ *
+ * @async
+ * @function fetchContactData
+ * @param {string} [path=""] - The API endpoint path to fetch contact data from.
+ * @returns {Promise<Object>} A promise that resolves to the fetched data.
+ */
 async function fetchContactData(path = "") {
   let response = await fetch(BASE_URL + path + ".json");
   let data = await response.json();
@@ -163,6 +260,17 @@ async function fetchContactData(path = "") {
   return data;
 }
 
+/**
+ * Deletes a contact from the database and updates the UI.
+ *
+ * This function retrieves the Firebase ID of the given contact, deletes the contact
+ * from the database, removes their association from tasks, and updates the contact lists.
+ *
+ * @async
+ * @function deleteContact
+ * @param {string} contactId - The ID of the contact to be deleted.
+ * @returns {Promise<void>} A promise that resolves when the contact is deleted and the UI is updated.
+ */
 async function deleteContact(contactId) {
   let contactsSmallRef = document.getElementById("contactsSmall_content");
   let firebaseId = await getFirebaseId(contactId);
@@ -176,6 +284,17 @@ async function deleteContact(contactId) {
   await fetchData();
 }
 
+/**
+ * Retrieves the Firebase ID for a given contact.
+ *
+ * This function fetches all contacts from the database and searches for the Firebase ID
+ * that corresponds to the given contact ID.
+ *
+ * @async
+ * @function getFirebaseId
+ * @param {string} contactId - The ID of the contact to find in Firebase.
+ * @returns {Promise<string|null>} A promise that resolves to the Firebase ID if found, otherwise `null`.
+ */
 async function getFirebaseId(contactId) {
   let response = await fetch(BASE_URL + "contacts.json");
   let data = await response.json();
@@ -187,6 +306,17 @@ async function getFirebaseId(contactId) {
   return null;
 }
 
+/**
+ * Saves the edited contact details.
+ *
+ * This function retrieves the updated contact data, fetches the corresponding Firebase ID,
+ * updates the contact in the database, and then closes the dialog. After saving, it resets
+ * the dialog fields and displays a success message.
+ *
+ * @async
+ * @function saveEditedContact
+ * @returns {Promise<void>} A promise that resolves when the contact is successfully updated.
+ */
 async function saveEditedContact() {
   let closDialog = document.getElementById("dialog_content");
   let updatedData = await getUpdatedContactData();
@@ -196,6 +326,17 @@ async function saveEditedContact() {
   resetDialogFields();
   signupSuccessfullMessage("edit");
 }
+
+/**
+ * Retrieves the updated contact data from the dialog fields.
+ *
+ * This function collects the user's edited contact information from the input fields,
+ * including name, email, phone number, and assigns the appropriate color based on the contact ID.
+ *
+ * @async
+ * @function getUpdatedContactData
+ * @returns {Promise<Object>} A promise that resolves to an object containing the updated contact details.
+ */
 
 async function getUpdatedContactData() {
   let nameRef = document.getElementById("dialog-name");
@@ -210,11 +351,30 @@ async function getUpdatedContactData() {
   };
 }
 
+/**
+ * Resets the input fields in a dialog form to their default empty values.
+ * This function clears the values of the name, email, and phone input fields
+ * within a dialog by setting them to an empty string.
+ *
+ * @function
+ */
 function resetDialogFields() {
   document.getElementById("dialog-name").value = "";
   document.getElementById("dialog-email").value = "";
   document.getElementById("dialog-phone").value = "";
 }
+
+/**
+ * Deletes data from the specified path in the database.
+ *
+ * This function sends a DELETE request to the given path in the database and returns the response data.
+ * It is commonly used for removing records, such as deleting a contact or task.
+ *
+ * @async
+ * @function deleteData
+ * @param {string} [path=""] The path to the data that needs to be deleted (e.g., "contacts/{id}").
+ * @returns {Promise<Object>} A promise that resolves to the response JSON after the deletion operation.
+ */
 
 async function deleteData(path = "") {
   let response = await fetch(BASE_URL + path + ".json", {
@@ -264,105 +424,4 @@ async function removeContactFromTasks(firebaseId) {
 function checkExistingContacts(emailRef) {
   let existingEmails = allUsers.filter((contact) => contact.email === emailRef.value);
   return existingEmails.length;
-}
-
-async function addContact() {
-  let nameRef = document.getElementById("recipient-name");
-  let emailRef = document.getElementById("recipient-email");
-  let phoneRef = document.getElementById("recipient-phone");
-  if (!validateContactInputs(nameRef, emailRef, phoneRef)) return;
-  let existingContactsCount = checkExistingContacts(emailRef);
-  if (existingContactsCount > 0) {
-    signupSuccessfullMessage("existing");
-    closeModalAddTask();
-    return;
-  }
-  await saveNewContact(nameRef, emailRef, phoneRef);
-  closeModalAddTask();
-}
-
-async function saveNewContact(nameRef, emailRef, phoneRef) {
-  let newContact = createContact(nameRef.value, emailRef.value, phoneRef.value);
-  await saveContact(newContact);
-  updateContactUI();
-  resetContactForm(nameRef, emailRef, phoneRef);
-  signupSuccessfullMessage("new");  
-}
-
-function closeModalAddTask() {
-  let modalElement = document.getElementById("exampleModal");
-  let modalInstance = bootstrap.Modal.getInstance(modalElement);
-  if (modalInstance) {
-    modalInstance.hide();
-  }
-  let navElement = document.querySelector(".task_bar .nav_bar");
-  if (navElement) {
-    navElement.focus();
-  } else {
-    document.body.focus();
-  }
-}
-
-function validateContactInputs(nameRef, emailRef, phoneRef) {
-  let isValid = nameRef.value && emailRef.value && phoneRef.value;
-  document.getElementById("editContactInputfieldError").classList.toggle("d_none", isValid);
-  document.getElementById("newContactInputfieldError").classList.toggle("d_none", isValid);
-  return isValid;
-}
-
-function createContact(name, email, phone) {
-  let contactId = Date.now().toString();
-  return {
-    id: contactId,
-    name,
-    email,
-    phone,
-    color: getColorById(contactId),
-  };
-}
-
-async function saveContact(contact) {
-  await postData("contacts", contact);
-  allUsers.push(contact);
-  selectedContactId = contact.id;
-}
-
-function updateContactUI() {
-  document.getElementById("contactsSmall_content").innerHTML = "";
-  renderSmallContacts();
-  renderBigContacts();
-}
-
-function resetContactForm(nameRef, emailRef, phoneRef) {
-  nameRef.value = "";
-  emailRef.value = "";
-  phoneRef.value = "";
-}
-
-async function patchData(path = "", data = {}) {
-  const response = await fetch(BASE_URL + path + ".json", {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-  return await response.json();
-}
-
-function getColorById(contactId) {
-  let sum = 0;
-  for (let i = 0; i < contactId.length; i++) {
-    sum += contactId.charCodeAt(i);
-  }
-  let index = sum % coloursArray.length;
-  return coloursArray[index];
-}
-
-async function hideOverlayAndReload(overlay) {
-  overlay.style.display = "none";
-  await fetchData();
-  renderSmallContacts();
-  renderBigContacts();
-  highlightActiveContact();
 }
