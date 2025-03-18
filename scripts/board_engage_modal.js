@@ -105,6 +105,10 @@ function editSubtaskinModal(id, subTaskInput) {
 function acceptEdit(id) {
   let subTaskContainer = document.getElementById("editSubtasks-container");
   let newSubTask = document.getElementById(`inputSubtask${id}`).value;
+  if (!newSubTask) {
+    deleteSubtaskModal(`${id}`);
+    return;
+  }
   const removeSubtask = document.getElementById(`editSubTaskUnit${id}`);
   removeSubtask.remove();
   subTaskContainer.innerHTML += addSubtaskTemplateinModal(newSubTask, id);
@@ -298,6 +302,13 @@ function handlePreselectedState(contactId, contactName, contactColor, container,
  * return).
  */
 async function addTaskModal(id, status) {
+  const title = document.getElementById("inputField")?.value.trim();
+  const dueDate = document.getElementById("due-date-edit")?.value.trim();
+  const category = document.getElementById("category")?.value;
+  validateTaskFields(title, dueDate, category);
+  if (!title || !dueDate || !category) {
+    return;
+  }
   if (!id) {
     addTaskModalNewTask(status);
     return;
