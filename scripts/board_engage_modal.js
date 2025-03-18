@@ -307,10 +307,13 @@ async function addTaskModal(id, status) {
   const dueDateCheck = dueDateValidity(dueDate);
   const category = document.getElementById("category")?.value;
   validateTaskFields(title, dueDate, category);
-  if (!title || !dueDate || !category || !dueDateCheck) {
+  if (!title || !dueDate || !dueDateCheck) {
     return;
   }
   if (!id) {
+    if (!category) {
+      return;
+    }
     addTaskModalNewTask(status);
     return;
   }

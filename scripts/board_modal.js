@@ -151,6 +151,7 @@ function handleCheckboxChange(event) {
     subtasksStatus.push(status);
   });
   addSubtasksStatus(containerId, subtasksStatus);
+  reloadBoardContent();
 }
 
 async function addSubtasksStatus(key, status) {
@@ -342,11 +343,14 @@ function determineAssignedToEditModal(id) {
 }
 
 function populateAssignedToSelectEdit() {
+  populateAssignedToDropdown();
+  addCheckboxEventListeners();
+}
+
+function populateAssignedToDropdown() {
   const dropdown = document.getElementById("assigned-dropdown-Edit");
-  if (!dropdown) {
+  if (!dropdown || !Array.isArray(allContacts) || allContacts.length === 0) {
     return;
-  }
-  if (!Array.isArray(allContacts) || allContacts.length === 0) {
   }
   dropdown.innerHTML = allContacts
     .map((contact) =>
@@ -356,7 +360,9 @@ function populateAssignedToSelectEdit() {
       )
     )
     .join("");
+}
 
+function addCheckboxEventListeners() {
   document.querySelectorAll(".contact-checkbox").forEach((checkbox) => {
     checkbox.addEventListener("change", function () {
       const label = this.closest(".customCheckboxContainer");

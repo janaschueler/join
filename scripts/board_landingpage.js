@@ -19,6 +19,14 @@ async function initi() {
   }
 }
 
+/**
+ * Reloads the board content by fetching tasks and contacts data asynchronously
+ * and then loading the board content.
+ *
+ * @async
+ * @function
+ * @returns {Promise<void>} Resolves when the board content is successfully reloaded.
+ */
 async function reloadBoardContent() {
   allTasks = await getDataTasks();
   allContacts = await getDataContacts();
@@ -58,6 +66,7 @@ async function getDataTasks(path = "") {
   }
   return tasks;
 }
+
 function determineAssignedTo(arryAssignedTo) {
   if (!arryAssignedTo) {
     return;
