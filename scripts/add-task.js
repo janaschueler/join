@@ -5,11 +5,23 @@ let selectedContacts = [];
 let subTaskCount;
 let subtaskClickCount = 0;
 
+/**
+ * Initializes the application by performing necessary setup tasks.
+ * - Fetches the list of contacts required for the application.
+ * - Sets up the priority buttons for task management.
+ */
 function init() {
   fetchContacts();
   initPriorityButtons();
 }
 
+/**
+ * Toggles the visibility of the category dropdown menu and rotates the dropdown icon.
+ * Prevents the click event from propagating further.
+ * Closes all other dropdowns before toggling the current one.
+ *
+ * @param {Event} event - The click event that triggers the dropdown toggle.
+ */
 function toggleCategoryDropdown(event) {
   event.stopPropagation();
   let dropdown = document.getElementById("category-dropdown");
@@ -61,11 +73,9 @@ document.addEventListener("click", function (event) {
 function closeDropdownOnOutsideClick(event, dropdownId, toggleId, iconId) {
   const dropdown = document.getElementById(dropdownId);
   const toggleButton = document.getElementById(toggleId);
-
   if (!dropdown || !toggleButton) {
     return;
   }
-
   if (!toggleButton.contains(event.target) && !dropdown.contains(event.target)) {
     dropdown.classList.remove("visible");
     if (iconId) {
@@ -92,12 +102,20 @@ function closeAllDropdowns() {
   assignedDropdowns.forEach((dropdown) => {
     dropdown.classList.remove("visible");
   });
-
   document.getElementById("category-dropdown-icon").style.transform = "rotate(0deg)";
   document.querySelector(".dropDown").style.display = "block";
   document.querySelector(".dropDown-up").style.display = "none";
 }
 
+/**
+ * Updates the selected category in the UI and validates the selection.
+ *
+ * This function updates the displayed category label, sets the hidden input value,
+ * hides the category dropdown, and removes the "selected" class from all dropdown options.
+ * Additionally, it triggers category validation if the corresponding validation function exists.
+ *
+ * @param {string} label - The label of the selected category.
+ */
 function selectCategory(label) {
   document.querySelector("#category-input span").textContent = label;
   document.getElementById("category").value = label;
@@ -140,40 +158,57 @@ async function fetchContacts() {
     populateAssignedToSelect();
   } catch (error) {}
 }
+
 /**
- * Adds a new task with the provided status.
- *
- * This function collects task details from input fields, validates the input,
- * constructs a task object, and sends it to the server to be saved.
- * If the task is successfully saved, the user is redirected to the board page.
- * If there is an error during the save process, an alert is shown with the error message.
- *
+ * Collects and validates the task data, then sends it to the server.
  * @param {string} statusTask - The status of the task to be added.
- * @returns {Promise<void>} - A promise that resolves when the task is added.
- * @throws {Error} - Throws an error if the task could not be saved.
  */
 async function addTask(statusTask) {
-  const title = document.getElementById("inputField")?.value.trim();
-  const description = document.getElementById("description")?.value.trim();
-  const dueDate = document.getElementById("due-date")?.value.trim();
-  const dueDateCheck = dueDateValidity(dueDate);
-  const category = document.getElementById("category")?.value;
-  const subtasks = [...document.querySelectorAll(".subtask-text")].map((el) => el.textContent.trim());
-  validateTaskFields(title, dueDate, category);
-  if (!title || !dueDate || !category || !dueDateCheck) {
-    return;
-  }
-  const taskData = { title, description, dueDate, category, priority: selectedPriority, subtasks, assignedContacts: selectedContacts, status: determineStatusAddTask(statusTask), createdAt: new Date().toISOString() };
+  const taskData = collectTaskData(statusTask);
+  if (!taskData) return;
   try {
-    const res = await fetch(`${BASE_URL}/tasks.json`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(taskData) });
-    if (!res.ok) throw new Error(`Error saving task: ${res.status}`);
-    setTimeout(() => {
-      location.href = "board.html";
-    }, 100);
+    await saveTaskToServer(taskData);
+    setTimeout(() => { location.href = "board.html"; }, 100);
   } catch (err) {
     alert(err.message);
   }
 }
+
+/**
+ * Collects task data from the DOM and validates the necessary fields.
+ * @param {string} statusTask - The status of the task to be added.
+ * @returns {Object|null} The task data object or null if validation fails.
+ */
+function collectTaskData(statusTask) {
+  const title = document.getElementById("inputField")?.value.trim();
+  const description = document.getElementById("description")?.value.trim();
+  const dueDate = document.getElementById("due-date")?.value.trim();
+  const category = document.getElementById("category")?.value;
+  const dueDateCheck = dueDateValidity(dueDate);
+  const subtasks = [...document.querySelectorAll(".subtask-text")].map((el) => el.textContent.trim());
+  validateTaskFields(title, dueDate, category);
+  if (!title || !dueDate || !category || !dueDateCheck) return null;
+  return {
+    title, description, dueDate, category, priority: selectedPriority,
+    subtasks, assignedContacts: selectedContacts, status: determineStatusAddTask(statusTask),
+    createdAt: new Date().toISOString()
+  };
+}
+
+/**
+ * Saves the task data to the server via a POST request.
+ * 
+ * @param {Object} taskData - The task data object to be saved.
+ * @throws {Error} Throws an error if the task saving fails.
+ */
+async function saveTaskToServer(taskData) {
+  const res = await fetch(`${BASE_URL}/tasks.json`, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(taskData)
+  });
+  if (!res.ok) throw new Error(`Error saving task: ${res.status}`);
+}
+
 
 /**
  * Validates the input fields for a task creation form.
@@ -200,6 +235,17 @@ function validateTaskFields(title, dueDate, category) {
   }
 }
 
+/**
+ * Retrieves and processes the due date validation data.
+ * This function selects the due date input element, creates a Date object from the provided due date,
+ * and creates a Date object for today's date with the time set to midnight.
+ *
+ * @param {string} dueDate - The due date string to be validated, typically in 'YYYY-MM-DD' format.
+ * @returns {Object} An object containing:
+ *   - dueDateElement: The DOM element corresponding to the due date input field.
+ *   - inputDate: The Date object representing the provided due date.
+ *   - today: The Date object representing today's date, with time set to midnight.
+ */
 function getDueDateValidationData(dueDate) {
   const dueDateElement = document.querySelector("[id^='due-date']");
   const inputDate = new Date(dueDate);
@@ -208,6 +254,12 @@ function getDueDateValidationData(dueDate) {
   return { dueDateElement, inputDate, today };
 }
 
+/**
+ * Validates the provided due date to ensure it is not empty and is not in the past.
+ *
+ * @param {string} dueDate - The due date to validate, typically in a string format (e.g., "YYYY-MM-DD").
+ * @returns {boolean} - Returns `true` if the due date is valid (not empty and not in the past), otherwise `false`.
+ */
 function dueDateValidity(dueDate) {
   const { dueDateElement, inputDate, today } = getDueDateValidationData(dueDate);
   if (!dueDate || inputDate < today) {
@@ -216,6 +268,13 @@ function dueDateValidity(dueDate) {
   return true;
 }
 
+/**
+ * Toggles a red border on an HTML element based on a condition.
+ *
+ * @param {string} elementId - The ID of the HTML element to apply the red border to.
+ * @param {boolean} condition - A boolean value that determines whether to add or remove the red border.
+ *                              If true, the "red-border" class is added; if false, it is removed.
+ */
 function toggleRedBorder(elementId, condition) {
   const element = document.getElementById(elementId);
   if (condition) {
@@ -294,14 +353,16 @@ async function saveSubtask(subtaskText) {
   } catch (error) {}
 }
 
+
 /**
- * Populates the "assigned-dropdown" select element with contact options.
- * Each contact option is rendered using the addTaskTemplate function.
- * Adds event listeners to each contact checkbox to handle selection changes.
- *
- * @function
- * @name populateAssignedToSelect
- * @returns {void}
+ * Populates the "Assigned To" dropdown with a list of contacts.
+ * 
+ * This function dynamically generates the dropdown options based on the `contacts` array.
+ * Each contact is rendered using the `addTaskTemplate` function, and the dropdown is updated
+ * with the generated HTML. If a contact is already selected (exists in `selectedContacts`),
+ * it will be marked accordingly in the dropdown.
+ * 
+ * @returns {void} This function does not return a value.
  */
 function populateAssignedToSelect() {
   const dropdown = document.getElementById("assigned-dropdown");
@@ -314,22 +375,47 @@ function populateAssignedToSelect() {
       )
     )
     .join("");
+  addContactCheckboxListeners();
+}
+
+/**
+ * Adds event listeners to all elements with the class "contact-checkbox".
+ * When a checkbox's state changes, it triggers the `toggleContactSelection` function
+ * with the checkbox element as its context.
+ *
+ * This function is used to manage the selection state of contact checkboxes dynamically.
+ */
+function addContactCheckboxListeners() {
   document.querySelectorAll(".contact-checkbox").forEach((checkbox) => {
     checkbox.addEventListener("change", function () {
-      const contact = contacts.find((c) => c.id === this.value);
-      if (!contact) return;
-      const parentContainer = this.closest(".customCheckboxContainer");
-      if (this.checked) {
-        selectedContacts.push(contact);
-        parentContainer.classList.add("checked"); // Styling aktivieren
-      } else {
-        selectedContacts = selectedContacts.filter((c) => c.id !== contact.id);
-        parentContainer.classList.remove("checked"); // Styling entfernen
-      }
-      updateSelectedContacts();
+      toggleContactSelection(this);
     });
   });
 }
+
+/**
+ * Toggles the selection of a contact based on the state of a checkbox.
+ * Updates the `selectedContacts` array and applies or removes the "checked" class
+ * to the parent container of the checkbox. Also triggers an update to the displayed
+ * selected contacts.
+ *
+ * @param {HTMLInputElement} checkbox - The checkbox element that was toggled.
+ *   Its `value` attribute should correspond to the `id` of a contact.
+ */
+function toggleContactSelection(checkbox) {
+  const contact = contacts.find((c) => c.id === checkbox.value);
+  if (!contact) return;
+  const parentContainer = checkbox.closest(".customCheckboxContainer");
+  if (checkbox.checked) {
+    selectedContacts.push(contact);
+    parentContainer.classList.add("checked");
+  } else {
+    selectedContacts = selectedContacts.filter((c) => c.id !== contact.id);
+    parentContainer.classList.remove("checked");
+  }
+  updateSelectedContacts();
+}
+
 
 /**
  * Updates the selected contacts container by clearing its current content
@@ -379,6 +465,15 @@ function filterContacts() {
   });
 }
 
+/**
+ * Generates the initials from a given name.
+ *
+ * @param {string} name - The full name from which to extract initials. 
+ *                        If the name is empty or undefined, "??" is returned.
+ * @returns {string} The initials of the name in uppercase. If the name is empty,
+ *                   "??" is returned. If no valid initials can be extracted,
+ *                   the first character of the name (in uppercase) is returned.
+ */
 function getInitials(name) {
   if (!name) return "??";
   const initials = name
@@ -390,6 +485,13 @@ function getInitials(name) {
   return initials.length > 0 ? initials : name[0].toUpperCase();
 }
 
+/**
+ * Deletes a subtask element from the DOM based on its unique ID.
+ *
+ * @param {number|string} id - The unique identifier of the subtask element to be removed.
+ *                             This ID is used to locate the element with the corresponding
+ *                             `subTaskUnit{id}` ID in the DOM.
+ */
 function deleteSubtask(id) {
   const removeSubtask = document.getElementById(`subTaskUnit${id}`);
   removeSubtask.remove();
@@ -421,42 +523,74 @@ function accept(id) {
   subTaskContainer.innerHTML += addSubtaskTemplate(newSubTask, id);
 }
 
+
 /**
- * Clears and resets the task creation form to its default state.
- * 
- * This function prevents the default form submission behavior and resets all input fields,
- * dropdowns, checkboxes, and error messages in the task creation form. It also clears
- * any selected contacts and subtasks, resets the priority to the default medium level,
- * and removes any visual indicators such as red borders or error messages.
- * 
- * @param {Event} event - The event object associated with the form submission.
+ * Clears the task form by resetting input fields, selections, and error messages.
+ * Also resets the selected contacts array and sets the default priority to "medium".
+ *
+ * @param {Event} event - The event object triggered by the form submission.
  */
 function clearForm(event) {
   event.preventDefault();
+  resetInputFields();
+  resetSelections();
+  resetErrors();
+  selectedContacts = [];
+  const defaultMediumButton = document.querySelector(".priority .medium");
+  handlePriorityClick(defaultMediumButton);
+}
+
+/**
+ * Resets the input fields of a task form to their default values.
+ * 
+ * This function clears the values of the input fields for task title, 
+ * description, due date, and category. It also resets the category 
+ * display text to "Select task category".
+ */
+function resetInputFields() {
   document.getElementById("inputField").value = "";
   document.getElementById("description").value = "";
   document.getElementById("due-date").value = "";
-  document.getElementById("category-input").querySelector("span").textContent = "Select task category";
+  document.getElementById("category-input").querySelector("span").textContent = 
+    "Select task category";
   document.getElementById("category").value = "";
+}
+
+/**
+ * Resets the selections in the task creation form.
+ * 
+ * This function clears the selected contacts and subtasks containers,
+ * unchecks all contact checkboxes, and removes the "checked" class
+ * from their parent elements to visually reset the state.
+ */
+function resetSelections() {
   document.getElementById("selected-contacts").innerHTML = "";
   document.getElementById("subtasks-container").innerHTML = "";
   document.querySelectorAll(".contact-checkbox").forEach((checkbox) => {
     checkbox.checked = false;
     checkbox.closest(".customCheckboxContainer").classList.remove("checked");
   });
+}
+
+/**
+ * Resets error indicators in the DOM by performing the following actions:
+ * - Removes the "red-border" class from all elements that have it.
+ * - Hides all elements with the "error-message" class by setting their display style to "none".
+ */
+function resetErrors() {
   document.querySelectorAll(".red-border").forEach((element) => {
     element.classList.remove("red-border");
   });
   document.querySelectorAll(".error-message").forEach((error) => {
     error.style.display = "none";
   });
-  
-  selectedContacts = [];
-  const defaultMediumButton = document.querySelector(".priority .medium");
-  handlePriorityClick(defaultMediumButton);
-  return;
 }
 
+/**
+ * Generates a random hexadecimal color code.
+ *
+ * @returns {string} A string representing a random color in hexadecimal format (e.g., "#A1B2C3").
+ */
 function getRandomColor() {
   const letters = "0123456789ABCDEF";
   let color = "#";
@@ -477,12 +611,9 @@ function setMinDate() {
   const yyyy = today.getFullYear();
   let mm = today.getMonth() + 1;
   let dd = today.getDate();
-
   if (mm < 10) mm = "0" + mm;
   if (dd < 10) dd = "0" + dd;
-
   const todayDate = `${yyyy}-${mm}-${dd}`;
-
   const dueDateElements = document.querySelectorAll('[id*="due-date"]');
   dueDateElements.forEach((element) => {
     element.setAttribute("min", todayDate);

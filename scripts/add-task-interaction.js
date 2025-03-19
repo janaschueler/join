@@ -26,14 +26,12 @@ function handlePriorityClick(clickedButton) {
  */
 function initPriorityButtons(priority) {
   const priorityButtons = document.querySelectorAll(".priority button");
-
   priorityButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       event.preventDefault();
       handlePriorityClick(button);
     });
   });
-
   const defaultMediumButton = document.querySelector(".priority .medium");
   if (!priority) {
     handlePriorityClick(defaultMediumButton);
@@ -88,7 +86,11 @@ function highlightButton(button) {
   });
 }
 
-// open Calendar
+/**
+ * Opens the date picker for the input element with the ID "due-date".
+ * Ensures that the minimum date is set before displaying the picker.
+ * If the input element is not found, the function does nothing.
+ */
 function openDatePicker() {
   setMinDate();
   let dateInput = document.getElementById("due-date");
@@ -114,17 +116,23 @@ function openEditTask(category, title, description, DueDate, priority, id) {
   }
 }
 
+/**
+ * Adds a new subtask to the subtask container.
+ * 
+ * This function retrieves the input value from the subtask input field, validates it,
+ * and appends a new subtask to the subtask container using a template. It also resets
+ * the input field and updates the task button state.
+ * 
+ * @returns {void} This function does not return a value.
+ */
 function addSubtask() {
   let subTaskInputRef = document.getElementById("new-subtask-input");
   let subTaskContainer = document.getElementById("subtasks-container");
-
   if (subTaskInputRef && subTaskContainer) {
     let subTaskInput = subTaskInputRef.value.trim();
-
     if (!subTaskInput) {
       return;
     }
-
     normalSubtaskCount += 1;
     subTaskContainer.innerHTML += addSubtaskTemplate(subTaskInput, normalSubtaskCount);
     subTaskInputRef.value = "";
@@ -132,6 +140,14 @@ function addSubtask() {
   }
 }
 
+/**
+ * Transforms the "Add Task" button by replacing its outer HTML with a new button structure.
+ * 
+ * This function locates the button container element with the ID "iconAddButton" and, if found,
+ * replaces its outer HTML with the result of the `getTransformedButton` function. 
+ * 
+ * Note: Ensure that the `getTransformedButton` function is defined and returns the desired HTML structure.
+ */
 function transformButtonAddTask() {
   const buttonContainer = document.getElementById("iconAddButton");
   if (buttonContainer) {
@@ -139,6 +155,12 @@ function transformButtonAddTask() {
   }
 }
 
+/**
+ * Resets the "Add Task" button by updating the inner HTML of the input wrapper element.
+ *
+ * @param {number} normalSubtaskCount - The number of normal subtasks to be used in the reset process.
+ * @returns {void}
+ */
 function resetButtonAddTask(normalSubtaskCount) {
   const inputWrapper = document.getElementById("inputWrapper");
   if (inputWrapper) {
@@ -146,6 +168,14 @@ function resetButtonAddTask(normalSubtaskCount) {
   }
 }
 
+/**
+ * Handles the click event for the "Add Task" button.
+ * Depending on the type of input device used, it either resets the button
+ * or adds a subtask.
+ *
+ * @param {PointerEvent} event - The pointer event triggered by the button click.
+ * @property {string} event.pointerType - The type of input device used (e.g., "mouse", "touch", "pen").
+ */
 function handleButtonClickAddTask(event) {
   if (["mouse", "touch", "pen"].includes(event.pointerType)) {
     resetButtonAddTask();
@@ -154,11 +184,24 @@ function handleButtonClickAddTask(event) {
   }
 }
 
+/**
+ * Deletes a subtask element from the DOM in the "Add Task" interface.
+ *
+ * @param {number|string} id - The unique identifier of the subtask to be removed.
+ *                             This ID is used to locate the subtask element in the DOM.
+ */
 function deleteSubtaskAddTask(id) {
   const removeSubtask = document.getElementById(`subTaskUnit${id}`);
   removeSubtask.remove();
 }
 
+/**
+ * Handles the addition of a new subtask to the task list. 
+ * If the input for the subtask is empty, it removes the subtask input field.
+ * Otherwise, it adds the subtask to the container and removes the input field.
+ *
+ * @param {number} id - The unique identifier for the subtask input field and related elements.
+ */
 function acceptAddTask(id) {
   let newSubTask = document.getElementById(`inputSubtask${id}`).value;
   if (!newSubTask) {
