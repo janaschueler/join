@@ -294,7 +294,7 @@ h2 {
 }
 
 .scroll-container {
-  overflow: auto;  
+  overflow: auto;
 }
 
 .editIcon {
@@ -709,15 +709,15 @@ input[type="number"] {
   .mobile_main {
     display: block;
   }
-  
+
   .left_bar_main {
     display: none;
   }
 }
 
-@media (max-width: 768px) {  
+@media (max-width: 768px) {
   .contactContainer {
-    height: calc(100vh - 80px) !important;
+    height: calc(100vh - 130px) !important;
   }
 
   .mobile_header {
@@ -808,7 +808,7 @@ input[type="number"] {
 
   body {
     overflow: hidden;
-  }  
+  }
 
   .mobile_arrow_btn {
     padding-block: 0px;

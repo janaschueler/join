@@ -197,26 +197,19 @@ function saveToLocalStorage(user) {
   localStorage.setItem("user", JSON.stringify(userEmail));
 }
 
+
 /**
- * Asynchronously checks if the user has access authorization.
- *
- * This function retrieves the user's email from local storage and compares it
- * with the signed-in user's email fetched from the server. If the emails match,
- * the function returns true, indicating that the user is authorized. If the
- * emails do not match, the user is redirected to the login page and the function
- * returns false.
- *
- * @returns {Promise<boolean>} A promise that resolves to true if the user is
- * authorized, or false if the user is redirected to the login page.
- * Überprüft die Zugriffsberechtigung des Benutzers.
- *
- * Diese Funktion überprüft, ob die E-Mail-Adresse des Benutzers, die im lokalen Speicher gespeichert ist,
- * mit der E-Mail-Adresse des angemeldeten Benutzers übereinstimmt. Wenn die E-Mail-Adressen übereinstimmen,
- * wird die Funktion beendet. Andernfalls wird der Benutzer zur Anmeldeseite weitergeleitet.
- *
+ * Asynchronously checks if the currently signed-in user is authorized to access the application.
+ * 
+ * This function retrieves the user's email from local storage and compares it with the email
+ * of the signed-in user fetched from the server. If the emails match, the user is authorized
+ * and the function returns `true`. Otherwise, the user is redirected to the login page and
+ * the function returns `false`.
+ * 
  * @async
  * @function checkAccessAuthorization
- * @returns {Promise<void>} Eine Promise, die aufgelöst wird, wenn die Überprüfung abgeschlossen ist.
+ * @returns {Promise<boolean>} A promise that resolves to `true` if the user is authorized, 
+ *                             or `false` if the user is redirected to the login page.
  */
 async function checkAccessAuthorization() {
   let userEmail = getFromLoclaStorage();
